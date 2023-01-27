@@ -1,0 +1,8 @@
+service:
+  type: ClusterIP 
+
+octopus:
+  # the port the website is exposed on
+  webPort: 80 
+  # the port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
+  tentaclePort: 10943 
