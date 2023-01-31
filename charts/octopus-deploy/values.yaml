@@ -1,8 +1,18 @@
+octopus:
+  # The Octopus server image. Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
+  image: octopusdeploy/octopusdeploy:2022.4
+  # The Octopus admin username
+  username:
+  # The Octopus admin password
+  password:
+  # The Octopus admin email
+  email:
+  # The port the website is exposed on
+  webPort: 80 
+  # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
+  tentaclePort: 10943 
+  # The number of server nodes to maintain  
+  replicaCount: 1
+
 service:
   type: ClusterIP 
-
-octopus:
-  # the port the website is exposed on
-  webPort: 80 
-  # the port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
-  tentaclePort: 10943 
