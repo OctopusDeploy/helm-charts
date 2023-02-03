@@ -4,8 +4,8 @@ metadata:
   name: octopus-deploy
 spec:
   type: {{ .Values.service.type }}
-#  selector:
-#    app: octopus-deploy
+  selector:
+    app: octopus-deploy
   ports:
     - name: web
       port: {{.Values.octopus.webPort}}
@@ -50,20 +50,20 @@ spec:
                   - name: DB_CONNECTION_STRING
                     valueFrom:
                       secretKeyRef:
-                        name: octopus-secrets
+                        name: octopus-deploy-secrets
                         key: dbConnectionString
                   {{- if .Values.octopus.username }}
                   - name: ADMIN_USERNAME
                     valueFrom:
                       secretKeyRef:
-                        name: octopus-secrets
+                        name: octopus-deploy-secrets
                         key: adminUsername
                   {{- end}}
                   {{- if .Values.octopus.password }}
                   - name: ADMIN_PASSWORD
                     valueFrom:
                       secretKeyRef:
-                        name: octopus-secrets
+                        name: octopus-deploy-secrets
                         key: adminPassword
                   {{- end}}
                   - name: ADMIN_EMAIL
@@ -74,13 +74,13 @@ spec:
                     # Without a HA license, the stateful set can have a replica count of 1.
                     valueFrom:
                       secretKeyRef:
-                        name: octopus-secrets
+                        name: octopus-deploy-secrets
                         key: licenseKey
                   {{- end}}
                   - name: MASTER_KEY
                     valueFrom:
                       secretKeyRef:
-                        name: octopus-secrets
+                        name: octopus-deploy-secrets
                         key: masterKey
                 {{- if not .Values.octopus.enableDockerInDocker }}
                   - name: DISABLE_DIND
