@@ -1,23 +1,28 @@
 octopus:
   # Must be set to "Y" (including the quotes) to accept the EULA at https://octopus.com/legal/customer-agreement
   acceptEula: "N"
-  # The Octopus server image. Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
-  image: octopusdeploy/octopusdeploy:2022.4
-  # The Octopus admin username
+  # The master key is used to encrypt secrets. Generate a key with: openssl rand 16 | base64
+  masterKey: GENERATE_ME
+  databaseConnectionString:
   username:
   # The Octopus admin password
   password:
   # The Octopus admin email
   email:
-  # The master key is used to encrypt secrets. Generate a key with: openssl rand 16 | base64
-  masterKey: GENERATE_ME
+  # The Octopus server image. Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
+  image: octopusdeploy/octopusdeploy:2022.4
+  # The Octopus admin username
   # The port the website is exposed on
   webPort: 80 
   # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
   tentaclePort: 10943 
   # The number of server nodes to maintain  
   replicaCount: 1
-  databaseConnectionString:
+  # The built in worker can use execution containers to run steps inside special Docker images.
+  # https://octopus.com/docs/deployment-process/execution-containers-for-workers.
+  # This requires supporting Docker in Docker, which in turn means the Octopus image must be run with
+  # all privileges. Disabling this setting disables Docker-In-Docker and does not set the privileged mode.
+  enableDockerInDocker: true
 
 service:
   type: NodePort 

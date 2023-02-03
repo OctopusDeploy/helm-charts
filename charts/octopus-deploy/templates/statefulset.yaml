@@ -1,0 +1,93 @@
+# Octopus Deploy server nodes are modeled as StatefulSet, as terminating a node while deployments or runbooks are executing will cause these tasks to be terminated
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: octopus-deploy
+  # TODO: labels and annotations
+spec:
+  selector:
+    matchLabels:
+      app: octopus-deploy
+  serviceName: "octopus-deploy"
+  replicas: {{.Values.octopus.replicaCount}}
+  template:
+    metadata:
+      labels:
+        app: octopus-deploy
+    spec:
+      containers:
+              - name: octopus
+                image: {{.Values.octopus.image}}
+                securityContext:
+                  {{- if .Values.octopus.enableDockerInDocker }}
+                  privileged: true
+                  {{- end }}
+                env:
+                  - name: ACCEPT_EULA
+                    value: !!str "{{.Values.octopus.acceptEula}}"
+                  - name: OCTOPUS_SERVER_NODE_NAME
+                    valueFrom:
+                      fieldRef:
+                        fieldPath: metadata.name
+                  - name: DB_CONNECTION_STRING
+                    valueFrom:
+                      secretKeyRef:
+                        name: octopus-deploy-secrets
+                        key: dbConnectionString
+                  {{- if .Values.octopus.username }}
+                  - name: ADMIN_USERNAME
+                    valueFrom:
+                      secretKeyRef:
+                        name: octopus-deploy-secrets
+                        key: adminUsername
+                  {{- end}}
+                  {{- if .Values.octopus.password }}
+                  - name: ADMIN_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: octopus-deploy-secrets
+                        key: adminPassword
+                  {{- end}}
+                  - name: ADMIN_EMAIL
+                    value: {{.Values.octopus.email}}
+                  {{- if .Values.octopus.licenseKeyBase64 }}
+                  - name: OCTOPUS_SERVER_BASE64_LICENSE
+                    # Your license key goes here. When using more than one node, a HA license is required.
+                    # Without a HA license, the stateful set can have a replica count of 1.
+                    valueFrom:
+                      secretKeyRef:
+                        name: octopus-deploy-secrets
+                        key: licenseKey
+                  {{- end}}
+                  - name: MASTER_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        name: octopus-deploy-secrets
+                        key: masterKey
+                {{- if not .Values.octopus.enableDockerInDocker }}
+                  - name: DISABLE_DIND
+                    value: !!str "Y"
+                {{- end }}
+                ports:
+                  - containerPort: 8080
+                    name: web
+                  - containerPort: 10943
+                    name: tentacle
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: octopus-deploy-secrets
+type: Opaque
+data:
+  {{- if .Values.octopus.username }}
+  adminUsername: {{.Values.octopus.username | b64enc}}
+  {{- end}}
+  {{- if .Values.octopus.password }}
+  adminPassword: {{.Values.octopus.password | b64enc}}
+  {{- end}}
+  {{- if .Values.octopus.licenseKeyBase64 }}
+  licenseKey: {{.Values.octopus.licenseKeyBase64 | b64enc}}
+  {{- end}}
+  masterKey: {{.Values.octopus.masterKey | b64enc}}
+  dbConnectionString: {{ tpl .Values.octopus.databaseConnectionString . | b64enc}}
