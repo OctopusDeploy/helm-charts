@@ -3,7 +3,14 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: octopus-deploy
-  # TODO: labels and annotations
+  {{- if .Values.octopus.statefulSet.annotations }}
+  annotations:
+  {{ toYaml .Values.octopus.statefulSet.annotations | indent 2 }}
+  {{- end }}
+  {{- if .Values.octopus.statefulSet.labels }}
+  labels:
+  {{ toYaml .Values.octopus.statefulSet.labels | indent 2 }}
+  {{- end }}
 spec:
   selector:
     matchLabels:
@@ -14,6 +21,13 @@ spec:
     metadata:
       labels:
         app: octopus-deploy
+      {{- if .Values.octopus.pods.labels }}
+      {{ toYaml .Values.octopus.pods.labels | indent 2 }}
+      {{- end }}
+      {{- if .Values.octopus.pods.annotations }}
+      annotations:
+      {{ toYaml .Values.octopus.pods.annotations | indent 2 }}
+      {{- end }}
     spec:
       containers:
               - name: octopus

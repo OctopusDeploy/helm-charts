@@ -25,5 +25,12 @@ octopus:
   # all privileges. Disabling this setting disables Docker-In-Docker and does not set the privileged mode.
   enableDockerInDocker: true
 
-service:
-  type: NodePort 
+  service:
+    type: NodePort 
+
+  statefulSet:
+    annotations: {}
+    labels: {}
+  pods:
+    annotations: {}
+    labels: {}

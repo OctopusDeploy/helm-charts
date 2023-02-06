@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: octopus-deploy
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.octopus.service.type }}
   selector:
     app: octopus-deploy
   ports:
@@ -26,7 +26,7 @@ kind: Service
 metadata:
   name: octopus-deploy-node{{ . }}
 spec:
-  type: {{ $root.Values.service.type }}
+  type: {{ $root.Values.octopus.service.type }}
   ports:
     - name: web
       port: {{$root.Values.octopus.webPort}}
