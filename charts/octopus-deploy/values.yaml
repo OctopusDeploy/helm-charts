@@ -4,6 +4,7 @@ octopus:
   # The master key is used to encrypt secrets. Generate a key with: openssl rand 16 | base64
   masterKey: GENERATE_ME
   databaseConnectionString:
+  # The Octopus admin username
   username:
   # The Octopus admin password
   password:
@@ -11,7 +12,7 @@ octopus:
   email:
   # The Octopus server image. Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
   image: octopusdeploy/octopusdeploy:2022.4
-  # The Octopus admin username
+  licenseKeyBase64:
   # The port the website is exposed on
   webPort: 80 
   # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 

@@ -37,6 +37,6 @@ spec:
       targetPort: 10943
       protocol: TCP
   selector:
-    statefulset.kubernetes.io/pod-name: octopus-deploy{{ . }}
+    statefulset.kubernetes.io/pod-name: octopus-deploy-{{ . }}
 {{- end }}
 {{- end }}
