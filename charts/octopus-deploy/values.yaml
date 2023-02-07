@@ -34,3 +34,11 @@ octopus:
   pods:
     annotations: {}
     labels: {}
+
+dockerHub:
+  # Set to true to create a secret containing the docker registry password
+  login: false
+  # The base 64 encoded Docker config JSON. This value can be created with the command: 
+  # kubectl create secret docker-registry regcred --docker-username=myusername --docker-password=mypassword --dry-run=client -o="jsonpath={.data.\.dockerconfigjson}"
+  # See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  creds:
