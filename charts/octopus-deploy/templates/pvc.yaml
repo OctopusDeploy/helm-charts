@@ -2,6 +2,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: package-repository-claim
+  labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -22,6 +27,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: artifacts-claim
+  labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -42,6 +52,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: task-log-claim
+  labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}

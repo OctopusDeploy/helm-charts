@@ -2,25 +2,31 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: octopus-deploy
+  name: {{ template "octopus.fullname" . }}
   {{- if .Values.octopus.statefulSet.annotations }}
   annotations:
   {{ toYaml .Values.octopus.statefulSet.annotations | indent 2 }}
   {{- end }}
-  {{- if .Values.octopus.statefulSet.labels }}
   labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  {{- if .Values.octopus.statefulSet.labels }}
   {{ toYaml .Values.octopus.statefulSet.labels | indent 2 }}
   {{- end }}
 spec:
   selector:
     matchLabels:
-      app: octopus-deploy
-  serviceName: "octopus-deploy"
+      app: {{ template "octopus.name" . }}
+      release: {{ .Release.Name }}
+  serviceName: {{ template "octopus.fullname" . }}
   replicas: {{.Values.octopus.replicaCount}}
   template:
     metadata:
       labels:
-        app: octopus-deploy
+        app: {{ template "octopus.name" . }}
+        release: {{ .Release.Name }}
       {{- if .Values.octopus.pods.labels }}
       {{ toYaml .Values.octopus.pods.labels | indent 2 }}
       {{- end }}
@@ -29,6 +35,18 @@ spec:
       {{ toYaml .Values.octopus.pods.annotations | indent 2 }}
       {{- end }}
     spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{ toYaml . | indent 8 }}
+      {{- end }}
       containers:
               - name: octopus
                 image: {{.Values.octopus.image}}
@@ -127,19 +145,6 @@ spec:
             imagePullSecrets:
               - name: dockerhubcreds
             {{- end }}
-      affinity:
-        # Try and keep Octopus nodes on separate Kubernetes nodes
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app
-                      operator: In
-                      values:
-                        - octopus-deploy
-                topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
       volumes:
         - name: package-repository-volume

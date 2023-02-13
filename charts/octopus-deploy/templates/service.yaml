@@ -1,11 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: octopus-deploy
+  name: {{ template "octopus.fullname" . }}
+  labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.octopus.service.type }}
   selector:
-    app: octopus-deploy
+    app: {{ template "octopus.name" . }}
   ports:
     - name: web
       port: {{.Values.octopus.webPort}}
@@ -25,6 +30,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: octopus-deploy-node{{ . }}
+  labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   type: {{ $root.Values.octopus.service.type }}
   ports:
@@ -37,6 +47,6 @@ spec:
       targetPort: 10943
       protocol: TCP
   selector:
-    statefulset.kubernetes.io/pod-name: octopus-deploy-{{ . }}
+    statefulset.kubernetes.io/pod-name: {{ template "octopus.fullname" $ }}-{{ . }}
 {{- end }}
 {{- end }}
