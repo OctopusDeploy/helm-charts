@@ -1,0 +1,59 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: package-repository-claim
+spec:
+  accessModes:
+    {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+    - ReadWriteMany
+    {{- else }}
+    - {{.Values.octopus.packageRepositoryVolume.storageAccessMode}}
+    {{- end }}
+  {{- if (eq "-" (.Values.octopus.packageRepositoryVolume.storageClassName | toString)) }}
+  storageClassName: ""
+  {{- else if .Values.octopus.packageRepositoryVolume.storageClassName }}
+  storageClassName: "{{ .Values.octopus.packageRepositoryVolume.storageClassName }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: {{.Values.octopus.packageRepositoryVolume.size}}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: artifacts-claim
+spec:
+  accessModes:
+    {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+    - ReadWriteMany
+    {{- else }}
+    - {{.Values.octopus.artifactVolume.storageAccessMode}}
+    {{- end }}
+  {{- if (eq "-" (.Values.octopus.artifactVolume.storageClassName | toString)) }}
+  storageClassName: ""
+  {{- else if .Values.octopus.artifactVolume.storageClassName }}
+  storageClassName: "{{ .Values.octopus.artifactVolume.storageClassName }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: {{.Values.octopus.artifactVolume.size}}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: task-log-claim
+spec:
+  accessModes:
+    {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+    - ReadWriteMany
+    {{- else }}
+    - {{.Values.octopus.taskLogVolume.storageAccessMode}}
+      {{- end }}
+  {{- if (eq "-" (.Values.octopus.taskLogVolume.storageClassName | toString)) }}
+  storageClassName: ""
+  {{- else if .Values.octopus.taskLogVolume.storageClassName }}
+  storageClassName: "{{ .Values.octopus.taskLogVolume.storageClassName }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: {{.Values.octopus.taskLogVolume.size}}

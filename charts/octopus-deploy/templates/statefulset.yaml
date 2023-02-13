@@ -87,6 +87,15 @@ spec:
                     name: web
                   - containerPort: 10943
                     name: tentacle
+                volumeMounts:
+                  - name: package-repository-volume
+                    mountPath: /repository
+                  - name: artifacts-volume
+                    mountPath: /artifacts
+                  - name: task-log-volume
+                    mountPath: /taskLogs
+                  - name: server-log-volume
+                    mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
                 readinessProbe:
                   exec:
                     command:
@@ -114,6 +123,10 @@ spec:
                       - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
                   failureThreshold: 30
                   periodSeconds: 60
+            {{- if .Values.dockerHub.login }}
+            imagePullSecrets:
+              - name: dockerhubcreds
+            {{- end }}
       affinity:
         # Try and keep Octopus nodes on separate Kubernetes nodes
         podAntiAffinity:
@@ -128,6 +141,29 @@ spec:
                         - octopus-deploy
                 topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
+      volumes:
+        - name: package-repository-volume
+          persistentVolumeClaim:
+            claimName: package-repository-claim
+        - name: artifacts-volume
+          persistentVolumeClaim:
+            claimName: artifacts-claim
+        - name: task-log-volume
+          persistentVolumeClaim:
+            claimName: task-log-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: server-log-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{- if (eq "-" (.Values.octopus.serverLogVolume.storageClassName | toString)) }}
+        storageClassName: ""
+        {{- else if .Values.octopus.serverLogVolume.storageClassName }}
+        storageClassName: "{{ .Values.octopus.serverLogVolume.storageClassName }}"
+        {{- end }}
+        resources:
+          requests:
+            storage: {{.Values.octopus.serverLogVolume.size}}
 ---
 apiVersion: v1
 kind: Secret

@@ -24,6 +24,41 @@ octopus:
   # This requires supporting Docker in Docker, which in turn means the Octopus image must be run with
   # all privileges. Disabling this setting disables Docker-In-Docker and does not set the privileged mode.
   enableDockerInDocker: true
+  # Volume used for Octopus server logs: https://octopus.com/docs/support/log-files
+  # Each Octopus node mounts its own server log volume (this volume is not shared across nodes)
+  serverLogVolume:
+    size: 200Mi 
+    storageClassName: ""
+
+  # The package repository, artifact, and task log volumes below are all shared across Octopus nodes.
+  # For each, an optional persistent volume claim class name can be supplied. This storage class must support
+  # ReadWriteMany access modes for HA clusters.
+  # ReadWriteOnce or ReadWriteMany can be used for single node clusters.
+  # A dash (i.e. "-") means use an empty string as the storageClass attribute. This effectively means there
+  # is no automatic provisioning of persistent volumes, and the PV's need to be created externally outside of this chart.
+  # An falsy value (https://helm.sh/docs/chart_template_guide/control_structures/#ifelse defines falsy) means the
+  # storageClass attribute is not defined, and the default value may be used. Most cloud providers support automatic
+  # provisioning of ReadWriteOnce volumes.
+  # Just be aware that ReadWriteOnce volumes can only be used with a replicaCount of 1, as higher replica counts means
+  # multiple Octopus nodes writing to the same volume at the same time,
+  # requiring ReadWriteMany volumes. Also note that the storageAccessMode value is automatically set to ReadWriteMany
+  # when replicaCount is greater than 1.
+
+  # The volume used for persisting packages pushed to the Octopus built-in package repository: https://octopus.com/docs/packaging-applications/package-repositories/built-in-repository
+  packageRepositoryVolume:
+    size: 1Gi 
+    storageClassName: ""
+    storageAccessMode: ReadWriteOnce
+  # The volume used for persisting deployment artifacts: https://octopus.com/docs/projects/deployment-process/artifacts
+  artifactVolume:
+    size: 1Gi 
+    storageClassName: ""
+    storageAccessMode: ReadWriteOnce
+ # Volume used for task logs: https://octopus.com/docs/support/get-the-raw-output-from-a-task
+  taskLogVolume: 
+    size: 1Gi 
+    storageClassName: ""
+    storageAccessMode: ReadWriteOnce
 
   service:
     type: NodePort 
