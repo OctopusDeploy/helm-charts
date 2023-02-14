@@ -25,8 +25,8 @@ jobs:
           yq -i '
           .version = ${{ inputs.octopus-version }} |
           .appVersion = ${{ inputs.octopus-version }} |
-          ' charts/octopus-deploy/chart.yaml 
+          ' charts/octopus-deploy/Chart.yaml 
     - name: Echo result
-      run: cat charts/octopus-deploy/chart.yaml
+      run: cat charts/octopus-deploy/Chart.yaml
     
   
