@@ -1,0 +1,32 @@
+# This workflow accepts the version to be published as an input
+
+name: Publish version
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      octopus-version:
+        description: 'The SemVer version of Octopus to publish.  e.g. 2022.4.20121'
+        required: true
+
+jobs:
+  publish-version:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3.3.0
+    - name: Update version in chart
+      uses: mikefarah/yq@v4.30.7
+      with:
+        cmd: > 
+          yq -i '
+          .version = ${{ inputs.octopus-version }} |
+          .appVersion = ${{ inputs.octopus-version }} |
+          ' charts/octopus-deploy/chart.yaml 
+    - name: Echo result
+      run: cat charts/octopus-deploy/chart.yaml
+    
+  
