@@ -31,10 +31,10 @@ kind: Service
 metadata:
   name: octopus-deploy-node{{ . }}
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ template "octopus.name" $ }}
+    chart: {{ template "octopus.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
 spec:
   type: {{ $root.Values.octopus.service.type }}
   ports:

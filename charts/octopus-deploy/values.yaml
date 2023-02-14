@@ -62,6 +62,13 @@ octopus:
 
   service:
     type: NodePort 
+  
+  ingress:
+    enabled: false
+    annotations: {}
+    labels: {}
+    path: /
+    hosts: []
 
   statefulSet:
     annotations: {}
