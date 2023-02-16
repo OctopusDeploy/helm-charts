@@ -10,8 +10,13 @@ octopus:
   password:
   # The Octopus admin email
   email:
-  # The Octopus server image. Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
-  image: octopusdeploy/octopusdeploy:2022.4
+  # The Octopus server image. 
+  # Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
+  image:
+    # The repository defaults to DockerHub
+    repository: octopusdeploy/octopusdeploy
+    # The tag will default to using the chart appVersion
+    tag: 
   licenseKeyBase64:
   # The port the website is exposed on
   webPort: 80 

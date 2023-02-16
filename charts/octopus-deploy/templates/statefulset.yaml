@@ -49,7 +49,7 @@ spec:
       {{- end }}
       containers:
               - name: octopus
-                image: {{.Values.octopus.image}}
+                image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
                 securityContext:
                   {{- if .Values.octopus.enableDockerInDocker }}
                   privileged: true
