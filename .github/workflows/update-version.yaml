@@ -1,6 +1,6 @@
 # This workflow accepts the version of Octopus, and updates both the version and appVersion properties in the Chart.yaml file
 
-name: Publish version
+name: Update version
 
 on:
   workflow_dispatch:
