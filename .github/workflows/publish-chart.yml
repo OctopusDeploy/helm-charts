@@ -23,12 +23,15 @@ jobs:
           version: 'v3.11.1'
           
       - name: Login to DockerHub
-        run: helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           
       - name: Package Chart
         run: helm package --version '${{ inputs.octopus-version }}' --app-version '${{ inputs.octopus-version }}' 'charts/octopus-deploy'
         
+      - name: Rename Chart file
+        run: mv 'octopus-deploy-${{ inputs.octopus-version }}.tgz' 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz'
+        
       - name: Push Chart to DockerHub
-        run: helm push 'octopus-deploy-${{ inputs.octopus-version }}.tgz' oci://registry-1.docker.io/octopusdeploy/octopusdeploy-helm
+        run: helm push 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz' oci://registry-1.docker.io/octopusdeploy
         
      
