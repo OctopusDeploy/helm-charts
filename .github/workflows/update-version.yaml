@@ -1,4 +1,4 @@
-# This workflow accepts the version to be published as an input
+# This workflow accepts the version of Octopus, and updates both the version and appVersion properties in the Chart.yaml file
 
 name: Publish version
 
