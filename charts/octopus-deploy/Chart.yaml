@@ -1,5 +1,5 @@
 apiVersion: v2
-name: octopus-deploy
+name: octopusdeploy-helm # The chart name is also used as the repository name when publishing
 description: Octopus automates complex deployments. This chart deploys the Octopus Deploy server into a Kubernetes cluster.
 
 type: application
