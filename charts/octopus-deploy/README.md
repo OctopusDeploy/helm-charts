@@ -5,9 +5,10 @@ This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes clus
 ## Usage
 
 ### tl;dr
-'''
+
+```
 helm install octopus-deploy oci://registry-1.docker.io/octopusdeploy/octopusdeploy-helm  --values values.yaml
-'''
+```
 
 ### Pre-requisites
 
