@@ -66,3 +66,33 @@ octopus:
     storageAccessMode: ReadWriteOnce
 
 ```
+
+### Ingress
+
+There are two types of traffic which you will typically want to allow from outside the cluster:
+- HTTP requests to the Octopus web portal 
+- Polling Tentacle communication 
+
+For the web portal, a common approach is to use a [Kubernetes ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/). This requires an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) to be running in your cluster.
+
+An example of a values file which configures ingress for the web portal using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
+
+```
+octopus:
+  ingress:
+    enabled: true
+    annotations: 
+      kubernetes.io/ingress.class: nginx
+    path: /
+    hosts:
+      - octopus.example.com 
+```
+
+#### Polling Tentacles
+
+Polling Tentacles are more complicated than web traffic, as [polling tentacles must poll every Octopus server node](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha).
+
+For this reason, this Helm chart doesn't provision an ingress resource for polling tentacles.  
+
+If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  When registering your polling tentacles, you will need to configure them to poll each node. 
+
