@@ -1,4 +1,7 @@
-# Octopus Deploy Helm chart
+# Octopus Deploy Helm charts
 
-This [Helm](https://helm.sh) chart deploys Octopus Deploy into a Kubernetes cluster.
+This repository contains the officially supported [Helm](https://helm.sh) chart for deploying [Octopus Deploy](https://octopus.com).
+
+- [Octopus Deploy](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/octopus-deploy). Self-host the Octopus Deploy server. 
+- Workers. _Coming Soon_
 
