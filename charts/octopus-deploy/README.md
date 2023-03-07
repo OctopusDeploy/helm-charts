@@ -98,3 +98,36 @@ For this reason, this Helm chart doesn't provision an ingress resource for polli
 
 If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  When registering your polling tentacles, you will need to configure them to poll each node. 
 
+### Persistent Volumes
+
+This chart requires persistent volumes to store:
+
+- [Packages](https://octopus.com/docs/packaging-applications/package-repositories/built-in-repository) 
+- [Artifacts](https://octopus.com/docs/projects/deployment-process/artifacts)
+- [Task Logs](https://octopus.com/docs/support/get-the-raw-output-from-a-task)
+
+These volumes are shared across Octopus nodes. 
+
+For each, an optional persistent volume claim class name can be supplied. This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 0). 
+ReadWriteOnce or ReadWriteMany can be used for single node clusters.
+A dash (i.e. "-") means use an empty string as the storageClass attribute. This effectively means there is no automatic provisioning of persistent volumes, and the volumes need to be created externally outside of this chart.
+A [falsy value](https://helm.sh/docs/chart_template_guide/control_structures/#ifelse) means the storageClass attribute is not defined, and the default value may be used. Most cloud providers support automatic provisioning of ReadWriteOnce volumes. 
+
+An example of configuring the persistent volumes is shown below:
+
+```
+octopus:
+  packageRepositoryVolume:
+    size: 20Gi 
+    storageClassName: "azure-file"
+    storageAccessMode: ReadWriteOnce
+  artifactVolume:
+    size: 1Gi 
+    storageClassName: "azure-file"
+    storageAccessMode: ReadWriteOnce
+  taskLogVolume: 
+    size: 1Gi 
+    storageClassName: "azure-file"
+    storageAccessMode: ReadWriteOnce
+```
+
