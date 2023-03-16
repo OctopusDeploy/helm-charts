@@ -100,6 +100,10 @@ spec:
                   - name: DISABLE_DIND
                     value: !!str "Y"
                 {{- end }}
+                {{- if .Values.octopus.taskCap }}
+                  - name: TASK_CAP 
+                    value: {{.Values.octopus.taskCap}} 
+                {{- end }}
                   - name: OCTOPUS_INSTALLED_VIA_HELM 
                     value: "true"
                 ports:

@@ -24,6 +24,9 @@ octopus:
   tentaclePort: 10943 
   # The number of server nodes to maintain  
   replicaCount: 1
+  # The Task Cap for the created nodes https://octopus.com/docs/support/increase-the-octopus-server-task-cap 
+  # Defaults to 5 
+  taskCap: 
   # The built in worker can use execution containers to run steps inside special Docker images.
   # https://octopus.com/docs/deployment-process/execution-containers-for-workers.
   # This requires supporting Docker in Docker, which in turn means the Octopus image must be run with
