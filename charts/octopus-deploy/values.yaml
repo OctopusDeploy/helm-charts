@@ -81,11 +81,32 @@ octopus:
   pods:
     annotations: {}
     labels: {}
+  serviceAccountName:
 
-  # set to custom serviceAccount name if you need it, leave blank if no account is needed
-  # you may need it to bind with securityContextConstraints on Openshift for elevated privileges 
-  customServiceAccount: ""
-
+serviceAccount:
+  create: false
+  ## The name of the ServiceAccount to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  name:
+  ## Service Account annotations
+  annotations: {}
+  automountServiceAccountToken: false
+rbac:
+  create: false
+  role:
+    ## Rules to create. It follows the role specification
+    rules:
+      - apiGroups:
+          - ''
+        resources:
+          - services
+          - endpoints
+          - pods
+        verbs:
+          - get
+          - watch
+          - list
+  
 dockerHub:
   # Set to true to create a secret containing the docker registry password
   login: false
