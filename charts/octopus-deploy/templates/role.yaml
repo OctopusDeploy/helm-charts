@@ -1,0 +1,13 @@
+{{- if .Values.octopus.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app: {{ template "octopus.name" . }}
+    chart: {{ template "octopus.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "octopus.fullname" . }}
+rules:
+{{ toYaml .Values.octopus.rbac.role.rules }}
+{{- end }}

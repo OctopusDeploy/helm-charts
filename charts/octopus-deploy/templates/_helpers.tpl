@@ -35,5 +35,9 @@ Create chart name and version as used by the chart label.
 The name of the service account to use
 */}}
 {{- define "octopus.serviceAccountName" -}}
+{{- if .Values.octopus.serviceAccount.create -}}
+{{ default (include "octopus.fullname" .) .Values.octopus.serviceAccount.name }}
+{{- else -}}
 {{ default "default" .Values.octopus.serviceAccount.name }}
+{{- end -}}
 {{- end -}}
