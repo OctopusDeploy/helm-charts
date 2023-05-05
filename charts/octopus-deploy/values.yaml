@@ -82,9 +82,9 @@ octopus:
     annotations: {}
     labels: {}
 
-  # set to custom serviceAccount name if you need it, leave blank if no account is needed
-  # you may need it to bind with securityContextConstraints on Openshift for elevated privileges 
-  customServiceAccount: ""
+  # Supply a custom service account name if required.  Defaults to "default"
+  serviceAccount:
+    name:
 
 dockerHub:
   # Set to true to create a secret containing the docker registry password

@@ -30,3 +30,10 @@ Create chart name and version as used by the chart label.
 {{- define "octopus.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+The name of the service account to use
+*/}}
+{{- define "octopus.serviceAccountName" -}}
+{{ default "default" .Values.octopus.serviceAccount.name }}
+{{- end -}}
