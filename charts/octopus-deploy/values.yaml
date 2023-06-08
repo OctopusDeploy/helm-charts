@@ -81,31 +81,30 @@ octopus:
   pods:
     annotations: {}
     labels: {}
-  serviceAccountName:
 
-serviceAccount:
-  create: false
-  ## The name of the ServiceAccount to use.
-  ## If not set and create is true, a name is generated using the fullname template
-  name:
-  ## Service Account annotations
-  annotations: {}
-  automountServiceAccountToken: false
-rbac:
-  create: false
-  role:
-    ## Rules to create. It follows the role specification
-    rules:
-      - apiGroups:
-          - ''
-        resources:
-          - services
-          - endpoints
-          - pods
-        verbs:
-          - get
-          - watch
-          - list
+  serviceAccount:
+    create: false
+    ## The name of the ServiceAccount to use.
+    ## If not set and create is true, a name is generated using the fullname template
+    name:
+    ## Service Account annotations
+    annotations: {}
+    automountServiceAccountToken: false
+  rbac:
+    create: false
+    role:
+      ## Rules to create. It follows the role specification
+      rules:
+        - apiGroups:
+            - ''
+          resources:
+            - services
+            - endpoints
+            - pods
+          verbs:
+            - get
+            - watch
+            - list
   
 dockerHub:
   # Set to true to create a secret containing the docker registry password
