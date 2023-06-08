@@ -35,6 +35,7 @@ spec:
       {{ toYaml .Values.octopus.pods.annotations | indent 2 }}
       {{- end }}
     spec:
+      serviceAccount: {{ template "octopus.serviceAccountName" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
       {{ toYaml . | indent 8 }}
