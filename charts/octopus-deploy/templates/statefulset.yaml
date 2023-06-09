@@ -117,6 +117,10 @@ spec:
                     mountPath: /taskLogs
                   - name: server-log-volume
                     mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
+                {{- if .Values.octopus.resources }}
+                resources:
+{{ toYaml .Values.octopus.resources | indent 18 }}
+                {{- end }}
                 readinessProbe:
                   exec:
                     command:
