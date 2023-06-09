@@ -24,11 +24,22 @@ octopus:
   tentaclePort: 10943 
   # The number of server nodes to maintain  
   replicaCount: 1
+
+  # Resource requests and limits can be set
+  #resources:
+  #  requests:
+  #    memory: "4Gi"
+  #    cpu: "2"
+  #  limits:
+  #    memory: "8Gi"
+  #    cpu: "6"
+
   # The built in worker can use execution containers to run steps inside special Docker images.
   # https://octopus.com/docs/deployment-process/execution-containers-for-workers.
   # This requires supporting Docker in Docker, which in turn means the Octopus image must be run with
   # all privileges. Disabling this setting disables Docker-In-Docker and does not set the privileged mode.
   enableDockerInDocker: true
+
   # Volume used for Octopus server logs: https://octopus.com/docs/support/log-files
   # Each Octopus node mounts its own server log volume (this volume is not shared across nodes)
   serverLogVolume:
