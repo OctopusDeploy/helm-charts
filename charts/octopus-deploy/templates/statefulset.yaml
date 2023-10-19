@@ -176,6 +176,7 @@ spec:
         resources:
           requests:
             storage: {{.Values.octopus.serverLogVolume.size}}
+{{- if .Values.octopus.createSecrets }}
 ---
 apiVersion: v1
 kind: Secret
@@ -194,3 +195,4 @@ data:
   {{- end}}
   masterKey: {{.Values.octopus.masterKey | b64enc}}
   dbConnectionString: {{ tpl .Values.octopus.databaseConnectionString . | b64enc}}
+{{- end }}

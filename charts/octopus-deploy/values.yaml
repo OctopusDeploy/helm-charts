@@ -116,7 +116,10 @@ octopus:
             - get
             - watch
             - list
-  
+
+  ## Allows the secrets to be managed via an external secrets provider
+  createSecrets: true
+
 dockerHub:
   # Set to true to create a secret containing the docker registry password
   login: false
