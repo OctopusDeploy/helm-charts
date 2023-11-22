@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kubernetes-tentacle.fullname" . }}
+  labels:
+    {{- include "kubernetes-tentacle.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kubernetes-tentacle.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "kubernetes-tentacle.labels" . | nindent 8 }}
+	{{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kubernetes-tentacle.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        #   ports:
+        #     - name: http
+        #       containerPort: {{ .Values.service.port }}
+        #       protocol: TCP
+        #   livenessProbe:
+        #     httpGet:
+        #       path: /
+        #       port: http
+        #   readinessProbe:
+        #     httpGet:
+        #       path: /
+        #       port: http
+          env:
+            - name: "AsKubernetesTentacle"
+              value: "True"
+            - name: "ACCEPT_EULA"
+              value: "{{ .Values.tentacle.ACCEPT_EULA }}"
+            - name: "TargetName"
+              value: "{{ .Values.tentacle.targetName }}"
+            - name: "ServerCommsAddress"
+              value: "{{ .Values.tentacle.serverCommsAddress }}"
+            - name: "ServerUrl"
+              value: "{{ .Values.tentacle.serverUrl }}"
+            - name: "DISABLE_DIND"
+              value: "{{ .Values.tentacle.DISABLE_DIND }}"
+            - name: "Space"
+              value: "{{ .Values.tentacle.space }}"
+            - name: "TargetEnvironment"
+              value: "{{ .Values.tentacle.targetEnvironment }}"
+            - name: "TargetRole"
+              value: "{{ .Values.tentacle.targetRole }}"
+            {{- if .Values.tentacle.serverApiKey }}
+            - name: "ServerApiKey"
+              value: "{{ .Values.tentacle.serverApiKey }}"
+            {{- end }}
+            {{- if .Values.tentacle.bearerToken -}}
+            - name: "BearerToken"
+              value: "{{ .Values.tentacle.bearerToken }}"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
