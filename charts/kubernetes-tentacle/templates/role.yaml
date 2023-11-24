@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: {{ template "kubernetes-tentacle.name" . }}
+    chart: {{ template "kubernetes-tentacle.chart" . }}
+    # heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "kubernetes-tentacle.fullname" . }}
+rules:
+{{ toYaml .Values.role.rules }}

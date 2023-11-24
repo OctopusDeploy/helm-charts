@@ -86,3 +86,13 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+role:
+  ## Rules to create. It follows the role specification
+  rules:
+    - apiGroups:
+        - "*"
+      resources:
+        - "*"
+      verbs:
+        - "*"
