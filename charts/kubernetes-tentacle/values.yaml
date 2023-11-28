@@ -4,11 +4,13 @@
 
 replicaCount: 1
 
+
+
 image:
-  repository: docker.packages.octopushq.com/octopusdeploy/tentacle
+  repository: docker.packages.octopushq.com/octopusdeploy/kubernetes-tentacle
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 tentacle:
   ACCEPT_EULA: "N"
@@ -20,22 +22,24 @@ tentacle:
   space: "Default"
   targetEnvironment: ""
   targetRole: ""
-  DISABLE_DIND: "Y"
+  listeningPort: ""
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+  # Annotations to add to the service account
+  annotations: {}
+
+jobServiceAccount:
+  # The name of the service account used for executing jobs
+  name: ""
+  # Annotations to add to the service account
+  annotations: {}
 
 podAnnotations: {}
 podLabels: {}
@@ -50,11 +54,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-service:
-  enabled: false
-  type: ClusterIP
-  port: 80
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -80,9 +79,3 @@ volumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
