@@ -4,13 +4,11 @@
 
 replicaCount: 1
 
-
-
 image:
   repository: docker.packages.octopushq.com/octopusdeploy/kubernetes-tentacle
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: ""
 
 tentacle:
   ACCEPT_EULA: "N"
@@ -30,7 +28,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # If not set a name is generated using the fullname template
   name: ""
   # Annotations to add to the service account
   annotations: {}
