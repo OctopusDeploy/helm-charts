@@ -22,6 +22,10 @@ tentacle:
   targetRole: ""
   listeningPort: ""
 
+storage:
+  # Change to false if the NFS container should not be used
+  useNFSContainer: true
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

@@ -18,7 +18,7 @@ spec:
       {{- end }}
       labels:
         {{- include "kubernetes-tentacle.labels" . | nindent 8 }}
-	{{- with .Values.podLabels }}
+	      {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
@@ -37,48 +37,66 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "%s-linux-amd64" .Chart.AppVersion) }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: "ACCEPT_EULA"
-              value: "{{ .Values.tentacle.ACCEPT_EULA }}"
+              value: {{ .Values.tentacle.ACCEPT_EULA | quote }}
             - name: "TargetName"
-              value: "{{ .Values.tentacle.targetName }}"
+              value: {{ .Values.tentacle.targetName | quote }}
             - name: "ServerCommsAddress"
-              value: "{{ .Values.tentacle.serverCommsAddress }}"
+              value: {{ .Values.tentacle.serverCommsAddress | quote }}
             - name: "ServerUrl"
-              value: "{{ .Values.tentacle.serverUrl }}"
+              value: {{ .Values.tentacle.serverUrl | quote }}
             - name: "Space"
-              value: "{{ .Values.tentacle.space }}"
+              value: {{ .Values.tentacle.space | quote }}
             - name: "TargetEnvironment"
-              value: "{{ .Values.tentacle.targetEnvironment }}"
+              value: {{ .Values.tentacle.targetEnvironment | quote }}
             - name: "TargetRole"
-              value: "{{ .Values.tentacle.targetRole }}"
+              value: {{ .Values.tentacle.targetRole | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
-              value: "{{ .Release.Namespace }}"
+              value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__JOBSERVICEACCOUNTNAME"
-              value: "{{ include "kubernetes-tentacle.jobServiceAccountName" . }}"
+              value: {{ include "kubernetes-tentacle.jobServiceAccountName" . | quote }}
+            - name: "OCTOPUS__K8STENTACLE__JOBVOLUMEYAML"
+              value: {{ (include "kubernetes-tentacle.jobVolumeYaml" . | fromYaml).volumes  | toJson  | quote}}
+            - name: "OCTOPUS__K8STENTACLE__FORCE"
+              value: "True"
+            - name: "TentacleHome"
+              value: "/octopus"
+            - name: "TentacleApplications"
+              value: "/octopus/Applications"
             {{- if .Values.tentacle.serverApiKey }}
             - name: "ServerApiKey"
-              value: "{{ .Values.tentacle.serverApiKey }}"
+              value: {{ .Values.tentacle.serverApiKey | quote }}
             {{- end }}
             {{- if .Values.tentacle.bearerToken }}
             - name: "BearerToken"
-              value: "{{ .Values.tentacle.bearerToken }}"
+              value: {{ .Values.tentacle.bearerToken | quote }}
             {{- end }}
             {{- if .Values.tentacle.listeningPort }}
             - name: "ListeningPort"
-              value: "{{ .Values.tentacle.listeningPort }}"
+              value: {{ .Values.tentacle.listeningPort | quote }}
             {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          {{- with .Values.volumeMounts }}
+          {{- if .Values.storage.useNFSContainer }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
+            - mountPath: /octopus
+              name: nfs-pod
+          {{- else if or .Values.volumeMounts }}
+          volumeMounts:
+            {{- .Values.volumeMounts | toYaml | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
+      {{- if .Values.storage.useNFSContainer }}
       volumes:
-        {{- toYaml . | nindent 8 }}
+        - name: nfs-pod
+          nfs:
+            server: 10.96.42.42 
+            path: /
+      {{- else if .Values.volumes }}
+      volumes:
+        {{- .Values.volumes | toYaml | nindent 8 }}
       {{- end }}

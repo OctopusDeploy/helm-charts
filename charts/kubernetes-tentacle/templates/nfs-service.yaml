@@ -1,0 +1,16 @@
+{{- if .Values.storage.useNFSContainer }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ printf "%s-nfs-svc" (include "kubernetes-tentacle.fullname" .) }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: 10.96.42.42
+  selector:
+    app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-tentacle.fullname" .) }}
+  ports:
+    - name: nfs
+      port: 2049
+      protocol: TCP
+{{- end }}

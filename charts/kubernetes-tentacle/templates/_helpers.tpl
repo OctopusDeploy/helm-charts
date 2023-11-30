@@ -64,3 +64,16 @@ Create the name of the service account to use
 {{- define "kubernetes-tentacle.jobServiceAccountName" -}}
 {{- default (printf "%s-job" (include "kubernetes-tentacle.fullname" .)) .Values.serviceAccount.name }}
 {{- end }}
+
+{{- define "kubernetes-tentacle.secrets.installId" -}}
+{{- printf "$s-install-id" ( include "kubernetes-tentacle.fullname" . ) }}
+{{- end }}
+
+{{- define "kubernetes-tentacle.jobVolumeYaml" -}}
+volumes:
+- name: tentacle-home
+  nfs:
+    path: /
+    readOnly: false
+    server: 10.96.42.42
+{{- end }}

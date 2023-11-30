@@ -1,0 +1,48 @@
+{{- if .Values.storage.useNFSContainer }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-nfs" (include "kubernetes-tentacle.fullname" .) }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-tentacle.fullname" .) }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-tentacle.fullname" .) }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-tentacle.fullname" .) }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "kubernetes-tentacle.serviceAccountName" . }}
+      containers:
+        - name: {{ printf "%s-nfs" .Chart.Name }}
+          image: itsthenetwork/nfs-server-alpine:latest
+          securityContext:
+            capabilities:
+                add: ["SYS_ADMIN", "SETPCAP"]
+          env:
+          - name: "SHARED_DIRECTORY"
+            value: "/octopus"
+          - name: "SYNC"
+            value: "true"   
+          ports:
+          - containerPort: 2049
+          volumeMounts:
+          - mountPath: /octopus
+            name: octopus-volume
+      volumes:
+        - name: octopus-volume
+          emptyDir:
+            sizeLimit: 1Gi
+
+{{- end -}}
