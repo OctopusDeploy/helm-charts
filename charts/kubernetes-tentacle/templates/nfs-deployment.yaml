@@ -28,8 +28,7 @@ spec:
         - name: {{ printf "%s-nfs" .Chart.Name }}
           image: itsthenetwork/nfs-server-alpine:latest
           securityContext:
-            capabilities:
-                add: ["SYS_ADMIN", "SETPCAP"]
+            privileged: true
           env:
           - name: "SHARED_DIRECTORY"
             value: "/octopus"

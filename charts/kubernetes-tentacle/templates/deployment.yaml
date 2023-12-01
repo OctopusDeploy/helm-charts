@@ -51,7 +51,7 @@ spec:
             - name: "Space"
               value: {{ .Values.tentacle.space | quote }}
             - name: "TargetEnvironment"
-              value: {{ .Values.tentacle.targetEnvironment | quote }}
+              value: {{ join "," .Values.tentacle.targetEnvironment | quote }}
             - name: "TargetRole"
               value: {{ .Values.tentacle.targetRole | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
@@ -94,7 +94,7 @@ spec:
       volumes:
         - name: nfs-pod
           nfs:
-            server: 10.96.42.42 
+            server: {{ .Values.storage.nfsPort }} 
             path: /
       {{- else if .Values.volumes }}
       volumes:

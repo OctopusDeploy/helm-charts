@@ -75,5 +75,5 @@ volumes:
   nfs:
     path: /
     readOnly: false
-    server: 10.96.42.42
+    server: {{ .Values.storage.nfsPort }}
 {{- end }}

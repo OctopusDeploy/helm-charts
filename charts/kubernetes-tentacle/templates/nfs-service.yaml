@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
-  clusterIP: 10.96.42.42
+  clusterIP: {{ .Values.storage.nfsPort }}
   selector:
     app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-tentacle.fullname" .) }}
   ports:
