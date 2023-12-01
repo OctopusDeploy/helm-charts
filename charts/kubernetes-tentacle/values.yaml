@@ -18,8 +18,8 @@ tentacle:
   serverApiKey: ""
   serverUrl: ""
   space: "Default"
-  targetEnvironment: ""
-  targetRole: ""
+  targetEnvironments: []
+  targetRoles: []
   listeningPort: ""
 
 storage:
