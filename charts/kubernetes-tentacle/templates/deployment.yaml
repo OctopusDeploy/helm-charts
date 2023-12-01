@@ -68,11 +68,17 @@ spec:
               value: "/octopus/Applications"
             {{- if .Values.tentacle.serverApiKey }}
             - name: "ServerApiKey"
-              value: {{ .Values.tentacle.serverApiKey | quote }}
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "kubernetes-tentacle.secrets.serverAuth" . }}
+                  key: api-key
             {{- end }}
             {{- if .Values.tentacle.bearerToken }}
             - name: "BearerToken"
-              value: {{ .Values.tentacle.bearerToken | quote }}
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "kubernetes-tentacle.secrets.serverAuth" . }}
+                  key: bearer-token
             {{- end }}
             {{- if .Values.tentacle.listeningPort }}
             - name: "ListeningPort"
