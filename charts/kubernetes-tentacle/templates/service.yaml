@@ -1,15 +1,15 @@
-{{- if .Values.service.enabled -}}
+{{- if .Values.tentacle.listeningPort -}}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "kubernetes-tentacle.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "kubernetes-tentacle.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: "LoadBalancer"
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
       protocol: TCP
       name: http
   selector:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "kubernetes-tentacle.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "kubernetes-tentacle.labels" . | nindent 4 }}
 spec:
@@ -17,7 +18,7 @@ spec:
       {{- end }}
       labels:
         {{- include "kubernetes-tentacle.labels" . | nindent 8 }}
-	{{- with .Values.podLabels }}
+	      {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
@@ -26,72 +27,82 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "kubernetes-tentacle.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "%s-linux-amd64" .Chart.AppVersion) }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-        #   ports:
-        #     - name: http
-        #       containerPort: {{ .Values.service.port }}
-        #       protocol: TCP
-        #   livenessProbe:
-        #     httpGet:
-        #       path: /
-        #       port: http
-        #   readinessProbe:
-        #     httpGet:
-        #       path: /
-        #       port: http
           env:
-            - name: "AsKubernetesTentacle"
-              value: "True"
             - name: "ACCEPT_EULA"
-              value: "{{ .Values.tentacle.ACCEPT_EULA }}"
+              value: {{ .Values.tentacle.ACCEPT_EULA | quote }}
             - name: "TargetName"
-              value: "{{ .Values.tentacle.targetName }}"
+              value: {{ .Values.tentacle.targetName | quote }}
             - name: "ServerCommsAddress"
-              value: "{{ .Values.tentacle.serverCommsAddress }}"
+              value: {{ .Values.tentacle.serverCommsAddress | quote }}
             - name: "ServerUrl"
-              value: "{{ .Values.tentacle.serverUrl }}"
-            - name: "DISABLE_DIND"
-              value: "{{ .Values.tentacle.DISABLE_DIND }}"
+              value: {{ .Values.tentacle.serverUrl | quote }}
             - name: "Space"
-              value: "{{ .Values.tentacle.space }}"
+              value: {{ .Values.tentacle.space | quote }}
             - name: "TargetEnvironment"
-              value: "{{ .Values.tentacle.targetEnvironment }}"
+              value: {{ join "," .Values.tentacle.targetEnvironments | quote }}
             - name: "TargetRole"
-              value: "{{ .Values.tentacle.targetRole }}"
+              value: {{ join "," .Values.tentacle.targetRoles | quote }}
+            - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
+              value: {{ .Release.Namespace | quote }}
+            - name: "OCTOPUS__K8STENTACLE__JOBSERVICEACCOUNTNAME"
+              value: {{ include "kubernetes-tentacle.jobServiceAccountName" . | quote }}
+            - name: "OCTOPUS__K8STENTACLE__JOBVOLUMEYAML"
+              value: {{ (include "kubernetes-tentacle.jobVolumeYaml" . | fromYaml).volumes  | toJson  | quote}}
+            - name: "OCTOPUS__K8STENTACLE__FORCE"
+              value: "True"
+            - name: "TentacleHome"
+              value: "/octopus"
+            - name: "TentacleApplications"
+              value: "/octopus/Applications"
             {{- if .Values.tentacle.serverApiKey }}
             - name: "ServerApiKey"
-              value: "{{ .Values.tentacle.serverApiKey }}"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "kubernetes-tentacle.secrets.serverAuth" . }}
+                  key: api-key
             {{- end }}
-            {{- if .Values.tentacle.bearerToken -}}
+            {{- if .Values.tentacle.bearerToken }}
             - name: "BearerToken"
-              value: "{{ .Values.tentacle.bearerToken }}"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "kubernetes-tentacle.secrets.serverAuth" . }}
+                  key: bearer-token
             {{- end }}
+            {{- if .Values.tentacle.listeningPort }}
+            - name: "ListeningPort"
+              value: {{ .Values.tentacle.listeningPort | quote }}
+            {{- end }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
-          volumeMounts:
             {{- toYaml . | nindent 12 }}
+          {{- end}}
+          {{- if .Values.storage.useNFSContainer }}
+          volumeMounts:
+            - mountPath: /octopus
+              name: nfs-pod
+          {{- else if or .Values.volumeMounts }}
+          volumeMounts:
+            {{- .Values.volumeMounts | toYaml | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
+      {{- if .Values.storage.useNFSContainer }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
+        - name: nfs-pod
+          nfs:
+            server: {{ .Values.storage.nfsPort }} 
+            path: /
+      {{- else if .Values.volumes }}
+      volumes:
+        {{- .Values.volumes | toYaml | nindent 8 }}
       {{- end }}

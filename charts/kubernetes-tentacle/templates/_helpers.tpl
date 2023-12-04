@@ -30,6 +30,7 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+
 {{/*
 Common labels
 */}}
@@ -54,9 +55,25 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "kubernetes-tentacle.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "kubernetes-tentacle.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default (include "kubernetes-tentacle.fullname" .) .Values.jobServiceAccount.name }}
 {{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "kubernetes-tentacle.jobServiceAccountName" -}}
+{{- default (printf "%s-job" (include "kubernetes-tentacle.fullname" .)) .Values.serviceAccount.name }}
+{{- end }}
+
+{{- define "kubernetes-tentacle.secrets.serverAuth" -}}
+{{- printf "%s-server-auth" ( include "kubernetes-tentacle.fullname" . ) }}
+{{- end }}
+
+{{- define "kubernetes-tentacle.jobVolumeYaml" -}}
+volumes:
+- name: tentacle-home
+  nfs:
+    path: /
+    readOnly: false
+    server: {{ .Values.storage.nfsPort }}
 {{- end }}
