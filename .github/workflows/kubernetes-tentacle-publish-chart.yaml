@@ -1,0 +1,27 @@
+name: Publish Chart
+
+on:
+  pull_request:
+  
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+          
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.13.2'
+          
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          
+      - name: Package Chart
+        run: helm package --version '${{ inputs.octopus-version }}' --app-version '${{ inputs.octopus-version }}' 'charts/octopus-deploy'
+        
+      - name: Push Chart to DockerHub
+        run: helm push 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz' oci://registry-1.docker.io/octopusdeploy
+        
+     
