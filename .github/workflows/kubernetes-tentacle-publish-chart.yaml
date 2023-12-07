@@ -27,8 +27,8 @@ jobs:
 
       - id: version
         run: |
-          DATE=$(date '+%Y%m%d%H%M%S')
-          echo "CHART_VERSION=${{ steps.read_chart_yaml.outputs.version }}-${{ steps.branch_names.outputs.branch_name }}-$DATE" >> $GITHUB_ENV
+          timestamp=`date +%Y%m%d%H%M%S`
+          echo "CHART_VERSION=${{ steps.read_chart_yaml.outputs.version }}-${{ steps.branch_names.outputs.branch_name }}-$timestamp" >> $GITHUB_ENV
           
       #- name: Login to Artifactory
       #  run: helm registry login packages.octopushq.com -u '${{ }}' -p '${{}}'
