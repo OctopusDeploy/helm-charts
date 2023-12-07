@@ -3,6 +3,10 @@ name: "Kubernetes Target - Build and Publish"
 on:
   pull_request:
 
+defaults:
+  run:
+    working-directory: ./charts/kubernetes-tentacle
+    
 jobs:
   build:
     runs-on: ubuntu-latest
