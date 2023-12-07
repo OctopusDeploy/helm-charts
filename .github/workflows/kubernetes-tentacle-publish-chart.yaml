@@ -33,7 +33,7 @@ jobs:
       #  run: helm registry login packages.octopushq.com -u '${{ }}' -p '${{}}'
                     
       - name: Package Chart
-        run: helm package './charts/kubernetes-tentacle' --version '$CHART_VERSION'
+        run: helm package './charts/kubernetes-tentacle' --version '${{ env.CHART_VERSION }}'
 
       - uses: actions/upload-artifact@v3
         name: Upload packaged chart
