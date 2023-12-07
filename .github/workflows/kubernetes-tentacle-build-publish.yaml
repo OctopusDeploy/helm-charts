@@ -2,14 +2,13 @@ name: "Kubernetes Target - Build and Publish"
 
 on:
   pull_request:
-
-defaults:
-  run:
-    working-directory: ./charts/kubernetes-tentacle
-    
+  
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./charts/kubernetes-tentacle
     steps:
     - name: checkout
       uses: actions/checkout@v4
@@ -17,5 +16,3 @@ jobs:
         fetch-depth: 0
 
     - uses: actions/setup-node@v4
-      with:
-        cache: npm
