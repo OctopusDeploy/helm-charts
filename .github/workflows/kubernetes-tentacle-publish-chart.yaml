@@ -24,18 +24,23 @@ jobs:
       - name: Get branch names
         id: branch_names
         uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
+
+      - id: version
+        run: |
+          DATE=$(date '+%Y%m%d%H%M%S')
+          echo "CHART_VERSION=${{ steps.read_chart_yaml.outputs.version }}-${{ steps.branch_names.outputs.branch_name }}-$DATE" >> $GITHUB_ENV
           
       #- name: Login to Artifactory
       #  run: helm registry login packages.octopushq.com -u '${{ }}' -p '${{}}'
                     
       - name: Package Chart
-        run: helm package './charts/kubernetes-tentacle' --version '${{ steps.read_chart_yaml.outputs["version"] }}-${{ steps.branch_names.outputs.branch_name }}'
+        run: helm package './charts/kubernetes-tentacle' --version '$CHART_VERSION'
 
       - uses: actions/upload-artifact@v3
         name: Upload packaged chart
         with:
-          name: 'kubernetes-tentacle-${{ steps.read_chart_yaml.outputs["version"] }}-${{ steps.branch_names.outputs.branch_name }}.tgz'
-          path: '${{ github.workspace }}/kubernetes-tentacle-${{ steps.read_chart_yaml.outputs["version"] }}-${{ steps.branch_names.outputs.branch_name }}.tgz'
+          name: 'kubernetes-tentacle-$CHART_VERSION.tgz'
+          path: '${{ github.workspace }}/kubernetes-tentacle-$CHART_VERSION.tgz'
         
       #- name: Push Chart to Artifactory
       #  run: helm push 'kubernetes-tentacle' oci://packages.octopushq.com
