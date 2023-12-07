@@ -14,14 +14,28 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: 'v3.13.2'
+
+      - name: Parse Chart config
+        uses: pietrobolcato/action-read-yaml@1.0.0
+        id: read_chart_yaml
+        with:
+          config: ${{ github.workspace }}/charts/kubernetes-tentacle/Chart.yaml
+
+      - name: Get branch names
+        id: branch_names
+        uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
           
-      - name: Login to DockerHub
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          
+      #- name: Login to Artifactory
+      #  run: helm registry login packages.octopushq.com -u '${{ }}' -p '${{}}'
+                    
       - name: Package Chart
-        run: helm package --version '${{ inputs.octopus-version }}' --app-version '${{ inputs.octopus-version }}' 'charts/octopus-deploy'
+        run: helm package './charts/kubernetes-tentacle' --version '${{ steps.read_chart_yaml.outputs["version"] }}-${{ steps.branch_names.outputs.branch_name }}'
+
+      - uses: actions/upload-artifact@v3
+        name: Upload packaged chart
+        with:
+          name: 'kubernetes-tentacle-${{ steps.read_chart_yaml.outputs["version"] }}-${{ steps.branch_names.outputs.branch_name }}.tgz'
+          path: '${{ github.workspace }}/kubernetes-tentacle-${{ steps.read_chart_yaml.outputs["version"] }}-${{ steps.branch_names.outputs.branch_name }}.tgz'
         
-      - name: Push Chart to DockerHub
-        run: helm push 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz' oci://registry-1.docker.io/octopusdeploy
-        
-     
+      #- name: Push Chart to Artifactory
+      #  run: helm push 'kubernetes-tentacle' oci://packages.octopushq.com
