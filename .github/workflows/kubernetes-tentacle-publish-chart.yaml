@@ -38,8 +38,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         name: Upload packaged chart
         with:
-          name: 'kubernetes-tentacle-$CHART_VERSION.tgz'
-          path: '${{ github.workspace }}/kubernetes-tentacle-$CHART_VERSION.tgz'
+          name: 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
+          path: '${{ github.workspace }}/kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
         
       #- name: Push Chart to Artifactory
       #  run: helm push 'kubernetes-tentacle' oci://packages.octopushq.com
