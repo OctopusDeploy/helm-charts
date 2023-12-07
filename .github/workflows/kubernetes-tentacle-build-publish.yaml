@@ -1,0 +1,17 @@
+name: "Kubernetes Target - Build and Publish"
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v4
+      with:
+        cache: npm
