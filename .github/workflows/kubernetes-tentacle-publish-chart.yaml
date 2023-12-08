@@ -30,7 +30,7 @@ jobs:
           echo "CHART_VERSION=${{ steps.read_chart_yaml.outputs.version }}-${{ steps.branch_names.outputs.branch_name }}-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
           
       #- name: Login to Artifactory
-      #  run: helm registry login packages.octopushq.com -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
+      #  run: helm registry login ${{ secret.ARTIFACTORY_DOCKER_REPO_URL }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
                     
       - name: Package Chart
         run: helm package './charts/kubernetes-tentacle' --version '${{ env.CHART_VERSION }}'
@@ -42,4 +42,4 @@ jobs:
           path: '${{ github.workspace }}/kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
         
       #- name: Push Chart to Artifactory
-      #  run: helm push 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz' oci://packages.octopushq.com
+      #  run: helm push 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz' oci://${{ secret.ARTIFACTORY_DOCKER_REPO_URL }}
