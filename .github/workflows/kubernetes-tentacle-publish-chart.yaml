@@ -43,7 +43,7 @@ jobs:
         run: |
           pre_release=""
           
-          if [ "${{steps.branch_names.outputs.branch_name}}" -ne "main" ]
+          if [[ "${{steps.branch_names.outputs.branch_name}}" -ne "main" ]]
           then
               pre_release="-ap-publish-to-artifactory-$(date +'%Y%m%d%H%M%S')"
           fi
