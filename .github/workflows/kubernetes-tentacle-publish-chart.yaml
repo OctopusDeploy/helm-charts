@@ -43,12 +43,12 @@ jobs:
         run: |
           pre_release=""
           
-          if [[ "${{steps.branch_names.outputs.branch_name}}" -ne "main" ]]
+          if [[ "ap-publish-to-artifactory" != "main" ]]
           then
               pre_release="-ap-publish-to-artifactory-$(date +'%Y%m%d%H%M%S')"
           fi
           
-          echo "CHART_VERSION=0.1.0$pre_release" >> $GITHUB_ENV
+          echo "CHART_VERSION=0.1.0$pre_release"
           
       - name: Login to Artifactory
         run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
