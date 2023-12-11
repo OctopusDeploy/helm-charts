@@ -2,6 +2,8 @@ name: Publish Chart
 
 on:
   pull_request:
+    paths:
+      - charts/kubernetes-target/**
   
 jobs:
   publish:
