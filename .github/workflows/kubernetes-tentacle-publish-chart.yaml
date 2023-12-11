@@ -1,6 +1,12 @@
 name: Publish Chart
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - charts/kubernetes-target/**
+      
   pull_request:
     paths:
       - charts/kubernetes-target/**
@@ -28,8 +34,15 @@ jobs:
         uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
 
       - id: version
+        shell: bash
         run: |
-          echo "CHART_VERSION=${{ steps.read_chart_yaml.outputs.version }}-${{ steps.branch_names.outputs.branch_name }}-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+          pre_release=""
+
+          if [ steps.branch_names.outputs.branch_name -ne "main ]; then
+            pre_release="-${{ steps.branch_names.outputs.branch_name }}-$(date +'%Y%m%d%H%M%S')"
+          fi
+          
+          echo "CHART_VERSION=${{ steps.read_chart_yaml.outputs.version }}$pre_release" >> $GITHUB_ENV
           
       - name: Login to Artifactory
         run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
