@@ -38,14 +38,15 @@ jobs:
         id: branch_names
         uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
 
-      - id: version
+      - name: Generate chart version
+        id: version
         shell: bash
         run: |
           pre_release=""
           
           if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
           then
-              pre_release="${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
+              pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
           fi
           
           echo "CHART_VERSION=0.1.0$pre_release" >> $GITHUB_ENV
