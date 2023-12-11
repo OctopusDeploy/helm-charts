@@ -1,4 +1,4 @@
-name: Publish Kubernetes Tentacle to Artifactory
+name: Publish Kubernetes Tentacle chart
 
 on:
   push:
@@ -6,12 +6,15 @@ on:
       - main
     paths:
       - charts/kubernetes-target/**
+      - .github/workflows/kubernetes-tentacle-publish-chart.yaml
       
   pull_request:  
     branches:
       - '*'
     paths:
       - charts/kubernetes-target/**
+      - .github/workflows/kubernetes-tentacle-publish-chart.yaml
+      
   
 jobs:
   publish:
