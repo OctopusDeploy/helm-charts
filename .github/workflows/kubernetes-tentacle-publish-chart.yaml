@@ -42,6 +42,7 @@ jobs:
         id: version
         shell: bash
         run: |
+          chart_version="${{ steps.read_chart_yaml.outputs.version }}"
           pre_release=""
           
           if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
@@ -49,7 +50,7 @@ jobs:
               pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
           fi
           
-          echo "CHART_VERSION=0.1.0$pre_release" >> $GITHUB_ENV
+          echo "CHART_VERSION=$chart_version$pre_release" >> $GITHUB_ENV
           
       - name: Login to Artifactory
         run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
