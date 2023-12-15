@@ -65,6 +65,20 @@ Create the name of the service account to use
 {{- default (printf "%s-job" (include "kubernetes-tentacle.fullname" .)) .Values.serviceAccount.name }}
 {{- end }}
 
+{{/*
+Create the name of the job cluster role to use
+*/}}
+{{- define "kubernetes-tentacle.jobClusterRoleName" -}}
+{{- printf "%s-role" (include "kubernetes-tentacle.jobServiceAccountName" .) }}
+{{- end }}
+
+{{/*
+Create the name of the job cluster role binding to use
+*/}}
+{{- define "kubernetes-tentacle.jobClusterRoleBindingName" -}}
+{{- printf "%s-binding" (include "kubernetes-tentacle.jobServiceAccountName" .) }}
+{{- end }}
+
 {{- define "kubernetes-tentacle.secrets.serverAuth" -}}
 {{- printf "%s-server-auth" ( include "kubernetes-tentacle.fullname" . ) }}
 {{- end }}
