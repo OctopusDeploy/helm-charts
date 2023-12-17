@@ -5,14 +5,14 @@ on:
     branches:
       - main
     paths:
-      - charts/kubernetes-target/**
+      - charts/kubernetes-tentacle/**
       - .github/workflows/kubernetes-tentacle-publish-chart.yaml
       
   pull_request:  
     branches:
       - '*'
     paths:
-      - charts/kubernetes-target/**
+      - charts/kubernetes-tentacle/**
       - .github/workflows/kubernetes-tentacle-publish-chart.yaml
       
   
