@@ -6,5 +6,8 @@
     "author": "Octopus Deploy Ptd Ltd",
     "dependencies": {
       "@changesets/cli": "^2.27.1"
+    },
+    "scripts": {
+      "changeset": "changeset"
     }
   }
