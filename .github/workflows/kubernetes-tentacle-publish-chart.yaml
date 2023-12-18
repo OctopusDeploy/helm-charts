@@ -3,66 +3,66 @@ name: Publish Kubernetes Tentacle chart
 on:
   push:
     branches:
-      - main
+    - main
     paths:
-      - charts/kubernetes-tentacle/**
-      - .github/workflows/kubernetes-tentacle-publish-chart.yaml
-      
-  pull_request:  
+    - charts/kubernetes-tentacle/**
+    - .github/workflows/kubernetes-tentacle-publish-chart.yaml
+
+  pull_request:
     branches:
-      - '*'
+    - '*'
     paths:
-      - charts/kubernetes-tentacle/**
-      - .github/workflows/kubernetes-tentacle-publish-chart.yaml
-      
-  
+    - charts/kubernetes-tentacle/**
+    - .github/workflows/kubernetes-tentacle-publish-chart.yaml
+
+
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-          
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: 'v3.13.2'
+    - uses: actions/checkout@v4
+    
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: 'v3.13.2'
 
-      - name: Parse Chart config
-        uses: pietrobolcato/action-read-yaml@1.0.0
-        id: read_chart_yaml
-        with:
-          config: ${{ github.workspace }}/charts/kubernetes-tentacle/Chart.yaml
+    - name: Parse Chart config
+      uses: pietrobolcato/action-read-yaml@1.0.0
+      id: read_chart_yaml
+      with:
+        config: ${{ github.workspace }}/charts/kubernetes-tentacle/Chart.yaml
 
-      - name: Get branch names
-        id: branch_names
-        uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
+    - name: Get branch names
+      id: branch_names
+      uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
 
-      - name: Generate chart version
-        id: version
-        shell: bash
-        run: |
-          chart_version="${{ steps.read_chart_yaml.outputs.version }}"
-          pre_release=""
-          
-          if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
-          then
-              pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
-          fi
-          
-          echo "CHART_VERSION=$chart_version$pre_release" >> $GITHUB_ENV
-          
-      - name: Login to Artifactory
-        run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
-                    
-      - name: Package Chart
-        run: helm package './charts/kubernetes-tentacle' --version '${{ env.CHART_VERSION }}'
+    - name: Generate chart version
+      id: version
+      shell: bash
+      run: |
+        chart_version="${{ steps.read_chart_yaml.outputs.version }}"
+        pre_release=""
 
-      - uses: actions/upload-artifact@v3
-        name: Upload packaged chart
-        with:
-          name: 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
-          path: '${{ github.workspace }}/kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
-        
-      - name: Push Chart to Artifactory
-        run: helm push 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
+        if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
+        then
+            pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
+        fi
+
+        echo "CHART_VERSION=$chart_version$pre_release" >> $GITHUB_ENV
+
+    - name: Login to Artifactory
+      run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
+
+    - name: Package Chart
+      run: helm package './charts/kubernetes-tentacle' --version '${{ env.CHART_VERSION }}'
+
+    - uses: actions/upload-artifact@v3
+      name: Upload packaged chart
+      with:
+        name: 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
+        path: '${{ github.workspace }}/kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
+
+    - name: Push Chart to Artifactory
+      run: helm push 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}

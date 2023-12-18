@@ -1,0 +1,50 @@
+name: Version Kubernetes Tentacle chart
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - charts/kubernetes-tentacle/**
+
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+
+    # For all pushes that aren't creating a versioning commit
+    if: ${{ !startsWith(github.event.commits[0].message, "Version Kubernetes Tentacle Chart" }}
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: setup-node
+      uses: actions/setup-node@v4s
+      with:
+        node-version: 20
+        cache: 'npm'
+        cache-dependency-path: ./charts/kubernetes-tentacle/package-lock.json
+
+    - name: Install YQ
+      uses: dcarbone/install-yq-action@v1.1.1
+
+    - name: Create Release Pull Request
+      id: changesets
+      uses: changesets/action@v1
+      with:
+        commit: "Version Kubernetes Tentacle Chart"
+        createGitHubReleases: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
+
+    - run: |
+        version=$(jq -r .version ./charts/kubernetes-tentacle/package.json)
+        version="$version" yq -i '.version = strenv(version)' ./charts/kubernetes-tentacle/Chart.yaml
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add ./charts/kubernetes-tentacle/Chart.yaml
+        git commit -m "Update Chart.yaml"
+        git push
+      if: steps.changesets.outputs.hasChangesets == 'true'
+
+
+

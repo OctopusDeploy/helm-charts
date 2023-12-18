@@ -21,3 +21,8 @@
 .idea/
 *.tmproj
 .vscode/
+# Versioning info
+node_modules/
+.changeset/
+package.json
+package-lock.json
