@@ -8,6 +8,7 @@
       "@changesets/cli": "^2.27.1"
     },
     "scripts": {
-      "changeset": "changeset"
+      "changeset": "changeset",
+      "ci:version": "run changeset version && install"
     }
   }
