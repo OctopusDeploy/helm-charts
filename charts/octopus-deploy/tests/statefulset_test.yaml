@@ -1,0 +1,26 @@
+suite: statefulset 
+templates:
+  - statefulset.yaml
+
+tests:
+  - it: statefulset should render
+    values: 
+      - ./values/required.yaml
+    asserts:
+      - isKind:
+          of: StatefulSet
+        documentIndex: 0
+      - hasDocuments:
+          count: 2 # There is a secret created as well as the stateful set
+  
+  - it: tolerances are configurable
+    values: 
+      - ./values/tolerations.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.tolerations
+          content: 
+            key: "example-key"
+            operator: "Exists"
+            effect: "NoSchedule"
+        documentIndex: 0

@@ -93,6 +93,8 @@ octopus:
     annotations: {}
     labels: {}
 
+  tolerations: [] 
+
   serviceAccount:
     create: false
     ## The name of the ServiceAccount to use.

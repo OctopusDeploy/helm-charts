@@ -1,0 +1,21 @@
+octopus:
+  acceptEula: "Y" # It is required to accept the Octopus EULA https://octopus.com/legal/customer-agreement
+  masterKey: F/lC1w09INVvEceNW1+28A== 
+  databaseConnectionString: Server=tcp:octopus.database.windows.net,1433;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus;Password=abracadabra;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+  licenseKeyBase64: GBxpY2Vuc2UgU2lnbmF0dxJlPSJGNmgxakh2K0pVTEk2ekVES1Azc1hHWDgwdzltOGU2ekl5d3QyUCtKeEdxbnJOMVBZQXBaQTlGbkV5MGxRMDBrdHNmTTNXeG9ObnVFR1UzWVBXSUF3dz09Ij4KICA8TGljZW5zZWRUbz5PY3RvcHVzIERlcGxveTwvTGljZW5zZWRUbz4KICA8TGljZW5zZUtleT4zMjAyOS0yODMwNy04NjQyMS05MTQ1OTwvTGljZW5zZUtleT4KICA8VmVyc2lvbj4yLjA8IS0tIExpY2Vuc2UgU3NoZW1hIFZlbnNpb24gLS0+PC9WZXJzaW9uPgogIDxWYWxpZEZyb20+MjAyMC0wNy0yMDwvVmFsaWRGcm9tPgogIDxGZWF0dXJlcz4KICAgIDxJbnNpZ2h0cz4KICAgICAgPFZhbGlkVG8+MjAyMy0wOS0wNDwvVmFsaWRUbz4KICAgIDwvSW5zaWdodHM+CiAgICA8SmlyYVNlcnZpY2VNYW5hZ2VtZW50SW50ZWdyYXRpb24+CiAgICAgIDxWYWxpZFRvPjIwMjMtMDktMDQ8L1ZhbGlkVG8+CiAgICA8L0ppcmFTZXJ2aWNlTWFuYWdlbWVudEludGVncmF0aW9uPgogICAgPFNlcnZpY2VOb3dJbnRlZ3JhdGlvbj4KICAgICAgPFZhbGlkVG8+MjAyMy0wOS0wNDwvVmFsaWRUbz4KICAgIDwvU2VydmljZU5vd0ludGVncmF0aW9uPgogIDwvRmVhdHVyZXM+CiAgPEtpbmQ+VHJpYWw8L0tpbmQ+CiAgPFZhbGlkVG8+MjAyMy0wOS0wNDwvVmFsaWRUbz4KICA8UHJvamVjdExpbWl0PlVubGltaXRlZDwvUHJvamVjdExpbWl0PgogIDxNYWNoaW5lTGltaXQ+VW5saW1pdGVkPC9NYWNoaW5lTGltaXQ+CiAgPFVzZXJMaW1pdD5VbmxpbWl0ZWQ8L1VzZXJMaW1pdD4KICA8Tm9kZUxpbWl0PlVubGltaXRlZDwvTm9kZUxpbWl0PgogIDxTcGFjZUxpbWl0PlVubGltaXRlZDwvU3BhY2VMaW1pdD4KPC9MaWNlbnNlPg==
+  username: admin 
+  password: abracadabra 
+  packageRepositoryVolume:
+    size: 1Gi 
+    storageClassName: "azure-file"
+    storageAccessMode: ReadWriteOnce
+  # The volume used for persisting deployment artifacts: https://octopus.com/docs/projects/deployment-process/artifacts
+  artifactVolume:
+    size: 1Gi 
+    storageClassName: "azure-file"
+    storageAccessMode: ReadWriteOnce
+ # Volume used for task logs: https://octopus.com/docs/support/get-the-raw-output-from-a-task
+  taskLogVolume: 
+    size: 1Gi 
+    storageClassName: "azure-file"
+    storageAccessMode: ReadWriteOnce

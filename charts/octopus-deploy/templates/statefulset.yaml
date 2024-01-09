@@ -44,10 +44,10 @@ spec:
       affinity:
       {{ toYaml . | indent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+    {{- with .Values.octopus.tolerations }}
       tolerations:
-      {{ toYaml . | indent 8 }}
-      {{- end }}
+{{ toYaml . | indent 8 }}
+    {{- end }}
       containers:
               - name: octopus
                 image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
