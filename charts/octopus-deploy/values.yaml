@@ -93,6 +93,8 @@ octopus:
     annotations: {}
     labels: {}
 
+  resources: {} 
+
   tolerations: [] 
 
   serviceAccount:
