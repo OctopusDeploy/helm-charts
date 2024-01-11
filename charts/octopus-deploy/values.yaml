@@ -93,6 +93,17 @@ octopus:
     annotations: {}
     labels: {}
 
+  # For minimum resource indications see https://octopus.com/docs/administration/managing-infrastructure/performance#minimum-requirements 
+  resources: {} 
+  #  requests:
+  #    memory: "400M"
+  #    cpu: "100m"
+  #  limits:
+  #    memory: "4G"
+  #    cpu: "1"
+
+  tolerations: [] 
+
   serviceAccount:
     create: false
     ## The name of the ServiceAccount to use.
