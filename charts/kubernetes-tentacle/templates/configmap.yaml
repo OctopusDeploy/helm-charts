@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: "tentacle-config-map"
-data:
-  is_registered: "true"
