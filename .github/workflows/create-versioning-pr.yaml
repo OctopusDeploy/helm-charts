@@ -24,6 +24,10 @@ jobs:
         cache: 'npm'
         cache-dependency-path: ./charts/kubernetes-tentacle/package-lock.json
 
+    - name: npm install
+      run: npm install
+      working-directory: ./charts/kubernetes-tentacle
+
     - name: Install YQ
       uses: dcarbone/install-yq-action@v1.1.1
 
