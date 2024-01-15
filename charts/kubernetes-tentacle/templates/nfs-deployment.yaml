@@ -26,7 +26,7 @@ spec:
       serviceAccountName: {{ include "kubernetes-tentacle.serviceAccountName" . }}
       containers:
         - name: {{ printf "%s-nfs" .Chart.Name }}
-          image: itsthenetwork/nfs-server-alpine:latest
+          image: "itsthenetwork/nfs-server-alpine:latest{{ .Values.development.nfs.useArmContainer | ternary "-arm" "" }}"
           securityContext:
             privileged: true
           env:
