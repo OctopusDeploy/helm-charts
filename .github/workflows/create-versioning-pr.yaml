@@ -11,9 +11,6 @@ on:
 jobs:
   version:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working
 
     # For all pushes that aren't creating a versioning commit
     if: ${{ !startsWith(github.event.commits[0].message, 'Version Kubernetes Tentacle Chart') }}
