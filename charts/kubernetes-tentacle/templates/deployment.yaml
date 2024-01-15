@@ -42,6 +42,8 @@ spec:
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.tentacle.ACCEPT_EULA | quote }}
+            - name: "instanceName"
+              value: {{ include "kubernetes-tentacle.fullname" . }}
             - name: "TargetName"
               value: {{ .Values.tentacle.targetName | quote }}
             - name: "ServerCommsAddress"
