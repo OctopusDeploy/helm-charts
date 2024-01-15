@@ -50,7 +50,7 @@ jobs:
         git config user.email github-actions@github.com
         git add ./charts/kubernetes-tentacle/Chart.yaml
         git commit -m "Update Chart.yaml"
-        git push
+        git push --set-upstream origin changeset-release/main
       if: steps.changesets.outputs.hasChangesets == 'true'
 
 
