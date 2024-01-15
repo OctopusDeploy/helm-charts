@@ -31,7 +31,9 @@ jobs:
       id: changesets
       uses: changesets/action@v1
       with:
-        commit: "Version Kubernetes Tentacle Chart"
+        cwd: ./charts/kubernetes-tentacle
+        commit: 'Version Kubernetes Tentacle Chart'
+        title: 'Version Kubernetes Tentacle Chart'
         createGitHubReleases: false
       env:
         GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
