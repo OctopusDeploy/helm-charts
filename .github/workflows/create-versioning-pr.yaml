@@ -46,8 +46,8 @@ jobs:
       run: |
         version=$(jq -r .version ./charts/kubernetes-tentacle/package.json)
         version="$version" yq -i '.version = strenv(version)' ./charts/kubernetes-tentacle/Chart.yaml
-        git config user.name github-actions
-        git config user.email github-actions@github.com
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
         git add ./charts/kubernetes-tentacle/Chart.yaml
         git commit -m "Update Chart.yaml"
         git push --set-upstream origin changeset-release/main
