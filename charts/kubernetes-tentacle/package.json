@@ -1,6 +1,6 @@
 {
   "name": "kubernetes-tentacle",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "The Octopus Kubernetes Tentacle",
   "author": "Octopus Deploy Ptd Ltd",

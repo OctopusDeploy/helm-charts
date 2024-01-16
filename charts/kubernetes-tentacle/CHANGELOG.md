@@ -1,5 +1,11 @@
 # kubernetes-tentacle
 
+## 0.1.4
+
+### Patch Changes
+
+- bb9057a: Add minor changes to support tentacles using configmap for configuration storage
+
 ## 0.1.3
 
 ### Patch Changes
