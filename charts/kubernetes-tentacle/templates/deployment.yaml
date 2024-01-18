@@ -62,6 +62,10 @@ spec:
               value: {{ (include "kubernetes-tentacle.jobVolumeYaml" . | fromYaml).volumes  | toJson  | quote}}
             - name: "OCTOPUS__K8STENTACLE__FORCE"
               value: "True"
+            - name: "OCTOPUS__K8STENTACLE__HELMRELEASENAME"
+              value: {{ .Release.Name | quote}}
+            - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
+              value: {{ .Chart.Version | quote}}
             - name: "TentacleHome"
               value: "/octopus"
             - name: "TentacleApplications"
