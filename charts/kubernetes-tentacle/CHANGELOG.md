@@ -1,5 +1,12 @@
 # kubernetes-tentacle
 
+## 0.1.6
+
+### Patch Changes
+
+- a9e3e54: Add secret API permissions for tentacle service account
+- 014fd14: Adding blank tentacle-secret for storing the tentacle machinekey
+
 ## 0.1.5
 
 ### Patch Changes
