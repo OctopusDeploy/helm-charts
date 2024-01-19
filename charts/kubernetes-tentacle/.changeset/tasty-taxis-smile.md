@@ -2,4 +2,4 @@
 "kubernetes-tentacle": patch
 ---
 
-Adding secret permissions and a blank secret for tentacle to use
+Adding blank tentacle-secret for storing the tentacle machinekey
