@@ -1,5 +1,12 @@
 # kubernetes-tentacle
 
+## 0.1.5
+
+### Patch Changes
+
+- b642711: Update Tentacle to 8.1.602
+- 5851fbd: Add Helm release name and chart version to Tentacle environment variables
+
 ## 0.1.4
 
 ### Patch Changes
