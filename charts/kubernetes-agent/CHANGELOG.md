@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.2.2
+
+### Patch Changes
+
+- 131ed17: Update Tentacle to 8.1.671
+
 ## 0.2.1
 
 ### Patch Changes
