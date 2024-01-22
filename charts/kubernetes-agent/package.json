@@ -1,8 +1,8 @@
 {
-  "name": "kubernetes-tentacle",
+  "name": "kubernetes-agent",
   "version": "0.1.6",
   "private": true,
-  "description": "The Octopus Kubernetes Tentacle",
+  "description": "The Octopus Kubernetes Agent",
   "author": "Octopus Deploy Ptd Ltd",
   "dependencies": {
     "@changesets/cli": "^2.27.1"

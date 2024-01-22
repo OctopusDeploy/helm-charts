@@ -1,4 +1,4 @@
-# kubernetes-tentacle
+# kubernetes-agent
 
 ## 0.1.6
 
