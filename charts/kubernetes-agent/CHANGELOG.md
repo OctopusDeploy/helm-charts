@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.2.1
+
+### Patch Changes
+
+- 8914fab: Rename resources to use octopus-agent as default
+
 ## 0.2.0
 
 ### Minor Changes
