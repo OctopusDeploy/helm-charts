@@ -1,5 +1,5 @@
 ---
-"kubernetes-agent": patch
+"kubernetes-agent": minor
 ---
 
 Rename Kubernetes Tentacle to Kubernetes Agent
