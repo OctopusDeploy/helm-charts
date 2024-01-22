@@ -29,7 +29,6 @@ storage:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: ""
 
 serviceAccount:
   # The name of the service account to use.
