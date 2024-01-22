@@ -1,19 +1,19 @@
-name: Publish Kubernetes Tentacle chart
+name: Publish Kubernetes Agent chart
 
 on:
   push:
     branches:
     - main
     paths:
-    - charts/kubernetes-tentacle/**
-    - .github/workflows/kubernetes-tentacle-publish-chart.yaml
+    - charts/kubernetes-agent/**
+    - .github/workflows/kubernetes-agent-publish-chart.yaml
 
   pull_request:
     branches:
     - '*'
     paths:
-    - charts/kubernetes-tentacle/**
-    - .github/workflows/kubernetes-tentacle-publish-chart.yaml
+    - charts/kubernetes-agent/**
+    - .github/workflows/kubernetes-agent-publish-chart.yaml
 
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       uses: pietrobolcato/action-read-yaml@1.0.0
       id: read_chart_yaml
       with:
-        config: ${{ github.workspace }}/charts/kubernetes-tentacle/Chart.yaml
+        config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
 
     - name: Get branch names
       id: branch_names
@@ -56,13 +56,13 @@ jobs:
       run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
 
     - name: Package Chart
-      run: helm package './charts/kubernetes-tentacle' --version '${{ env.CHART_VERSION }}'
+      run: helm package './charts/kubernetes-agent' --version '${{ env.CHART_VERSION }}'
 
     - uses: actions/upload-artifact@v3
       name: Upload packaged chart
       with:
-        name: 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
-        path: '${{ github.workspace }}/kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz'
+        name: 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
+        path: '${{ github.workspace }}/kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
 
     - name: Push Chart to Artifactory
-      run: helm push 'kubernetes-tentacle-${{ env.CHART_VERSION }}.tgz' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
+      run: helm push 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
