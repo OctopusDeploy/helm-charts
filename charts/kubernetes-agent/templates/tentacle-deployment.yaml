@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kubernetes-agent.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "kubernetes-agent.labels" . | nindent 4 }}
 spec:
@@ -32,7 +32,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}

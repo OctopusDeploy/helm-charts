@@ -1,26 +1,9 @@
 {{/*
-Expand the name of the chart.
+The name for the agent
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "kubernetes-agent.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "kubernetes-agent.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
+{{ .Values.nameOverride | default "octopus-agent" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -29,7 +12,6 @@ Create chart name and version as used by the chart label.
 {{- define "kubernetes-agent.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
-
 
 {{/*
 Common labels
@@ -55,32 +37,43 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "kubernetes-agent.serviceAccountName" -}}
-{{- default (include "kubernetes-agent.fullname" .) .Values.jobServiceAccount.name }}
+{{- .Values.serviceAccount.name | default (printf "%s-tentacle" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
 {{- define "kubernetes-agent.jobServiceAccountName" -}}
-{{- default (printf "%s-job" (include "kubernetes-agent.fullname" .)) .Values.serviceAccount.name }}
+{{- .Values.jobServiceAccount.name | default (printf "%s-job" (include "kubernetes-agent.name" .)) }}
+{{- end }}
+
+
+{{/*
+Used for the job cluster role & clusterrole binding as they are not namespaced.
+*/}}
+{{- define "kubernetes-agent.jobServiceAccountFullName" -}}
+{{- printf "%s-%s" ( include "kubernetes-agent.jobServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create the name of the job cluster role to use
 */}}
 {{- define "kubernetes-agent.jobClusterRoleName" -}}
-{{- printf "%s-role" (include "kubernetes-agent.jobServiceAccountName" .) }}
+{{- printf "%s-role" (include "kubernetes-agent.jobServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
 Create the name of the job cluster role binding to use
 */}}
 {{- define "kubernetes-agent.jobClusterRoleBindingName" -}}
-{{- printf "%s-binding" (include "kubernetes-agent.jobServiceAccountName" .) }}
+{{- printf "%s-binding" (include "kubernetes-agent.jobServiceAccountFullName" .) }}
 {{- end }}
 
+{{/*
+The name of the secret to store the authentication information (bearer token/api key)
+*/}}
 {{- define "kubernetes-agent.secrets.serverAuth" -}}
-{{- printf "%s-server-auth" ( include "kubernetes-agent.fullname" . ) }}
+{{- printf "%s-tentacle-server-auth" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
 {{- define "kubernetes-agent.jobVolumeYaml" -}}

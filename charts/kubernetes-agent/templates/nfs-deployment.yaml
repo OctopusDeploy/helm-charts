@@ -2,15 +2,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-nfs" (include "kubernetes-agent.fullname" .) }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.fullname" .) }}
+    app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.fullname" .) }}
+        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,14 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.fullname" .) }}
+        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "kubernetes-agent.serviceAccountName" . }}
       containers:
-        - name: {{ printf "%s-nfs" .Chart.Name }}
+        - name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
           image: "itsthenetwork/nfs-server-alpine:latest{{ .Values.development.nfs.useArmContainer | ternary "-arm" "" }}"
           securityContext:
             privileged: true
