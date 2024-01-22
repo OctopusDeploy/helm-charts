@@ -1,15 +1,24 @@
 octopus:
   # Must be set to "Y" (including the quotes) to accept the EULA at https://octopus.com/legal/customer-agreement
   acceptEula: "N"
+
+  ## Allows the secrets to be managed via an external secrets provider
+  createSecrets: true
+
+  # The below 5 options are not required if createSecrets is false
   # The master key is used to encrypt secrets. Generate a key with: openssl rand 16 | base64
   masterKey: GENERATE_ME
-  databaseConnectionString:
+  databaseConnectionString: GENERATE_ME
   # The Octopus admin username
   username:
   # The Octopus admin password
   password:
+  # the octopus license key in base 64 format
+  licenseKeyBase64:
+
   # The Octopus admin email
   email:
+
   # The Octopus server image. 
   # Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
   image:
@@ -17,7 +26,6 @@ octopus:
     repository: octopusdeploy/octopusdeploy
     # The tag will default to using the chart appVersion
     tag: 
-  licenseKeyBase64:
   # The port the website is exposed on
   webPort: 80 
   # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
@@ -127,7 +135,7 @@ octopus:
             - get
             - watch
             - list
-  
+
 dockerHub:
   # Set to true to create a secret containing the docker registry password
   login: false
