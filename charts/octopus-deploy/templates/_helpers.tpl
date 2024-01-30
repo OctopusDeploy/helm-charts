@@ -41,3 +41,14 @@ The name of the service account to use
 {{ default "default" .Values.octopus.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Get the EULA acceptEula value as a 'Y' or 'N' 
+*/}}
+{{- define "octopus.acceptEulaStr" -}}
+{{- if and (ne (toString .Values.octopus.acceptEula) "N") (or (eq (toString .Values.octopus.acceptEula) "Y") (eq .Values.octopus.acceptEula true)) -}}
+{{- "Y" -}}
+{{- else -}}
+{{- "N" -}}
+{{- end -}}
+{{- end -}}

@@ -12,6 +12,12 @@ tests:
         documentIndex: 0
       - hasDocuments:
           count: 2 # There is a secret created as well as the stateful set
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content: 
+            name: "ACCEPT_EULA"
+            value: "Y"
+        documentIndex: 0
   
   - it: tolerances are configurable
     values: 
@@ -39,4 +45,30 @@ tests:
             limits:
               memory: "128Mi"
               cpu: "500m"
+        documentIndex: 0
+
+  - it: acceptEula converts true to Y 
+    values: 
+      - ./values/required.yaml
+    set:
+      octopus.acceptEula: true 
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content: 
+            name: "ACCEPT_EULA"
+            value: "Y"
+        documentIndex: 0
+
+  - it: acceptEula passes N through 
+    values: 
+      - ./values/required.yaml
+    set:
+      octopus.acceptEula: "N"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content: 
+            name: "ACCEPT_EULA"
+            value: "N"
         documentIndex: 0
