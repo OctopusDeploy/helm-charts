@@ -57,7 +57,7 @@ spec:
                   {{- end }}
                 env:
                   - name: ACCEPT_EULA
-                    value: !!str "{{.Values.octopus.acceptEula}}"
+                    value: {{ template "octopus.acceptEulaStr" . }} 
                   - name: OCTOPUS_SERVER_NODE_NAME
                     valueFrom:
                       fieldRef:

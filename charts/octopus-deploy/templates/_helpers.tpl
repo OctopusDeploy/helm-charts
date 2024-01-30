@@ -41,3 +41,11 @@ The name of the service account to use
 {{ default "default" .Values.octopus.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Allows the acceptEULA value to accept a bool or string. 
+"N" will reject the EULA.  "Y" or any truthy value will accept it.
+*/}}
+{{- define "octopus.acceptEulaStr" -}}
+{{- and (ne (toString .Values.octopus.acceptEula) "N") (or (eq (toString .Values.octopus.acceptEula) "Y") (eq .Values.octopus.acceptEula true)) | ternary "Y" "N" -}}
+{{- end -}}

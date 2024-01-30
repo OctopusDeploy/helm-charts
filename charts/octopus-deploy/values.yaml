@@ -1,5 +1,5 @@
 octopus:
-  # Must be set to "Y" (including the quotes) to accept the EULA at https://octopus.com/legal/customer-agreement
+  # Must be set to "Y" or true to accept the EULA at https://octopus.com/legal/customer-agreement
   acceptEula: "N"
 
   ## Allows the secrets to be managed via an external secrets provider
