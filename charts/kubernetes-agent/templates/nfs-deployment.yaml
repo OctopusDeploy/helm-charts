@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
-          image: "itsthenetwork/nfs-server-alpine:latest{{ .Values.development.nfs.useArmContainer | ternary "-arm" "" }}"
+          image: "docker.packages.octopushq.com/octopusdeploy/nfs-server:latest"
           securityContext:
             privileged: true
           env:
