@@ -1,5 +1,16 @@
 # kubernetes-agent
 
+## 0.3.0
+
+### Minor Changes
+
+- 688221c: Update helm chart to use multi-arch tentacle container image
+- fd250f1: Update agent to use Octopus managed nfs server container image
+
+### Patch Changes
+
+- 6e08ed3: Bump Tentacle to 8.1.761
+
 ## 0.2.2
 
 ### Patch Changes
