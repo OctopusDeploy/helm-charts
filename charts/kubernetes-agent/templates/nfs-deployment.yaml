@@ -42,5 +42,7 @@ spec:
         - name: octopus-volume
           emptyDir:
             sizeLimit: 1Gi
+      nodeSelector:
+        kubernetes.io/os: "linux"
 
 {{- end -}}
