@@ -28,6 +28,10 @@ spec:
           image: "docker.packages.octopushq.com/octopusdeploy/nfs-server:latest"
           securityContext:
             privileged: true
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
           env:
           - name: "SHARED_DIRECTORY"
             value: "/octopus"
