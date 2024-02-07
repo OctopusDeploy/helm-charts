@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.3.1
+
+### Patch Changes
+
+- 0a30686: Set node OS affinity to Linux nodes
+
 ## 0.3.0
 
 ### Minor Changes
