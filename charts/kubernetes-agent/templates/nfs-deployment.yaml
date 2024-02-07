@@ -30,8 +30,8 @@ spec:
             privileged: true
           resources:
             requests:
-              memory: 50Mi
-              cpu: 50m
+              memory: "50Mi"
+              cpu: "50m"
           env:
           - name: "SHARED_DIRECTORY"
             value: "/octopus"
