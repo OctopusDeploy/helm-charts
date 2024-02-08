@@ -66,3 +66,12 @@ jobs:
 
     - name: Push Chart to Artifactory
       run: helm push 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
+
+    - name: Login to DockerHub
+      if: github.ref == 'refs/heads/main'
+      run: helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' -p '${{ secrets.DOCKERHUB_TOKEN }}'
+    
+    - name: Push Chart to DockerHub    
+      if: github.ref == 'refs/heads/main'
+      run: helm push 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz' oci://registry-1.docker.io/octopusdeploy
+      
