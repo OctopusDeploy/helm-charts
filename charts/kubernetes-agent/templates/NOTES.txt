@@ -1,1 +1,2 @@
-This is the official Helm Chart for the Octopus Deploy Kubernetes Agent. This helm chart is currently in development and is not production ready.
+WARNING: This Helm chart is currently in development and is not production ready.
+This is the official Helm chart for the Octopus Deploy Kubernetes Agent.
