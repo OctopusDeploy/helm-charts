@@ -41,7 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             requests:
-              memory: "100Mi"
+              memory: "150Mi"
               cpu: "100m"
           env:
             - name: "ACCEPT_EULA"
