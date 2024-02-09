@@ -39,6 +39,10 @@ spec:
           {{- end}}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            requests:
+              memory: "150Mi"
+              cpu: "100m"
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.tentacle.ACCEPT_EULA | quote }}
