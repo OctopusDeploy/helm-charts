@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.4.0
+
+### Minor Changes
+
+- bbf3212: Change to use DockerHub hosted container images
+
 ## 0.3.2
 
 ### Patch Changes
