@@ -56,7 +56,7 @@ jobs:
         full_version="$chart_version$pre_release"
 
         echo "CHART_VERSION=$full_version" >> $GITHUB_ENV
-        echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUTS
+        echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
 
     - name: Package Chart
       run: helm package './charts/kubernetes-agent' --version '${{ env.CHART_VERSION }}'
