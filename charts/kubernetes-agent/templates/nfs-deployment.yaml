@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
-          image: "docker.packages.octopushq.com/octopusdeploy/nfs-server:latest"
+          image: "octopusdeploy/nfs-server:latest"
           securityContext:
             privileged: true
           resources:
