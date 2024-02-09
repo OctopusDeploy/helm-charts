@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.3.2
+
+### Patch Changes
+
+- 189042a: Add resource requests for NFS & Agent containers
+
 ## 0.3.1
 
 ### Patch Changes
