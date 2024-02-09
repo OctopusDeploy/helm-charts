@@ -17,8 +17,11 @@ on:
 
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest    
+  version_and_package:
+    runs-on: ubuntu-latest
+    outputs:
+      CHART_VERSION: ${{ steps.version.outputs.CHART_VERSION  }}
+      PACKAGE_NAME: ${{ steps.version.outputs.PACKAGE_NAME }}
     
     steps:
     - uses: actions/checkout@v4
@@ -50,28 +53,61 @@ jobs:
             pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
         fi
 
-        echo "CHART_VERSION=$chart_version$pre_release" >> $GITHUB_ENV
+        full_version="$chart_version$pre_release"
 
-    - name: Login to Artifactory
-      run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
+        echo "CHART_VERSION=$full_version" >> $GITHUB_ENV
+        echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
 
     - name: Package Chart
       run: helm package './charts/kubernetes-agent' --version '${{ env.CHART_VERSION }}'
-
+      
     - uses: actions/upload-artifact@v3
       name: Upload packaged chart
       with:
-        name: 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
+        name: '${{ steps.version.outputs.PACKAGE_NAME }}'
         path: '${{ github.workspace }}/kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
+  
+  publish_artifactory:
+    runs-on: ubuntu-latest    
+    # We publish to Artifactory if this is not a main commit, or if it is, that it's a versioning commit
+    if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart')) }}
+    needs: version_and_package
+    steps:
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: 'v3.13.2'
 
-    - name: Push Chart to Artifactory
-      run: helm push 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
-
-    - name: Login to DockerHub
-      if: github.ref == 'refs/heads/main'
-      run: helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' -p '${{ secrets.DOCKERHUB_TOKEN }}'
+    - name: Download packaged chart
+      uses: actions/download-artifact@v3
+      with:
+        name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
     
+    - name: Login to Artifactory
+      run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
+      
+    - name: Push Chart to Artifactory
+      run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
+
+  publish_dockerhub:
+    runs-on: ubuntu-latest
+    # We only publish to docker hub if this is commit to main and the comment is a chart versioning commit
+    if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart') }}
+    needs: version_and_package
+    steps:   
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: 'v3.13.2'
+        
+    - name: Download packaged chart
+      uses: actions/download-artifact@v3
+      with:
+        name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
+        
+    - name: Login to DockerHub
+      run: helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' -p '${{ secrets.DOCKERHUB_TOKEN }}'
+          
     - name: Push Chart to DockerHub    
-      if: github.ref == 'refs/heads/main'
-      run: helm push 'kubernetes-agent-${{ env.CHART_VERSION }}.tgz' oci://registry-1.docker.io/octopusdeploy
+      run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://registry-1.docker.io/octopusdeploy
       
