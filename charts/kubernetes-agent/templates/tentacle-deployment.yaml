@@ -70,6 +70,8 @@ spec:
               value: {{ .Release.Name | quote}}
             - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
               value: {{ .Chart.Version | quote}}
+            - name: "OCTOPUS__TENTACLE__LOGLEVEL"
+              value: {{ .Values.tentacle.logLevel | default "Debug" }}
             - name: "TentacleHome"
               value: "/octopus"
             - name: "TentacleApplications"
