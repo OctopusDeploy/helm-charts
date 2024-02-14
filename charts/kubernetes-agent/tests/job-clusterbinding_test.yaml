@@ -1,0 +1,22 @@
+suite: "job permissions"
+templates:
+- templates/job-clusterbinding.yaml
+tests:
+- it: "is not created when role rules are set"
+  set:
+    jobServiceAccount:
+      role:
+        rules:
+        - apiGroups:
+          - '*'
+          resources:
+          - ["pods"]
+          verbs:
+          - ["get", "watch", "list"]
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "should match snapshot"
+  asserts:
+  - matchSnapshot: {}
