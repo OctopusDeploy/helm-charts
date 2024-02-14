@@ -1,0 +1,9 @@
+{{- if .Values.jobServiceAccount.role.rules }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ printf "%s-role" (include "kubernetes-agent.jobServiceAccountName" .) }}
+  namespace: {{ .Release.Namespace | quote }}
+rules:
+{{ .Values.jobServiceAccount.role.rules | toYaml}}
+{{- end }}

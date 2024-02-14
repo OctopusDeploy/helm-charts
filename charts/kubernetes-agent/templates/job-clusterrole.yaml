@@ -1,8 +1,12 @@
+{{- if empty .Values.jobServiceAccount.role.rules -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "kubernetes-agent.jobClusterRoleName" . }}
 rules:
+{{- if .Values.jobServiceAccount.clusterRole.rules}}
+{{ .Values.jobServiceAccount.clusterRole.rules | toYaml }}
+{{- else -}}
 - apiGroups:
   - '*'
   resources:
@@ -13,3 +17,5 @@ rules:
   - '*'
   verbs:
   - '*'
+{{- end }}
+{{- end }}

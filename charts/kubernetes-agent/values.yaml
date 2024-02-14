@@ -44,6 +44,16 @@ jobServiceAccount:
   # Annotations to add to the service account
   annotations: {}
 
+  #if defined, overrides the default cluster role rules
+  clusterRole:
+    rules: []
+
+  #if defined, disables the cluster role and defines a namespaced role with these rules
+  role:
+    rules: []
+
+
+
 podAnnotations: {}
 podLabels: {}
 
