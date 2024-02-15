@@ -21,11 +21,17 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
-        cache: 'pnpm'
-        cache-dependency-path: ./pnpm-lock.json
 
-    - name: npm install
-      run: npm install
+    - name: Cache .pnpm-store
+      uses: actions/cache@v3.2.3
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+    - uses: pnpm/action-setup@v2.2.4
+      with:
+        version: 8.15.2
+        run_install: true
 
     - name: Install YQ
       uses: dcarbone/install-yq-action@v1.1.1
@@ -43,13 +49,13 @@ jobs:
     - name: 'Update version and commit Chart.yaml'
       run: |
         version=$(jq -r .version package.json)
-        version="$version" yq -i '.version = strenv(version)' Chart.yaml
-        npm i --package-lock-only
+        version="$version" yq -i '.version = strenv(version)' charts/kubernetes-agent/Chart.yaml
+        pnpm i --lockfile-only
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config user.name "github-actions[bot]"
-        git add Chart.yaml
-        git add package-lock.json
-        git commit -m "Update Chart.yaml"
+        git add charts/kubernetes-agent/Chart.yaml
+        git add pnpm-lock.json
+        git commit -m "Update charts/kubernetes-agent/Chart.yaml"
         git push --set-upstream origin changeset-release/main
       if: steps.changesets.outputs.hasChangesets == 'true'
 
