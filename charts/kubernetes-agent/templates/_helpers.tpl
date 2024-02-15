@@ -82,5 +82,5 @@ volumes:
   nfs:
     path: /
     readOnly: false
-    server: {{ .Values.storage.nfsAddress }}
+    server: {{ .Values.storage.nfsIpAddress }}
 {{- end }}
