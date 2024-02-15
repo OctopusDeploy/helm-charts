@@ -1,5 +1,13 @@
 # kubernetes-agent
 
+## 0.4.1
+
+### Patch Changes
+
+- 73c9d72: bump tentacle version to include pod logs in kubernetes tentacle
+- 89ecb22: Add Tentacle LogLevel environment variable
+- ce18bb5: Delay shutting down the NFS Pod so the Tentacle Pod doesn't hang while umount'ing the fileshare
+
 ## 0.4.0
 
 ### Minor Changes
