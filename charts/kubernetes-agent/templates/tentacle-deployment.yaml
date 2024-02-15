@@ -100,22 +100,21 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          {{- if .Values.storage.useNFSContainer }}
+          {{- if and .Values.storage.nfs.enabled }}
           volumeMounts:
             - mountPath: /octopus
-              name: nfs-pod
+              name: tentacle-home
           {{- else if or .Values.volumeMounts }}
           volumeMounts:
             {{- .Values.volumeMounts | toYaml | nindent 12 }}
           {{- end }}
       nodeSelector:
         kubernetes.io/os: "linux"
-      {{- if .Values.storage.useNFSContainer }}
+      {{- if and .Values.storage.nfs.enabled }}
       volumes:
-        - name: nfs-pod
-          nfs:
-            server: {{ .Values.storage.nfsIpAddress }} 
-            path: /
+        - name: tentacle-home
+          persistentVolumeClaim:
+            claimName: {{ include "nfs.pvcName" .}}
       {{- else if .Values.volumes }}
       volumes:
         {{- .Values.volumes | toYaml | nindent 8 }}

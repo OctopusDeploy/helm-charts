@@ -27,9 +27,10 @@ tentacle:
     disableAutoPodCleanup: false
 
 storage:
-  # Change to false if the NFS container should not be used
-  useNFSContainer: true
-  nfsIpAddress: 10.0.42.42
+  nfs:
+    # Change to false if the NFS container should not be used
+    enabled: true
+    size: 1Gi
 
 imagePullSecrets: []
 nameOverride: ""
@@ -93,3 +94,10 @@ volumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
+
+csi-driver-nfs:
+  externalSnapshotter:
+    enabled: true
+  controller:
+    runOnControlPlane: true
+    replicas: 2

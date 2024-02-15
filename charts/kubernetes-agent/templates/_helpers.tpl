@@ -6,6 +6,11 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{ .Values.nameOverride | default "octopus-agent" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "kubernetes-agent.fullName" -}}
+{{ (printf "%s-%s" (.Values.nameOverride | default "octopus-agent") .Release.Name) | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -76,11 +81,13 @@ The name of the secret to store the authentication information (bearer token/api
 {{- printf "%s-tentacle-server-auth" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
+
 {{- define "kubernetes-agent.podVolumeYaml" -}}
+{{- if  and .Values.storage.nfs.enabled }}
 volumes:
 - name: tentacle-home
-  nfs:
-    path: /
-    readOnly: false
-    server: {{ .Values.storage.nfsIpAddress }}
+  persistentVolumeClaim:
+    claimName: {{ include "nfs.pvcName" .}}
 {{- end }}
+{{- end }}
+
