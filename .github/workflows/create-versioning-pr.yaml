@@ -21,12 +21,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
-        cache: 'npm'
-        cache-dependency-path: ./charts/kubernetes-agent/package-lock.json
+        cache: 'pnpm'
+        cache-dependency-path: ./pnpm-lock.json
 
     - name: npm install
       run: npm install
-      working-directory: ./charts/kubernetes-agent
 
     - name: Install YQ
       uses: dcarbone/install-yq-action@v1.1.1
@@ -35,7 +34,6 @@ jobs:
       id: changesets
       uses: changesets/action@v1
       with:
-        cwd: ./charts/kubernetes-agent
         commit: 'Version Kubernetes Agent Chart'
         title: 'Version Kubernetes Agent Chart'
         createGitHubReleases: false
@@ -44,7 +42,6 @@ jobs:
 
     - name: 'Update version and commit Chart.yaml'
       run: |
-        cd ./charts/kubernetes-agent
         version=$(jq -r .version package.json)
         version="$version" yq -i '.version = strenv(version)' Chart.yaml
         npm i --package-lock-only

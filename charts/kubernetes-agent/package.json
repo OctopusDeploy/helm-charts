@@ -3,12 +3,5 @@
   "version": "0.4.2",
   "private": true,
   "description": "The Octopus Kubernetes Agent",
-  "author": "Octopus Deploy Ptd Ltd",
-  "dependencies": {
-    "@changesets/cli": "^2.27.1"
-  },
-  "scripts": {
-    "changeset": "changeset",
-    "ci:version": "run changeset version && install"
-  }
+  "author": "Octopus Deploy Ptd Ltd"
 }
