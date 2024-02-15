@@ -1,4 +1,4 @@
-{{- if empty .Values.jobServiceAccount.role.rules }}
+{{- if empty .Values.jobServiceAccount.targetNamespaces }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

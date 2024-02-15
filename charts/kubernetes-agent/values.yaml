@@ -44,15 +44,13 @@ jobServiceAccount:
   # Annotations to add to the service account
   annotations: {}
 
+  # Specifies that the job service account should be contrained to target namespaces
+  # An empty array indicates a cluster role binding (Default)
+  targetNamespaces: []
+
   #if defined, overrides the default cluster role rules
   clusterRole:
     rules: []
-
-  #if defined, disables the cluster role and defines a namespaced role with these rules
-  role:
-    rules: []
-
-
 
 podAnnotations: {}
 podLabels: {}

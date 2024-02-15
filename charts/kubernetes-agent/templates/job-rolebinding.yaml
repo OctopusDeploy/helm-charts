@@ -1,15 +1,18 @@
-{{- if .Values.jobServiceAccount.role.rules }}
+{{- $jobServiceAccountName := include "kubernetes-agent.jobServiceAccountName" . -}}
+
+{{- range $targetNamespace := $.Values.jobServiceAccount.targetNamespaces }}
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ printf "%s-binding" (include "kubernetes-agent.jobServiceAccountName" .) }}
-  namespace: {{ .Release.Namespace | quote }}
+  name: {{ printf "%s-binding" $jobServiceAccountName }}
+  namespace: {{ $targetNamespace | quote }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "kubernetes-agent.jobServiceAccountName" . }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ $jobServiceAccountName }}
+  namespace: {{ $.Release.Namespace | quote }}
 roleRef:
   kind: Role
-  name: {{ printf "%s-role" (include "kubernetes-agent.jobServiceAccountName" .) }}
+  name: {{ printf "%s-role" $jobServiceAccountName }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}

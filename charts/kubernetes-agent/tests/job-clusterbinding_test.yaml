@@ -2,17 +2,10 @@ suite: "job permissions"
 templates:
 - templates/job-clusterbinding.yaml
 tests:
-- it: "is not created when role rules are set"
+- it: "is not created when target namespaces is not empty"
   set:
     jobServiceAccount:
-      role:
-        rules:
-        - apiGroups:
-          - '*'
-          resources:
-          - ["pods"]
-          verbs:
-          - ["get", "watch", "list"]
+      targetNamespaces: ["ns-1"]
   asserts:
   - hasDocuments:
       count: 0
