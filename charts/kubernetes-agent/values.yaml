@@ -26,7 +26,7 @@ tentacle:
 storage:
   # Change to false if the NFS container should not be used
   useNFSContainer: true
-  nfsPort: 10.0.42.42
+  nfsIpAddress: 10.0.42.42
 
 imagePullSecrets: []
 nameOverride: ""

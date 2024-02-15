@@ -112,7 +112,7 @@ spec:
       volumes:
         - name: nfs-pod
           nfs:
-            server: {{ .Values.storage.nfsPort }} 
+            server: {{ .Values.storage.nfsIpAddress }} 
             path: /
       {{- else if .Values.volumes }}
       volumes:

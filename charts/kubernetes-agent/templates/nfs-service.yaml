@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: ClusterIP
-  clusterIP: {{ .Values.storage.nfsPort }}
+  clusterIP: {{ .Values.storage.nfsIpAddress }}
   selector:
     app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
   ports:
