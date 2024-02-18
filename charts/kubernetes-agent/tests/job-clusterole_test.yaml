@@ -1,0 +1,25 @@
+suite: "job permissions"
+templates:
+- templates/job-clusterrole.yaml
+tests:
+- it: "cluster role can have rules overridden"
+  set:
+    jobServiceAccount:
+      clusterRole:
+        rules:
+        - apiGroups:
+          - '*'
+          resources: ["pods"]
+          verbs: ["get", "watch", "list"]
+  asserts:
+  - contains:
+      path: rules
+      content:
+        apiGroups:
+        - '*'
+        resources: ["pods"]
+        verbs: ["get", "watch", "list"]
+
+- it: "should match snapshot"
+  asserts:
+  - matchSnapshot: {}

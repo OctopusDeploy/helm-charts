@@ -26,3 +26,5 @@ node_modules/
 .changeset/
 package.json
 package-lock.json
+# Tests
+tests/

@@ -3,6 +3,9 @@ kind: ClusterRole
 metadata:
   name: {{ include "kubernetes-agent.jobClusterRoleName" . }}
 rules:
+{{- if .Values.jobServiceAccount.clusterRole.rules}}
+{{ .Values.jobServiceAccount.clusterRole.rules | toYaml| nindent 2 }}
+{{- else }}
 - apiGroups:
   - '*'
   resources:
@@ -13,3 +16,4 @@ rules:
   - '*'
   verbs:
   - '*'
+{{- end }}

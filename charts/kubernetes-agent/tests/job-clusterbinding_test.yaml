@@ -1,0 +1,15 @@
+suite: "job permissions"
+templates:
+- templates/job-clusterbinding.yaml
+tests:
+- it: "is not created when target namespaces is not empty"
+  set:
+    jobServiceAccount:
+      targetNamespaces: ["ns-1"]
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "should match snapshot"
+  asserts:
+  - matchSnapshot: {}

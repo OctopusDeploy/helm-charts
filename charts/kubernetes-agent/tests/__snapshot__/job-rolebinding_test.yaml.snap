@@ -1,0 +1,15 @@
+matches snapshot with one target namespace:
+  1: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: octopus-agent-job-RELEASE-NAME-binding
+      namespace: ns-1
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: octopus-agent-job-RELEASE-NAME-role
+    subjects:
+      - kind: ServiceAccount
+        name: octopus-agent-job
+        namespace: NAMESPACE

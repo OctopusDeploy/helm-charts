@@ -1,0 +1,31 @@
+suite: "job permissions"
+templates:
+- templates/job-rolebinding.yaml
+tests:
+- it: "creates a role binding per target namespace"
+  set:
+    jobServiceAccount:
+      targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+  asserts:
+  - hasDocuments:
+      count: 3
+
+- it: "matches snapshot with one target namespace"
+  set:
+    jobServiceAccount:
+      targetNamespaces: ["ns-1"]
+  asserts:
+  - matchSnapshot: {}
+
+- it: "is not created when target namespaces is empty"
+  set:
+    jobServiceAccount:
+      targetNamespaces: []
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "is not created by default"
+  asserts:
+  - hasDocuments:
+      count: 0
