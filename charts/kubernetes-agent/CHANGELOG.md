@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 0.4.2
+
+### Patch Changes
+
+- fefaa57: Update nfsPort to nfsIpAddress as it's an IP address, not a port
+- 38055ca: Add support for defining custom job service account permissions
+
 ## 0.4.1
 
 ### Patch Changes
