@@ -54,7 +54,7 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config user.name "github-actions[bot]"
         git add charts/kubernetes-agent/Chart.yaml
-        git add pnpm-lock.json
+        git add pnpm-lock.yaml
         git commit -m "Update charts/kubernetes-agent/Chart.yaml"
         git push --set-upstream origin changeset-release/main
       if: steps.changesets.outputs.hasChangesets == 'true'
