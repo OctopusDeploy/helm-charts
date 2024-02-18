@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.4.3
+
+### Patch Changes
+
+- 23a869b: Update repo to use pnpm and changesets at the root instead of in the /charts/kubernetes-agent directory
+
 ## 0.4.2
 
 ### Patch Changes
