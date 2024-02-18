@@ -48,7 +48,7 @@ jobs:
 
     - name: 'Update version and commit Chart.yaml'
       run: |
-        version=$(jq -r .version package.json)
+        version=$(jq -r .version charts/kubernetes-agent/package.json)
         version="$version" yq -i '.version = strenv(version)' charts/kubernetes-agent/Chart.yaml
         pnpm i --lockfile-only
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
