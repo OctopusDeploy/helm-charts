@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.4.5
+
+### Patch Changes
+
+- 4f91e87: Bump tentacle version to test automated updates in server
+
 ## 0.4.4
 
 ### Patch Changes
