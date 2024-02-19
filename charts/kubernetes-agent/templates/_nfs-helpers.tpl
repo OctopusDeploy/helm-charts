@@ -22,8 +22,6 @@ These are used for the NFS container & resources
 {{- printf "%s-csi" (include "nfs.fullName" .) }} 
 {{- end }}
 
-{{ printf "%s.%s.svc.cluster.local" (include "nfs.name" .) .Release.Namespace }}
-
 {{- define "nfs.serverAddress"}}
 {{- printf "%s.%s.svc.cluster.local" (include "nfs.name" .) .Release.Namespace }}
 {{- end }}
