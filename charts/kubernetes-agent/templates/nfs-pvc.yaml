@@ -9,5 +9,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.storage.nfs.size}}
+  volumeName: {{ include "nfs.pvName" . }}
   storageClassName: {{ include "nfs.storageClassName" . }} 
 {{- end }}
