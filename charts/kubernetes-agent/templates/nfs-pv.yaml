@@ -16,7 +16,7 @@ spec:
     - nfsvers=4.1
   csi:
     driver: nfs.csi.k8s.io
-    volumeHandle: {{ printf "%s/octopus##" (include "nfs.nfs.serverAddress" .)}}
+    volumeHandle: {{ printf "%s/octopus##" (include "nfs.serverAddress" .)}}
     volumeAttributes:
       server: {{ include "nfs.serverAddress" . }}
       share: /
