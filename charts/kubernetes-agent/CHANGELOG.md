@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.4.4
+
+### Patch Changes
+
+- 51f9022: The tentacle now has the information required for automatic updates.
+
 ## 0.4.3
 
 ### Patch Changes
