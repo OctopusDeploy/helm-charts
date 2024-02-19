@@ -1,4 +1,4 @@
-{{- if and .Values.storage.nfs.enabled }}
+{{- if .Values.storage.nfs.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

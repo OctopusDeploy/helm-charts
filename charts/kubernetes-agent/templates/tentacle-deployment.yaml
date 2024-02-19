@@ -100,7 +100,7 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          {{- if and .Values.storage.nfs.enabled }}
+          {{- if .Values.storage.nfs.enabled }}
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home
@@ -110,7 +110,7 @@ spec:
           {{- end }}
       nodeSelector:
         kubernetes.io/os: "linux"
-      {{- if and .Values.storage.nfs.enabled }}
+      {{- if .Values.storage.nfs.enabled }}
       volumes:
         - name: tentacle-home
           persistentVolumeClaim:
