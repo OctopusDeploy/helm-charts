@@ -7,7 +7,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end }}
 
 {{- define "kubernetes-agent.fullName" -}}
-{{ (printf "%s-%s" (.Values.nameOverride | default "octopus-agent") .Release.Name) | trunc 63 | trimSuffix "-" }}
+{{ (printf "%s-%s" ( include "kubernetes-agent.name" .) .Release.Name) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -82,7 +82,7 @@ The name of the secret to store the authentication information (bearer token/api
 
 
 {{- define "kubernetes-agent.podVolumeYaml" -}}
-{{- if  and .Values.storage.nfs.enabled }}
+{{- if .Values.storage.nfs.enabled }}
 volumes:
 - name: tentacle-home
   persistentVolumeClaim:
