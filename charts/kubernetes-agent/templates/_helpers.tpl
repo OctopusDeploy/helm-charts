@@ -79,7 +79,7 @@ The name of the secret to store the authentication information (bearer token/api
 {{- printf "%s-tentacle-server-auth" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
-{{ /*
+{{/*
 The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}

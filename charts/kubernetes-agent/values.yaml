@@ -34,7 +34,7 @@ storage:
 
   volume:
     size: 1Gi
-    volumeName:
+    volumeName: ""
     storageClassName: ""
 
 imagePullSecrets: []

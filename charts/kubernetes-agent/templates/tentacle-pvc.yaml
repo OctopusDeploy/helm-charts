@@ -8,7 +8,9 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
+  {{- if .Values.storage.volume.volumeName }}
   volumeName: {{ .Values.storage.volume.volumeName | quote }}
+  {{- end }}
   storageClassName: {{ required "A defined storageClassName is required when NFS is disabled" .Values.storage.volume.storageClassName | quote }}
   resources:
     requests:
