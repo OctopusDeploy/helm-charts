@@ -1,0 +1,7 @@
+{
+    "name": "hello-octo",
+    "version": "0.0.0",
+    "private": true,
+    "description": "Test Helm Chart",
+    "author": "Octopus Deploy Ptd Ltd"
+  }

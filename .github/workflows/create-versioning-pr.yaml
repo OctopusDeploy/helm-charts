@@ -46,7 +46,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
 
-    - name: 'Update version and commit Chart.yaml'
+    - name: 'Update version and commit Chart.yaml for Kubernetes Agent'
       run: |
         version=$(jq -r .version charts/kubernetes-agent/package.json)
         version="$version" yq -i '.version = strenv(version)' charts/kubernetes-agent/Chart.yaml
@@ -56,6 +56,19 @@ jobs:
         git add charts/kubernetes-agent/Chart.yaml
         git add pnpm-lock.yaml
         git commit -m "Update charts/kubernetes-agent/Chart.yaml"
+        git push --set-upstream origin changeset-release/main
+      if: steps.changesets.outputs.hasChangesets == 'true'
+
+    - name: 'Update version and commit Chart.yaml for Hello Octo'
+      run: |
+        version=$(jq -r .version charts/hello-octo/package.json)
+        version="$version" yq -i '.version = strenv(version)' charts/hello-octo/Chart.yaml
+        pnpm i --lockfile-only
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add charts/hello-octo/Chart.yaml
+        git add pnpm-lock.yaml
+        git commit -m "Update charts/hello-octo/Chart.yaml"
         git push --set-upstream origin changeset-release/main
       if: steps.changesets.outputs.hasChangesets == 'true'
 

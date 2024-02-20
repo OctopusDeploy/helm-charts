@@ -1,0 +1,3 @@
+This helm chart is only used to test Octopus Server and it's tooling.
+
+It installs an unconfigured nginx container into a cluster.

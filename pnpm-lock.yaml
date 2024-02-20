@@ -12,6 +12,8 @@ importers:
         specifier: ^2.27.1
         version: 2.27.1
 
+  charts/hello-octo: {}
+
   charts/kubernetes-agent: {}
 
 packages:
