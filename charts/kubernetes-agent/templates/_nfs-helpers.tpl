@@ -3,11 +3,11 @@ These are used for the NFS container & resources
 */}}
 
 {{- define "nfs.name"}}
-{{- printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+{{- printf "%s-nfs" (include "kubernetes-agent.name" .) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "nfs.fullName"}}
-{{- printf "%s-%s" (include "nfs.name" .) .Release.Name }}
+{{- printf "%s-%s" (include "nfs.name" .) .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "nfs.pvName"}}
