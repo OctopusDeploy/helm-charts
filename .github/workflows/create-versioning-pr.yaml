@@ -6,6 +6,7 @@ on:
     - main
     paths:
     - charts/kubernetes-agent/**
+    - charts/hello-octo/**
     - .github/workflows/create-versioning-pr.yaml
     
 jobs:
