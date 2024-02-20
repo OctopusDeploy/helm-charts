@@ -90,6 +90,9 @@ The name of the PersistentVolumeClaim to configure
 {{- end }}
 {{- end }}
 
+{{/*
+This is passed to the Tentacle Container as JSON
+*/}}
 {{- define "kubernetes-agent.podVolumeYaml" -}}
 volumes:
 - name: tentacle-home
