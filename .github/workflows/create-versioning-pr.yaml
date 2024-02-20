@@ -40,8 +40,8 @@ jobs:
       id: changesets
       uses: changesets/action@v1
       with:
-        commit: 'Version Kubernetes Agent Chart'
-        title: 'Version Kubernetes Agent Chart'
+        commit: 'Version Helm Charts'
+        title: 'Version Helm Charts'
         createGitHubReleases: false
       env:
         GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}

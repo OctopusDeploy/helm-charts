@@ -1,19 +1,19 @@
-name: Publish Kubernetes Agent chart
+name: Publish Hello Octo chart
 
 on:
   push:
     branches:
     - main
     paths:
-    - charts/kubernetes-agent/**
-    - .github/workflows/kubernetes-agent-publish-chart.yaml
+    - charts/hello-octo/**
+    - .github/workflows/hello-octo-publish-chart.yaml
 
   pull_request:
     branches:
     - '*'
     paths:
-    - charts/kubernetes-agent/**
-    - .github/workflows/kubernetes-agent-publish-chart.yaml
+    - charts/hello-octo/**
+    - .github/workflows/hello-octo-publish-chart.yaml
 
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
       uses: pietrobolcato/action-read-yaml@1.0.0
       id: read_chart_yaml
       with:
-        config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
+        config: ${{ github.workspace }}/charts/hello-octo/Chart.yaml
 
     - name: Get branch names
       id: branch_names
@@ -56,16 +56,16 @@ jobs:
         full_version="$chart_version$pre_release"
 
         echo "CHART_VERSION=$full_version" >> $GITHUB_ENV
-        echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
+        echo "PACKAGE_NAME=hello-octo-$full_version.tgz" >> $GITHUB_OUTPUT
 
     - name: Package Chart
-      run: helm package './charts/kubernetes-agent' --version '${{ env.CHART_VERSION }}'
+      run: helm package './charts/hello-octo' --version '${{ env.CHART_VERSION }}'
       
     - uses: actions/upload-artifact@v3
       name: Upload packaged chart
       with:
         name: '${{ steps.version.outputs.PACKAGE_NAME }}'
-        path: '${{ github.workspace }}/kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
+        path: '${{ github.workspace }}/hello-octo-${{ env.CHART_VERSION }}.tgz'
   
   publish_artifactory:
     runs-on: ubuntu-latest    
@@ -104,10 +104,3 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
-        
-    - name: Login to DockerHub
-      run: helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' -p '${{ secrets.DOCKERHUB_TOKEN }}'
-          
-    - name: Push Chart to DockerHub    
-      run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://registry-1.docker.io/octopusdeploy
-      
