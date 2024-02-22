@@ -1,10 +1,10 @@
-suite: "job permissions"
+suite: "pod permissions"
 templates:
-- templates/job-rolebinding.yaml
+- templates/pod-rolebinding.yaml
 tests:
 - it: "creates a role binding per target namespace"
   set:
-    jobServiceAccount:
+    podServiceAccount:
       targetNamespaces: ["ns-1", "ns-2", "ns-3"]
   asserts:
   - hasDocuments:
@@ -12,14 +12,14 @@ tests:
 
 - it: "matches snapshot with one target namespace"
   set:
-    jobServiceAccount:
+    podServiceAccount:
       targetNamespaces: ["ns-1"]
   asserts:
   - matchSnapshot: {}
 
 - it: "is not created when target namespaces is empty"
   set:
-    jobServiceAccount:
+    podServiceAccount:
       targetNamespaces: []
   asserts:
   - hasDocuments:

@@ -1,10 +1,10 @@
-suite: "job permissions"
+suite: "pod permissions"
 templates:
-- templates/job-clusterrole.yaml
+- templates/pod-clusterrole.yaml
 tests:
 - it: "cluster role can have rules overridden"
   set:
-    jobServiceAccount:
+    podServiceAccount:
       clusterRole:
         rules:
         - apiGroups:

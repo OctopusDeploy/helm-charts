@@ -3,13 +3,13 @@ matches snapshot with one target namespace:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      name: octopus-agent-job-RELEASE-NAME-binding
+      name: octopus-agent-pod-RELEASE-NAME-binding
       namespace: ns-1
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: octopus-agent-job-RELEASE-NAME-role
+      name: octopus-agent-pod-RELEASE-NAME-role
     subjects:
       - kind: ServiceAccount
-        name: octopus-agent-job
+        name: octopus-agent-pod
         namespace: NAMESPACE
