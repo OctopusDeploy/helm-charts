@@ -23,6 +23,9 @@ tentacle:
   listeningPort: ""
   logLevel: ""
 
+  debug:
+    disableAutoPodCleanup: false
+
 storage:
   # Change to false if the NFS container should not be used
   useNFSContainer: true
