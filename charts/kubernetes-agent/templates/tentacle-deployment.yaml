@@ -71,7 +71,7 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
               value: {{ .Chart.Version | quote}}
             - name: "OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP"
-              value: {{ .Values.tentacle.debug.disableAutoPodCleanup | quote}}
+              value: {{ .Values.tentacle.debug.disableAutoPodCleanup | quote }}
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
               value: {{ .Values.tentacle.logLevel | default "Debug" }}
             - name: "TentacleHome"
