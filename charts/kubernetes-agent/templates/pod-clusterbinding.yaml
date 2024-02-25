@@ -1,0 +1,14 @@
+{{- if empty .Values.podServiceAccount.targetNamespaces }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name:  {{ include "kubernetes-agent.podClusterRoleBindingName" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "kubernetes-agent.podServiceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "kubernetes-agent.podClusterRoleName" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

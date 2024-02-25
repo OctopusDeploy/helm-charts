@@ -60,16 +60,18 @@ spec:
               value: {{ join "," .Values.tentacle.targetRoles | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
               value: {{ .Release.Namespace | quote }}
-            - name: "OCTOPUS__K8STENTACLE__JOBSERVICEACCOUNTNAME"
-              value: {{ include "kubernetes-agent.jobServiceAccountName" . | quote }}
-            - name: "OCTOPUS__K8STENTACLE__JOBVOLUMEYAML"
-              value: {{ (include "kubernetes-agent.jobVolumeYaml" . | fromYaml).volumes  | toJson  | quote}}
+            - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
+              value: {{ include "kubernetes-agent.podServiceAccountName" . | quote }}
+            - name: "OCTOPUS__K8STENTACLE__PODVOLUMEJSON"
+              value: {{ (include "kubernetes-agent.podVolumeYaml" . | fromYaml).volumes  | toJson  | quote}}
             - name: "OCTOPUS__K8STENTACLE__FORCE"
               value: "True"
             - name: "OCTOPUS__K8STENTACLE__HELMRELEASENAME"
               value: {{ .Release.Name | quote}}
             - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
               value: {{ .Chart.Version | quote}}
+            - name: "OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP"
+              value: {{ .Values.tentacle.debug.disableAutoPodCleanup | quote }}
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
               value: {{ .Values.tentacle.logLevel | default "Debug" }}
             - name: "TentacleHome"

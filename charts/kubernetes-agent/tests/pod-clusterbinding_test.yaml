@@ -1,10 +1,10 @@
-suite: "job permissions"
+suite: "pod permissions"
 templates:
-- templates/job-clusterbinding.yaml
+- templates/pod-clusterbinding.yaml
 tests:
 - it: "is not created when target namespaces is not empty"
   set:
-    jobServiceAccount:
+    podServiceAccount:
       targetNamespaces: ["ns-1"]
   asserts:
   - hasDocuments:

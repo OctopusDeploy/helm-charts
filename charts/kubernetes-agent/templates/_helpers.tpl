@@ -43,30 +43,30 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "kubernetes-agent.jobServiceAccountName" -}}
-{{- .Values.jobServiceAccount.name | default (printf "%s-job" (include "kubernetes-agent.name" .)) }}
+{{- define "kubernetes-agent.podServiceAccountName" -}}
+{{- .Values.podServiceAccount.name | default (printf "%s-pod" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
 
 {{/*
-Used for the job cluster role & clusterrole binding as they are not namespaced.
+Used for the pod cluster role & clusterrole binding as they are not namespaced.
 */}}
-{{- define "kubernetes-agent.jobServiceAccountFullName" -}}
-{{- printf "%s-%s" ( include "kubernetes-agent.jobServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- define "kubernetes-agent.podServiceAccountFullName" -}}
+{{- printf "%s-%s" ( include "kubernetes-agent.podServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
-Create the name of the job cluster role to use
+Create the name of the pod cluster role to use
 */}}
-{{- define "kubernetes-agent.jobClusterRoleName" -}}
-{{- printf "%s-role" (include "kubernetes-agent.jobServiceAccountFullName" .) }}
+{{- define "kubernetes-agent.podClusterRoleName" -}}
+{{- printf "%s-role" (include "kubernetes-agent.podServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
-Create the name of the job cluster role binding to use
+Create the name of the pod cluster role binding to use
 */}}
-{{- define "kubernetes-agent.jobClusterRoleBindingName" -}}
-{{- printf "%s-binding" (include "kubernetes-agent.jobServiceAccountFullName" .) }}
+{{- define "kubernetes-agent.podClusterRoleBindingName" -}}
+{{- printf "%s-binding" (include "kubernetes-agent.podServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
@@ -76,7 +76,7 @@ The name of the secret to store the authentication information (bearer token/api
 {{- printf "%s-tentacle-server-auth" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
-{{- define "kubernetes-agent.jobVolumeYaml" -}}
+{{- define "kubernetes-agent.podVolumeYaml" -}}
 volumes:
 - name: tentacle-home
   nfs:

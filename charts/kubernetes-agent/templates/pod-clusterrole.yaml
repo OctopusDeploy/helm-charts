@@ -1,10 +1,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "kubernetes-agent.jobClusterRoleName" . }}
+  name: {{ include "kubernetes-agent.podClusterRoleName" . }}
 rules:
-{{- if .Values.jobServiceAccount.clusterRole.rules}}
-{{ .Values.jobServiceAccount.clusterRole.rules | toYaml| nindent 2 }}
+{{- if .Values.podServiceAccount.clusterRole.rules}}
+{{ .Values.podServiceAccount.clusterRole.rules | toYaml| nindent 2 }}
 {{- else }}
 - apiGroups:
   - '*'
