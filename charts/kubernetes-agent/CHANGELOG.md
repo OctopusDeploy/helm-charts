@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.5.0
+
+### Minor Changes
+
+- 8e860f9: Update to support change to execute scripts in Pods, not Jobs
+
 ## 0.4.5
 
 ### Patch Changes
