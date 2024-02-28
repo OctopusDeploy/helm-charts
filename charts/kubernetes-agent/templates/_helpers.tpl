@@ -83,7 +83,7 @@ The name of the secret to store the authentication information (bearer token/api
 The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
-{{- if .Values.storage.nfs.enabled }}
+{{- if .Values.persistence.nfs.enabled }}
 {{- include "nfs.pvcName" . }}
 {{- else }}
 {{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}

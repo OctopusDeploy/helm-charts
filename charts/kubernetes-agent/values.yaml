@@ -26,13 +26,13 @@ tentacle:
   debug:
     disableAutoPodCleanup: false
 
-storage:
+persistence:
   nfs:
     # Change to false if the NFS container should not be used
     enabled: true
     size: 1Gi
 
-  volume:
+  claim:
     size: 1Gi
     volumeName: ""
     storageClassName: ""

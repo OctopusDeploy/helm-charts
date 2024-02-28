@@ -1,4 +1,4 @@
-{{- if .Values.storage.nfs.enabled }}
+{{- if .Values.persistence.nfs.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -60,7 +60,7 @@ spec:
       volumes:
         - name: octopus-volume
           emptyDir:
-            sizeLimit: {{ .Values.storage.nfs.size}}
+            sizeLimit: {{ .Values.persistence.nfs.size}}
       nodeSelector:
         kubernetes.io/os: "linux"
 
