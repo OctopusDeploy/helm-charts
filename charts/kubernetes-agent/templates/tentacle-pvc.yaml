@@ -11,7 +11,7 @@ spec:
   {{- if .Values.persistence.claim.volumeName }}
   volumeName: {{ .Values.persistence.claim.volumeName | quote }}
   {{- end }}
-  storageClassName: {{ required "A defined storageClassName is required when NFS is disabled" .Values.persistence.claim.storageClassName | quote }}
+  storageClassName: {{ required "persistence.claim.storageClassName is required when NFS is disabled" .Values.persistence.claim.storageClassName | quote }}
   resources:
     requests:
       storage: {{ .Values.persistence.claim.size}}
