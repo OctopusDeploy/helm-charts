@@ -9,6 +9,8 @@ on:
     - .github/workflows/kubernetes-agent-publish-chart.yaml
 
   pull_request:
+    branches:
+    - '*'
     paths:
     - charts/kubernetes-agent/**
     - .github/workflows/kubernetes-agent-publish-chart.yaml
