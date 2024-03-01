@@ -1,0 +1,18 @@
+{{- if not .Values.persistence.nfs.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "kubernetes-agent.pvcName" . }}
+  labels:
+    {{- include "kubernetes-agent.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  {{- if .Values.persistence.claim.volumeName }}
+  volumeName: {{ .Values.persistence.claim.volumeName | quote }}
+  {{- end }}
+  storageClassName: {{ required "persistence.claim.storageClassName is required when NFS is disabled" .Values.persistence.claim.storageClassName | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.claim.size}}
+{{- end }} 

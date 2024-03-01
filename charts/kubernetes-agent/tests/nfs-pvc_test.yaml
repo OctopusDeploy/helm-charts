@@ -1,0 +1,21 @@
+suite: "persistence"
+templates:
+- templates/nfs-pvc.yaml
+tests:
+- it: "is not created when NFS is disabled"
+  set:
+    persistence:
+      nfs:
+        enabled: false
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "is created when NFS is enabled"
+  set:
+    persistence:
+      nfs:
+        enabled: true
+  asserts:
+  - hasDocuments:
+      count: 1

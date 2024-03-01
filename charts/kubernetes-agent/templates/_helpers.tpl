@@ -51,7 +51,6 @@ Create the name of the service account to use
 {{- .Values.podServiceAccount.name | default (printf "%s-pod" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
-
 {{/*
 Used for the pod cluster role & clusterrole binding as they are not namespaced.
 */}}
@@ -80,13 +79,23 @@ The name of the secret to store the authentication information (bearer token/api
 {{- printf "%s-tentacle-server-auth" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
+{{/*
+The name of the PersistentVolumeClaim to configure
+*/}}
+{{- define "kubernetes-agent.pvcName" -}}
+{{- if .Values.persistence.nfs.enabled }}
+{{- include "nfs.pvcName" . }}
+{{- else }}
+{{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
+{{- end }}
+{{- end }}
 
+{{/*
+This is passed to the Tentacle Container as JSON
+*/}}
 {{- define "kubernetes-agent.podVolumeYaml" -}}
-{{- if .Values.storage.nfs.enabled }}
 volumes:
 - name: tentacle-home
   persistentVolumeClaim:
-    claimName: {{ include "nfs.pvcName" .}}
+    claimName: {{ include "kubernetes-agent.pvcName" . }}
 {{- end }}
-{{- end }}
-
