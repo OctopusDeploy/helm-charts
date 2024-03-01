@@ -1,14 +1,12 @@
-{{- if .Values.storage.useNFSContainer }}
+{{- if .Values.storage.nfs.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+  name: {{ include "nfs.name" .}}
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  type: ClusterIP
-  clusterIP: {{ .Values.storage.nfsIpAddress }}
   selector:
-    app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+    app.kubernetes.io/name: {{ include "nfs.name" .}}
   ports:
     - name: nfs
       port: 2049

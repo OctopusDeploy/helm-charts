@@ -1,16 +1,16 @@
-{{- if .Values.storage.useNFSContainer }}
+{{- if .Values.storage.nfs.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+  name: {{ include "nfs.name" .}}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+    app.kubernetes.io/name: {{ include "nfs.name" .}}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+        app.kubernetes.io/name: {{ include "nfs.name" .}}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app.kubernetes.io/name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+        app.kubernetes.io/name: {{ include "nfs.name" .}}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       containers:
-        - name: {{ printf "%s-nfs" (include "kubernetes-agent.name" .) }}
+        - name: {{ include "nfs.name" .}}
           image: "octopusdeploy/nfs-server:latest"
           lifecycle:
             preStop:
@@ -60,7 +60,7 @@ spec:
       volumes:
         - name: octopus-volume
           emptyDir:
-            sizeLimit: 1Gi
+            sizeLimit: {{ .Values.storage.nfs.size}}
       nodeSelector:
         kubernetes.io/os: "linux"
 
