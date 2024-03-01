@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 0.6.0
+
+### Minor Changes
+
+- 5abc402: Change to use NFS CSI driver
+- 21c8361: Add support for defining custom storage volume
+
 ## 0.5.0
 
 ### Minor Changes
