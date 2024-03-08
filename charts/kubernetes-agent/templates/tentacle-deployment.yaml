@@ -58,6 +58,8 @@ spec:
               value: {{ join "," .Values.tentacle.targetEnvironments | quote }}
             - name: "TargetRole"
               value: {{ join "," .Values.tentacle.targetRoles | quote }}
+            - name: "DefaultNamespace"
+              value: {{ .Values.tentacle.defaultNamespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
               value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
