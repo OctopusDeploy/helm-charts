@@ -14,7 +14,7 @@ spec:
   storageClassName: {{ include "nfs.storageClassName" . }}
   mountOptions:
     - nfsvers=4.1
-    - noac
+    - lookupcache=none
   csi:
     driver: nfs.csi.k8s.io
     volumeHandle: {{ printf "%s/octopus##" (include "nfs.serverAddress" .)}}
