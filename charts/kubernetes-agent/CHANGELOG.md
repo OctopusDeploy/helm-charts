@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.6.1
+
+### Patch Changes
+
+- cf25f61: Fix bug where pod monitoring stops working after a while
+
 ## 0.6.0
 
 ### Minor Changes
