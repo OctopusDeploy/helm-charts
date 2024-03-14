@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Update Tentacle to get Pod status fix
+Fix bug where pod monitoring stops working after a while
