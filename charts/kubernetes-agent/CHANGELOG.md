@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.6.2
+
+### Patch Changes
+
+- c6dafcd: Add default namespace environment variable to tentacle deployment
+
 ## 0.6.1
 
 ### Patch Changes
