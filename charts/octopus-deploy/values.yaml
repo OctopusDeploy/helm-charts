@@ -19,6 +19,9 @@ octopus:
   # The Octopus admin email
   email:
 
+  # The task cap to set for the new node. If blank the default of 5 is used.
+  taskCap:
+
   # The Octopus server image. 
   # Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
   image:
