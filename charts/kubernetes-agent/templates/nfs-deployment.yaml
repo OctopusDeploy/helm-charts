@@ -50,13 +50,13 @@ spec:
           - name: "SHARED_DIRECTORY"
             value: "/octopus"
           - name: "SYNC"
-            value: "true"   
+            value: "true"
           ports:
           - containerPort: 2049
           volumeMounts:
           - mountPath: /octopus
             name: octopus-volume
-      terminationGracePeriodSeconds: 120
+      terminationGracePeriodSeconds: 30
       volumes:
         - name: octopus-volume
           emptyDir:
