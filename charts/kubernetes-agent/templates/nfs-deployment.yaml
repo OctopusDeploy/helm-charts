@@ -25,7 +25,8 @@ spec:
     spec:
       containers:
         - name: {{ include "nfs.name" .}}
-          image: "octopusdeploy/nfs-server:latest"
+          image: "{{ .Values.persistence.nfs.image.repository }}:{{ .Values.persistence.nfs.image.tag }}"
+          imagePullPolicy: {{ .Values.persistence.nfs.image.pullPolicy }}
           lifecycle:
             preStop:
               exec:
