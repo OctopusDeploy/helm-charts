@@ -1,5 +1,14 @@
 # kubernetes-agent
 
+## 0.6.3
+
+### Patch Changes
+
+- 584a339: Reduce termination grace period for nfs server deployment
+- 4b5ed09: Update nfs server image tag to versioned option
+- 18c71ea: Disable lookupcache so Tentacle can discover new files without a long delay
+- 1f1134a: Bump Tentacle to 8.1.1079
+
 ## 0.6.2
 
 ### Patch Changes
