@@ -15,6 +15,9 @@ spec:
   mountOptions:
     - nfsvers=4.1
     - lookupcache=none
+    - soft
+    - bg
+    - timeo=5
   csi:
     driver: nfs.csi.k8s.io
     volumeHandle: {{ printf "%s/octopus##" (include "nfs.serverAddress" .)}}
