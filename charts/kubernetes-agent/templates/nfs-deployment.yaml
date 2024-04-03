@@ -46,8 +46,8 @@ spec:
       terminationGracePeriodSeconds: 30
       volumes:
         - name: octopus-volume
-          emptyDir:
-            sizeLimit: {{ .Values.persistence.nfs.size}}
+          persistentVolumeClaim:
+            claimName: {{ include "nfs.podPvcName" . }}
       nodeSelector:
         kubernetes.io/os: "linux"
 
