@@ -16,7 +16,6 @@ spec:
     - nfsvers=4.1
     - lookupcache=none
     - soft
-    - bg
     - timeo=5
     - retrans=5
   csi:
