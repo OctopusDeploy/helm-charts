@@ -5,6 +5,7 @@ metadata:
   name: {{ include "nfs.name" .}}
   namespace: {{ .Release.Namespace | quote }}
 spec:
+  clusterIP: None
   selector:
     app.kubernetes.io/name: {{ include "nfs.name" .}}
   ports:
