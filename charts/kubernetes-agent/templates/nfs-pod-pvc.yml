@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "nfs.nfsPodPvcName" . }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+{{- if not (quote .Values.persistence.nfs.podStorageClassName | empty) }}
+  storageClassName: {{quote .Values.persistence.nfs.podStorageClassName }}
+{{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.nfs.size }}

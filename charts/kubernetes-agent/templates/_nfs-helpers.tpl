@@ -14,8 +14,8 @@ These are used for the NFS container & resources
 {{- printf "%s-pv" (include "nfs.fullName" .) }}
 {{- end }}
 
-{{- define "nfs.basePvcName"}}
-{{- printf "%s-base-pvc" (include "nfs.fullName" .) }}
+{{- define "nfs.nfsPodPvcName"}}
+{{- printf "%s-pod-pvc" (include "nfs.fullName" .) }}
 {{- end}}
 
 {{- define "nfs.pvcName"}}
