@@ -27,20 +27,6 @@ spec:
         - name: {{ include "nfs.name" .}}
           image: "{{ .Values.persistence.nfs.image.repository }}:{{ .Values.persistence.nfs.image.tag }}"
           imagePullPolicy: {{ .Values.persistence.nfs.image.pullPolicy }}
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - /bin/bash
-                  - '-c'
-                  - >-
-                    echo "Prestop: Delaying shutdown until NFS connections are
-                    closed" > /proc/1/fd/1;  counter=0;  nfsConnection=$(netstat
-                    | grep :nfs); while [[ $nfsConnection ]]; do 
-                    counter=$((++counter)); nfsConnection=$(netstat | grep
-                    :nfs);  echo "Waiting for NFS connections to close -
-                    ${counter}s" > /proc/1/fd/1; sleep 1;  done;  echo "Prestop:
-                    All NFS connections are closed" > /proc/1/fd/1;
           securityContext:
             privileged: true
           resources:
