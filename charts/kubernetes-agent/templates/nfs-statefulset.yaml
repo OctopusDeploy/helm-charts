@@ -1,6 +1,6 @@
 {{- if .Values.persistence.nfs.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "nfs.name" .}}
   namespace: {{ .Release.Namespace | quote }}
@@ -50,5 +50,4 @@ spec:
             claimName: {{ include "nfs.podPvcName" . }}
       nodeSelector:
         kubernetes.io/os: "linux"
-
 {{- end -}}
