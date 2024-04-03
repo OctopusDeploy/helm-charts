@@ -16,8 +16,8 @@ spec:
     - nfsvers=4.1
     - lookupcache=none
     - soft
-    - timeo=5
-    - retrans=5
+    - timeo=50
+    - retrans=4
   csi:
     driver: nfs.csi.k8s.io
     volumeHandle: {{ printf "%s/octopus##" (include "nfs.serverAddress" .)}}
