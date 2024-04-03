@@ -18,6 +18,7 @@ spec:
     - soft
     - bg
     - timeo=5
+    - retrans=5
   csi:
     driver: nfs.csi.k8s.io
     volumeHandle: {{ printf "%s/octopus##" (include "nfs.serverAddress" .)}}
