@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: octopus-volume
           persistentVolumeClaim:
-            claimName: {{ include "nfs.nfsPodPvcName" . }}
+            claimName: {{ include "nfs.podPvcName" . }}
       nodeSelector:
         kubernetes.io/os: "linux"
 
