@@ -1,5 +1,17 @@
 # kubernetes-agent
 
+## 0.7.0
+
+### Minor Changes
+
+- fbd30ab: Update Tentacle to 8.1.1249 with breaking services change
+
+### Patch Changes
+
+- 3348ca4: Make pods that mount NFS timeout when trying to access an invalid NFS mount rather than making the NFS pod wait for all connections to close before shutting down.
+- 7a6fb3b: Change the nfs deployment to be a stateful set because it makes more sense considering only one nfs pod can be run at a time.
+- bfa6c53: Use a clusters default storage class for the base nfs directory rather than emptyDir.
+
 ## 0.6.3
 
 ### Patch Changes
