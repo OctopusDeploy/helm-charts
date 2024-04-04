@@ -45,6 +45,8 @@ persistence:
     volumeName: ""
     storageClassName: ""
 
+scriptPodDisruptionBudgetEnabled: true
+
 imagePullSecrets: []
 nameOverride: ""
 
