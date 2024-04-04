@@ -1,0 +1,33 @@
+suite: "podDisruptionBudget"
+templates:
+  - templates/script-pdb.yaml
+tests:
+  - it: "is not created when script PDB is disabled"
+    set:
+      scriptPodDisruptionBudgetEnabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: "is created when script PDB is enabled"
+    set:
+      scriptPodDisruptionBudgetEnabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PodDisruptionBudget
+      - isAPIVersion:
+          of: policy/v1
+      - equal:
+          path: metadata.name
+          value: script-pod-disruption-budget
+      - equal: 
+          path: spec.maxUnavailable
+          value: 0
+      - equal:
+          path: spec.selector.matchExpressions[0].key
+          value: octopus.com/scriptTicketId
+      - equal: 
+          path: spec.selector.matchExpressions[0].operator
+          value: Exists
