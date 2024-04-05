@@ -105,6 +105,29 @@ spec:
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home
+        - name: {{printf "%s-mount-checker" (include "kubernetes-agent.name" .) }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+          image: docker.io/library/mount-checker:0.0.15
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "150Mi"
+              cpu: "100m"
+          env:
+            - name: "MOUNTCHECKER__MOUNTPATH"
+              value: /octopus
+            - name: "MOUNTCHECKER__PODNAME"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: "MOUNTCHECKER__NAMESPACE"
+              value: {{ .Release.Namespace | quote }}
+          volumeMounts:
+            - mountPath: /octopus
+              name: tentacle-home
       nodeSelector:
         kubernetes.io/os: "linux"
       volumes:
