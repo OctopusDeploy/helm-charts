@@ -45,6 +45,8 @@ persistence:
     volumeName: ""
     storageClassName: ""
 
+scriptPodDisruptionBudgetEnabled: true
+
 imagePullSecrets: []
 nameOverride: ""
 
@@ -61,7 +63,7 @@ podServiceAccount:
   # Annotations to add to the service account
   annotations: {}
 
-  # Specifies that the pod service account should be contrained to target namespaces
+  # Specifies that the pod service account should be constrained to target namespaces
   # An empty array indicates a cluster role binding (Default)
   targetNamespaces: []
 

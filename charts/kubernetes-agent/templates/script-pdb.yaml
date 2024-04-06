@@ -1,0 +1,12 @@
+{{- if .Values.scriptPodDisruptionBudgetEnabled -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: script-pod-disruption-budget
+  namespace: {{ .Release.Namespace }}
+spec:
+  maxUnavailable: 0
+  selector:
+    matchExpressions:
+    - { key: octopus.com/scriptTicketId, operator: Exists }
+{{- end }}
