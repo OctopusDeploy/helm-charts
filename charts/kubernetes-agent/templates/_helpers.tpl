@@ -89,13 +89,3 @@ The name of the PersistentVolumeClaim to configure
 {{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
 {{- end }}
 {{- end }}
-
-{{/*
-This is passed to the Tentacle Container as JSON
-*/}}
-{{- define "kubernetes-agent.podVolumeYaml" -}}
-volumes:
-- name: tentacle-home
-  persistentVolumeClaim:
-    claimName: {{ include "kubernetes-agent.pvcName" . }}
-{{- end }}

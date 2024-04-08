@@ -64,10 +64,8 @@ spec:
               value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
               value: {{ include "kubernetes-agent.podServiceAccountName" . | quote }}
-            - name: "OCTOPUS__K8STENTACLE__PODVOLUMEJSON"
-              value: {{ (include "kubernetes-agent.podVolumeYaml" . | fromYaml).volumes  | toJson  | quote}}
-            - name: "OCTOPUS__K8STENTACLE__FORCE"
-              value: "True"
+            - name: "OCTOPUS__K8STENTACLE__PODVOLUMECLAIMNAME"
+              value: {{ (include "kubernetes-agent.pvcName" .)  | quote}}
             - name: "OCTOPUS__K8STENTACLE__HELMRELEASENAME"
               value: {{ .Release.Name | quote}}
             - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
