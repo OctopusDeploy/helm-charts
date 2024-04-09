@@ -1,5 +1,13 @@
 # kubernetes-agent
 
+## 0.7.1
+
+### Patch Changes
+
+- c3854b9: Pass pod PVC name, not JSON. Also bump Tentacle to support this.
+- 8df264c: Added PDB to script pods to prevent accidental failure of tasks whilst draining nodes
+- b1d4c71: Give Tentacle permissions to read Pod logs
+
 ## 0.7.0
 
 ### Minor Changes
