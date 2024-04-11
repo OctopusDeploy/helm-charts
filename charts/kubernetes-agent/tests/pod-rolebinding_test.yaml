@@ -8,7 +8,7 @@ tests:
       targetNamespaces: ["ns-1", "ns-2", "ns-3"]
   asserts:
   - hasDocuments:
-      count: 3
+      count: 4
 
 - it: "matches snapshot with one target namespace"
   set:
@@ -17,15 +17,31 @@ tests:
   asserts:
   - matchSnapshot: {}
 
-- it: "is not created when target namespaces is empty"
+- it: "only creates the default rolebinding when target namespaces is empty"
   set:
     podServiceAccount:
       targetNamespaces: []
   asserts:
   - hasDocuments:
-      count: 0
+      count: 1
+  - equal: 
+        path: metadata.namespace
+        value: NAMESPACE
 
-- it: "is not created by default"
+- it: "only creates the default rolebinding by default"
   asserts:
   - hasDocuments:
-      count: 0
+      count: 1
+  - equal:
+      path: metadata.namespace
+      value: NAMESPACE
+
+- it: "is not created when watchdog is disabled"
+  set:
+    persistence:
+      nfs:
+        watchdog:
+          enabled: false
+  asserts:
+    - hasDocuments:
+        count: 0

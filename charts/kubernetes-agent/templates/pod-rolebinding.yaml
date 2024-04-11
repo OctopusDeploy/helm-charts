@@ -18,7 +18,6 @@ roleRef:
   name: {{ $podClusterRoleName }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}
-# Only create the role binding for the watchdog if NFS and the Watchdog are enabled
 {{- if and .Values.persistence.nfs.watchdog.enabled .Values.persistence.nfs.enabled}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
