@@ -48,7 +48,7 @@ persistence:
       image:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
-        tag: "0.0.1"
+        tag: "0.0.2"
 
   claim:
     size: 1Gi
