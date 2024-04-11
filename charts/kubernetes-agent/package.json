@@ -3,5 +3,11 @@
   "version": "0.7.1",
   "private": true,
   "description": "The Octopus Kubernetes Agent",
-  "author": "Octopus Deploy Ptd Ltd"
+  "author": "Octopus Deploy Ptd Ltd",
+  "scripts": {
+    "test": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:latest ."
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  }
 }

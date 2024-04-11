@@ -23,6 +23,7 @@ tentacle:
   listeningPort: ""
   logLevel: ""
   defaultNamespace: ""
+  pollingConnectionCount: 5
 
   debug:
     disableAutoPodCleanup: false
