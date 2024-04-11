@@ -18,3 +18,17 @@ roleRef:
   name: {{ $podClusterRoleName }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-binding" $podServiceAccountFullName }}
+  namespace: {{ .Release.Namespace | quote }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $podServiceAccountName }}
+    namespace: {{ $.Release.Namespace | quote }}
+roleRef:
+  kind: ClusterRole
+  name: {{ $podClusterRoleName }}
+  apiGroup: rbac.authorization.k8s.io
