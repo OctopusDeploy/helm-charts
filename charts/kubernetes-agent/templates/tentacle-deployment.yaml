@@ -79,7 +79,7 @@ spec:
             - name: "TentacleApplications"
               value: "/octopus/Applications"
             - name: "TentaclePollingConnectionCount"
-              value: {{ .Values.tentacle.pollingConnectionCount }}
+              value: {{ .Values.tentacle.pollingConnectionCount | quote }}
             {{- if .Values.tentacle.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:
