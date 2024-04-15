@@ -99,6 +99,7 @@ resources: {}
 #   memory: 128Mi
 
 
+# Used for integration testing to avoid registring with a real Octopus Server
 testing:
   tentacle:
     configMap:
