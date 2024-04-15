@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 0.7.2
+
+### Patch Changes
+
+- 8f172c2: Default to 5 polling connections
+- 8043244: Support providing test data to ConfigMap
+
 ## 0.7.1
 
 ### Patch Changes
