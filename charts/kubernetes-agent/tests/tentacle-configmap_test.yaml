@@ -1,0 +1,24 @@
+suite: "tentacle configuration"
+templates:
+  - templates/tentacle-configmap.yaml
+tests:
+  - it: "defaults to empty data (no data field)"
+    asserts:
+      - notExists:
+          path: data
+
+  - it: "when testing data is provided, populates the data field"
+    set:
+      testing:
+        tentacle:
+          configMap:
+            data:
+              key.1: "value 1"
+              key.2: 123
+    asserts:
+      - equal:
+          path: data["key.1"]
+          value: "value 1"
+      - equal:
+          path: data["key.2"]
+          value: 123

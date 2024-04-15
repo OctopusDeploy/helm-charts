@@ -3,3 +3,7 @@ kind: ConfigMap
 metadata:
   name: tentacle-config
   namespace: {{ .Release.Namespace | quote }}
+{{- with .Values.testing.tentacle.configMap.data }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end -}}
