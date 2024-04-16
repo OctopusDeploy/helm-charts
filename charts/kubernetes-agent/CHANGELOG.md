@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.8.0
+
+### Minor Changes
+
+- cf1cabf: Added an NFS watchdog to remove pods should the NFS mount become stale
+
 ## 0.7.2
 
 ### Patch Changes
