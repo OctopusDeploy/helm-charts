@@ -1,6 +1,6 @@
 suite: "pod permissions"
 templates:
-- templates/pod-rolebinding.yaml
+- templates/pod-rolebindings.yaml
 tests:
 - it: "creates a role binding per target namespace"
   set:

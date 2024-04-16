@@ -1,6 +1,7 @@
 {{- $podServiceAccountName := include "kubernetes-agent.podServiceAccountName" . -}}
 {{- $podServiceAccountFullName := include "kubernetes-agent.podServiceAccountFullName" . -}}
 {{- $podClusterRoleName := include "kubernetes-agent.podClusterRoleName" . -}}
+{{- $podDeleterClusterRoleName := include "kubernetes-agent.podDeleterClusterRoleName" . -}}  
 
 {{- range $targetNamespace := $.Values.podServiceAccount.targetNamespaces }}
 ---
@@ -23,7 +24,7 @@ roleRef:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ printf "%s-binding" $podServiceAccountFullName }}
+  name: {{ printf "%s-deleter-binding" $podServiceAccountFullName }}
   namespace: {{ .Release.Namespace | quote }}
 subjects:
   - kind: ServiceAccount
@@ -31,6 +32,6 @@ subjects:
     namespace: {{ $.Release.Namespace | quote }}
 roleRef:
   kind: ClusterRole
-  name: {{ $podClusterRoleName }}
+  name: {{ $podDeleterClusterRoleName }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}

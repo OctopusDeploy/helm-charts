@@ -17,3 +17,18 @@ rules:
   verbs:
   - '*'
 {{- end }}
+{{- if and .Values.persistence.nfs.watchdog.enabled .Values.persistence.nfs.enabled}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "kubernetes-agent.podDeleterClusterRoleName" . }}
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - 'pods'
+    verbs:
+      - 'delete'
+      - 'list'
+{{- end }}

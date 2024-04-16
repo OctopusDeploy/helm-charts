@@ -66,6 +66,13 @@ Create the name of the pod cluster role to use
 {{- end }}
 
 {{/*
+Create the name of the pod cluster role for deleting pods
+*/}}
+{{- define "kubernetes-agent.podDeleterClusterRoleName" -}}
+{{- printf "%s-delete-role" (include "kubernetes-agent.podServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
 Create the name of the pod cluster role binding to use
 */}}
 {{- define "kubernetes-agent.podClusterRoleBindingName" -}}

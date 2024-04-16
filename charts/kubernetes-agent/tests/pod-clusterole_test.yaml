@@ -1,6 +1,6 @@
 suite: "pod permissions"
 templates:
-- templates/pod-clusterrole.yaml
+- templates/pod-clusterroles.yaml
 tests:
 - it: "cluster role can have rules overridden"
   set:
@@ -12,13 +12,22 @@ tests:
           resources: ["pods"]
           verbs: ["get", "watch", "list"]
   asserts:
-  - contains:
-      path: rules
-      content:
-        apiGroups:
-        - '*'
-        resources: ["pods"]
-        verbs: ["get", "watch", "list"]
+    - contains:
+        path: rules
+        content:
+          apiGroups:
+          - '*'
+          resources: ["pods"]
+          verbs: ["get", "watch", "list"]
+      documentIndex: 0
+    - contains: 
+        path: rules
+        content:
+          apiGroups:
+          - '*'
+          resources: ["pods"]
+          verbs: ["delete", "list"]
+      documentIndex: 1
 
 - it: "should match snapshot"
   asserts:
