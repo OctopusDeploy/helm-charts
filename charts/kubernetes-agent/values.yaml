@@ -41,6 +41,16 @@ persistence:
       pullPolicy: IfNotPresent
       tag: "1.0.1"
 
+    watchdog:
+      enabled: true
+      loop_seconds: ""
+      initial_backoff_seconds: ""
+      timeout_seconds: ""
+      image:
+        repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+        pullPolicy: IfNotPresent
+        tag: "0.0.2"
+
   claim:
     size: 1Gi
     volumeName: ""

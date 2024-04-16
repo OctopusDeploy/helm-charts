@@ -1,0 +1,98 @@
+suite: "tentacle deployment"
+templates:
+  - templates/tentacle-deployment.yaml
+tests:
+  - it: "includes the watchdog when NFS and Watchdog are both enabled"
+    set:
+      persistence:
+        nfs:
+          enabled: true
+          watchdog:
+            enabled: true
+            image:
+              repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+              tag: "0.0.1"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - isAPIVersion:
+          of: apps/v1
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: octopus-agent-tentacle
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content: 
+            name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
+            value: "octopusdeploy/kubernetes-agent-nfs-watchdog:0.0.1"
+          count: 1
+      - equal:
+          path: spec.template.spec.containers[1].name
+          value: nfs-watchdog
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: "octopusdeploy/kubernetes-agent-nfs-watchdog:0.0.1"
+
+  - it: "Doesn't include the watchdog when only the Watchdog is enabled"
+    set:
+      persistence:
+        nfs:
+          enabled: false
+          watchdog:
+            enabled: true
+            image:
+              repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+              tag: "0.0.1"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - isAPIVersion:
+          of: apps/v1
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: octopus-agent-tentacle
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
+          any: true
+      - notContains: 
+          path: spec.template.spec.containers
+          content:
+            name: "nfs-watchdog"
+          any: true
+
+  - it: "Doesn't include the watchdog when watchdog is disabled"
+    set:
+      persistence:
+        nfs:
+          enabled: true
+          watchdog:
+            enabled: false
+            image:
+              repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+              tag: "0.0.1"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - isAPIVersion:
+          of: apps/v1
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: octopus-agent-tentacle
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
+          any: true
+      - notContains:
+          path: spec.template.spec.containers
+          content:
+            name: "nfs-watchdog"
+          any: true
