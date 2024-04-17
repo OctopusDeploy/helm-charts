@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 0.8.1
+
+### Patch Changes
+
+- 35481bb: Remove ability to change replica count
+- ee2b7b6: Update Tentacle to 8.1.1426
+
 ## 0.8.0
 
 ### Minor Changes
