@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.8.2
+
+### Patch Changes
+
+- 7b0196c: Change NFS back to use emptyDir
+
 ## 0.8.1
 
 ### Patch Changes
