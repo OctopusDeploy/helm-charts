@@ -1,0 +1,45 @@
+should match snapshot:
+  1: |
+    apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      labels:
+        app.kubernetes.io/name: octopus-agent-nfs
+      name: octopus-agent-nfs
+      namespace: NAMESPACE
+    spec:
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: octopus-agent-nfs
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: octopus-agent-nfs
+        spec:
+          containers:
+            - env:
+                - name: SHARED_DIRECTORY
+                  value: /octopus
+                - name: SYNC
+                  value: "true"
+              image: octopusdeploy/nfs-server:1.0.1
+              imagePullPolicy: IfNotPresent
+              name: octopus-agent-nfs
+              ports:
+                - containerPort: 2049
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 50Mi
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - mountPath: /octopus
+                  name: octopus-volume
+          nodeSelector:
+            kubernetes.io/os: linux
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - emptyDir:
+                sizeLimit: 5Gi
+              name: octopus-volume
