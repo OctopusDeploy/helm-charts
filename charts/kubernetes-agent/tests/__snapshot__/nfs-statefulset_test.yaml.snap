@@ -41,5 +41,5 @@ should match snapshot:
           terminationGracePeriodSeconds: 30
           volumes:
             - emptyDir:
-                sizeLimit: 5Gi
+                sizeLimit: 1Gi
               name: octopus-volume

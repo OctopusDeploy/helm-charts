@@ -29,7 +29,7 @@ persistence:
     # Change to false if the NFS container should not be used
     enabled: true
     
-    size: 5Gi
+    size: 1Gi
     image:
       repository: octopusdeploy/nfs-server
       pullPolicy: IfNotPresent
