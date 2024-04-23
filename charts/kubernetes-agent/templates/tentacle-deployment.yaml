@@ -102,6 +102,12 @@ spec:
             - name: "ListeningPort"
               value: {{ .Values.tentacle.listeningPort | quote }}
             {{- end }}
+            - name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
+              {{- if .Values.persistence.nfs.enabled }}
+              value: {{ .Values.persistence.nfs.size | quote }}
+              {{- else }}
+              value: {{ .Values.persistence.claim.size | quote }}
+              {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
