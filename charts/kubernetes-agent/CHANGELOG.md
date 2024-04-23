@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 0.8.3
+
+### Patch Changes
+
+- 7af696d: Increased the default NFS volume size to 10Gi from 1Gi
+- 6e6eecb: Update Kubernetes Tentacle version to 8.1.1478
+
 ## 0.8.2
 
 ### Patch Changes
