@@ -84,7 +84,7 @@ jobs:
         name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
 
     - name: Login to Artifactory
-      run: helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' -p '${{ secrets.ARTIFACTORY_PASSWORD }}'
+      run: echo '${{ secrets.ARTIFACTORY_PASSWORD }}' | helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' --password-stdin
 
     - name: Push Chart to Artifactory
       run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
@@ -106,7 +106,7 @@ jobs:
         name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
 
     - name: Login to DockerHub
-      run: helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' -p '${{ secrets.DOCKERHUB_TOKEN }}'
+      run: echo '${{ secrets.DOCKERHUB_TOKEN }}' | helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' --password-stdin
 
     - name: Push Chart to DockerHub
       run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://registry-1.docker.io/octopusdeploy
