@@ -4,3 +4,7 @@ license.xml
 octopus*.tgz
 index.yaml
 node_modules
+bin
+obj
+dist
+kubernetes-agent-metadata.json
