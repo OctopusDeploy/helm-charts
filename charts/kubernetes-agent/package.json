@@ -5,7 +5,13 @@
   "description": "The Octopus Kubernetes Agent",
   "author": "Octopus Deploy Ptd Ltd",
   "scripts": {
-    "test": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:latest ."
+    "test": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:latest .",
+    "create-metadata-json": "echo \"{'version':'$npm_package_version'}\" > kubernetes-agent-metadata.json",
+    "restore-csproj": "dotnet restore kubernetes-agent.csproj",
+    "pack-nuget-metadata": "dotnet pack kubernetes-agent.csproj -p:PackageVersion=$npm_package_version --no-build --configuration Release --output ./dist/",
+    "generate-metadata-nuget-package": "pnpm create-metadata-json && pnpm restore-csproj && pnpm pack-nuget-metadata",
+    "generate-metadata-and-copy-to-local-packages": "pnpm generate-metadata-nuget-package && cp ./dist/Octopus.KubernetesAgent.Metadata.$npm_package_version.nupkg ../../../LocalPackages/"
+
   },
   "dependencies": {
     "cross-env": "^7.0.3"

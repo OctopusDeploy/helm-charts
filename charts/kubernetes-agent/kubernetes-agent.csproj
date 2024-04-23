@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.5.6">
+    <PropertyGroup>
+      <Title>Kubernetes Agent Metadata</Title>
+      <TargetFramework>net8.0</TargetFramework>
+      <PackageId>Octopus.KubernetesAgent.Metadata</PackageId>
+      <Authors>Octopus Deploy</Authors>
+      <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+      <PackageProjectUrl>https://github.com/OctopusDeploy/helm-charts</PackageProjectUrl>
+      <RepositoryUrl>git+https://github.com/OctopusDeploy/helm-charts.git</RepositoryUrl>
+      <IncludeContentInPack>true</IncludeContentInPack>
+      <IncludeBuildOutput>false</IncludeBuildOutput>
+      <NoWarn>$(NoWarn);NU5128;NU5100</NoWarn>
+      <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="kubernetes-agent-metadata.json"
+                 Pack="true"
+                 PackageCopyToOutput="true"/>
+    </ItemGroup>
+  </Project>
