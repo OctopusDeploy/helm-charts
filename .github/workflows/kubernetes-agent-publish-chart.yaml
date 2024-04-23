@@ -111,3 +111,68 @@ jobs:
     - name: Push Chart to DockerHub
       run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://registry-1.docker.io/octopusdeploy
 
+  generate_metadata_nuget_package:
+    runs-on: ubuntu-latest
+    needs: version_and_package
+    permissions: 
+        contents: write # Required to checkout code and create tags
+    steps:
+      - uses: pnpm/action-setup@v3.0.0
+        with:
+          version: 9.*
+
+      - name: Setup node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: "20.*"
+          cache: 'pnpm'
+
+        # Why do we explicitly do pnpm install here and not use "run_install: true" above in the pnpm setup?
+        # We need to have pnpm setup before node in order to take advantage of the inbuilt caching that is available
+        # in that action, and running an install as part of pnpm setup won't use the cache, so we'll explicitly
+        # run it here after the cache
+      - run: pnpm install
+
+      - name: Create Metadata Nuget Package
+        run: pnpm generate-metadata-nuget-package
+
+      - name: Upload nuget package artefact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Packages
+          path: ./dist/*.nupkg
+
+
+  publish_packages_to_octopus:
+    runs-on: ubuntu-latest
+    needs: [ version_and_package, generate_metadata_nuget_package ]
+    permissions:
+      id-token: write # Required to obtain the ID token from GitHub Actions
+    env:
+      OCTOPUS_SPACE: "Modern Deployments"
+
+    steps:
+    - name: Download Packages
+      uses: actions/download-artifact@v3
+      with:
+        name: Packages
+        path: ./dist/
+
+    - name: Login to Octopus Deploy 🐙
+      uses: OctopusDeploy/login@v1
+      with: 
+        server: ${{ secrets.OCTOPUS_URL }}
+        service_account_id: 8b5a7f0f-c2c9-48de-a0f6-74d83669accf
+
+    - name: Push to Metadata Nuget Package to Octopus 🐙
+      uses: OctopusDeploy/push-package-action@v3
+      with:
+        packages: |
+          ./dist/Octopus.KubernetesAgent.Metadata.${{ needs.version_and_package.outputs.CHART_VERSION }}.nupkg
+          
+    - name: Create Release in Octopus 🐙
+      uses: OctopusDeploy/create-release-action@v3
+      with:
+        project: "Octopus.KubernetesAgent"
+        packages: |
+          Octopus.KubernetesAgent.Metadata:${{ needs.version_and_package.outputs.CHART_VERSION }}
