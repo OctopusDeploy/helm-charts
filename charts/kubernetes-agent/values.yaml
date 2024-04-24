@@ -4,7 +4,7 @@ nameOverride: ""
 imagePullSecrets: []
 
 agent:
-  ACCEPT_EULA: "N"
+  acceptEula: "N"
   targetName: ""
   serverCommsAddress: ""
   bearerToken: ""
@@ -42,7 +42,7 @@ agent:
   debug:
     disableAutoPodCleanup: false
 
-scriptExecutors:
+scriptPods:
   disruptionBudgetEnabled: true
 
   serviceAccount:
