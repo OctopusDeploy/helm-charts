@@ -112,3 +112,17 @@ tests:
           content:
             name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
             value: "100Gi"
+
+  - it: "sets the tentacle pod resources from values"
+    set:
+      agent:
+        resources:
+          requests: null
+          limits:
+            cpu: "200m"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources
+          value:
+            limits:
+              cpu: "200m"
