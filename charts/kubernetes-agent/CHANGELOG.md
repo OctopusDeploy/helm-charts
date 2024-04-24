@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.9.1
+
+### Patch Changes
+
+- 6c6e680: Fix test
+
 ## 0.9.0
 
 ### Minor Changes
