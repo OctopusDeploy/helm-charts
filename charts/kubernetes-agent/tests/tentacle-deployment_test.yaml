@@ -59,12 +59,10 @@ tests:
           path: spec.template.spec.containers[0].env
           content:
             name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
-          any: true
       - notContains: 
           path: spec.template.spec.containers
           content:
             name: "nfs-watchdog"
-          any: true
 
   - it: "Doesn't include the watchdog when watchdog is disabled"
     set:
@@ -90,12 +88,10 @@ tests:
           path: spec.template.spec.containers[0].env
           content:
             name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
-          any: true
       - notContains:
           path: spec.template.spec.containers
           content:
             name: "nfs-watchdog"
-          any: true
 
   - it: "Sets the PERSISTENTVOLUMESIZE variable to the correct value"
     set:

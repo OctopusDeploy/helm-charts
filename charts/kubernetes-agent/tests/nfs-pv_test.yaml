@@ -27,6 +27,16 @@ tests:
       path: metadata.name
       pattern: "release-name"
 
+- it: "set storage capacity to be persistence size"
+  set:
+    persistence:
+      size: 100Gi
+      storageClassName: ""
+  asserts:
+  - equal:
+      path: spec.capacity.storage
+      value: 100Gi
+
 - it: "uses NFS service DNS as server address"
   set:
     persistence:
