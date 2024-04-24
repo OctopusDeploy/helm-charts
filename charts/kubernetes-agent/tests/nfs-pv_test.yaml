@@ -28,7 +28,7 @@ tests:
   asserts:
   - matchRegex:
       path: metadata.name
-      pattern: "RELEASE-NAME"
+      pattern: "release-name"
 
 - it: "uses NFS service DNS as server address"
   set:
