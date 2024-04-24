@@ -1,2 +1,3 @@
-WARNING: This Helm chart is currently in development and is not production ready.
 This is the official Helm chart for the Octopus Deploy Kubernetes Agent.
+
+You can read more on how to use this at https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent
