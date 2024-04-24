@@ -96,3 +96,48 @@ tests:
           content:
             name: "nfs-watchdog"
           any: true
+
+  - it: "Sets the PERSISTENTVOLUMESIZE variable to the correct setting when using NFS"
+    set:
+      persistence:
+        nfs:
+          enabled: true
+          size: 100Gi
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - isAPIVersion:
+          of: apps/v1
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: octopus-agent-tentacle
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
+            value: "100Gi"
+
+  - it: "Sets the PERSISTENTVOLUMESIZE variable to the correct setting when using Custom PVC"
+    set:
+      persistence:
+        nfs:
+          enabled: false
+        claim:
+          size: 101Gi
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Deployment
+      - isAPIVersion:
+          of: apps/v1
+      - equal:
+          path: spec.template.spec.containers[0].name
+          value: octopus-agent-tentacle
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
+            value: "101Gi"

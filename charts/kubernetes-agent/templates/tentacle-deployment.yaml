@@ -77,7 +77,7 @@ spec:
               value: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
             {{- end }}
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
-              value: {{ .Values.tentacle.logLevel | default "Debug" }}
+              value: {{ .Values.tentacle.logLevel }}
             - name: "TentacleHome"
               value: "/octopus"
             - name: "TentacleApplications"
@@ -102,6 +102,12 @@ spec:
             - name: "ListeningPort"
               value: {{ .Values.tentacle.listeningPort | quote }}
             {{- end }}
+            - name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
+              {{- if .Values.persistence.nfs.enabled }}
+              value: {{ .Values.persistence.nfs.size | quote }}
+              {{- else }}
+              value: {{ .Values.persistence.claim.size | quote }}
+              {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

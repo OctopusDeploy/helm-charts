@@ -17,7 +17,7 @@ tentacle:
   targetEnvironments: []
   targetRoles: []
   listeningPort: ""
-  logLevel: ""
+  logLevel: "Info"
   defaultNamespace: ""
   pollingConnectionCount: 5
 
