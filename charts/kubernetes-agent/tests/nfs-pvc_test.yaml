@@ -2,20 +2,20 @@ suite: "persistence"
 templates:
 - templates/nfs-pvc.yaml
 tests:
-- it: "is not created when NFS is disabled"
+- it: "is not created when storageClassName has a value"
   set:
     persistence:
+      storageClassName: "value"
       nfs:
         enabled: false
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is created when NFS is enabled"
+- it: "is created when storageClassName is empty"
   set:
     persistence:
-      nfs:
-        enabled: true
+      storageClassName: ""
   asserts:
   - hasDocuments:
       count: 1

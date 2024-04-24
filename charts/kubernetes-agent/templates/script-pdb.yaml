@@ -1,4 +1,4 @@
-{{- if .Values.scriptPodDisruptionBudgetEnabled -}}
+{{- if .Values.scriptPods.disruptionBudgetEnabled }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

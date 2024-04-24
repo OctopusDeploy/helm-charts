@@ -2,20 +2,18 @@ suite: "persistence"
 templates:
 - templates/nfs-pv.yaml
 tests:
-- it: "is not created when NFS is disabled"
+- it: "is not created when storageClassName has a value"
   set:
     persistence:
-      nfs:
-        enabled: false
+      storageClassName: "value"
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is created when NFS is enabled"
+- it: "is created when storageClassName is empty"
   set:
     persistence:
-      nfs:
-        enabled: true
+      storageClassName: ""
   asserts:
   - hasDocuments:
       count: 1
@@ -23,8 +21,7 @@ tests:
 - it: "has Helm Release name in name"
   set:
     persistence:
-      nfs:
-        enabled: true
+      storageClassName: ""
   asserts:
   - matchRegex:
       path: metadata.name
@@ -33,8 +30,7 @@ tests:
 - it: "uses NFS service DNS as server address"
   set:
     persistence:
-      nfs:
-        enabled: true
+      storageClassName: ""
   asserts:
   - equal:
       path: spec.csi.volumeAttributes.server

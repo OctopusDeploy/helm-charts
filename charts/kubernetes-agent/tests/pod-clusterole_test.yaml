@@ -4,13 +4,14 @@ templates:
 tests:
 - it: "cluster role can have rules overridden"
   set:
-    podServiceAccount:
-      clusterRole:
-        rules:
-        - apiGroups:
-          - '*'
-          resources: ["pods"]
-          verbs: ["get", "watch", "list"]
+    scriptPods:
+      serviceAccount:
+        clusterRole:
+          rules:
+          - apiGroups:
+            - '*'
+            resources: ["pods"]
+            verbs: ["get", "watch", "list"]
   asserts:
     - contains:
         path: rules

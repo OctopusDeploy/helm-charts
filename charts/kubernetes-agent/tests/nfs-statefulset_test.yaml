@@ -2,11 +2,10 @@ suite: "persistence"
 templates:
 - templates/nfs-statefulset.yaml
 tests:
-- it: "is not created when NFS is disabled"
+- it: "is not created when storageClassName has a value"
   set:
     persistence:
-      nfs:
-        enabled: false
+      storageClassName: "value"
   asserts:
   - hasDocuments:
       count: 0
@@ -18,8 +17,7 @@ tests:
 - it: sets the emptyDir size to be the value in values
   set:
     persistence:
-      nfs:
-        size: 100Gi
+      size: 100Gi
   asserts:
   - equal:
       path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir.sizeLimit

@@ -1,4 +1,4 @@
-{{- if .Values.persistence.nfs.enabled }}
+{{- if not .Values.persistence.storageClassName }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -50,7 +50,7 @@ spec:
       volumes:
         - name: octopus-volume
           emptyDir:
-            sizeLimit: {{ .Values.persistence.nfs.size}}
+            sizeLimit: {{ .Values.persistence.size}}
       nodeSelector:
         kubernetes.io/os: "linux"
 {{- end -}}

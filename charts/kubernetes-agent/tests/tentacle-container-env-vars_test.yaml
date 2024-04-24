@@ -4,7 +4,7 @@ templates:
 tests:
 - it: "sets the pod polling connection count to the correct value with quoting"
   set:
-    tentacle:
+    agent:
       pollingConnectionCount: 100
   asserts:
   - equal:

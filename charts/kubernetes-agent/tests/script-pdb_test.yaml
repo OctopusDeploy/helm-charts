@@ -4,14 +4,16 @@ templates:
 tests:
   - it: "is not created when script PDB is disabled"
     set:
-      scriptPodDisruptionBudgetEnabled: false
+     scriptPods:
+      disruptionBudgetEnabled: false
     asserts:
       - hasDocuments:
           count: 0
 
   - it: "is created when script PDB is enabled"
     set:
-      scriptPodDisruptionBudgetEnabled: true
+     scriptPods:
+      disruptionBudgetEnabled: true
     asserts:
       - hasDocuments:
           count: 1

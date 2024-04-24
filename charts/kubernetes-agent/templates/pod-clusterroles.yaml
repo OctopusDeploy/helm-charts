@@ -1,10 +1,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "kubernetes-agent.podClusterRoleName" . }}
+  name: {{ include "kubernetes-agent.scriptPodClusterRoleName" . }}
 rules:
-{{- if .Values.podServiceAccount.clusterRole.rules}}
-{{ .Values.podServiceAccount.clusterRole.rules | toYaml| nindent 2 }}
+{{- if .Values.scriptPods.serviceAccount.clusterRole.rules}}
+{{ .Values.scriptPods.serviceAccount.clusterRole.rules | toYaml| nindent 2 }}
 {{- else }}
 - apiGroups:
   - '*'
@@ -17,12 +17,12 @@ rules:
   verbs:
   - '*'
 {{- end }}
-{{- if and .Values.persistence.nfs.watchdog.enabled .Values.persistence.nfs.enabled}}
+{{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName)}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "kubernetes-agent.podDeleterClusterRoleName" . }}
+  name: {{ include "kubernetes-agent.scriptPodDeleterClusterRoleName" . }}
 rules:
   - apiGroups:
       - '*'

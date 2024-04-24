@@ -4,8 +4,9 @@ templates:
 tests:
 - it: "is not created when target namespaces is not empty"
   set:
-    podServiceAccount:
-      targetNamespaces: ["ns-1"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: ["ns-1"]
   asserts:
   - hasDocuments:
       count: 0

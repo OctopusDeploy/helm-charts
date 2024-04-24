@@ -2,55 +2,32 @@ suite: "persistence"
 templates:
 - templates/tentacle-pvc.yaml
 tests:
-- it: "is not created when NFS is enabled"
+- it: "is not created when storageClassName is empty"
   set:
     persistence:
-      nfs:
-        enabled: true
+      storageClassName: ""
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is created when NFS is disabled and has storageClassName"
+- it: "is created when storageClassName has a value"
   set:
     persistence:
-      nfs:
-        enabled: false
-
-      claim:
-        storageClassName: "my-storage-class "
+      storageClassName: "my-storage-class"
   asserts:
   - hasDocuments:
       count: 1
 
-- it: "can have the volumeName and size changed"
+- it: "can have the size changed"
 
   set:
     persistence:
-      nfs:
-        enabled: false
-
-      claim:
-        volumeName: "my-volume"
-        size: 16Gi
-        storageClassName: "my-storage-class "
+      storageClassName: "my-storage-class"
+      size: 16Gi
   asserts:
   - hasDocuments:
       count: 1
-  - equal:
-      path: spec.volumeName
-      value: my-volume
   - equal:
       path: spec.resources.requests.storage
       value: 16Gi
-
-- it: "fails when NFS disabled but no storageClassName"
-
-  set:
-    persistence:
-      nfs:
-        enabled: false
-  asserts:
-  - failedTemplate:
-      errorMessage: "persistence.claim.storageClassName is required when NFS is disabled"
 
