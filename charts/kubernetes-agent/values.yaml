@@ -1,12 +1,9 @@
 # Default values for kubernetes-agent.
 
-image:
-  repository: octopusdeploy/kubernetes-tentacle
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+nameOverride: ""
+imagePullSecrets: []
 
-tentacle:
+agent:
   ACCEPT_EULA: "N"
   targetName: ""
   serverCommsAddress: ""
@@ -16,24 +13,67 @@ tentacle:
   space: "Default"
   targetEnvironments: []
   targetRoles: []
-  listeningPort: ""
   logLevel: "Info"
   defaultNamespace: ""
   pollingConnectionCount: 5
 
+  image:
+    repository: octopusdeploy/kubernetes-tentacle
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "8.1.1478"
+   
+  serviceAccount:
+    # The name of the service account to use.
+    # If not set a name is generated using the fullname template
+    name: ""
+    # Annotations to add to the service account
+    annotations: {}
+  
+  metadata:
+    annotations: {}
+    labels: {}
+
+  resources: 
+    requests:
+      memory: "150Mi"
+      cpu: "100m"
+
   debug:
     disableAutoPodCleanup: false
 
+scriptExecutors:
+  disruptionBudgetEnabled: true
+
+  serviceAccount:
+    # The name of the service account used for executing script pods
+    name: ""
+    # Annotations to add to the service account
+    annotations: {}
+
+    # Specifies that the pod service account should be constrained to target namespaces
+    # An empty array indicates a cluster role binding (Default)
+    targetNamespaces: []
+
+    #if defined, overrides the default cluster role rules
+    clusterRole:
+      rules: []
+
 persistence:
-  nfs:
-    # Change to false if the NFS container should not be used
-    enabled: true
-    
-    size: 10Gi
+  # if provided, will disable the NFS pod
+  storageClassName: ""
+
+  size: 10Gi
+
+  nfs:    
     image:
       repository: octopusdeploy/nfs-server
       pullPolicy: IfNotPresent
       tag: "1.0.1"
+
+    metadata:
+      annotations: {}
+      labels: {}
 
     watchdog:
       enabled: true
@@ -44,64 +84,6 @@ persistence:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.0.2"
-
-  claim:
-    size: 10Gi
-    volumeName: ""
-    storageClassName: ""
-
-scriptPodDisruptionBudgetEnabled: true
-
-imagePullSecrets: []
-nameOverride: ""
-
-serviceAccount:
-  # The name of the service account to use.
-  # If not set a name is generated using the fullname template
-  name: ""
-  # Annotations to add to the service account
-  annotations: {}
-
-podServiceAccount:
-  # The name of the service account used for executing pods
-  name: ""
-  # Annotations to add to the service account
-  annotations: {}
-
-  # Specifies that the pod service account should be constrained to target namespaces
-  # An empty array indicates a cluster role binding (Default)
-  targetNamespaces: []
-
-  #if defined, overrides the default cluster role rules
-  clusterRole:
-    rules: []
-
-podAnnotations: {}
-podLabels: {}
-
-podSecurityContext: {}
-# fsGroup: 2000
-
-securityContext: {}
-# capabilities:
-#   drop:
-#   - ALL
-# readOnlyRootFilesystem: true
-# runAsNonRoot: true
-# runAsUser: 1000
-
-resources: {}
-# We usually recommend not to specify default resources and to leave this as a conscious
-# choice for the user. This also increases chances charts run on environments with little
-# resources, such as Minikube. If you do want to specify resources, uncomment the following
-# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
-
 
 # Used for integration testing to avoid registring with a real Octopus Server
 testing:
