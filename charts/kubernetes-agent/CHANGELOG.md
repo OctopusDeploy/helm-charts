@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.8.4
+
+### Patch Changes
+
+- 60ee237: Add the nfs size as a suffix to the nfs pv and pvc name
+
 ## 0.8.3
 
 ### Patch Changes
