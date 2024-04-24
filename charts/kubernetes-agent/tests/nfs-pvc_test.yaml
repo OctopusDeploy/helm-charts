@@ -6,8 +6,6 @@ tests:
   set:
     persistence:
       storageClassName: "value"
-      nfs:
-        enabled: false
   asserts:
   - hasDocuments:
       count: 0

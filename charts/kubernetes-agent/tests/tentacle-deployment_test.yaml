@@ -5,7 +5,7 @@ tests:
   - it: "includes the watchdog when NFS and Watchdog are both enabled"
     set:
       persistence:
-        storageAccountName: ""
+        storageClassName: ""
         nfs:
           watchdog:
             enabled: true
@@ -38,7 +38,7 @@ tests:
   - it: "Doesn't include the watchdog when only the Watchdog is enabled"
     set:
       persistence:
-        storageAccountName: "value"
+        storageClassName: "my-thing"
         nfs:
           watchdog:
             enabled: true
@@ -69,7 +69,7 @@ tests:
   - it: "Doesn't include the watchdog when watchdog is disabled"
     set:
       persistence:
-        storageAccountName: ""
+        storageClassName: ""
         nfs:
           watchdog:
             enabled: false
