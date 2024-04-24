@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.9.0
+
+### Minor Changes
+
+- 7ba7548: Update to add required PERSISTENTVOLUMESIZE variable
+
 ## 0.8.4
 
 ### Patch Changes
