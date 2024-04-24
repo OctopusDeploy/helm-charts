@@ -88,7 +88,7 @@ spec:
             {{- end }}
             - name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
               value: {{ .Values.persistence.size | quote }}
-          {{- with .Values.resources }}
+          {{- with .Values.agent.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end}}
