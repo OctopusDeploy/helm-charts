@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 0.10.0
+
+### Minor Changes
+
+- e1c797b: Bump tentacle version for release
+
 ## 0.9.1
 
 ### Patch Changes
