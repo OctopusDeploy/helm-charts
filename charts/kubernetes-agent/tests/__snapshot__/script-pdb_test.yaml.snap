@@ -1,0 +1,13 @@
+should match snapshot:
+  1: |
+    apiVersion: policy/v1
+    kind: PodDisruptionBudget
+    metadata:
+      name: script-pod-disruption-budget
+      namespace: NAMESPACE
+    spec:
+      maxUnavailable: 0
+      selector:
+        matchExpressions:
+          - key: octopus.com/scriptTicketId
+            operator: Exists

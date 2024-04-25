@@ -1,0 +1,7 @@
+suite: "tentacle permissions"
+templates:
+  - templates/tentacle-role.yaml
+tests:
+  - it: "should match snapshot"
+    asserts:
+      - matchSnapshot: {}

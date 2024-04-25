@@ -2,6 +2,9 @@ suite: "tentacle deployment"
 templates:
   - templates/tentacle-deployment.yaml
 tests:
+  - it: "should match snapshot"
+    asserts:
+      - matchSnapshot: {}
   - it: "includes the watchdog when NFS and Watchdog are both enabled"
     set:
       persistence:
@@ -24,7 +27,7 @@ tests:
           value: octopus-agent-tentacle
       - contains:
           path: spec.template.spec.containers[0].env
-          content: 
+          content:
             name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
             value: "octopusdeploy/kubernetes-agent-nfs-watchdog:0.0.1"
           count: 1
@@ -60,7 +63,7 @@ tests:
           content:
             name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
           any: true
-      - notContains: 
+      - notContains:
           path: spec.template.spec.containers
           content:
             name: "nfs-watchdog"

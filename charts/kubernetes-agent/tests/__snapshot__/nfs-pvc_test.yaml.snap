@@ -1,0 +1,14 @@
+should match snapshot:
+  1: |
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: octopus-agent-nfs-release-name-pvc-10gi
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: octopus-agent-nfs-RELEASE-NAME-csi
+      volumeName: octopus-agent-nfs-release-name-pv-10gi
