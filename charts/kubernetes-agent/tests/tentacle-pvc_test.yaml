@@ -5,6 +5,15 @@ tests:
   - it: "should match snapshot"
     asserts:
       - matchSnapshot: {}
+    
+  - it: "should match snapshot when storage class enabled"
+    set:
+      persistence:
+        claim:
+          storageClassName: "my-storage-class"
+    asserts:
+      - matchSnapshot: {}
+
   - it: "is not created when NFS is enabled"
     set:
       persistence:

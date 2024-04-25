@@ -5,7 +5,8 @@
   "description": "The Octopus Kubernetes Agent",
   "author": "Octopus Deploy Ptd Ltd",
   "scripts": {
-    "test": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:latest ."
+    "test": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:latest .",
+    "update-test-snapshots": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:latest . -u"
   },
   "dependencies": {
     "cross-env": "^7.0.3"
