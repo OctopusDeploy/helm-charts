@@ -21,7 +21,7 @@ agent:
     repository: octopusdeploy/kubernetes-tentacle
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "8.1.1478"
+    tag: "8.1.1494"
    
   serviceAccount:
     # The name of the service account to use.
