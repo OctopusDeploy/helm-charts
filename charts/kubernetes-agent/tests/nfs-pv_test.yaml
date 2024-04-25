@@ -2,6 +2,9 @@ suite: "persistence"
 templates:
 - templates/nfs-pv.yaml
 tests:
+- it: "should match snapshot"
+  asserts:
+  - matchSnapshot: {}
 - it: "is not created when NFS is disabled"
   set:
     persistence:

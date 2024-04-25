@@ -1,0 +1,96 @@
+should match snapshot:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 8.1.1494
+        helm.sh/chart: kubernetes-agent-0.10.0
+      name: octopus-agent-tentacle
+      namespace: NAMESPACE
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: RELEASE-NAME
+          app.kubernetes.io/name: octopus-agent
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/instance: RELEASE-NAME
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: octopus-agent
+            app.kubernetes.io/version: 8.1.1494
+            helm.sh/chart: kubernetes-agent-0.10.0
+        spec:
+          containers:
+            - env:
+                - name: ACCEPT_EULA
+                  value: "N"
+                - name: TargetName
+                  value: ""
+                - name: ServerCommsAddress
+                  value: ""
+                - name: ServerUrl
+                  value: ""
+                - name: Space
+                  value: Default
+                - name: TargetEnvironment
+                  value: ""
+                - name: TargetRole
+                  value: ""
+                - name: DefaultNamespace
+                  value: ""
+                - name: OCTOPUS__K8STENTACLE__NAMESPACE
+                  value: NAMESPACE
+                - name: OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME
+                  value: octopus-agent-pod
+                - name: OCTOPUS__K8STENTACLE__PODVOLUMECLAIMNAME
+                  value: octopus-agent-nfs-release-name-pvc-10gi
+                - name: OCTOPUS__K8STENTACLE__HELMRELEASENAME
+                  value: RELEASE-NAME
+                - name: OCTOPUS__K8STENTACLE__HELMCHARTVERSION
+                  value: 0.10.0
+                - name: OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP
+                  value: "false"
+                - name: OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE
+                  value: octopusdeploy/kubernetes-agent-nfs-watchdog:0.0.2
+                - name: OCTOPUS__TENTACLE__LOGLEVEL
+                  value: Info
+                - name: TentacleHome
+                  value: /octopus
+                - name: TentacleApplications
+                  value: /octopus/Applications
+                - name: TentaclePollingConnectionCount
+                  value: "5"
+                - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
+                  value: 10Gi
+              image: octopusdeploy/kubernetes-tentacle:8.1.1494
+              imagePullPolicy: IfNotPresent
+              name: octopus-agent-tentacle
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 150Mi
+              volumeMounts:
+                - mountPath: /octopus
+                  name: tentacle-home
+            - env:
+                - name: watchdog_directory
+                  value: /octopus
+              image: octopusdeploy/kubernetes-agent-nfs-watchdog:0.0.2
+              imagePullPolicy: IfNotPresent
+              name: nfs-watchdog
+              volumeMounts:
+                - mountPath: /octopus
+                  name: tentacle-home
+          nodeSelector:
+            kubernetes.io/os: linux
+          serviceAccountName: octopus-agent-tentacle
+          volumes:
+            - name: tentacle-home
+              persistentVolumeClaim:
+                claimName: octopus-agent-nfs-release-name-pvc-10gi
