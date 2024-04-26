@@ -22,6 +22,11 @@ jobs:
       with:
         node-version: 20
 
+    - name: setup-helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.13.2
+
     - name: Cache .pnpm-store
       uses: actions/cache@v3.2.3
       with:
@@ -46,7 +51,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
 
-    - name: 'Update version and commit Chart.yaml'
+    - name: 'Update version in Chart.yaml and pnpm-lock.yaml'
       run: |
         version=$(jq -r .version charts/kubernetes-agent/package.json)
         version="$version" yq -i '.version = strenv(version)' charts/kubernetes-agent/Chart.yaml
@@ -56,11 +61,18 @@ jobs:
         git add charts/kubernetes-agent/Chart.yaml
         git add pnpm-lock.yaml
         git commit -m "Update chart version in charts/kubernetes-agent/Chart.yaml and pnpm-lock.yaml"
-        cd charts/kubernetes-agent
-        pnpm update-test-snapshots
-        cd ../..
+      if: steps.changesets.outputs.hasChangesets == 'true'
+
+    - name: 'Update version in test snapshots'
+      run: |
+        helm plugin install https://github.com/helm-unittest/helm-unittest.git
+        helm unittest -u charts/kubernetes-agent
         git add charts/kubernetes-agent/tests/__snapshot__/*
         git commit -m "Update chart version in Kubernetes agent test snapshots"
+      if: steps.changesets.outputs.hasChangesets == 'true'
+
+    - name: 'Push changes'
+      run: |
         git push --set-upstream origin changeset-release/main
       if: steps.changesets.outputs.hasChangesets == 'true'
 
