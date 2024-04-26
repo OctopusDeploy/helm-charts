@@ -2,6 +2,10 @@ suite: "tentacle configuration"
 templates:
   - templates/tentacle-configmap.yaml
 tests:
+  - it: "should match snapshot"
+    asserts:
+      - matchSnapshot: {}
+      
   - it: "defaults to empty data (no data field)"
     asserts:
       - notExists:

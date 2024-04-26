@@ -2,6 +2,12 @@ suite: "persistence"
 templates:
 - templates/tentacle-pvc.yaml
 tests:
+  - it: "should match snapshot when storageClassName is set"
+    set:
+      persistence:
+        storageClassName: "my-storage-class"
+    asserts:
+      - matchSnapshot: {}
 - it: "is not created when storageClassName is empty"
   set:
     persistence:

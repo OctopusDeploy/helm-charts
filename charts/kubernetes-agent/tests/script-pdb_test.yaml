@@ -2,6 +2,9 @@ suite: "podDisruptionBudget"
 templates:
   - templates/script-pdb.yaml
 tests:
+  - it: "should match snapshot"
+    asserts:
+      - matchSnapshot: {}
   - it: "is not created when script PDB is disabled"
     set:
      scriptPods:
@@ -24,12 +27,12 @@ tests:
       - equal:
           path: metadata.name
           value: script-pod-disruption-budget
-      - equal: 
+      - equal:
           path: spec.maxUnavailable
           value: 0
       - equal:
           path: spec.selector.matchExpressions[0].key
           value: octopus.com/scriptTicketId
-      - equal: 
+      - equal:
           path: spec.selector.matchExpressions[0].operator
           value: Exists

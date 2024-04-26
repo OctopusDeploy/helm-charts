@@ -2,6 +2,10 @@ suite: "persistence"
 templates:
 - templates/nfs-pv.yaml
 tests:
+- it: "should match snapshot"
+  asserts:
+  - matchSnapshot: {}
+
 - it: "is not created when storageClassName has a value"
   set:
     persistence:
