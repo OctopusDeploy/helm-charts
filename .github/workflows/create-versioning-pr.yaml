@@ -55,7 +55,6 @@ jobs:
         git config user.name "github-actions[bot]"
         git add charts/kubernetes-agent/Chart.yaml
         git add pnpm-lock.yaml
-        git add charts/kubernetes-agent/tests/__snapshot__/*
         git commit -m "Update chart version in charts/kubernetes-agent/Chart.yaml and pnpm-lock.yaml"
         cd charts/kubernetes-agent
         pnpm update-test-snapshots
