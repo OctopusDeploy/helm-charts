@@ -118,8 +118,20 @@ spec:
             - mountPath: /octopus
               name: tentacle-home
         {{- end}}
-      nodeSelector:
-        kubernetes.io/os: "linux"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/os
+                  operator: In
+                  values:
+                    - linux
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                    - arm64
+                    - amd64
       volumes:
         - name: tentacle-home
           persistentVolumeClaim:

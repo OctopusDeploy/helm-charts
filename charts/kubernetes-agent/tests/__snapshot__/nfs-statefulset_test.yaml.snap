@@ -16,6 +16,20 @@ should match snapshot:
           labels:
             app.kubernetes.io/name: octopus-agent-nfs
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/os
+                        operator: In
+                        values:
+                          - linux
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                          - arm64
+                          - amd64
           containers:
             - env:
                 - name: SHARED_DIRECTORY
@@ -36,8 +50,6 @@ should match snapshot:
               volumeMounts:
                 - mountPath: /octopus
                   name: octopus-volume
-          nodeSelector:
-            kubernetes.io/os: linux
           terminationGracePeriodSeconds: 30
           volumes:
             - emptyDir:
