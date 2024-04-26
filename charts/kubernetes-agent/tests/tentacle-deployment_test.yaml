@@ -8,8 +8,8 @@ tests:
   - it: "includes the watchdog when NFS and Watchdog are both enabled"
     set:
       persistence:
+        storageClassName: ""
         nfs:
-          enabled: true
           watchdog:
             enabled: true
             image:
@@ -41,8 +41,8 @@ tests:
   - it: "Doesn't include the watchdog when only the Watchdog is enabled"
     set:
       persistence:
+        storageClassName: "my-thing"
         nfs:
-          enabled: false
           watchdog:
             enabled: true
             image:
@@ -62,18 +62,16 @@ tests:
           path: spec.template.spec.containers[0].env
           content:
             name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
-          any: true
       - notContains:
           path: spec.template.spec.containers
           content:
             name: "nfs-watchdog"
-          any: true
 
   - it: "Doesn't include the watchdog when watchdog is disabled"
     set:
       persistence:
+        storageClassName: ""
         nfs:
-          enabled: true
           watchdog:
             enabled: false
             image:
@@ -93,19 +91,15 @@ tests:
           path: spec.template.spec.containers[0].env
           content:
             name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
-          any: true
       - notContains:
           path: spec.template.spec.containers
           content:
             name: "nfs-watchdog"
-          any: true
 
-  - it: "Sets the PERSISTENTVOLUMESIZE variable to the correct setting when using NFS"
+  - it: "Sets the PERSISTENTVOLUMESIZE variable to the correct value"
     set:
       persistence:
-        nfs:
-          enabled: true
-          size: 100Gi
+        size: 100Gi
     asserts:
       - hasDocuments:
           count: 1
@@ -122,25 +116,16 @@ tests:
             name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
             value: "100Gi"
 
-  - it: "Sets the PERSISTENTVOLUMESIZE variable to the correct setting when using Custom PVC"
+  - it: "sets the tentacle pod resources from values"
     set:
-      persistence:
-        nfs:
-          enabled: false
-        claim:
-          size: 101Gi
+      agent:
+        resources:
+          requests: null
+          limits:
+            cpu: "200m"
     asserts:
-      - hasDocuments:
-          count: 1
-      - isKind:
-          of: Deployment
-      - isAPIVersion:
-          of: apps/v1
       - equal:
-          path: spec.template.spec.containers[0].name
-          value: octopus-agent-tentacle
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
-            value: "101Gi"
+          path: spec.template.spec.containers[0].resources
+          value:
+            limits:
+              cpu: "200m"

@@ -3,27 +3,27 @@ matches snapshot with one target namespace:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      name: octopus-agent-pod-RELEASE-NAME-binding
+      name: octopus-agent-scripts-RELEASE-NAME-binding
       namespace: ns-1
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: octopus-agent-pod-RELEASE-NAME-role
+      name: octopus-agent-scripts-RELEASE-NAME-role
     subjects:
       - kind: ServiceAccount
-        name: octopus-agent-pod
+        name: octopus-agent-scripts
         namespace: NAMESPACE
   2: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      name: octopus-agent-pod-RELEASE-NAME-deleter-binding
+      name: octopus-agent-scripts-RELEASE-NAME-deleter-binding
       namespace: NAMESPACE
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: octopus-agent-pod-RELEASE-NAME-delete-role
+      name: octopus-agent-scripts-RELEASE-NAME-delete-role
     subjects:
       - kind: ServiceAccount
-        name: octopus-agent-pod
+        name: octopus-agent-scripts
         namespace: NAMESPACE

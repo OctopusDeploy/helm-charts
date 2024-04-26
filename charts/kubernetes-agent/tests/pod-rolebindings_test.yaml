@@ -4,23 +4,26 @@ templates:
 tests:
 - it: "creates a role binding per target namespace"
   set:
-    podServiceAccount:
-      targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: ["ns-1", "ns-2", "ns-3"]
   asserts:
   - hasDocuments:
       count: 4
 
 - it: "matches snapshot with one target namespace"
   set:
-    podServiceAccount:
-      targetNamespaces: ["ns-1"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: ["ns-1"]
   asserts:
   - matchSnapshot: {}
 
 - it: "only creates the default rolebinding when target namespaces is empty"
   set:
-    podServiceAccount:
-      targetNamespaces: []
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
   asserts:
   - hasDocuments:
       count: 1

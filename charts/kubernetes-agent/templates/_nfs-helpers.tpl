@@ -11,11 +11,11 @@ These are used for the NFS container & resources
 {{- end }}
 
 {{- define "nfs.pvName"}}
-{{- printf "%s-pv-%s" (include "nfs.fullName" .) .Values.persistence.nfs.size | lower  }}
+{{- printf "%s-pv-%s" (include "nfs.fullName" .) .Values.persistence.size | lower  }}
 {{- end }}
 
 {{- define "nfs.pvcName"}}
-{{- printf "%s-pvc-%s" (include "nfs.fullName" .) .Values.persistence.nfs.size | lower }}
+{{- printf "%s-pvc-%s" (include "nfs.fullName" .) .Values.persistence.size | lower }}
 {{- end }}
 
 {{- define "nfs.storageClassName"}}

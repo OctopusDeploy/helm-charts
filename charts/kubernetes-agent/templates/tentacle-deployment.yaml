@@ -12,13 +12,13 @@ spec:
       {{- include "kubernetes-agent.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with .Values.agent.metadata.annotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "kubernetes-agent.labels" . | nindent 8 }}
-	      {{- with .Values.podLabels }}
+	      {{- with .Values.agent.metadata.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
@@ -27,43 +27,31 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "kubernetes-agent.serviceAccountName" . }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end}}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            requests:
-              memory: "150Mi"
-              cpu: "100m"
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           env:
             - name: "ACCEPT_EULA"
-              value: {{ .Values.tentacle.ACCEPT_EULA | quote }}
+              value: {{ .Values.agent.acceptEula | quote }}
             - name: "TargetName"
-              value: {{ .Values.tentacle.targetName | quote }}
+              value: {{ .Values.agent.targetName | quote }}
             - name: "ServerCommsAddress"
-              value: {{ .Values.tentacle.serverCommsAddress | quote }}
+              value: {{ .Values.agent.serverCommsAddress | quote }}
             - name: "ServerUrl"
-              value: {{ .Values.tentacle.serverUrl | quote }}
+              value: {{ .Values.agent.serverUrl | quote }}
             - name: "Space"
-              value: {{ .Values.tentacle.space | quote }}
+              value: {{ .Values.agent.space | quote }}
             - name: "TargetEnvironment"
-              value: {{ join "," .Values.tentacle.targetEnvironments | quote }}
+              value: {{ join "," .Values.agent.targetEnvironments | quote }}
             - name: "TargetRole"
-              value: {{ join "," .Values.tentacle.targetRoles | quote }}
+              value: {{ join "," .Values.agent.targetRoles | quote }}
             - name: "DefaultNamespace"
-              value: {{ .Values.tentacle.defaultNamespace | quote }}
+              value: {{ .Values.agent.defaultNamespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
               value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
-              value: {{ include "kubernetes-agent.podServiceAccountName" . | quote }}
+              value: {{ include "kubernetes-agent.scriptPodServiceAccountName" . | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODVOLUMECLAIMNAME"
               value: {{ (include "kubernetes-agent.pvcName" .)  | quote}}
             - name: "OCTOPUS__K8STENTACLE__HELMRELEASENAME"
@@ -71,51 +59,43 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
               value: {{ .Chart.Version | quote}}
             - name: "OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP"
-              value: {{ .Values.tentacle.debug.disableAutoPodCleanup | quote }}
-            {{- if and .Values.persistence.nfs.watchdog.enabled .Values.persistence.nfs.enabled}}
+              value: {{ .Values.agent.debug.disableAutoPodCleanup | quote }}
+            {{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName) }}
             - name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
               value: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
             {{- end }}
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
-              value: {{ .Values.tentacle.logLevel }}
+              value: {{ .Values.agent.logLevel }}
             - name: "TentacleHome"
               value: "/octopus"
             - name: "TentacleApplications"
               value: "/octopus/Applications"
             - name: "TentaclePollingConnectionCount"
-              value: {{ .Values.tentacle.pollingConnectionCount | quote }}
-            {{- if .Values.tentacle.serverApiKey }}
+              value: {{ .Values.agent.pollingConnectionCount | quote }}
+            {{- if .Values.agent.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:
                 secretKeyRef: 
                   name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
                   key: api-key
             {{- end }}
-            {{- if .Values.tentacle.bearerToken }}
+            {{- if .Values.agent.bearerToken }}
             - name: "BearerToken"
               valueFrom:
                 secretKeyRef: 
                   name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
                   key: bearer-token
             {{- end }}
-            {{- if .Values.tentacle.listeningPort }}
-            - name: "ListeningPort"
-              value: {{ .Values.tentacle.listeningPort | quote }}
-            {{- end }}
             - name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
-              {{- if .Values.persistence.nfs.enabled }}
-              value: {{ .Values.persistence.nfs.size | quote }}
-              {{- else }}
-              value: {{ .Values.persistence.claim.size | quote }}
-              {{- end }}
-          {{- with .Values.resources }}
+              value: {{ .Values.persistence.size | quote }}
+          {{- with .Values.agent.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end}}
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home
-        {{- if and .Values.persistence.nfs.watchdog.enabled .Values.persistence.nfs.enabled}}
+        {{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName) }}
         - name: nfs-watchdog
           image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
           imagePullPolicy: {{ .Values.persistence.nfs.watchdog.image.pullPolicy }}

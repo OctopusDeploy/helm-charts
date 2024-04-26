@@ -41,42 +41,42 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "kubernetes-agent.serviceAccountName" -}}
-{{- .Values.serviceAccount.name | default (printf "%s-tentacle" (include "kubernetes-agent.name" .)) }}
+{{- .Values.agent.serviceAccount.name | default (printf "%s-tentacle" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "kubernetes-agent.podServiceAccountName" -}}
-{{- .Values.podServiceAccount.name | default (printf "%s-pod" (include "kubernetes-agent.name" .)) }}
+{{- define "kubernetes-agent.scriptPodServiceAccountName" -}}
+{{- .Values.scriptPods.serviceAccount.name | default (printf "%s-scripts" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
 {{/*
 Used for the pod cluster role & clusterrole binding as they are not namespaced.
 */}}
-{{- define "kubernetes-agent.podServiceAccountFullName" -}}
-{{- printf "%s-%s" ( include "kubernetes-agent.podServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- define "kubernetes-agent.scriptPodServiceAccountFullName" -}}
+{{- printf "%s-%s" ( include "kubernetes-agent.scriptPodServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create the name of the pod cluster role to use
 */}}
-{{- define "kubernetes-agent.podClusterRoleName" -}}
-{{- printf "%s-role" (include "kubernetes-agent.podServiceAccountFullName" .) }}
+{{- define "kubernetes-agent.scriptPodClusterRoleName" -}}
+{{- printf "%s-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
 Create the name of the pod cluster role for deleting pods
 */}}
-{{- define "kubernetes-agent.podDeleterClusterRoleName" -}}
-{{- printf "%s-delete-role" (include "kubernetes-agent.podServiceAccountFullName" .) }}
+{{- define "kubernetes-agent.scriptPodDeleterClusterRoleName" -}}
+{{- printf "%s-delete-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
 Create the name of the pod cluster role binding to use
 */}}
-{{- define "kubernetes-agent.podClusterRoleBindingName" -}}
-{{- printf "%s-binding" (include "kubernetes-agent.podServiceAccountFullName" .) }}
+{{- define "kubernetes-agent.scriptPodClusterRoleBindingName" -}}
+{{- printf "%s-binding" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
@@ -90,9 +90,9 @@ The name of the secret to store the authentication information (bearer token/api
 The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
-{{- if .Values.persistence.nfs.enabled }}
-{{- include "nfs.pvcName" . }}
-{{- else }}
+{{- if .Values.persistence.storageClassName }}
 {{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
+{{- else }}
+{{- include "nfs.pvcName" . }}
 {{- end }}
 {{- end }}

@@ -1,4 +1,4 @@
-{{- if not .Values.persistence.nfs.enabled }}
+{{- if .Values.persistence.storageClassName }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -8,11 +8,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  {{- if .Values.persistence.claim.volumeName }}
-  volumeName: {{ .Values.persistence.claim.volumeName | quote }}
-  {{- end }}
-  storageClassName: {{ required "persistence.claim.storageClassName is required when NFS is disabled" .Values.persistence.claim.storageClassName | quote }}
+  storageClassName: {{ .Values.persistence.storageClassName | quote }}
   resources:
     requests:
-      storage: {{ .Values.persistence.claim.size}}
+      storage: {{ .Values.persistence.size}}
 {{- end }} 
