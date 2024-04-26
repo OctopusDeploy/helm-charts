@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.0.0
+
+### Major Changes
+
+- 6350a9a: Version 1.0.0 release of the Octopus Kubernetes Agent helm chart
+
 ## 0.10.0
 
 ### Minor Changes
