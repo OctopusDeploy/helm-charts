@@ -26,6 +26,20 @@ should match snapshot:
             app.kubernetes.io/version: 8.1.1494
             helm.sh/chart: kubernetes-agent-1.0.0
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/os
+                        operator: In
+                        values:
+                          - linux
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                          - arm64
+                          - amd64
           containers:
             - env:
                 - name: ACCEPT_EULA
@@ -87,8 +101,6 @@ should match snapshot:
               volumeMounts:
                 - mountPath: /octopus
                   name: tentacle-home
-          nodeSelector:
-            kubernetes.io/os: linux
           serviceAccountName: octopus-agent-tentacle
           volumes:
             - name: tentacle-home
