@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.0.1
+
+### Patch Changes
+
+- 45486a4: Tighten affinity rules for NFS and tentacle pods to only run on linux/amd64 and linux/arm64 nodes
+
 ## 1.0.0
 
 ### Major Changes
