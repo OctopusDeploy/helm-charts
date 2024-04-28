@@ -2,11 +2,12 @@ apiVersion: v2
 name: kubernetes-agent
 description: A Helm chart for the Octopus Kubernetes Agent
 home: "https://octopus.com"
-sources: ["https://github.com/OctopusDeploy/helm-charts"]
+sources:
+  - "https://github.com/OctopusDeploy/helm-charts"
 maintainers:
-- name: "Octopus Deploy"
-  email: "support@octopus.com"
-  url: "https://octopus.com"
+  - name: "Octopus Deploy"
+    email: "support@octopus.com"
+    url: "https://octopus.com"
 type: application
 version: "1.0.1"
 appVersion: "8.1.1507"
