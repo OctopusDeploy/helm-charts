@@ -7,17 +7,19 @@ A Helm chart for the Octopus Kubernetes Agent
 
 **Homepage:** <https://octopus.com>
 
+## Maintainers
 
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Octopus Deploy | <support@octopus.com> | <https://octopus.com> |
 
 ## Source Code
 
 * <https://github.com/OctopusDeploy/helm-charts>
 
-
-
 ## Values
 
-### Agent values 
+### Agent values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -33,8 +35,8 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverUrl | string | `""` | The URL of the target Octopus Server to register this agent with |
-| agent.serviceAccount.annotations | object | `{}` | Additional metadata to add to the agent pod & container |
-| agent.serviceAccount.name | string | `""` | The name of the service account for the agent pod |
+| agent.serviceAccount.annotations | object | `{}` | Annotations to add to the created service account`` |
+| agent.serviceAccount.name | string | Generates a name based on `targetName` | The name of the service account for the agent pod |
 | agent.space | string | `"Default"` | The Space to register the agent in |
 | agent.targetEnvironments | list | `[]` | The target environments to register the agent with |
 | agent.targetName | string | `""` | The name of the deployment target |
