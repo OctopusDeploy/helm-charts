@@ -1,6 +1,7 @@
 apiVersion: v2
 name: kubernetes-agent
 description: A Helm chart for the Octopus Kubernetes Agent
+home: "https://octopus.com"
 type: application
 version: "1.0.1"
 # This is the version number of the application being deployed. This version number should be

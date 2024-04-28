@@ -4,12 +4,17 @@ nameOverride: ""
 imagePullSecrets: []
 
 agent:
+  # -- Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal)
   acceptEula: "N"
+  # -- The name of the deployment target
   targetName: ""
+  # -- The URL of the Octopus Server to register this agent with
+  serverUrl: ""
+  # -- The polling communication URL of the target Octopus Server
   serverCommsAddress: ""
+  # -- A JWT bearer token used
   bearerToken: ""
   serverApiKey: ""
-  serverUrl: ""
   space: "Default"
   targetEnvironments: []
   targetRoles: []
@@ -86,6 +91,7 @@ persistence:
         tag: "0.0.2"
 
 # Used for integration testing to avoid registring with a real Octopus Server
+# @ignored
 testing:
   tentacle:
     configMap:
