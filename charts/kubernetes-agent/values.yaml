@@ -5,48 +5,76 @@ imagePullSecrets: []
 
 agent:
   # -- Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal)
+  # @section -- Agent values  
   acceptEula: "N"
   # -- The name of the deployment target
+  # @section -- Agent values  
   targetName: ""
-  # -- The URL of the Octopus Server to register this agent with
+  # -- The URL of the target Octopus Server to register this agent with
+  # @section -- Agent values  
   serverUrl: ""
   # -- The polling communication URL of the target Octopus Server
+  # @section -- Agent values  
   serverCommsAddress: ""
-  # -- A JWT bearer token used
+  # -- A JWT bearer token use to authenticate with the target Octopus Server
+  # @section -- Agent values  
   bearerToken: ""
-  serverApiKey: ""
+  # -- An Octopus Server API key use to authenticate with the target Octopus Server
+  # @section -- Agent values  
+  serverApiKey: ""  
+  # -- The Space to register the agent in
+  # @section -- Agent values  
   space: "Default"
-  targetEnvironments: []
-  targetRoles: []
-  logLevel: "Info"
+  # -- The target environments to register the agent with
+  # @section -- Agent values  
+  targetEnvironments: []  
+  # -- The target roles to register the agent with
+  # @section -- Agent values  
+  targetRoles: []  
+  # -- The log level of the agent. Logs are written to the pod logs as well as to file
+  # @section -- Agent values  
+  logLevel: "Info"  
+  # -- The default Kubernetes namespace for deployments
+  # @section -- Agent values  
   defaultNamespace: ""
+  # -- The number of polling TCP connections to open with the target Octopus Server
+  # @section -- Agent values  
   pollingConnectionCount: 5
 
+  # -- The image, repository &  to use for the agent container
+  # @section -- Agent values  
   image:
     repository: octopusdeploy/kubernetes-tentacle
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
     tag: "8.1.1507"
    
-  serviceAccount:
-    # The name of the service account to use.
-    # If not set a name is generated using the fullname template
+  serviceAccount:    
+    # -- The name of the service account for the agent pod
+    # @section -- Agent values  
     name: ""
-    # Annotations to add to the service account
-    annotations: {}
+    # -- Additional metadata to add to the agent pod & container
+    # @section -- Agent values  
+    annotations: {}  
   
+  # -- Additional metadata to add to the agent pod & container
+  # @section -- Agent values  
   metadata:
     annotations: {}
     labels: {}
 
+  # -- The resource limits and requests assigned to the agent container
+  # @section -- Agent values  
   resources: 
     requests:
       memory: "150Mi"
       cpu: "100m"
 
   debug:
+    # -- Disables automatic pod cleanup
+    # @section -- Agent values  
     disableAutoPodCleanup: false
 
+# @section -- Script pod values
 scriptPods:
   disruptionBudgetEnabled: true
 
@@ -64,6 +92,7 @@ scriptPods:
     clusterRole:
       rules: []
 
+# @section -- Persistence
 persistence:
   # if provided, will disable the NFS pod
   storageClassName: ""

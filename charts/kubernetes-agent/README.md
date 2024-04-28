@@ -9,36 +9,41 @@ A Helm chart for the Octopus Kubernetes Agent
 
 
 
+## Source Code
 
+* <https://github.com/OctopusDeploy/helm-charts>
 
 
 
 ## Values
 
+### Agent values 
+
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
-| agent.bearerToken | string | `""` |  |
-| agent.debug.disableAutoPodCleanup | bool | `false` |  |
-| agent.defaultNamespace | string | `""` |  |
-| agent.image.pullPolicy | string | `"IfNotPresent"` |  |
-| agent.image.repository | string | `"octopusdeploy/kubernetes-tentacle"` |  |
-| agent.image.tag | string | `"8.1.1507"` |  |
-| agent.logLevel | string | `"Info"` |  |
-| agent.metadata.annotations | object | `{}` |  |
-| agent.metadata.labels | object | `{}` |  |
-| agent.pollingConnectionCount | int | `5` |  |
-| agent.resources.requests.cpu | string | `"100m"` |  |
-| agent.resources.requests.memory | string | `"150Mi"` |  |
-| agent.serverApiKey | string | `""` |  |
-| agent.serverCommsAddress | string | `""` | The polling URL of the Octopus Server to register this agent with |
-| agent.serverUrl | string | `""` | The URL of the Octopus Server to register this agent with |
-| agent.serviceAccount.annotations | object | `{}` |  |
-| agent.serviceAccount.name | string | `""` |  |
-| agent.space | string | `"Default"` |  |
-| agent.targetEnvironments | list | `[]` |  |
+| agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
+| agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
+| agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-tentacle","tag":"8.1.1507"}` | The image, repository &  to use for the agent container |
+| agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
+| agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
+| agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
+| agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
+| agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
+| agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
+| agent.serverUrl | string | `""` | The URL of the target Octopus Server to register this agent with |
+| agent.serviceAccount.annotations | object | `{}` | Additional metadata to add to the agent pod & container |
+| agent.serviceAccount.name | string | `""` | The name of the service account for the agent pod |
+| agent.space | string | `"Default"` | The Space to register the agent in |
+| agent.targetEnvironments | list | `[]` | The target environments to register the agent with |
 | agent.targetName | string | `""` | The name of the deployment target |
-| agent.targetRoles | list | `[]` |  |
+| agent.targetRoles | list | `[]` | The target roles to register the agent with |
+
+### Other Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
 | imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | persistence.nfs.image.pullPolicy | string | `"IfNotPresent"` |  |
