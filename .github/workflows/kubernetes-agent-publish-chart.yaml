@@ -32,7 +32,7 @@ jobs:
         version: 'v3.13.2'
 
     - name: Parse Chart config
-      uses: pietrobolcato/action-read-yaml@1.0.0
+      uses: pietrobolcato/action-read-yaml@1.1.0
       id: read_chart_yaml
       with:
         config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
