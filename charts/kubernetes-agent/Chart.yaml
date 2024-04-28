@@ -4,13 +4,9 @@ description: A Helm chart for the Octopus Kubernetes Agent
 home: "https://octopus.com"
 sources: ["https://github.com/OctopusDeploy/helm-charts"]
 maintainers:
-  - name: "Octopus Deploy"
-    email: "support@octopus.com"
-    url: "https://octopus.com"
+- name: "Octopus Deploy"
+  email: "support@octopus.com"
+  url: "https://octopus.com"
 type: application
 version: "1.0.1"
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-# It is recommended to use it with quotes.
 appVersion: "8.1.1507"
