@@ -46,6 +46,10 @@ spec:
               value: {{ join "," .Values.agent.targetEnvironments | quote }}
             - name: "TargetRole"
               value: {{ join "," .Values.agent.targetRoles | quote }}
+            {{- with .Values.agent.machinePolicy }}
+            - name: "MachinePolicy"
+              value: {{ . | quote }}
+            {{- end }}
             - name: "DefaultNamespace"
               value: {{ .Values.agent.defaultNamespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"

@@ -13,6 +13,7 @@ agent:
   space: "Default"
   targetEnvironments: []
   targetRoles: []
+  machinePolicy: ""
   logLevel: "Info"
   defaultNamespace: ""
   pollingConnectionCount: 5
