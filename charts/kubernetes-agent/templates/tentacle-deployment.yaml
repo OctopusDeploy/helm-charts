@@ -46,7 +46,7 @@ spec:
               value: {{ join "," .Values.agent.targetEnvironments | quote }}
             - name: "TargetRole"
               value: {{ join "," .Values.agent.targetRoles | quote }}
-            {{- with .Values.agent.machinePolicy }}
+            {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
             {{- end }}
