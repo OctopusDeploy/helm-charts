@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.0.2
+
+### Patch Changes
+
+- 35a41d1: Update Tentacle reference to include NullReferenceException fix when finishedAt is null on the container state
+
 ## 1.0.1
 
 ### Patch Changes
