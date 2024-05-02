@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 1.0.3
+
+### Patch Changes
+
+- 55eeab8: Allow users to specify custom machine policy
+- 2b7eebf: Update Tentacle to 8.1.1567. Contains a number of improvements and bug fixes. Fixes a known issue when registering where environment slugs don't match the environment names
+
 ## 1.0.2
 
 ### Patch Changes
