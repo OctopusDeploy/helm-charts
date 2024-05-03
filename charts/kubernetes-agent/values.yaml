@@ -121,7 +121,7 @@ persistence:
   size: 10Gi
 
   nfs:
-    # -- The Repository, pullPolicy & tag to use for the NFS server
+    # -- The repository, pullPolicy & tag to use for the NFS server
     # @section -- Persistence
     image:
       repository: octopusdeploy/nfs-server
@@ -150,14 +150,14 @@ persistence:
       # @section -- Persistence
       # @default 10
       timeout_seconds: ""
-      # -- The Repository, pullPolicy & tag to use for the NFS watchdog
+      # -- The repository, pullPolicy & tag to use for the NFS watchdog
       # @section -- Persistence
       image:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.0.2"
 
-# Used for integration testing to avoid registring with a real Octopus Server
+# Used for integration testing to avoid registering with a real Octopus Server
 # @ignored
 testing:
   tentacle:
