@@ -5,8 +5,7 @@
     "description": "The official Octopus helm charts",
     "scripts": {
         "changeset": "changeset",
-        "ci:version": "run changeset version && install",
-        "generate-agent-docs": "docker run --rm --volume \".:/helm-docs\" jnorwood/helm-docs:latest -g charts/kubernetes-agent"
+        "ci:version": "run changeset version && install"
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.1"
