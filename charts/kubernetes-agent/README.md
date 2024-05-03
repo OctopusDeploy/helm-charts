@@ -1,6 +1,6 @@
 # kubernetes-agent
 
-![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1507](https://img.shields.io/badge/AppVersion-8.1.1507-informational?style=flat-square)
+![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1567](https://img.shields.io/badge/AppVersion-8.1.1567-informational?style=flat-square)
 
 A Helm chart for the Octopus Kubernetes Agent
 
@@ -26,8 +26,9 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-tentacle","tag":"8.1.1507"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-tentacle","tag":"8.1.1567"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
+| agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
