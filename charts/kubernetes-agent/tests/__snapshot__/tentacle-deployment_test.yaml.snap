@@ -7,8 +7,8 @@ should match snapshot:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.1.1507
-        helm.sh/chart: kubernetes-agent-1.0.1
+        app.kubernetes.io/version: 8.1.1567
+        helm.sh/chart: kubernetes-agent-1.0.3
       name: octopus-agent-tentacle
       namespace: NAMESPACE
     spec:
@@ -23,8 +23,8 @@ should match snapshot:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: octopus-agent
-            app.kubernetes.io/version: 8.1.1507
-            helm.sh/chart: kubernetes-agent-1.0.1
+            app.kubernetes.io/version: 8.1.1567
+            helm.sh/chart: kubernetes-agent-1.0.3
         spec:
           affinity:
             nodeAffinity:
@@ -67,7 +67,7 @@ should match snapshot:
                 - name: OCTOPUS__K8STENTACLE__HELMRELEASENAME
                   value: RELEASE-NAME
                 - name: OCTOPUS__K8STENTACLE__HELMCHARTVERSION
-                  value: 1.0.1
+                  value: 1.0.3
                 - name: OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP
                   value: "false"
                 - name: OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE
@@ -82,7 +82,7 @@ should match snapshot:
                   value: "5"
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: octopusdeploy/kubernetes-tentacle:8.1.1507
+              image: octopusdeploy/kubernetes-tentacle:8.1.1567
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:
