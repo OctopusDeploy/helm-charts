@@ -1,0 +1,25 @@
+name: Check that README.md is up-to-date
+
+on:
+  push:
+    paths:
+      - charts/kubernetes-agent/**
+      - .github/workflows/check-readme.yaml
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  check-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+      - name: Generate docs
+        working-directory: charts/kubernetes-agent
+        run: "npm run generate-agent-docs"
+      - name: Check readme is unchanged
+        run: |
+          echo "Ensuring readme is up-to-date"
+          echo "If this test fails, run 'npm run generate-agent-docs' locally and commit the changes"
+          git diff --exit-code
