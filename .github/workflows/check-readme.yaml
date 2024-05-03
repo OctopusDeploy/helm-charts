@@ -16,7 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v4
-      - uses: docker
       - name: Generate docs
         run: "npm run generate-agent-docs"
       - name: Check readme is unchanged
