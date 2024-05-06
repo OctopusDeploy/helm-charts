@@ -20,6 +20,7 @@ jobs:
         run: "npm run generate-agent-docs"
       - name: Check readme is unchanged
         run: |
+          git config --global core.autocrlf true
           echo "Ensuring readme is up-to-date"
           echo "If this test fails, run 'npm run generate-agent-docs' locally and commit the changes"
           git diff --exit-code
