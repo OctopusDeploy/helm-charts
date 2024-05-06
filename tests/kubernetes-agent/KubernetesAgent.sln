@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kubernetes-agent.Integration", "kubernetes-agent.Integration\kubernetes-agent.Integration.csproj", "{507FFD85-8DAF-46FF-846A-9DAEBFEBFAFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KubernetesAgent.IntegrationTests", "KubernetesAgent.IntegrationTests\KubernetesAgent.IntegrationTests.csproj", "{507FFD85-8DAF-46FF-846A-9DAEBFEBFAFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-namespace kubernetes_agent.Integration;
+namespace KubernetesAgent.Integration;
 
 public class UnitTest1
 {
