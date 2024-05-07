@@ -13,6 +13,7 @@ jobs:
   check-readme:
     runs-on: ubuntu-latest
     steps:
+      - run: git config --global core.autocrlf true
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v4
       - name: Generate docs
@@ -20,7 +21,6 @@ jobs:
         run: "npm run generate-agent-docs"
       - name: Check readme is unchanged
         run: |
-          git config --global core.autocrlf input
           echo "Ensuring readme is up-to-date"
           echo "If this test fails, run 'npm run generate-agent-docs' locally and commit the changes"
           git diff --exit-code
