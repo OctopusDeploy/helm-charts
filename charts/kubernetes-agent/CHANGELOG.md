@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.0.4
+
+### Patch Changes
+
+- 578d0c7: Update Tentacle to 8.1.1588. Introduces new `KubernetesScriptServiceV1`.
+
 ## 1.0.3
 
 ### Patch Changes
