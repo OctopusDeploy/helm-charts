@@ -1,5 +1,4 @@
 # kubernetes-agent
-
 ![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1588](https://img.shields.io/badge/AppVersion-8.1.1588-informational?style=flat-square)
 
 A Helm chart for the Octopus Kubernetes Agent
