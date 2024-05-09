@@ -91,7 +91,7 @@ spec:
                   key: bearer-token
             {{- end }}
             {{- if .Values.agent.certificate }}
-            - name: "TentacleCertificate"
+            - name: "TentacleCertificateBase64"
               valueFrom:
                 secretKeyRef: 
                   name: {{ include "kubernetes-agent.secrets.certificate" . }}
