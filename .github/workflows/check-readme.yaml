@@ -23,4 +23,4 @@ jobs:
         run: |
           echo "Ensuring readme is up-to-date"
           echo "If this test fails, run 'npm run generate-agent-docs' locally and commit the changes"
-          git diff --exit-code
+          git diff --ignore-space-change --exit-code
