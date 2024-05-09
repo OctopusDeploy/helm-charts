@@ -22,6 +22,9 @@ agent:
   # -- The polling communication URL of the target Octopus Server
   # @section -- Agent values
   serverCommsAddress: ""
+  # -- The subscription ID that is used to by the agent to identify itself with Octopus Server
+  # @section -- Agent values
+  serverSubscriptionId: ""
   # -- A JWT bearer token use to authenticate with the target Octopus Server
   # @section -- Agent values
   bearerToken: ""
@@ -37,6 +40,9 @@ agent:
   # -- The target roles to register the agent with
   # @section -- Agent values
   targetRoles: []
+  # -- A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server
+  # @section -- Agent values
+  certificate: ""
   # -- The machine policy to register the agent with
   # @section -- Agent values
   machinePolicyName: ""
