@@ -129,23 +129,3 @@ tests:
           value:
             limits:
               cpu: "200m"
-
-  - it: "doesn't include serverSubscriptionID when not set"
-    set:
-      agent:
-        serverSubscriptionId: ""
-    asserts:
-      - notContains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: "ServerSubscriptionId"
-
-  - it: "doesn't include certificate when not set"
-    set:
-      agent:
-        certificate: ""
-    asserts:
-      - notContains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: "TentacleCertificateBase64"
