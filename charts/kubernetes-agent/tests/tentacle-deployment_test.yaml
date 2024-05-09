@@ -129,3 +129,11 @@ tests:
           value:
             limits:
               cpu: "200m"
+              
+  - it: "truncates long names"
+    set:
+      nameOverride: thisisaverylongstring34087236548972364802367y408923604872341234141
+    asserts:
+      - equal:
+          path: metadata.name
+          value: thisisaverylongstring34087236548972364802367y408923604872341234-tentacle

@@ -1,0 +1,28 @@
+suite: "tentacle configuration"
+templates:
+- templates/tentacle-deployment.yaml
+tests:
+- it: "sets the pod polling connection count to the correct value with quoting"
+  set:
+    agent:
+      pollingConnectionCount: 100
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingConnectionCount')].value
+      value: "100"
+- it: "Accepts EULA"
+  set:
+    agent:
+      acceptEula: Y 
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'ACCEPT_EULA')].value
+      value: "Y"
+- it: "Sets target name"
+  set:
+    agent:
+      targetName: foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92 
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TargetName')].value
+      value: "foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92"
