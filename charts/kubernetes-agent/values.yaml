@@ -61,7 +61,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1588"
+    tag: "8.1.1617"
    
   serviceAccount:    
     # -- The name of the service account for the agent pod
