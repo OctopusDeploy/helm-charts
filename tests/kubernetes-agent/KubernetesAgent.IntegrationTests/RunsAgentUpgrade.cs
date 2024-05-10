@@ -71,5 +71,16 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
         {
             throw new Exception($"Script failed with exit code {result.ExitCode}");
         }
+        logger.Information("Upgrade executed successfully");
+        
+        scriptCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
+            .WithScriptBody("echo \"hello world\"")
+            .Build();
+        result = await client.ExecuteScript(scriptCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
+        if (result.ExitCode != 0)
+        {
+            throw new Exception($"Script failed with exit code {result.ExitCode}");
+        }
+        logger.Information("Script executed successfully");
     }
 }
