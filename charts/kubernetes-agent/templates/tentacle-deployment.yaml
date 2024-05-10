@@ -90,6 +90,17 @@ spec:
                   name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
                   key: bearer-token
             {{- end }}
+            {{- if .Values.agent.certificate }}
+            - name: "TentacleCertificateBase64"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "kubernetes-agent.secrets.certificate" . }}
+                  key: certificate
+            {{- end}}
+            {{- if .Values.agent.serverSubscriptionId }}
+            - name: "ServerSubscriptionId"
+              value: {{ .Values.agent.serverSubscriptionId | quote }}
+            {{- end}}
             - name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
               value: {{ .Values.persistence.size | quote }}
           {{- with .Values.agent.resources }}
