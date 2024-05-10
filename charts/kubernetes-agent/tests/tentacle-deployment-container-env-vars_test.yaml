@@ -10,6 +10,27 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingConnectionCount')].value
       value: "100"
+
+- it: "doesn't include serverSubscriptionID when not set"
+  set:
+    agent:
+      serverSubscriptionId: ""
+  asserts:
+    - notContains:
+        path: spec.template.spec.containers[0].env
+        content:
+          name: "ServerSubscriptionId"
+
+- it: "doesn't include certificate when not set"
+  set:
+    agent:
+      certificate: ""
+  asserts:
+    - notContains:
+        path: spec.template.spec.containers[0].env
+        content:
+          name: "TentacleCertificateBase64"
+
 - it: "Accepts EULA"
   set:
     agent:
@@ -18,6 +39,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'ACCEPT_EULA')].value
       value: "Y"
+      
 - it: "Sets target name (untruncated)"
   set:
     agent:
@@ -26,6 +48,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetName')].value
       value: foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92
+
 - it: "Sets server comms address (Halibut port)"
   set:
     agent:
@@ -34,6 +57,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'ServerCommsAddress')].value
       value: http://blahblah.ocoputs.app:10943
+
 - it: "Sets server URL"
   set:
     agent:
@@ -42,6 +66,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'ServerUrl')].value
       value: http://blahblah.ocoputs.app
+
 - it: "Sets Space"
   set:
     agent:
@@ -50,6 +75,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'Space')].value
       value: "Modern Deployments"
+
 - it: "Sets target environments"
   set:
     agent:
@@ -58,6 +84,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetEnvironment')].value
       value: "dev,pre-prod,prod"
+
 - it: "Sets target roles"
   set:
     agent:
@@ -66,6 +93,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetEnvironment')].value
       value: "web,admin"
+
 - it: "Sets machine policy if specified"
   set:
     agent:
@@ -74,10 +102,12 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'MachinePolicy')].value
       value: "foobar"
+
 - it: "No machine policy if not specified"
   asserts:
   - notExists:
       path: spec.template.spec.containers[0].env[?(@.name == 'MachinePolicy')]
+
 - it: "Sets default Namespace"
   set:
     agent:
@@ -86,6 +116,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'DefaultNamespace')].value
       value: "octopus-agent-blah"
+
 - it: "Sets auto cleanup"
   set:
     agent:
@@ -95,6 +126,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP')].value
       value: "true"
+
 - it: "Sets log level"
   set:
     agent:
@@ -103,6 +135,7 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__TENTACLE__LOGLEVEL')].value
       value: "Verbose"
+
 - it: "Sets server API key if specified"
   set:
     nameOverride: the-agent-name-lobster
@@ -115,6 +148,7 @@ tests:
         secretKeyRef:
           key: api-key
           name: the-agent-name-lobster-tentacle-server-auth
+
 - it: "Sets bearer token if specified"
   set:
     nameOverride: the-agent-name-lobster
