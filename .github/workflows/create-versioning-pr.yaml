@@ -71,6 +71,14 @@ jobs:
         git commit -m "Update chart version in Kubernetes agent test snapshots"
       if: steps.changesets.outputs.hasChangesets == 'true'
 
+    - name: 'Update version in Readme'
+      working-directory: charts/kubernetes-agent
+      run: |
+        npm run generate-agent-docs
+        git add README.md
+        git commit -m "Update chart version in Kubernetes agent readme"
+      if: steps.changesets.outputs.hasChangesets == 'true'
+
     - name: 'Push changes'
       run: |
         git push --set-upstream origin changeset-release/main
