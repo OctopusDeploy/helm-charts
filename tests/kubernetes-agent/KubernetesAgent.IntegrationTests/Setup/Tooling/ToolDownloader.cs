@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using KubernetesAgent.Integration.Setup.Common;
 
 namespace KubernetesAgent.Integration.Setup.Tooling;

@@ -1,7 +1,5 @@
-﻿using System.Formats.Tar;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using System.Runtime.InteropServices;
-using KubernetesAgent.Integration.Setup.Common;
 using KubernetesAgent.Integration.Setup.Common.Extraction;
 
 namespace KubernetesAgent.Integration.Setup.Tooling;

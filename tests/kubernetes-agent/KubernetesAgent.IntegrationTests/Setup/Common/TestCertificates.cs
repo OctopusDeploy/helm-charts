@@ -1,6 +1,4 @@
-using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using Octopus.Tentacle.Kubernetes.Tests.Integration.Support;
 
 namespace KubernetesAgent.Integration.Setup.Common
 {

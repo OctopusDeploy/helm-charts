@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using KubernetesAgent.Integration.Setup.Common;
-using Newtonsoft.Json;
-using Octopus.Client.Extensions;
 using Octopus.Tentacle.Kubernetes.Tests.Integration.Support;
 
 namespace KubernetesAgent.Integration.Setup;
@@ -19,7 +17,6 @@ public class KubernetesClusterInstaller : IDisposable
     readonly ILogger logger;
 
     public string KubeConfigPath => Path.Combine(tempDir.Directory.FullName, kubeConfigName);
-    public string ClusterName => clusterName;
 
     public KubernetesClusterInstaller(TemporaryDirectory tempDirectory, string kindExePath, string helmExePath, string kubeCtlPath, ILogger logger)
     {
@@ -29,7 +26,7 @@ public class KubernetesClusterInstaller : IDisposable
         this.kubeCtlPath = kubeCtlPath;
         this.logger = logger;
 
-        clusterName = $"tentacleint-{DateTime.Now:yyyyMMddhhmmss}";
+        clusterName = $"helm-octopus-agent-int-{DateTime.Now:yyyyMMddhhmmss}";
         kubeConfigName = $"{clusterName}.config";
     }
 
@@ -57,7 +54,7 @@ public class KubernetesClusterInstaller : IDisposable
 
         await SetLocalhostRouting();
         
-        await InstallNfsCsiDriver();
+        InstallNfsCsiDriver();
     }
 
     async Task SetLocalhostRouting()
@@ -92,7 +89,7 @@ public class KubernetesClusterInstaller : IDisposable
         return filePath;
     }
 
-    async Task InstallNfsCsiDriver()
+    void InstallNfsCsiDriver()
     {
         var installArgs = BuildNfsCsiDriverInstallArguments();
         var result = ProcessRunner.RunWithLogger(helmExePath, tempDir, logger, installArgs);

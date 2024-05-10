@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Concurrent;
-using Halibut.Diagnostics;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Octopus.Diagnostics;
 using ILog = Octopus.Diagnostics.ILog;
 

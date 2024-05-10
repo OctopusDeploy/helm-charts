@@ -58,7 +58,7 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
              {agentInstaller.AgentName} \
              /tmp/{packageName}
              """;
-        var scriptCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
+        var upgradeHelmChartCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
             .WithScriptBody($"cp ./{packageName} /tmp/{packageName} && {helmUpgradeScript}")
             .WithScriptFile(new ScriptFile(packageName, DataStream.FromBytes(packageBytes)))
             .Build();
@@ -69,17 +69,17 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
             logger.Information("Script completed");
         }
         var testLogger = new TestLogger(logger);
-        var result = await client.ExecuteScript(scriptCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
+        var result = await client.ExecuteScript(upgradeHelmChartCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
         if (result.ExitCode != 0)
         {
             throw new Exception($"Script failed with exit code {result.ExitCode}");
         }
         logger.Information("Upgrade executed successfully");
         
-        scriptCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
+        var runHelloWorldCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
             .WithScriptBody("echo \"hello world\"")
             .Build();
-        result = await client.ExecuteScript(scriptCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
+        result = await client.ExecuteScript(runHelloWorldCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
         if (result.ExitCode != 0)
         {
             throw new Exception($"Script failed with exit code {result.ExitCode}");
