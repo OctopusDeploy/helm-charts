@@ -94,16 +94,6 @@ public class KubernetesClusterInstaller : IDisposable
 
     async Task InstallNfsCsiDriver()
     {
-        //we need to perform a repo update in helm first
-        // var exitCode = SilentProcessRunner.ExecuteCommand(
-        //     helmPath,
-        //     "repo update",
-        //     tempDir.DirectoryPath,
-        //     logger.Debug,
-        //     logger.Information,
-        //     logger.Error,
-        //     CancellationToken.None);
-
         var installArgs = BuildNfsCsiDriverInstallArguments();
         var result = ProcessRunner.RunWithLogger(helmExePath, tempDir, logger, installArgs);
 

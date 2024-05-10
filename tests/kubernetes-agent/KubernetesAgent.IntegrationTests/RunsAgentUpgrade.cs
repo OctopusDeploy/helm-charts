@@ -16,9 +16,6 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
     readonly TemporaryDirectory workingDirectory = new(Directory.CreateTempSubdirectory());
     KubernetesClusterInstaller clusterInstaller = null!;
     KubernetesAgentInstaller agentInstaller  = null!;
-    string kindExePath = null!;
-    string helmExePath = null!;
-    string kubeCtlPath = null!;
     TentacleClient client = null!;
     
     public async Task InitializeAsync()
@@ -29,7 +26,7 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
             .CreateLogger();
 
         var requiredToolDownloader = new RequiredToolDownloader(workingDirectory, logger);
-        (kindExePath, helmExePath, kubeCtlPath) = await requiredToolDownloader.DownloadRequiredTools(CancellationToken.None);
+        var (kindExePath, helmExePath, kubeCtlPath) = await requiredToolDownloader.DownloadRequiredTools(CancellationToken.None);
         clusterInstaller =  new KubernetesClusterInstaller(workingDirectory, kindExePath, helmExePath, kubeCtlPath, logger);
         await clusterInstaller.Install();
         agentInstaller = new KubernetesAgentInstaller(workingDirectory , helmExePath, kubeCtlPath, clusterInstaller.KubeConfigPath, logger);
