@@ -87,6 +87,13 @@ The name of the secret to store the authentication information (bearer token/api
 {{- end }}
 
 {{/*
+The name of the secret to store the agent's base64 certificate
+*/}}
+{{- define "kubernetes-agent.secrets.certificate" -}}
+{{- printf "%s-tentacle-certificate" ( include "kubernetes-agent.name" . ) }}
+{{- end }}
+
+{{/*
 The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
