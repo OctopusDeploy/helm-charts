@@ -39,25 +39,7 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
         workingDirectory.Dispose();
         await Task.CompletedTask;
     }
-
-    [Fact]
-    public async Task CanRunCommandOnExistingAgent()
-    {
-        var scriptCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString()).WithScriptBody("echo 'Hello World'").Build();
-        void onScriptStatusResponseReceived(ScriptExecutionStatus res) => logger.Information("{Output}", res.ToString());
-        async Task onScriptCompleted(CancellationToken t)
-        {
-            await Task.CompletedTask; 
-            logger.Information("Script completed");
-        }
-        var testLogger = new TestLogger(logger);
-        var result = await client.ExecuteScript(scriptCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
-        if (result.ExitCode != 0)
-        {
-            throw new Exception($"Script failed with exit code {result.ExitCode}");
-        }
-    }
-
+    
     [Fact]
     public async Task CanUpgradeAgentAndRunCommand()
     {
