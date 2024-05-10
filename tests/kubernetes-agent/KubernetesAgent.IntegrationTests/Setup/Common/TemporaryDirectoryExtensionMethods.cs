@@ -1,5 +1,4 @@
 using System.Reflection;
-using Octopus.Tentacle.Kubernetes.Tests.Integration.Support;
 
 namespace KubernetesAgent.Integration.Setup.Common
 {

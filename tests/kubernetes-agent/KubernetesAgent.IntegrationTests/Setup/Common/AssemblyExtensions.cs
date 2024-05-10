@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
-namespace Octopus.Tentacle.Kubernetes.Tests.Integration.Support;
+namespace KubernetesAgent.Integration.Setup.Common;
 
 public static class AssemblyExtensions
 {

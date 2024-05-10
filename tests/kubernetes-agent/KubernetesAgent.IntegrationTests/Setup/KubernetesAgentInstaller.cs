@@ -9,7 +9,6 @@ using Octopus.Tentacle.Client;
 using Octopus.Tentacle.Client.Retries;
 using Octopus.Tentacle.Client.Scripts;
 using Octopus.Tentacle.Contracts.Observability;
-using Octopus.Tentacle.Kubernetes.Tests.Integration.Support;
 
 namespace KubernetesAgent.Integration.Setup;
 

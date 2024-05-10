@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using KubernetesAgent.Integration.Setup.Common;
-using Octopus.Tentacle.Kubernetes.Tests.Integration.Support;
 
 namespace KubernetesAgent.Integration.Setup;
 
