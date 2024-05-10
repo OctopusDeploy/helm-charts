@@ -17,6 +17,9 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
     KubernetesClusterInstaller clusterInstaller = null!;
     KubernetesAgentInstaller agentInstaller  = null!;
     TentacleClient client = null!;
+    string kindExePath = null!;
+    string helmExePath = null!;
+    string kubeCtlPath = null!;
     
     public async Task InitializeAsync()
     {
@@ -26,7 +29,7 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
             .CreateLogger();
 
         var requiredToolDownloader = new RequiredToolDownloader(workingDirectory, logger);
-        var (kindExePath, helmExePath, kubeCtlPath) = await requiredToolDownloader.DownloadRequiredTools(CancellationToken.None);
+        (kindExePath, helmExePath, kubeCtlPath) = await requiredToolDownloader.DownloadRequiredTools(CancellationToken.None);
         clusterInstaller =  new KubernetesClusterInstaller(workingDirectory, kindExePath, helmExePath, kubeCtlPath, logger);
         await clusterInstaller.Install();
         agentInstaller = new KubernetesAgentInstaller(workingDirectory , helmExePath, kubeCtlPath, clusterInstaller.KubeConfigPath, logger);
@@ -43,7 +46,7 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
     [Fact]
     public async Task CanUpgradeAgentAndRunCommand()
     {
-        var helmPackage = HelmChartBuilder.BuildHelmChart(workingDirectory);
+        var helmPackage = HelmChartBuilder.BuildHelmChart(helmExePath, workingDirectory);
         var helmPackageFile = new FileInfo(helmPackage);
         var packageName = helmPackageFile.Name;
         var packageBytes = await File.ReadAllBytesAsync(helmPackage);

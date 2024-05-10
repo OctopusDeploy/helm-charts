@@ -5,12 +5,12 @@ namespace KubernetesAgent.Integration
 {
     public static class HelmChartBuilder
     {
-        public static string BuildHelmChart(TemporaryDirectory directory)
+        public static string BuildHelmChart(string helmExecutable, TemporaryDirectory directory)
         {
             var version = GetChartVersion();
             version = $"{version}-{DateTime.Now:yyyymdHHmmss}";
             
-            var packager = ProcessRunner.Run("helm", directory, GetHelmChartPackageArguments(version));
+            var packager = ProcessRunner.Run(helmExecutable, directory, GetHelmChartPackageArguments(version));
             if (packager.ExitCode != 0)
             {
                 throw new Exception($"Failed to package Helm chart. Exit code: {packager.ExitCode}");
