@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.1.0
+
+### Minor Changes
+
+- 673cc6d: Added new optional values to allow configuring a server subscription id and a custom certificate
+
 ## 1.0.4
 
 ### Patch Changes
