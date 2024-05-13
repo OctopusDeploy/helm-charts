@@ -13,12 +13,43 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
+        <PackageReference Include="Octopus.Client" Version="14.3.1381" />
+        <PackageReference Include="Octopus.Tentacle.Client" Version="8.1.1594" />
+        <PackageReference Include="Serilog" Version="3.1.1" />
+        <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
         <PackageReference Include="xunit" Version="2.5.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Setup\linux-network-routing.yaml" />
+      <EmbeddedResource Include="Setup\linux-network-routing.yaml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Setup\docker-desktop-network-routing.yaml" />
+      <EmbeddedResource Include="Setup\docker-desktop-network-routing.yaml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Setup\kind-config.yaml" />
+      <EmbeddedResource Include="Setup\kind-config.yaml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Setup\agent-values.yaml" />
+      <EmbeddedResource Include="Setup\agent-values.yaml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Setup\Common\Certificates\Server.pfx" />
+      <EmbeddedResource Include="Setup\Common\Certificates\Server.pfx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Setup\Common\Certificates\Tentacle.pfx" />
+      <EmbeddedResource Include="Setup\Common\Certificates\Tentacle.pfx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
