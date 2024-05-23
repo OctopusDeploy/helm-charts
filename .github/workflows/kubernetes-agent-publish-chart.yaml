@@ -18,6 +18,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+      
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -26,9 +27,26 @@ jobs:
               - charts/kubernetes-agent/**
               - .github/workflows/kubernetes-agent-publish-chart.yaml
 
-  version_and_package:
+  test:
     needs: paths_filter
-    if: needs.paths_filter.outputs.result == 'false'
+    if: needs.paths_filter.outputs.result == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.13.2
+
+    - name: Run Helm unit tests
+      run: |
+        helm plugin install https://github.com/helm-unittest/helm-unittest.git
+        helm unittest charts/kubernetes-agent
+
+  version_and_package:
+    needs: test
     runs-on: ubuntu-latest
     outputs:
       CHART_VERSION: ${{ steps.version.outputs.CHART_VERSION  }}
