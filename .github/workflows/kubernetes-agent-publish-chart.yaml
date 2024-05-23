@@ -4,20 +4,31 @@ on:
   push:
     branches:
     - main
-    paths:
-    - charts/kubernetes-agent/**
-    - .github/workflows/kubernetes-agent-publish-chart.yaml
 
   pull_request:
     branches:
     - '*'
-    paths:
-    - charts/kubernetes-agent/**
-    - .github/workflows/kubernetes-agent-publish-chart.yaml
 
 
 jobs:
+  paths_filter:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.filter.outputs.kubernetes-agent }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            kubernetes-agent:
+              - charts/kubernetes-agent/**
+              - .github/workflows/kubernetes-agent-publish-chart.yaml
+
   version_and_package:
+    needs: paths_filter
+    if: needs.paths_filter.outputs.result == 'true'
     runs-on: ubuntu-latest
     outputs:
       CHART_VERSION: ${{ steps.version.outputs.CHART_VERSION  }}
