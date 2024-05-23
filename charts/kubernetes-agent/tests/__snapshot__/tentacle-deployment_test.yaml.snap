@@ -46,6 +46,8 @@ should match snapshot:
                   value: "N"
                 - name: TargetName
                   value: ""
+                - name: ServerCommsAddresses
+                  value: ""
                 - name: ServerCommsAddress
                   value: ""
                 - name: ServerUrl
