@@ -28,7 +28,7 @@ jobs:
 
   version_and_package:
     needs: paths_filter
-    if: needs.paths_filter.outputs.result == 'true'
+    if: needs.paths_filter.outputs.result == 'false'
     runs-on: ubuntu-latest
     outputs:
       CHART_VERSION: ${{ steps.version.outputs.CHART_VERSION  }}
