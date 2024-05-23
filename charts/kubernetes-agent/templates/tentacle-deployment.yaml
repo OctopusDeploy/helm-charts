@@ -36,6 +36,8 @@ spec:
               value: {{ .Values.agent.acceptEula | quote }}
             - name: "TargetName"
               value: {{ .Values.agent.targetName | quote }}
+            - name: "ServerCommsAddresses"
+              value: {{ join "," .Values.agent.serverCommsAddresses | quote }}
             - name: "ServerCommsAddress"
               value: {{ .Values.agent.serverCommsAddress | quote }}
             - name: "ServerUrl"
