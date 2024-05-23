@@ -45,6 +45,22 @@ jobs:
         helm plugin install https://github.com/helm-unittest/helm-unittest.git
         helm unittest charts/kubernetes-agent
 
+  check-readme:
+    needs: paths_filter
+    if: needs.paths_filter.outputs.result == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+      - name: Generate docs
+        working-directory: charts/kubernetes-agent
+        run: "npm run generate-agent-docs"
+      - name: Check readme is unchanged
+        run: |
+          echo "Ensuring readme is up-to-date"
+          echo "If this test fails, run 'npm run generate-agent-docs' locally and commit the changes"
+          git diff --ignore-cr-at-eol -w --exit-code
+
   version_and_package:
     needs: test
     runs-on: ubuntu-latest
