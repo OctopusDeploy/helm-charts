@@ -17,7 +17,7 @@ octopus:
   licenseKeyBase64:
 
   # The Octopus admin email
-  email:
+  email: "coolemail@google.com"
 
   # The task cap to set for the new node. If blank the default of 5 is used.
   taskCap:
