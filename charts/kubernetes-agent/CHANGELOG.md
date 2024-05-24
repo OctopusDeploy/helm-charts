@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.1.1
+
+### Patch Changes
+
+- 1b1d00d: Update Tentacle to 8.1.1682. Adds support for Calamari Package Retention on Kubernetes Agent
+
 ## 1.1.0
 
 ### Minor Changes
