@@ -22,7 +22,7 @@ agent:
   # -- The polling communication URL of the target Octopus Server
   # @section -- Agent values
   serverCommsAddress: ""
-  # -- The polling communication URLs of the target Octopus Servers when running in HA
+  # -- The polling communication URLs of the target Octopus Servers when running in High Availability (HA)
   # @section -- Agent values
   serverCommsAddresses: []
   # -- The subscription ID that is used to by the agent to identify itself with Octopus Server
