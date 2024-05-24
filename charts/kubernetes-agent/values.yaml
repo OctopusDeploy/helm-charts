@@ -55,6 +55,22 @@ agent:
   # -- The default Kubernetes namespace for deployments
   # @section -- Agent values
   defaultNamespace: ""
+  # -- Register the agent with more than one isolated Octopus Server instances/clusters.<br/>
+  # Properties are:<br/>
+  # - targetName<br/>
+  # - serverUrl<br/>
+  # - serverCommsAddresses<br/>
+  # - serverSubscriptionId<br/>
+  # - bearerToken<br/>
+  # - serverApiKey<br/>
+  # - space<br/>
+  # - targetEnvironments<br/>
+  # - targetRoles<br/>
+  # - certificate<br/>
+  # - machinePolicyName<br/>
+  # - defaultNamespace<br/>
+  # @section -- Agent values
+  additionalIsolatedOctopusServerInstances: []
   # -- The number of polling TCP connections to open with the target Octopus Server
   # @section -- Agent values
   pollingConnectionCount: 5

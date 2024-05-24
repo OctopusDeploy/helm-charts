@@ -24,6 +24,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
+| agent.additionalIsolatedOctopusServerInstances | list | `[]` | Register the agent with more than one isolated Octopus Server instances/clusters.<br/> Properties are:<br/> - targetName<br/> - serverUrl<br/> - serverCommsAddresses<br/> - serverSubscriptionId<br/> - bearerToken<br/> - serverApiKey<br/> - space<br/> - targetEnvironments<br/> - targetRoles<br/> - certificate<br/> - machinePolicyName<br/> - defaultNamespace<br/> |
 | agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
 | agent.certificate | string | `""` | A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |

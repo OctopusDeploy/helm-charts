@@ -54,6 +54,8 @@ spec:
             {{- end }}
             - name: "DefaultNamespace"
               value: {{ .Values.agent.defaultNamespace | quote }}
+            - name: "AdditionalServerInstances"
+              value: {{ .Values.agent.additionalIsolatedOctopusServerInstances | toJson | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
               value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
