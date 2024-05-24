@@ -1,5 +1,5 @@
 ---
-"kubernetes-agent": patch
+"kubernetes-agent": minor
 ---
 
 Add HA Server configuration support
