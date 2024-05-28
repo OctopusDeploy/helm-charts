@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 1.2.0
+
+### Minor Changes
+
+- e9933f2: Add ConfigMap for agent metrics persistence
+- 62d9919: Add HA Server configuration support
+
 ## 1.1.1
 
 ### Patch Changes
