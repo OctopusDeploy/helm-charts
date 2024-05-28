@@ -16,6 +16,8 @@ jobs:
     if: ${{ !startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart') }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
     
     - name: setup-node
       uses: actions/setup-node@v4
