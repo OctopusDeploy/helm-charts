@@ -22,6 +22,9 @@ agent:
   # -- The polling communication URL of the target Octopus Server
   # @section -- Agent values
   serverCommsAddress: ""
+  # -- The polling communication URLs of the target Octopus Servers when running in High Availability (HA)
+  # @section -- Agent values
+  serverCommsAddresses: []
   # -- The subscription ID that is used to by the agent to identify itself with Octopus Server
   # @section -- Agent values
   serverSubscriptionId: ""
@@ -61,7 +64,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1682"
+    tag: "8.1.1693"
    
   serviceAccount:    
     # -- The name of the service account for the agent pod
