@@ -35,7 +35,7 @@ spec:
             exec:
               command:
                 - cat
-                - /scripts/initialised
+                - /etc/octopus/initialized
             initialDelaySeconds: 10
             periodSeconds: 2
           env:
