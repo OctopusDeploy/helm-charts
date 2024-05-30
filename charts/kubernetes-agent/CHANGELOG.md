@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 1.3.0
+
+### Minor Changes
+
+- f311893: Bump Tentacle version to 8.1.1717 to include ability to update ServerCommsAddresses via `helm upgrade` command
+- a9bac56: Add startupProbe to Kubernetes tentacle container to ensure helm upgrade command doesn't return successful when the tentacle failed to initialise. This includes a Tentacle version bump to 8.1.1727.
+
 ## 1.2.0
 
 ### Minor Changes
