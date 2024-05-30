@@ -91,6 +91,13 @@ should match snapshot:
                 requests:
                   cpu: 100m
                   memory: 150Mi
+              startupProbe:
+                exec:
+                  command:
+                    - cat
+                    - /scripts/initialised
+                initialDelaySeconds: 10
+                periodSeconds: 2
               volumeMounts:
                 - mountPath: /octopus
                   name: tentacle-home
