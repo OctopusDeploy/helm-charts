@@ -31,6 +31,13 @@ spec:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
+          startupProbe:
+            exec:
+              command:
+                - cat
+                - /scripts/initialised
+            initialDelaySeconds: 10
+            periodSeconds: 2
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}
