@@ -36,7 +36,7 @@ spec:
               command:
                 - cat
                 - /etc/octopus/initialized
-            initialDelaySeconds: 10
+            initialDelaySeconds: 2
             periodSeconds: 2
           env:
             - name: "ACCEPT_EULA"
