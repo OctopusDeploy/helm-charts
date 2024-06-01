@@ -45,6 +45,8 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.targetEnvironments | list | `[]` | The target environments to register the agent with |
 | agent.targetName | string | `""` | The name of the deployment target |
 | agent.targetRoles | list | `[]` | The target roles to register the agent with |
+| agent.targetTenantTags | list | `[]` | The target tenant tags to register the agent with |
+| agent.targetTenants | list | `[]` | The target tenants to register the agent with |
 
 ### Persistence
 
