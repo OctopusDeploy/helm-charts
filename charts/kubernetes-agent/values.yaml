@@ -43,6 +43,12 @@ agent:
   # -- The target roles to register the agent with
   # @section -- Agent values
   targetRoles: []
+  # -- The target tenants to register the agent with
+  # @section -- Agent values
+  targetTenants: []
+  # -- The target tenant tags to register the agent with
+  # @section -- Agent values
+  targetTenantTags: []
   # -- A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server
   # @section -- Agent values
   certificate: ""
