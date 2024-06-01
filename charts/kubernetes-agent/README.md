@@ -46,7 +46,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.targetName | string | `""` | The name of the deployment target |
 | agent.targetRoles | list | `[]` | The target roles to register the agent with |
 | agent.targetTenantTags | list | `[]` | The target tenant tags to register the agent with |
-| agent.targetTenantedDeploymentParticipation | string | "Untenanted" | The target tenanted deployment participation to register with the agent. Can be "Untenanted", "TenantedOrUntenanted" or "Tenanted". |
+| agent.targetTenantedDeploymentParticipation | string | `"Untenanted"` | Can be "Untenanted", "TenantedOrUntenanted" or "Tenanted". |
 | agent.targetTenants | list | `[]` | The target tenants to register the agent with |
 
 ### Persistence
