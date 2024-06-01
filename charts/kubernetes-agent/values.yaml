@@ -43,7 +43,7 @@ agent:
   # @section -- Agent values
   targetRoles: []
   # -- The target tenanted deployment participation to register with the agent. Can be "Untenanted", "TenantedOrUntenanted" or "Tenanted".
-  # @section == Agent values
+  # @section -- Agent values
   # @default -- "Untenanted"
   targetTenantedDeploymentParticipation: "Untenanted"
   # -- The target tenants to register the agent with
