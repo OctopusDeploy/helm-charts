@@ -62,6 +62,8 @@ should match snapshot:
                   value: ""
                 - name: TargetTenantTag
                   value: ""
+                - name: TargetTenantedDeploymentParticipation
+                  value: Untenanted
                 - name: DefaultNamespace
                   value: ""
                 - name: OCTOPUS__K8STENTACLE__NAMESPACE
