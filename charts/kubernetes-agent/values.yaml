@@ -42,7 +42,7 @@ agent:
   # -- The target roles to register the agent with
   # @section -- Agent values
   targetRoles: []
-  # -- Can be "Untenanted", "TenantedOrUntenanted" or "Tenanted".
+  # -- Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`.
   # @section -- Agent values
   targetTenantedDeploymentParticipation: "Untenanted"
   # -- The target tenants to register the agent with
