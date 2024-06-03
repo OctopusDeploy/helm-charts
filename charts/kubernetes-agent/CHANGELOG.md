@@ -1,5 +1,18 @@
 # kubernetes-agent
 
+## 1.4.0
+
+### Minor Changes
+
+- 3b236a0: Rename kubernetes-tentacle container image to kubernetes-agent-tentacle.
+  - This includes upgrading the Tentacle version to 8.1.1757 which is published with the new container name.
+  - The updated Tentacle version also allows Server to verify that the right number of ServerCommsAddresses have been provided to the Agent in scenarios where Octopus Server is running in an High Availability configuration.
+- e2546e0: Add Tenant and Tenant Tag support
+
+### Patch Changes
+
+- 54de125: Bump Tentacle version to 8.1.1734 to include a fix for a memory leak when StartScript fails.
+
 ## 1.3.0
 
 ### Minor Changes
