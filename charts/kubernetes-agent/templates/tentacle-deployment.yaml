@@ -55,6 +55,12 @@ spec:
               value: {{ join "," .Values.agent.targetEnvironments | quote }}
             - name: "TargetRole"
               value: {{ join "," .Values.agent.targetRoles | quote }}
+            - name: "TargetTenant"
+              value: {{ join "," .Values.agent.targetTenants | quote }}
+            - name: "TargetTenantTag"
+              value: {{ join "," .Values.agent.targetTenantTags | quote }}
+            - name: "TargetTenantedDeploymentParticipation"
+              value: {{ .Values.agent.targetTenantedDeploymentParticipation | quote }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}

@@ -1,6 +1,6 @@
 # kubernetes-agent
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1757](https://img.shields.io/badge/AppVersion-8.1.1757-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1758](https://img.shields.io/badge/AppVersion-8.1.1758-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 A Helm chart for the Octopus Kubernetes Agent
 
@@ -28,7 +28,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.certificate | string | `""` | A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1757"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1758"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -45,6 +45,9 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.targetEnvironments | list | `[]` | The target environments to register the agent with |
 | agent.targetName | string | `""` | The name of the deployment target |
 | agent.targetRoles | list | `[]` | The target roles to register the agent with |
+| agent.targetTenantTags | list | `[]` | The target tenant tags to register the agent with |
+| agent.targetTenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
+| agent.targetTenants | list | `[]` | The target tenants to register the agent with |
 
 ### Persistence
 
