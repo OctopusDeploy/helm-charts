@@ -62,7 +62,7 @@ agent:
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
   image:
-    repository: octopusdeploy/kubernetes-tentacle
+    repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
     tag: "8.1.1734"
    
