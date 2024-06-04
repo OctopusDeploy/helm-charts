@@ -5,5 +5,5 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 rules:
 - apiGroups: ["*"]
-  resources: ["pods", "pods/log", "configmaps", "secrets"]
+  resources: ["pods", "pods/log", "pods/exec", "configmaps", "secrets"]
   verbs: ["*"]
