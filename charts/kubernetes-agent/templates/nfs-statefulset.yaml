@@ -46,7 +46,7 @@ spec:
           volumeMounts:
           - mountPath: /octopus
             name: octopus-volume
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 31
       volumes:
         - name: octopus-volume
           emptyDir:
