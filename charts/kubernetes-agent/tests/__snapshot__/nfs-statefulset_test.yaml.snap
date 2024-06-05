@@ -50,7 +50,7 @@ should match snapshot:
               volumeMounts:
                 - mountPath: /octopus
                   name: octopus-volume
-          terminationGracePeriodSeconds: 30
+          terminationGracePeriodSeconds: 31
           volumes:
             - emptyDir:
                 sizeLimit: 10Gi
