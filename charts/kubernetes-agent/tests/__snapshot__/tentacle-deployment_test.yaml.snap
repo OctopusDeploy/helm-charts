@@ -88,6 +88,8 @@ should match snapshot:
                   value: /octopus/Applications
                 - name: TentaclePollingConnectionCount
                   value: "5"
+                - name: OCTOPUS__K9STENTACLE__ENABLEMETRICSCAPTURE
+                  value: "true"
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
               image: octopusdeploy/kubernetes-agent-tentacle:8.1.1758
