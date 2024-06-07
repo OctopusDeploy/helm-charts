@@ -91,6 +91,8 @@ spec:
               value: "/octopus/Applications"
             - name: "TentaclePollingConnectionCount"
               value: {{ .Values.agent.pollingConnectionCount | quote }}
+            - name: "OCTOPUS__K9STENTACLE__ENABLE_METRICS_CAPTURE"
+              value: {{ .Values.agent.enableMetricsCapture| quote }}
             {{- if .Values.agent.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:
