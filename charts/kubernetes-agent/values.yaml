@@ -67,6 +67,10 @@ agent:
   # @section -- Agent values
   pollingConnectionCount: 5
 
+  # -- True if events should be scraped and added to the metrics config map
+  # @section -- Agent values
+  enableMetricsCapture: true
+
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
   image:
