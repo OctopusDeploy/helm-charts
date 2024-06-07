@@ -13,5 +13,6 @@ should match snapshot:
           - pods/log
           - configmaps
           - secrets
+          - events
         verbs:
           - '*'
