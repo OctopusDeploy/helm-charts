@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 1.5.0
+
+### Minor Changes
+
+- 0705c16: Add value to enable/disable scraping of events for agent metrics
+- 28417de: Add permission for octopus user to raise kubernetes events
+
 ## 1.4.0
 
 ### Minor Changes
