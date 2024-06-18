@@ -42,7 +42,7 @@ spec:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}
             - name: "TargetName"
-              value: {{ .Values.agent.targetName | quote }}
+              value: {{ .Values.agent.name | quote }}
             - name: "ServerCommsAddresses"
               value: {{ join "," .Values.agent.serverCommsAddresses | quote }}
             - name: "ServerCommsAddress"
@@ -52,21 +52,21 @@ spec:
             - name: "Space"
               value: {{ .Values.agent.space | quote }}
             - name: "TargetEnvironment"
-              value: {{ join "," .Values.agent.targetEnvironments | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.environments | quote }}
             - name: "TargetRole"
-              value: {{ join "," .Values.agent.targetRoles | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.roles | quote }}
             - name: "TargetTenant"
-              value: {{ join "," .Values.agent.targetTenants | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.tenants | quote }}
             - name: "TargetTenantTag"
-              value: {{ join "," .Values.agent.targetTenantTags | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.tenantTags | quote }}
             - name: "TargetTenantedDeploymentParticipation"
-              value: {{ .Values.agent.targetTenantedDeploymentParticipation | quote }}
+              value: {{ .Values.agent.deploymentTarget.tenantedDeploymentParticipation | quote }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
             {{- end }}
             - name: "DefaultNamespace"
-              value: {{ .Values.agent.defaultNamespace | quote }}
+              value: {{ .Values.agent.deploymentTarget.defaultNamespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
               value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"

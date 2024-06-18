@@ -43,7 +43,7 @@ tests:
 - it: "Sets target name (untruncated)"
   set:
     agent:
-      targetName: foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92 
+        name: foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92 
   asserts:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetName')].value
@@ -79,7 +79,8 @@ tests:
 - it: "Sets target environments"
   set:
     agent:
-      targetEnvironments: [dev, pre-prod, prod]
+      deploymentTarget:
+        environments: [dev, pre-prod, prod]
   asserts:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetEnvironment')].value
@@ -88,10 +89,11 @@ tests:
 - it: "Sets target roles"
   set:
     agent:
-      targetEnvironments: [web, admin]
+      deploymentTarget:
+        roles: [web, admin]
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'TargetEnvironment')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'TargetRole')].value
       value: "web,admin"
 
 - it: "Sets machine policy if specified"
@@ -111,7 +113,8 @@ tests:
 - it: "Sets default Namespace"
   set:
     agent:
-      defaultNamespace: octopus-agent-blah
+      deploymentTarget:
+        defaultNamespace: octopus-agent-blah
   asserts:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'DefaultNamespace')].value
