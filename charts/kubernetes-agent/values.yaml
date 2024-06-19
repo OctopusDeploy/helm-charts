@@ -51,11 +51,11 @@ agent:
   # -- True if events should be scraped and added to the metrics config map
   # @section -- Agent values
   enableMetricsCapture: true
+  # -- Can be `DeploymentTarget` or `Worker`.
+  # @section -- Agent values
+  registerAs: ""
   
   deploymentTarget:
-    # -- Registers the agent as an Octopus deployment target if set to true
-    # @section -- Agent as Deployment Target values
-    isRegistered: false
     # -- The deployment target environments to register the agent with
     # @section -- Agent as Deployment Target values
     environments: [ ]
@@ -76,9 +76,6 @@ agent:
     defaultNamespace: ""
     
   worker:
-    # -- Registers the agent as an Octopus worker if set to true
-    # @section -- Agent as Worker
-    isRegistered: false
     # -- The worker pool IDs to associate with the worker
     # @section -- Agent as Worker
     workerPoolIds: [ ]

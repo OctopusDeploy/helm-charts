@@ -34,6 +34,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
 | agent.name | string | `""` | The name of the agent |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
+| agent.registerAs | string | `""` | Can be `DeploymentTarget` or `Worker`. |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
@@ -50,7 +51,6 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | agent.deploymentTarget.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.deploymentTarget.environments | list | `[]` | The deployment target environments to register the agent with |
-| agent.deploymentTarget.isRegistered | bool | `false` | Registers the agent as an Octopus deployment target if set to true |
 | agent.deploymentTarget.roles | list | `[]` | The deployment target roles to register the agent with |
 | agent.deploymentTarget.tenantTags | list | `[]` | The deployment target tenant tags to register the agent with |
 | agent.deploymentTarget.tenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
@@ -60,7 +60,6 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| agent.worker.isRegistered | bool | `false` | Registers the agent as an Octopus worker if set to true |
 | agent.worker.workerPoolIds | list | `[]` | The worker pool IDs to associate with the worker |
 
 ### Persistence
