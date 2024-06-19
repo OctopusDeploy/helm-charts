@@ -64,6 +64,8 @@ should match snapshot:
                   value: ""
                 - name: TargetTenantedDeploymentParticipation
                   value: Untenanted
+                - name: WorkerPoolIds
+                  value: ""
                 - name: DefaultNamespace
                   value: ""
                 - name: OCTOPUS__K8STENTACLE__NAMESPACE
