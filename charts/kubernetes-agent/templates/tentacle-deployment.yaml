@@ -51,6 +51,8 @@ spec:
               value: {{ .Values.agent.serverUrl | quote }}
             - name: "Space"
               value: {{ .Values.agent.space | quote }}
+            - name: "RegisterAs"
+              value: {{ .Values.agent.registerAs | quote }}
             - name: "TargetEnvironment"
               value: {{ join "," .Values.agent.deploymentTarget.environments | quote }}
             - name: "TargetRole"

@@ -54,6 +54,8 @@ should match snapshot:
                   value: ""
                 - name: Space
                   value: Default
+                - name: RegisterAs
+                  value: ""
                 - name: TargetEnvironment
                   value: ""
                 - name: TargetRole

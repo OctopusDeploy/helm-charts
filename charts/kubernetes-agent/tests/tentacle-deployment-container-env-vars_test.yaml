@@ -75,6 +75,15 @@ tests:
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'Space')].value
       value: "Modern Deployments"
+      
+- it: "Sets registration choice"
+  set:
+    agent:
+      registerAs: "DeploymentTarget"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'RegisterAs')].value
+        value: "DeploymentTarget"
 
 - it: "Sets target environments"
   set:
