@@ -59,9 +59,11 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
              /tmp/{packageName}
              """;
         var upgradeHelmChartCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
+            .IsRawScript()
             .WithScriptBody($"cp ./{packageName} /tmp/{packageName} && {helmUpgradeScript}")
             .WithScriptFile(new ScriptFile(packageName, DataStream.FromBytes(packageBytes)))
             .Build();
+
         void onScriptStatusResponseReceived(ScriptExecutionStatus res) => logger.Information("{Output}", res.ToString());
         async Task onScriptCompleted(CancellationToken t)
         {
