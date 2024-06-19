@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.6.0
+
+### Minor Changes
+
+- b5be5dd: Upgrade kubernetes-agent-tentacle to 8.1.1819 to support more reliable server-driven upgrades
+
 ## 1.5.0
 
 ### Minor Changes
