@@ -56,17 +56,17 @@ should match snapshot:
                   value: Default
                 - name: DeploymentTargetEnabled
                   value: "false"
-                - name: DeploymentTargetEnvironments
+                - name: TargetEnvironment
                   value: ""
-                - name: DeploymentTargetTags
+                - name: TargetRole
                   value: ""
-                - name: DeploymentTargetTenants
+                - name: TargetTenant
                   value: ""
-                - name: DeploymentTargetTenantTags
+                - name: TargetTenantTag
                   value: ""
-                - name: DeploymentTargetDefaultNamespace
+                - name: DefaultNamespace
                   value: ""
-                - name: DeploymentTargetTenantedDeploymentParticipation
+                - name: TargetTenantedDeploymentParticipation
                   value: Untenanted
                 - name: WorkerEnabled
                   value: "false"

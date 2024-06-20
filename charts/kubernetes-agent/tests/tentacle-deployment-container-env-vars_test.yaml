@@ -94,7 +94,7 @@ tests:
           environments: [dev, pre-prod, prod]
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetEnvironments')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'TargetEnvironment')].value
       value: "dev,pre-prod,prod"
 
 - it: "Sets deployment target tags"
@@ -105,7 +105,7 @@ tests:
           tags: [web, admin]
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetTags')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'TargetRole')].value
       value: "web,admin"
 
 - it: "Sets worker pool ids"
@@ -141,7 +141,7 @@ tests:
           defaultNamespace: octopus-agent-blah
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetDefaultNamespace')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'DefaultNamespace')].value
       value: "octopus-agent-blah"
 
 - it: "Sets auto cleanup"

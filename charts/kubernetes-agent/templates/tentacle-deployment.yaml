@@ -53,17 +53,17 @@ spec:
               value: {{ .Values.agent.space | quote }}
             - name: "DeploymentTargetEnabled"
               value: {{ .Values.agent.deploymentTarget.enabled | quote }}
-            - name: "DeploymentTargetEnvironments"
+            - name: "TargetEnvironment"
               value: {{ join "," .Values.agent.deploymentTarget.initial.environments | quote }}
-            - name: "DeploymentTargetTags"
+            - name: "TargetRole"
               value: {{ join "," .Values.agent.deploymentTarget.initial.tags | quote }}
-            - name: "DeploymentTargetTenants"
+            - name: "TargetTenant"
               value: {{ join "," .Values.agent.deploymentTarget.initial.tenants | quote }}
-            - name: "DeploymentTargetTenantTags"
+            - name: "TargetTenantTag"
               value: {{ join "," .Values.agent.deploymentTarget.initial.tenantTags | quote }}
-            - name: "DeploymentTargetDefaultNamespace"
+            - name: "DefaultNamespace"
               value: {{ .Values.agent.deploymentTarget.initial.defaultNamespace | quote }}
-            - name: "DeploymentTargetTenantedDeploymentParticipation"
+            - name: "TargetTenantedDeploymentParticipation"
               value: {{ .Values.agent.deploymentTarget.initial.tenantedDeploymentParticipation | quote }}
             - name: "WorkerEnabled"
               value: {{ .Values.agent.worker.enabled | quote }}
