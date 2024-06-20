@@ -111,7 +111,7 @@ octopus:
     https:
     # the proxy to use for http and/or https requests, in case the above two values are not defined
     all:
-    # a comma-separated list of hostnames that should be excluded from proxying
+    # an array of hostnames that should be excluded from proxying
     excludedHostnames: []
   
   # For minimum resource indications see https://octopus.com/docs/administration/managing-infrastructure/performance#minimum-requirements 
