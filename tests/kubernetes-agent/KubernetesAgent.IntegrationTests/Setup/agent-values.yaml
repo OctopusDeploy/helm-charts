@@ -6,8 +6,10 @@ agent:
   bearerToken: "this-is-a-fake-bearer-token"
   space: "Default"
   deploymentTarget:
-    environments: ["development"]
-    roles: ["testing-cluster"]
+    enabled: true
+    initial:
+      environments: ["development"]
+      tags: ["testing-cluster"]
   
 testing:
   tentacle:

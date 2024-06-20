@@ -44,7 +44,7 @@ should match snapshot:
             - env:
                 - name: ACCEPT_EULA
                   value: "N"
-                - name: TargetName
+                - name: AgentName
                   value: ""
                 - name: ServerCommsAddresses
                   value: ""
@@ -54,21 +54,23 @@ should match snapshot:
                   value: ""
                 - name: Space
                   value: Default
-                - name: RegisterAs
+                - name: DeploymentTargetEnabled
+                  value: "false"
+                - name: DeploymentTargetEnvironments
                   value: ""
-                - name: TargetEnvironment
+                - name: DeploymentTargetTags
                   value: ""
-                - name: TargetRole
+                - name: DeploymentTargetTenants
                   value: ""
-                - name: TargetTenant
+                - name: DeploymentTargetTenantTags
                   value: ""
-                - name: TargetTenantTag
+                - name: DeploymentTargetDefaultNamespace
                   value: ""
-                - name: TargetTenantedDeploymentParticipation
+                - name: DeploymentTargetTenantedDeploymentParticipation
                   value: Untenanted
+                - name: WorkerEnabled
+                  value: "false"
                 - name: WorkerPoolIds
-                  value: ""
-                - name: DefaultNamespace
                   value: ""
                 - name: OCTOPUS__K8STENTACLE__NAMESPACE
                   value: NAMESPACE

@@ -34,7 +34,6 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
 | agent.name | string | `""` | The name of the agent |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
-| agent.registerAs | string | `""` | Can be `DeploymentTarget` or `Worker`. |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
@@ -49,18 +48,30 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| agent.deploymentTarget.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
-| agent.deploymentTarget.environments | list | `[]` | The deployment target environments to register the agent with |
-| agent.deploymentTarget.roles | list | `[]` | The deployment target roles to register the agent with |
-| agent.deploymentTarget.tenantTags | list | `[]` | The deployment target tenant tags to register the agent with |
-| agent.deploymentTarget.tenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
-| agent.deploymentTarget.tenants | list | `[]` | The deployment target tenants to register the agent with |
+| agent.deploymentTarget.enabled | bool | `false` | Set to register the agent as a Deployment Target using the provided initial values |
 
-### Agent as Worker
+### Agent as Deployment Target initial values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| agent.worker.workerPoolIds | list | `[]` | The worker pool IDs to associate with the worker |
+| agent.deploymentTarget.initial.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
+| agent.deploymentTarget.initial.environments | list | `[]` | The deployment target environments to register the agent with |
+| agent.deploymentTarget.initial.tags | list | `[]` | The deployment target roles to register the agent with |
+| agent.deploymentTarget.initial.tenantTags | list | `[]` | The deployment target tenant tags to register the agent with |
+| agent.deploymentTarget.initial.tenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
+| agent.deploymentTarget.initial.tenants | list | `[]` | The deployment target tenants to register the agent with |
+
+### Agent as Worker values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| agent.worker.enabled | bool | `false` | Set to register the agent as a Worker using the provided initial values |
+
+### Agent as Worker initial values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| agent.worker.initial.workerPoolIds | list | `[]` | The worker pool IDs to associate with the worker |
 
 ### Persistence
 

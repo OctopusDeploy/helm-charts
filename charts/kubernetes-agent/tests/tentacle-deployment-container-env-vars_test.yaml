@@ -40,13 +40,13 @@ tests:
       path: spec.template.spec.containers[0].env[?(@.name == 'ACCEPT_EULA')].value
       value: "Y"
       
-- it: "Sets target name (untruncated)"
+- it: "Sets agent name (untruncated)"
   set:
     agent:
         name: foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92 
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'TargetName')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'AgentName')].value
       value: foolalar3927ghr923ry923ryh8923h8f932h8f9h329f8h32fh3oafh932hrf923hf932h8f92
 
 - it: "Sets server comms address (Halibut port)"
@@ -76,40 +76,44 @@ tests:
       path: spec.template.spec.containers[0].env[?(@.name == 'Space')].value
       value: "Modern Deployments"
       
-- it: "Sets registration choice"
+- it: "Sets deployment target enabled"
   set:
     agent:
-      registerAs: "DeploymentTarget"
+      deploymentTarget:
+        enabled: true
   asserts:
     - equal:
-        path: spec.template.spec.containers[0].env[?(@.name == 'RegisterAs')].value
-        value: "DeploymentTarget"
+        path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetEnabled')].value
+        value: "true"
 
-- it: "Sets target environments"
+- it: "Sets deployment target environments"
   set:
     agent:
       deploymentTarget:
-        environments: [dev, pre-prod, prod]
+        initial:
+          environments: [dev, pre-prod, prod]
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'TargetEnvironment')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetEnvironments')].value
       value: "dev,pre-prod,prod"
 
-- it: "Sets target roles"
+- it: "Sets deployment target tags"
   set:
     agent:
       deploymentTarget:
-        roles: [web, admin]
+        initial:
+          tags: [web, admin]
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'TargetRole')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetTags')].value
       value: "web,admin"
 
 - it: "Sets worker pool ids"
   set:
     agent:
       worker:
-        workerPoolIds: [WorkerPools-3, MyAwesomeWorkerPool]
+        initial:
+          workerPoolIds: [WorkerPools-3, MyAwesomeWorkerPool]
   asserts:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'WorkerPoolIds')].value
@@ -129,14 +133,15 @@ tests:
   - notExists:
       path: spec.template.spec.containers[0].env[?(@.name == 'MachinePolicy')]
 
-- it: "Sets default Namespace"
+- it: "Sets deployment target default Namespace"
   set:
     agent:
       deploymentTarget:
-        defaultNamespace: octopus-agent-blah
+        initial:
+          defaultNamespace: octopus-agent-blah
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'DefaultNamespace')].value
+      path: spec.template.spec.containers[0].env[?(@.name == 'DeploymentTargetDefaultNamespace')].value
       value: "octopus-agent-blah"
 
 - it: "Sets auto cleanup"

@@ -51,34 +51,39 @@ agent:
   # -- True if events should be scraped and added to the metrics config map
   # @section -- Agent values
   enableMetricsCapture: true
-  # -- Can be `DeploymentTarget` or `Worker`.
-  # @section -- Agent values
-  registerAs: ""
   
   deploymentTarget:
-    # -- The deployment target environments to register the agent with
+    # -- Set to register the agent as a Deployment Target using the provided initial values
     # @section -- Agent as Deployment Target values
-    environments: [ ]
-    # -- The deployment target roles to register the agent with
-    # @section -- Agent as Deployment Target values
-    roles: [ ]
-    # -- Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`.
-    # @section -- Agent as Deployment Target values
-    tenantedDeploymentParticipation: "Untenanted"
-    # -- The deployment target tenants to register the agent with
-    # @section -- Agent as Deployment Target values
-    tenants: [ ]
-    # -- The deployment target tenant tags to register the agent with
-    # @section -- Agent as Deployment Target values
-    tenantTags: [ ]
-    # -- The default Kubernetes namespace for deployments
-    # @section -- Agent as Deployment Target values
-    defaultNamespace: ""
+    enabled: false
+    initial:
+      # -- The deployment target environments to register the agent with
+      # @section -- Agent as Deployment Target initial values
+      environments: [ ]
+      # -- The deployment target roles to register the agent with
+      # @section -- Agent as Deployment Target initial values
+      tags: [ ]
+      # -- Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`.
+      # @section -- Agent as Deployment Target initial values
+      tenantedDeploymentParticipation: "Untenanted"
+      # -- The deployment target tenants to register the agent with
+      # @section -- Agent as Deployment Target initial values
+      tenants: [ ]
+      # -- The deployment target tenant tags to register the agent with
+      # @section -- Agent as Deployment Target initial values
+      tenantTags: [ ]
+      # -- The default Kubernetes namespace for deployments
+      # @section -- Agent as Deployment Target initial values
+      defaultNamespace: ""
     
   worker:
-    # -- The worker pool IDs to associate with the worker
-    # @section -- Agent as Worker
-    workerPoolIds: [ ]
+    # -- Set to register the agent as a Worker using the provided initial values
+    # @section -- Agent as Worker values
+    enabled: false
+    initial:
+      # -- The worker pool IDs to associate with the worker
+      # @section -- Agent as Worker initial values
+      workerPoolIds: [ ]
 
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
