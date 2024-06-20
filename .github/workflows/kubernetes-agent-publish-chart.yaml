@@ -109,47 +109,35 @@ jobs:
         name: '${{ steps.version.outputs.PACKAGE_NAME }}'
         path: '${{ github.workspace }}/kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
 
-  publish_artifactory:
+  publish_to_octopus:
     runs-on: ubuntu-latest
     # We publish to Artifactory if this is not a main commit, or if it is, that it's a versioning commit
     if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart')) }}
     needs: version_and_package
     steps:
-    - name: Install Helm
-      uses: azure/setup-helm@v3
-      with:
-        version: 'v3.13.2'
-
     - name: Download packaged chart
       uses: actions/download-artifact@v3
       with:
         name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
 
-    - name: Login to Artifactory
-      run: echo '${{ secrets.ARTIFACTORY_PASSWORD }}' | helm registry login ${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }} -u '${{ secrets.ARTIFACTORY_USERNAME }}' --password-stdin
-
-    - name: Push Chart to Artifactory
-      run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://${{ secrets.ARTIFACTORY_DOCKER_REPO_HOSTNAME }}
-
-  publish_dockerhub:
-    runs-on: ubuntu-latest
-    # We only publish to docker hub if this is commit to main and the comment is a chart versioning commit
-    if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart') }}
-    needs: version_and_package
-    steps:
-    - name: Install Helm
-      uses: azure/setup-helm@v3
+    - name: Login to Octopus
+      uses: OctopusDeploy/login@v1
       with:
-        version: 'v3.13.2'
+        server: ${{ secrets.OCTOPUS_SERVER }}
+        service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT }}
 
-    - name: Download packaged chart
-      uses: actions/download-artifact@v3
+    - name: Push helm chart to Octopus Deploy 🐙
+      uses: OctopusDeploy/push-package-action@v3
       with:
-        name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
+        space: 'modern-deployments'
+        packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
+        overwrite_mode: IgnoreIfExists
 
-    - name: Login to DockerHub
-      run: echo '${{ secrets.DOCKERHUB_TOKEN }}' | helm registry login registry-1.docker.io -u '${{ secrets.DOCKERHUB_USERNAME }}' --password-stdin
-
-    - name: Push Chart to DockerHub
-      run: helm push '${{ needs.version_and_package.outputs.PACKAGE_NAME }}' oci://registry-1.docker.io/octopusdeploy
-
+    - name: Create a release in Octopus Deploy 🐙
+      uses: OctopusDeploy/create-release-action@v3
+      with:
+        space: 'modern-deployments'
+        project: 'octopus-kubernetes-agent'
+        release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
+        package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
+        ignore_existing: true
