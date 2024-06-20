@@ -105,6 +105,22 @@ spec:
                 {{- end }}
                   - name: OCTOPUS_INSTALLED_VIA_HELM 
                     value: "true"
+                {{- if .Values.octopus.proxy.http }}
+                  - name: HTTP_PROXY
+                    value: {{ .Values.octopus.proxy.http | quote }}
+                {{- end }}
+                {{- if .Values.octopus.proxy.https }}
+                  - name: HTTPS_PROXY
+                    value: {{ .Values.octopus.proxy.https | quote }}
+                {{- end }}
+                {{- if .Values.octopus.proxy.all }}
+                  - name: ALL_PROXY
+                    value: {{ .Values.octopus.proxy.all | quote }}
+                {{- end }}
+                {{- if .Values.octopus.proxy.none }}
+                  - name: NO_PROXY
+                    value: {{ .Values.octopus.proxy.none | quote }}
+                {{- end }}
                 ports:
                   - containerPort: 8080
                     name: web

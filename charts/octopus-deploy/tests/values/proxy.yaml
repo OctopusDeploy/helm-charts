@@ -1,0 +1,4 @@
+octopus:
+  proxy:
+    http: http://myproxy.com
+    https: https://myproxy.com

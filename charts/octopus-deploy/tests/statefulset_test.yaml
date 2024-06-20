@@ -72,3 +72,21 @@ tests:
             name: "ACCEPT_EULA"
             value: "N"
         documentIndex: 0
+  
+  - it: proxy is configurable
+    values:
+      - ./values/required.yaml
+      - ./values/proxy.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: HTTP_PROXY
+            value: http://myproxy.com
+        documentIndex: 0
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: HTTPS_PROXY
+            value: https://myproxy.com
+        documentIndex: 0

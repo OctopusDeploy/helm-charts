@@ -104,6 +104,16 @@ octopus:
     annotations: {}
     labels: {}
 
+  proxy:
+    # the proxy to use for http requests
+    http:
+    # the proxy to use for https requests
+    https:
+    # the proxy to use for http and/or https requests, in case the above two values are not defined
+    all:
+    # a comma-separated list of hostnames that should be excluded from proxying
+    none:
+  
   # For minimum resource indications see https://octopus.com/docs/administration/managing-infrastructure/performance#minimum-requirements 
   resources: {} 
   #  requests:
