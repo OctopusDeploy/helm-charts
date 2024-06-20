@@ -78,15 +78,19 @@ tests:
       - ./values/required.yaml
       - ./values/proxy.yaml
     asserts:
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: HTTP_PROXY
-            value: http://myproxy.com
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'HTTP_PROXY')].value
+          value: http://myproxy.com
         documentIndex: 0
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: HTTPS_PROXY
-            value: https://myproxy.com
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'HTTPS_PROXY')].value
+          value: https://myproxy.com
+        documentIndex: 0
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'ALL_PROXY')].value
+          value: https://myproxy.com
+        documentIndex: 0
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'NO_PROXY')].value
+          value: example.com,example2.com
         documentIndex: 0

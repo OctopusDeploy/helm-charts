@@ -2,3 +2,7 @@ octopus:
   proxy:
     http: http://myproxy.com
     https: https://myproxy.com
+    all: https://myproxy.com
+    excludedHostnames:
+      - example.com
+      - example2.com
