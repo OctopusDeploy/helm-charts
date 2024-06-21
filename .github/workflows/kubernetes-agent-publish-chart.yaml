@@ -93,8 +93,8 @@ jobs:
         if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
         then
             # underscores in branches make for illegal version-string, replace with "-"
-            cleansed_branch=`echo ${{TasksThatAreBlockedByUpgradeToTheSameEnvironment}} | sed s/_/-/g`
-            pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
+            cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
+            pre_release="-${cleansed_branch}-$(date +'%Y%m%d%H%M%S')"
         fi
 
         full_version="$chart_version$pre_release"
