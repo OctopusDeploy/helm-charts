@@ -18,6 +18,14 @@ agent:
   # -- The URL of the target Octopus Server to register this agent with
   # @section -- Agent values
   serverUrl: ""
+
+  # -- If the Octopus Server has a custom certificate, it's public key can be added here
+  # @section -- Agent values
+  serverCA:
+    # -- The base64-encoded public certificate used by Octopus Server
+    # @section -- Agent values
+    encodedCertificate: ""
+
   # -- The polling communication URL of the target Octopus Server
   # @section -- Agent values
   serverCommsAddress: ""
