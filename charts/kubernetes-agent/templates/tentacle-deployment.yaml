@@ -67,8 +67,8 @@ spec:
               value: {{ .Values.agent.deploymentTarget.initial.tenantedDeploymentParticipation | quote }}
             - name: "WorkerEnabled"
               value: {{ .Values.agent.worker.enabled | quote }}
-            - name: "WorkerPoolIds"
-              value: {{ join "," .Values.agent.worker.initial.workerPoolIds | quote }}
+            - name: "WorkerPools"
+              value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}

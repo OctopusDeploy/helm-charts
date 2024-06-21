@@ -108,15 +108,15 @@ tests:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetRole')].value
       value: "web,admin"
 
-- it: "Sets worker pool ids"
+- it: "Sets worker pools"
   set:
     agent:
       worker:
         initial:
-          workerPoolIds: [WorkerPools-3, MyAwesomeWorkerPool]
+          workerPools: [WorkerPools-3, MyAwesomeWorkerPool]
   asserts:
     - equal:
-        path: spec.template.spec.containers[0].env[?(@.name == 'WorkerPoolIds')].value
+        path: spec.template.spec.containers[0].env[?(@.name == 'WorkerPools')].value
         value: "WorkerPools-3,MyAwesomeWorkerPool"
 
 - it: "Sets machine policy if specified"

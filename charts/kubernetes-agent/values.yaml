@@ -81,9 +81,9 @@ agent:
     # @section -- Agent as Worker values
     enabled: false
     initial:
-      # -- The worker pool IDs to associate with the worker
+      # -- The worker pools to associate with the worker
       # @section -- Agent as Worker initial values
-      workerPoolIds: [ ]
+      workerPools: [ ]
 
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
