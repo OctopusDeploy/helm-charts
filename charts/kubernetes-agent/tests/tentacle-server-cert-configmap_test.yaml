@@ -9,8 +9,7 @@ tests:
   - it: "matches snapshot"
     set:
       agent:
-        serverCA:
-          encodedCertificate: "dGVzdC10ZXh0"
+        serverCertificate: "dGVzdC10ZXh0"
     asserts:
       - matchSnapshot: {}
 

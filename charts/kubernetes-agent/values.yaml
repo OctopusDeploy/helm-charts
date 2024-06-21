@@ -18,14 +18,9 @@ agent:
   # -- The URL of the target Octopus Server to register this agent with
   # @section -- Agent values
   serverUrl: ""
-
-  # -- If the Octopus Server has a custom certificate, it's public key can be added here
+  # -- The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format.
   # @section -- Agent values
-  serverCA:
-    # -- The base64-encoded public certificate used by Octopus Server
-    # @section -- Agent values
-    encodedCertificate: ""
-
+  serverCertificate: ""
   # -- The polling communication URL of the target Octopus Server
   # @section -- Agent values
   serverCommsAddress: ""
@@ -59,7 +54,7 @@ agent:
   # -- The target tenant tags to register the agent with
   # @section -- Agent values
   targetTenantTags: []
-  # -- A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server
+  # -- A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server
   # @section -- Agent values
   certificate: ""
   # -- The machine policy to register the agent with

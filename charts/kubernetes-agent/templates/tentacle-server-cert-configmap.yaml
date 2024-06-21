@@ -1,9 +1,9 @@
-{{- if .Values.agent.serverCA.encodedCertificate }}
+{{- if .Values.agent.serverCertificate }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: octopus-server-certificate
   namespace: {{ .Release.Namespace | quote }}
 data:
-  octopus-server-certificate.pem: {{ .Values.agent.serverCA.encodedCertificate | b64dec | quote }}
+  octopus-server-certificate.pem: {{ .Values.agent.serverCertificate | b64dec | quote }}
 {{- end }}

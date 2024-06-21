@@ -25,7 +25,7 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
 | agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
-| agent.certificate | string | `""` | A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server |
+| agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
@@ -36,8 +36,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
-| agent.serverCA | object | `{"encodedCertificate":""}` | If the Octopus Server has a custom certificate, it's public key can be added here |
-| agent.serverCA.encodedCertificate | string | `""` | The base64-encoded public certificate used by Octopus Server |
+| agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverCommsAddresses | list | `[]` | The polling communication URLs of the target Octopus Servers when running in High Availability (HA) |
 | agent.serverSubscriptionId | string | `""` | The subscription ID that is used to by the agent to identify itself with Octopus Server |

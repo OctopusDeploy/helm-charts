@@ -138,11 +138,10 @@ tests:
           path: metadata.name
           value: thisisaverylongstring34087236548972364802367y408923604872341234-tentacle
 
-  - it: "mounts octopus server certificate when encoded certificate provided"
+  - it: "mounts octopus server certificate when server certificate provided"
     set:
       agent:
-        serverCA:
-          encodedCertificate: "dGVzdC10ZXh0"
+        serverCertificate: "dGVzdC10ZXh0"
     asserts:
       - exists:
           path: spec.template.spec.volumes[1]
