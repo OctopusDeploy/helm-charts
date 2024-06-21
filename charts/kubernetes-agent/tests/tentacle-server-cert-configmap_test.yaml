@@ -1,0 +1,15 @@
+suite: tentacle configuration
+templates:
+  - templates/tentacle-server-cert-configmap.yaml
+tests:
+  - it: "is not created if no encodedCertificate is provided"
+    asserts:
+    - hasDocuments:
+        count: 0        
+  - it: "matches snapshot"
+    set:
+      agent:
+        serverCertificate: "dGVzdC10ZXh0"
+    asserts:
+      - matchSnapshot: {}
+

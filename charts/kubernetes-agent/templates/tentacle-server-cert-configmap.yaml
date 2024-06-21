@@ -1,0 +1,9 @@
+{{- if .Values.agent.serverCertificate }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: octopus-server-certificate
+  namespace: {{ .Release.Namespace | quote }}
+data:
+  octopus-server-certificate.pem: {{ .Values.agent.serverCertificate | b64dec | quote }}
+{{- end }}

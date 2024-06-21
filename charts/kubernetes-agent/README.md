@@ -1,10 +1,10 @@
 # kubernetes-agent
 
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1819](https://img.shields.io/badge/AppVersion-8.1.1819-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1838](https://img.shields.io/badge/AppVersion-8.1.1838-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 A Helm chart for the Octopus Kubernetes Agent
 
-**Homepage:** <https://octopus.com> 
+**Homepage:** <https://octopus.com>  
 **Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
 
 ## Maintainers
@@ -25,17 +25,18 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
 | agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
-| agent.certificate | string | `""` | A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server |
+| agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1819"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1838"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
+| agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverCommsAddresses | list | `[]` | The polling communication URLs of the target Octopus Servers when running in High Availability (HA) |
 | agent.serverSubscriptionId | string | `""` | The subscription ID that is used to by the agent to identify itself with Octopus Server |
