@@ -71,7 +71,7 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| agent.worker.initial.workerPoolIds | list | `[]` | The worker pool IDs to associate with the worker |
+| agent.worker.initial.workerPools | list | `[]` | The worker pools to associate with the worker |
 
 ### Persistence
 
