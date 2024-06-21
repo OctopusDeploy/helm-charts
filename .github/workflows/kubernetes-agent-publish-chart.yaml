@@ -97,17 +97,17 @@ jobs:
 
         full_version="$chart_version$pre_release"
 
-        echo "CHART_VERSION=$full_version" >> $GITHUB_ENV
+        echo "CHART_VERSION=$full_version" >> $GITHUB_OUTPUT
         echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
 
     - name: Package Chart
-      run: helm package './charts/kubernetes-agent' --version '${{ env.CHART_VERSION }}'
+      run: helm package './charts/kubernetes-agent' --version '${{ steps.version.outputs.CHART_VERSION }}'
 
     - uses: actions/upload-artifact@v3
       name: Upload packaged chart
       with:
         name: '${{ steps.version.outputs.PACKAGE_NAME }}'
-        path: '${{ github.workspace }}/kubernetes-agent-${{ env.CHART_VERSION }}.tgz'
+        path: '${{ github.workspace }}/kubernetes-agent-${{ steps.version.outputs.CHART_VERSION }}.tgz'
 
   publish_to_octopus:
     runs-on: ubuntu-latest
@@ -141,6 +141,6 @@ jobs:
       with:
         space: 'Modern Deployments'
         project: 'Octopus Kubernetes Agent'
-        release_number: ${{ env.CHART_VERSION }}
-        package_version: ${{ env.CHART_VERSION }}
+        release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
+        package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
         ignore_existing: true
