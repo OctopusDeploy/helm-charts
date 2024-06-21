@@ -123,8 +123,8 @@ jobs:
     - name: Login to Octopus
       uses: OctopusDeploy/login@v1
       with:
-        server: ${{ secrets.OCTOPUS_SERVER }}
-        service_account_id: ${{ vars.OCTOPUS_SERVICE_ACCOUNT }}
+        server: ${{ vars.OCTOPUS_SERVER }}
+        service_account_id: ${{ secrets.OCTOPUS_SERVICE_ACCOUNT }}
 
     - name: Push helm chart to Octopus Deploy 🐙
       uses: OctopusDeploy/push-package-action@v3
