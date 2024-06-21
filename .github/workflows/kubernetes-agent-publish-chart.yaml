@@ -132,15 +132,15 @@ jobs:
     - name: Push helm chart to Octopus Deploy 🐙
       uses: OctopusDeploy/push-package-action@v3
       with:
-        space: 'modern-deployments'
+        space: 'Modern Deployments'
         packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
         overwrite_mode: IgnoreIfExists
 
     - name: Create a release in Octopus Deploy 🐙
       uses: OctopusDeploy/create-release-action@v3
       with:
-        space: 'modern-deployments'
-        project: 'octopus-kubernetes-agent'
+        space: 'Modern Deployments'
+        project: 'Octopus Kubernetes Agent'
         release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
         package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
         ignore_existing: true
