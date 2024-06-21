@@ -114,6 +114,9 @@ jobs:
     # We publish to Artifactory if this is not a main commit, or if it is, that it's a versioning commit
     if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart')) }}
     needs: version_and_package
+    permissions:
+      # You might need to add other permissions here like `contents: read` depending on what else your job needs to do
+      id-token: write # This is required to obtain an ID token from GitHub Actions for the job
     steps:
     - name: Download packaged chart
       uses: actions/download-artifact@v3
