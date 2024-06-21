@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Quality of life change to GHA workflow
+Quality of life change to GHA workflow, create valid version string from otherwise illegal branch names
