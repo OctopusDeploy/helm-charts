@@ -176,7 +176,7 @@ persistence:
       image:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
-        tag: "0.0.2"
+        tag: "0.1.0"
 
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored
