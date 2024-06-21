@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 1.7.0
+
+### Minor Changes
+
+- f94b12d: Update kubernetes-agent to use a nfs-watchdog v0.1.0 which raises event on nfs timeout
+- 2f1c75c: Add support for custom Octopus Server SSL/TLS certificates"
+
 ## 1.6.0
 
 ### Minor Changes
