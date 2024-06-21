@@ -141,6 +141,6 @@ jobs:
       with:
         space: 'Modern Deployments'
         project: 'Octopus Kubernetes Agent'
-        release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
-        package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
+        release_number: ${{ env.CHART_VERSION }}
+        package_version: ${{ env.CHART_VERSION }}
         ignore_existing: true
