@@ -144,3 +144,11 @@ jobs:
         release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
         package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
         ignore_existing: true
+
+  publish_artifactory:
+    runs-on: ubuntu-latest
+    if: false
+
+  publish_dockerhub:
+    runs-on: ubuntu-latest
+    if: false
