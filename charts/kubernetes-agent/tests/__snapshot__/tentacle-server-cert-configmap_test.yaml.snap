@@ -1,0 +1,9 @@
+matches snapshot:
+  1: |
+    apiVersion: v1
+    data:
+      octopus-server-certificate.pem: test-text
+    kind: ConfigMap
+    metadata:
+      name: octopus-server-certificate
+      namespace: NAMESPACE

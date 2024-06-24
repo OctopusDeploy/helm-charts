@@ -1,5 +1,24 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.0
+
+### Major Changes
+
+- 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+
+## 1.7.0
+
+### Minor Changes
+
+- f94b12d: Update kubernetes-agent to use a nfs-watchdog v0.1.0 which raises event on nfs timeout
+- 2f1c75c: Add support for custom Octopus Server SSL/TLS certificates"
+
+## 1.6.0
+
+### Minor Changes
+
+- b5be5dd: Upgrade kubernetes-agent-tentacle to 8.1.1819 to support more reliable server-driven upgrades
+
 ## 1.5.0
 
 ### Minor Changes

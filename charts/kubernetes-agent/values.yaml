@@ -18,6 +18,9 @@ agent:
   # -- The URL of the target Octopus Server to register this agent with
   # @section -- Agent values
   serverUrl: ""
+  # -- The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format.
+  # @section -- Agent values
+  serverCertificate: ""
   # -- The polling communication URL of the target Octopus Server
   # @section -- Agent values
   serverCommsAddress: ""
@@ -36,7 +39,7 @@ agent:
   # -- The Space to register the agent in
   # @section -- Agent values
   space: "Default"
-  # -- A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server
+  # -- A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server
   # @section -- Agent values
   certificate: ""
   # -- The machine policy to register the agent with
@@ -60,7 +63,7 @@ agent:
       # -- The deployment target environments to register the agent with
       # @section -- Agent as Deployment Target initial values
       environments: [ ]
-      # -- The deployment target roles to register the agent with
+      # -- The deployment target tags to register the agent with
       # @section -- Agent as Deployment Target initial values
       tags: [ ]
       # -- Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`.
@@ -90,7 +93,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1758"
+    tag: "8.1.1838"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -190,7 +193,7 @@ persistence:
       image:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
-        tag: "0.0.2"
+        tag: "0.1.0"
 
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored

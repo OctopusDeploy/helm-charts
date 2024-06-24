@@ -132,7 +132,13 @@ spec:
           {{- end}}
           volumeMounts:
             - mountPath: /octopus
-              name: tentacle-home
+              name: tentacle-home  
+            {{- if .Values.agent.serverCertificate }}
+            - name: octopus-server-certificate-configmap
+              mountPath: /etc/ssl/certs/octopus-server-certificate.pem
+              subPath: octopus-server-certificate.pem
+              readOnly: false
+            {{- end }}
         {{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName) }}
         - name: nfs-watchdog
           image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
@@ -174,3 +180,9 @@ spec:
         - name: tentacle-home
           persistentVolumeClaim:
             claimName: {{ include "kubernetes-agent.pvcName" .}}
+        {{- if .Values.agent.serverCertificate }}
+        - name: octopus-server-certificate-configmap
+          configMap:
+            name: "octopus-server-certificate"
+        {{- end }}
+

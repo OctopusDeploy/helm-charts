@@ -1,6 +1,6 @@
 # kubernetes-agent
 
-![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1758](https://img.shields.io/badge/AppVersion-8.1.1758-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 2.0.0-alpha.0](https://img.shields.io/badge/Version-2.0.0--alpha.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1838](https://img.shields.io/badge/AppVersion-8.1.1838-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 A Helm chart for the Octopus Kubernetes Agent
 
@@ -25,10 +25,10 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
 | agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
-| agent.certificate | string | `""` | A base64 formatted x509 certificate used to setup a trust between the agent and target Octopus Server |
+| agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1758"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1838"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -36,6 +36,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
+| agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverCommsAddresses | list | `[]` | The polling communication URLs of the target Octopus Servers when running in High Availability (HA) |
 | agent.serverSubscriptionId | string | `""` | The subscription ID that is used to by the agent to identify itself with Octopus Server |
@@ -80,7 +81,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.0.1"}` | The repository, pullPolicy & tag to use for the NFS server |
 | persistence.nfs.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the NFS pod & container |
 | persistence.nfs.watchdog.enabled | bool | `true` | If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive |
-| persistence.nfs.watchdog.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-nfs-watchdog","tag":"0.0.2"}` | The repository, pullPolicy & tag to use for the NFS watchdog |
+| persistence.nfs.watchdog.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-nfs-watchdog","tag":"0.1.0"}` | The repository, pullPolicy & tag to use for the NFS watchdog |
 | persistence.nfs.watchdog.initial_backoff_seconds | string | `""` | The initial backoff time in seconds to retry failed NFS checks @default 0.5 |
 | persistence.nfs.watchdog.loop_seconds | string | `""` | The frequency in seconds to check the NFS server @default 5 |
 | persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
