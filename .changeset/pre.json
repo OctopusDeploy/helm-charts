@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "kubernetes-agent": "1.7.0"
+  },
+  "changesets": [
+    "brave-files-explain"
+  ]
+}
