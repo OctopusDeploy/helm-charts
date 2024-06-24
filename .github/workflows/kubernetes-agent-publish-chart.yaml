@@ -135,17 +135,3 @@ jobs:
         space: 'Modern Deployments'
         packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
         overwrite_mode: IgnoreIfExists
-
-  publish_artifactory:
-    runs-on: ubuntu-latest
-    if: false
-    steps:
-    - shell: bash
-      run: echo "no-op"
-
-  publish_dockerhub:
-    runs-on: ubuntu-latest
-    if: false
-    steps:
-    - shell: bash
-      run: echo "no-op"
