@@ -136,15 +136,6 @@ jobs:
         packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
         overwrite_mode: IgnoreIfExists
 
-    - name: Create a release in Octopus Deploy 🐙
-      uses: OctopusDeploy/create-release-action@v3
-      with:
-        space: 'Modern Deployments'
-        project: 'Octopus Kubernetes Agent'
-        release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
-        package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
-        ignore_existing: true
-
   publish_artifactory:
     runs-on: ubuntu-latest
     if: false
