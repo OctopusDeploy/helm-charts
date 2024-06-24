@@ -148,7 +148,13 @@ jobs:
   publish_artifactory:
     runs-on: ubuntu-latest
     if: false
+    steps:
+    - shell: bash
+      run: echo "no-op"
 
   publish_dockerhub:
     runs-on: ubuntu-latest
     if: false
+    steps:
+    - shell: bash
+      run: echo "no-op"
