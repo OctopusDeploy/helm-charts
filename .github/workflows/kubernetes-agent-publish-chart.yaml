@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - main
+    - release/kubernetes-agent/v*
 
   pull_request:
 

@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - main
+    - release/kubernetes-agent/v*
     paths:
     - charts/kubernetes-agent/**
     - .github/workflows/create-versioning-pr.yaml
