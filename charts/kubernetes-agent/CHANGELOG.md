@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.0
+
+### Major Changes
+
+- 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+
 ## 1.7.0
 
 ### Minor Changes
