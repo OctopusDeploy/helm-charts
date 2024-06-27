@@ -57,7 +57,7 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | agent.deploymentTarget.initial.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.deploymentTarget.initial.environments | list | `[]` | The deployment target environments to register the agent with |
-| agent.deploymentTarget.initial.tags | list | `[]` | The deployment target roles to register the agent with |
+| agent.deploymentTarget.initial.tags | list | `[]` | The deployment target tags to register the agent with |
 | agent.deploymentTarget.initial.tenantTags | list | `[]` | The deployment target tenant tags to register the agent with |
 | agent.deploymentTarget.initial.tenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
 | agent.deploymentTarget.initial.tenants | list | `[]` | The deployment target tenants to register the agent with |
