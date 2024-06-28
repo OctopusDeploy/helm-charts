@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace KubernetesAgent.UpgradeManager.Migrations.V2
 {
@@ -17,7 +18,7 @@ namespace KubernetesAgent.UpgradeManager.Migrations.V2
                 throw new InvalidOperationException("Unable to migrate values from v1 to v2, could not deserialize v1 values");
             }
 
-            var serverCommsAddresses = oldSchema.Agent.ServerCommsAddresses;
+            var serverCommsAddresses = oldSchema.Agent.ServerCommsAddresses ?? new List<string>();
             if (!string.IsNullOrWhiteSpace(oldSchema.Agent.ServerCommsAddress))
             {
                 serverCommsAddresses.Add(oldSchema.Agent.ServerCommsAddress);
@@ -30,7 +31,7 @@ namespace KubernetesAgent.UpgradeManager.Migrations.V2
                     Name = oldSchema.Agent.TargetName,
                     DeploymentTarget = new V2DeploymentTarget
                     {
-                        IsEnabled = true,
+                        Enabled = true,
                         Initial = new V2DeploymentTargetInitial
                         {
                             Environments = oldSchema.Agent.TargetEnvironments,
@@ -43,7 +44,7 @@ namespace KubernetesAgent.UpgradeManager.Migrations.V2
                     },
                     Worker = new V2Worker
                     {
-                        IsEnabled = false,
+                        Enabled = false,
                         Initial = new V2WorkerInitial
                         {
                             WorkerPools = new List<string>()
@@ -55,7 +56,12 @@ namespace KubernetesAgent.UpgradeManager.Migrations.V2
                 OtherProperties = oldSchema.OtherProperties
             };
 
-            return JsonConvert.SerializeObject(newSchema);
+            var jsonSerializersettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            return JsonConvert.SerializeObject(newSchema, jsonSerializersettings);
         }
     }
 }

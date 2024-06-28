@@ -14,8 +14,8 @@ namespace KubernetesAgent.UpgradeManager.Migrations.V2
     public record V1Agent
     {
         public string DefaultNamespace { get; init; }
-        public string ServerCommsAddress { get; init; }
-        public List<string> ServerCommsAddresses { get; init; }
+        public string? ServerCommsAddress { get; init; }
+        public List<string>? ServerCommsAddresses { get; init; }
         public List<string> TargetEnvironments { get; init; }
         public string TargetName { get; init; }
         public List<string> TargetRoles { get; init; }

@@ -15,7 +15,7 @@ namespace KubernetesAgent.UpgradeManager
         static MigrationManager()
         {
             MigratorMap = typeof(MigrationManager).Assembly.GetTypes()
-                .Where(t => typeof(IMigration).IsAssignableFrom(t))
+                .Where(t => typeof(IMigration).IsAssignableFrom(t) && typeof(IMigration) != t)
                 .Select(t => (IMigration?)Activator.CreateInstance(t))
                 .Where(m => m is not null)
                 .ToDictionary(m => m!.Version, m => m);
@@ -23,7 +23,7 @@ namespace KubernetesAgent.UpgradeManager
 
         public string MigrateValues(IVersion from, IVersion to, string valuesJson)
         {
-            foreach (var majorVersion in Enumerable.Range(from.Major + 1, to.Major))
+            foreach (var majorVersion in Enumerable.Range(from.Major + 1, to.Major - from.Major))
             {
                 if (!MigratorMap.TryGetValue(majorVersion, out var migrator))
                 {

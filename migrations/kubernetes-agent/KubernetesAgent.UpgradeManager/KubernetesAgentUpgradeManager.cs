@@ -1,13 +1,16 @@
 ﻿using System.Dynamic;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Octopus.Versioning;
 
 namespace KubernetesAgent.UpgradeManager;
 
+public record File(string Name, byte[] Content);
+
 public record ScriptResult(int ExitCode, string Output);
 
-public delegate Task<ScriptResult> ScriptExecutor(string script, CancellationToken cancellationToken);
+public delegate Task<ScriptResult> ScriptExecutor(string script, File[] files, CancellationToken cancellationToken);
 
 public interface IKubernetesAgentUpgradeManager
 {
@@ -68,7 +71,7 @@ public class KubernetesAgentUpgradeManager : IKubernetesAgentUpgradeManager
         var versionParameter = $"{latestSupportedMajorVersion.Version}.*.*{(latestSupportedMajorVersion.isPreRelease ? "-alpha.*" : string.Empty)}";
         var getLatestVersionScript = $"helm show chart {ociRegistry} --version '{versionParameter}' 2>&1 | grep version: | awk -F'[ ]' '{{print $2}}' | tr -d '\n\t\r '";
 
-        var result = await scriptExecutor(getLatestVersionScript, cancellationToken);
+        var result = await scriptExecutor(getLatestVersionScript, [], cancellationToken);
 
         if (result is { ExitCode: 0 } &&
             VersionFactory.TryCreateSemanticVersion(result.Output) is { } version)
@@ -82,7 +85,7 @@ public class KubernetesAgentUpgradeManager : IKubernetesAgentUpgradeManager
     async Task DoUpgradeWithMigrations(string helmRelease, string @namespace, IVersion currentVersion, IVersion newVersion, ScriptExecutor scriptExecutor, CancellationToken cancellationToken)
     {
         var getHelmValuesScript = $"helm get values {helmRelease} --namespace={@namespace} -o json";
-        var result = await scriptExecutor(getHelmValuesScript, cancellationToken);
+        var result = await scriptExecutor(getHelmValuesScript, [], cancellationToken);
         if (result is not { ExitCode: 0 })
         {
             throw new InvalidOperationException($"Failed to retrieve current helm release values with exit code {result.ExitCode}");
@@ -96,17 +99,16 @@ public class KubernetesAgentUpgradeManager : IKubernetesAgentUpgradeManager
 
         var upgradeWithMigrationsScript =
             $"""
-             echo '{valuesYaml}' > values.yaml && \
              helm upgrade \
              --atomic \
              --version {newVersion} \
              --namespace {@namespace} \
              {helmRelease} \
-             {KubernetesAgentOciRegistry} \
+             {ociRegistry} \
              --values values.yaml
              """;
 
-        var upgradeResult = await scriptExecutor(upgradeWithMigrationsScript, cancellationToken);
+        var upgradeResult = await scriptExecutor(upgradeWithMigrationsScript, [new File("values.yaml", Encoding.ASCII.GetBytes(valuesYaml))], cancellationToken);
 
         if (upgradeResult is not { ExitCode: 0 })
         {
@@ -121,7 +123,7 @@ public class KubernetesAgentUpgradeManager : IKubernetesAgentUpgradeManager
         {
             throw new InvalidOperationException("Failed to upgrade Kubernetes agent, unable to parse json values after migration.");
         }
-        var serializer = new YamlDotNet.Serialization.Serializer();
+        var serializer = new YamlDotNet.Serialization.SerializerBuilder().WithQuotingNecessaryStrings(true).Build();
         return serializer.Serialize(deserializedObject);
     }
 
@@ -139,10 +141,10 @@ public class KubernetesAgentUpgradeManager : IKubernetesAgentUpgradeManager
              --version {version} \
              --namespace {@namespace} \
              {helmRelease} \
-             {KubernetesAgentOciRegistry}
+             {ociRegistry}
              """;
 
-        var result = await scriptExecutor(basicUpgradeScript, cancellationToken);
+        var result = await scriptExecutor(basicUpgradeScript, [], cancellationToken);
 
         if (result is not { ExitCode: 0 })
         {

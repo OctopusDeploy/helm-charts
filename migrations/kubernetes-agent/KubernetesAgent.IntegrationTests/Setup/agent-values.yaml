@@ -1,15 +1,14 @@
 agent:
   acceptEula: "Y"
-  name: "#{AgentName}"
+  targetName: "#{AgentName}"
   serverCommsAddress: "#{ServerCommsAddress}"
   serverUrl: "https://this.is.not.required.com/"
   bearerToken: "this-is-a-fake-bearer-token"
+  targetEnvironments: [ "development" ]
+  targetRoles: [ "testing-cluster" ]
   space: "Default"
-  deploymentTarget:
-    enabled: true
-    initial:
-      environments: ["development"]
-      tags: ["testing-cluster"]
+  debug:
+    disableAutoPodCleanup: "true"
   
 testing:
   tentacle:

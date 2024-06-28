@@ -65,7 +65,7 @@ public class KubernetesAgentInstaller
             throw new InvalidOperationException("Failed to install Kubernetes Agent via Helm.");
         }
 
-        var helmVersionOutput = ProcessRunner.RunWithLogger(helmExePath, temporaryDirectory, logger, ["list", "-n", Namespace, "-o", "json"]);
+        var helmVersionOutput = ProcessRunner.Run(helmExePath, temporaryDirectory, ["list", "-n", Namespace, "-o", "json"]);
 
         if (helmVersionOutput.ExitCode != 0)
         {

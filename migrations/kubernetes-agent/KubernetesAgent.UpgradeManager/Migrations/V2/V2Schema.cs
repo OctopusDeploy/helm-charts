@@ -25,13 +25,13 @@ namespace KubernetesAgent.UpgradeManager.Migrations.V2
 
     public record V2DeploymentTarget
     {
-        public bool IsEnabled { get; init; }
+        public bool Enabled { get; init; }
         public V2DeploymentTargetInitial Initial { get; init; }
     }
 
     public record V2Worker
     {
-        public bool IsEnabled { get; init; }
+        public bool Enabled { get; init; }
         public V2WorkerInitial Initial { get; init; }
     }
 

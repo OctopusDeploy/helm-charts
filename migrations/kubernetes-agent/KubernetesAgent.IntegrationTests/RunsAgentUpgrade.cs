@@ -55,11 +55,13 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
         var helmPackage = HelmChartBuilder.BuildHelmChart(helmExePath, workingDirectory);
         var helmPackageFile = new FileInfo(helmPackage.Path);
         var packageName = helmPackageFile.Name;
-        var packageBytes = await File.ReadAllBytesAsync(helmPackage.Path);
+        var packageBytes = await System.IO.File.ReadAllBytesAsync(helmPackage.Path);
 
         var upgradeManager = new KubernetesAgentUpgradeManager($"./{packageName}", includePreReleases: true);
 
-        await upgradeManager.UpgradeAgent(agentInstaller.AgentName, agentInstaller.Namespace, version, helmPackage.Version, async (script, ct) => await RunScript(script, ct, (packageName, packageBytes)), CancellationToken.None);
+        var upgradeManagerWrapper = new UpgradeManagerWrapper(upgradeManager, client, logger);
+
+        await upgradeManagerWrapper.UpgradeAgent(agentInstaller.AgentName, agentInstaller.Namespace, version, helmPackage.Version, new File(packageName, packageBytes), CancellationToken.None);
         logger.Information("Upgrade executed successfully");
 
         var result = await RunScript("echo \"hello world\"", CancellationToken.None);
@@ -70,15 +72,11 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
         logger.Information("Script executed successfully");
     }
 
-    async Task<ScriptResult> RunScript(string script, CancellationToken _, (string Name, byte[] Bytes)? package = null)
+    async Task<ScriptResult> RunScript(string script, CancellationToken _)
     {
         var commandBuilder = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
             .IsRawScript()
             .WithScriptBody(script);
-        if (package is not null)
-        {
-            commandBuilder.WithScriptFile(new ScriptFile(package.Value.Name, DataStream.FromBytes(package.Value.Bytes)));
-        }
 
         var command = commandBuilder.Build();
 
@@ -96,7 +94,10 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
 
         void OnScriptStatusResponseReceived(ScriptExecutionStatus res)
         {
-            logs.Append(res.Logs);
+            foreach (var log in res.Logs)
+            {
+                logs.AppendLine(log.Text);
+            }
             logger.Information("{Output}", res.ToString());
         }
     }

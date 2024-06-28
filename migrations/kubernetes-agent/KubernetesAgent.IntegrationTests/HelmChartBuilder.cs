@@ -55,7 +55,7 @@ namespace KubernetesAgent.Integration
             var chartDirectory = GetChartsDirectory();
             var chartYaml = Path.Combine(chartDirectory.FullName, "Chart.yaml");
             var chart = File.ReadAllText(chartYaml);
-            return chart.Split("\n").First(l => l.StartsWith("version:")).Split(":")[1].Trim('"').Trim();
+            return chart.Split("\n").First(l => l.StartsWith("version:")).Split(":")[1].Trim([' ','"']).Trim();
         }
     }
 }
