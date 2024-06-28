@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Version>2.0.0-alpha.0</Version>
+        <Title>KubernetesAgent.UpgradeManager</Title>
+        <Authors>OctopusDeploy</Authors>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Octopus.Versioning" Version="5.1.876" />
+      <PackageReference Include="YamlDotNet" Version="15.3.0" />
+    </ItemGroup>
+
+</Project>
