@@ -1,14 +1,14 @@
 using System.Text;
-using Halibut;
 using KubernetesAgent.Integration.Setup;
 using KubernetesAgent.Integration.Setup.Common;
+using KubernetesAgent.Integration.Utils;
 using KubernetesAgent.UpgradeManager;
 using Octopus.Tentacle.Client;
 using Octopus.Tentacle.Client.Scripts.Models;
 using Octopus.Tentacle.Client.Scripts.Models.Builders;
-using Octopus.Tentacle.Contracts;
 using Octopus.Versioning;
 using Xunit.Abstractions;
+using File = KubernetesAgent.UpgradeManager.File;
 
 namespace KubernetesAgent.Integration;
 

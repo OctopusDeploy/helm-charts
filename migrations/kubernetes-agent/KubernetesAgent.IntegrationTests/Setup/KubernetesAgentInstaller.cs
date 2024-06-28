@@ -244,9 +244,12 @@ public class KubernetesAgentInstaller
         }
     }
 
-    public record HelmRelease
+    record HelmRelease
     {
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Name { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Chart { get; init; }
     }
 
