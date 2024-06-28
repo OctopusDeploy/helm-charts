@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.7.2
+
+### Patch Changes
+
+- 3a77239: Don't include the Readme.md.gotmpl in the chart
+
 ## 1.7.1
 
 ### Patch Changes
