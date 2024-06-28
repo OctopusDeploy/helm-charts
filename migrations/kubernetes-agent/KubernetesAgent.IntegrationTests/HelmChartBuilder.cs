@@ -1,23 +1,26 @@
 using System;
 using KubernetesAgent.Integration.Setup.Common;
+using Octopus.Versioning;
 
 namespace KubernetesAgent.Integration
 {
     public static class HelmChartBuilder
     {
-        public static string BuildHelmChart(string helmExecutable, TemporaryDirectory directory)
+        public record HelmPackage(IVersion Version, string Path);
+        public static HelmPackage BuildHelmChart(string helmExecutable, TemporaryDirectory directory)
         {
-            var version = GetChartVersion();
-            version = $"{version}-{DateTime.Now:yyyymdHHmmss}";
+            var versionString = GetChartVersion();
+            var version = VersionFactory.CreateSemanticVersion(versionString);
+            var timeStampedVersion = $"{versionString}-{DateTime.Now:yyyymdHHmmss}";
             
-            var packager = ProcessRunner.Run(helmExecutable, directory, GetHelmChartPackageArguments(version));
+            var packager = ProcessRunner.Run(helmExecutable, directory, GetHelmChartPackageArguments(timeStampedVersion));
             if (packager.ExitCode != 0)
             {
                 throw new Exception($"Failed to package Helm chart. Exit code: {packager.ExitCode}");
             }
 
             var output = packager.StandardOutput.ReadToEnd();
-            return output.Split(":")[^1].ToString().Trim();
+            return new HelmPackage(version, output.Split(":")[^1].ToString().Trim());
         }
 
         static string[] GetHelmChartPackageArguments(string version)

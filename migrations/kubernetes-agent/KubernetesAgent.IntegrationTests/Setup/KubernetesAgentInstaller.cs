@@ -4,11 +4,13 @@ using System.Text;
 using Halibut;
 using Halibut.Diagnostics;
 using KubernetesAgent.Integration.Setup.Common;
+using Newtonsoft.Json;
 using Octopus.Client.Model;
 using Octopus.Tentacle.Client;
 using Octopus.Tentacle.Client.Retries;
 using Octopus.Tentacle.Client.Scripts;
 using Octopus.Tentacle.Contracts.Observability;
+using Octopus.Versioning;
 
 namespace KubernetesAgent.Integration.Setup;
 
@@ -45,7 +47,7 @@ public class KubernetesAgentInstaller
 
     public Uri SubscriptionId { get; } = PollingSubscriptionIdGenerator.Generate();
 
-    public async Task<TentacleClient> InstallAgent()
+    public async Task<KubernetesAgent> InstallAgent()
     {
         var listeningPort = BuildServerHalibutRuntimeAndListen();
         var valuesFilePath = await WriteValuesFile(listeningPort);
@@ -60,7 +62,27 @@ public class KubernetesAgentInstaller
 
         if (result.ExitCode != 0)
         {
-            throw new InvalidOperationException($"Failed to install Kubernetes Agent via Helm.");
+            throw new InvalidOperationException("Failed to install Kubernetes Agent via Helm.");
+        }
+
+        var helmVersionOutput = ProcessRunner.RunWithLogger(helmExePath, temporaryDirectory, logger, ["list", "-n", Namespace, "-o", "json"]);
+
+        if (helmVersionOutput.ExitCode != 0)
+        {
+            throw new InvalidOperationException("Failure to get the version of the Kubernetes Agent via Helm");
+        }
+
+        var helmReleases = JsonConvert.DeserializeObject<HelmRelease[]>(await helmVersionOutput.StandardOutput.ReadToEndAsync())!;
+
+        var helmRelease = helmReleases.FirstOrDefault(r => r.Name == AgentName);
+
+        var versionString = helmRelease!.Chart.Replace("kubernetes-agent-", string.Empty);
+
+        var version = VersionFactory.CreateSemanticVersion(versionString);
+
+        if (version is null)
+        {
+            throw new InvalidOperationException($"Failure to parse version '{versionString} of the Kubernetes Agent");
         }
 
         isAgentInstalled = true;
@@ -72,9 +94,8 @@ public class KubernetesAgentInstaller
         ServerHalibutRuntime.Trust(thumbprint);
         
         BuildTentacleClient(thumbprint);
-        
-        return TentacleClient;
-        
+
+        return new KubernetesAgent(TentacleClient, version);
     }
 
     async Task<string> WriteValuesFile(int listeningPort)
@@ -222,4 +243,12 @@ public class KubernetesAgentInstaller
             }
         }
     }
+
+    public record HelmRelease
+    {
+        public string Name { get; init; }
+        public string Chart { get; init; }
+    }
+
+    public record KubernetesAgent(TentacleClient TentacleClient, IVersion Version);
 }

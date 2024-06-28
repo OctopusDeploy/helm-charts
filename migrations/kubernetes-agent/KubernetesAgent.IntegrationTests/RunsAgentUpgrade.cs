@@ -1,10 +1,13 @@
+using System.Text;
 using Halibut;
 using KubernetesAgent.Integration.Setup;
 using KubernetesAgent.Integration.Setup.Common;
+using KubernetesAgent.UpgradeManager;
 using Octopus.Tentacle.Client;
 using Octopus.Tentacle.Client.Scripts.Models;
 using Octopus.Tentacle.Client.Scripts.Models.Builders;
 using Octopus.Tentacle.Contracts;
+using Octopus.Versioning;
 using Xunit.Abstractions;
 
 namespace KubernetesAgent.Integration;
@@ -20,7 +23,8 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
     string kindExePath = null!;
     string helmExePath = null!;
     string kubeCtlPath = null!;
-    
+    IVersion version;
+
     public async Task InitializeAsync()
     {
         logger = new LoggerConfiguration()
@@ -33,7 +37,9 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
         clusterInstaller =  new KubernetesClusterInstaller(workingDirectory, kindExePath, helmExePath, kubeCtlPath, logger);
         await clusterInstaller.Install();
         agentInstaller = new KubernetesAgentInstaller(workingDirectory , helmExePath, kubeCtlPath, clusterInstaller.KubeConfigPath, logger);
-        client = await agentInstaller.InstallAgent();
+        var agent = await agentInstaller.InstallAgent();
+        client = agent.TentacleClient;
+        version = agent.Version;
     }
 
     public async Task DisposeAsync()
@@ -47,45 +53,51 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
     public async Task CanUpgradeAgentAndRunCommand()
     {
         var helmPackage = HelmChartBuilder.BuildHelmChart(helmExePath, workingDirectory);
-        var helmPackageFile = new FileInfo(helmPackage);
+        var helmPackageFile = new FileInfo(helmPackage.Path);
         var packageName = helmPackageFile.Name;
-        var packageBytes = await File.ReadAllBytesAsync(helmPackage);
-        var helmUpgradeScript =
-            $"""
-             helm upgrade \
-             --atomic \
-             --namespace {agentInstaller.Namespace} \
-             {agentInstaller.AgentName} \
-             /tmp/{packageName}
-             """;
-        var upgradeHelmChartCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
-            .IsRawScript()
-            .WithScriptBody($"cp ./{packageName} /tmp/{packageName} && {helmUpgradeScript}")
-            .WithScriptFile(new ScriptFile(packageName, DataStream.FromBytes(packageBytes)))
-            .Build();
+        var packageBytes = await File.ReadAllBytesAsync(helmPackage.Path);
 
-        void onScriptStatusResponseReceived(ScriptExecutionStatus res) => logger.Information("{Output}", res.ToString());
-        async Task onScriptCompleted(CancellationToken t)
-        {
-            await Task.CompletedTask; 
-            logger.Information("Script completed");
-        }
-        var testLogger = new TestLogger(logger);
-        var result = await client.ExecuteScript(upgradeHelmChartCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
-        if (result.ExitCode != 0)
-        {
-            throw new Exception($"Script failed with exit code {result.ExitCode}");
-        }
+        var upgradeManager = new KubernetesAgentUpgradeManager($"./{packageName}", includePreReleases: true);
+
+        await upgradeManager.UpgradeAgent(agentInstaller.AgentName, agentInstaller.Namespace, version, helmPackage.Version, async (script, ct) => await RunScript(script, ct, (packageName, packageBytes)), CancellationToken.None);
         logger.Information("Upgrade executed successfully");
-        
-        var runHelloWorldCommand = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
-            .WithScriptBody("echo \"hello world\"")
-            .Build();
-        result = await client.ExecuteScript(runHelloWorldCommand, onScriptStatusResponseReceived, onScriptCompleted, testLogger, CancellationToken.None);
+
+        var result = await RunScript("echo \"hello world\"", CancellationToken.None);
         if (result.ExitCode != 0)
         {
             throw new Exception($"Script failed with exit code {result.ExitCode}");
         }
         logger.Information("Script executed successfully");
+    }
+
+    async Task<ScriptResult> RunScript(string script, CancellationToken _, (string Name, byte[] Bytes)? package = null)
+    {
+        var commandBuilder = new ExecuteKubernetesScriptCommandBuilder(Guid.NewGuid().ToString())
+            .IsRawScript()
+            .WithScriptBody(script);
+        if (package is not null)
+        {
+            commandBuilder.WithScriptFile(new ScriptFile(package.Value.Name, DataStream.FromBytes(package.Value.Bytes)));
+        }
+
+        var command = commandBuilder.Build();
+
+        var logs = new StringBuilder();
+
+        var testLogger = new TestLogger(logger);
+        var result = await client.ExecuteScript(command, OnScriptStatusResponseReceived, OnScriptCompleted, testLogger, CancellationToken.None);
+        return new ScriptResult(result.ExitCode, logs.ToString());
+
+        async Task OnScriptCompleted(CancellationToken t)
+        {
+            await Task.CompletedTask;
+            logger.Information("Script completed");
+        }
+
+        void OnScriptStatusResponseReceived(ScriptExecutionStatus res)
+        {
+            logs.Append(res.Logs);
+            logger.Information("{Output}", res.ToString());
+        }
     }
 }
