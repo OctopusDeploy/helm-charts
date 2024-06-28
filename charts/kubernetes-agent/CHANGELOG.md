@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.1
+
+### Patch Changes
+
+- 84f7f36: Merge changes from 1.7.1 - 1.7.3 to latest
+
 ## 2.0.0-alpha.0
 
 ### Major Changes
