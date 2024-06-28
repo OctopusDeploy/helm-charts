@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.7.1
+
+### Patch Changes
+
+- 9a97ae5: Update kubernetes-agent-tentacle to 8.1.1858. Includes fix to mkdir failing during container startup
+
 ## 1.7.0
 
 ### Minor Changes
