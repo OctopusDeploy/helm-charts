@@ -3,7 +3,6 @@ name: Publish Kubernetes Agent chart
 on:
   push:
     branches:
-    - main
     - release/kubernetes-agent/v*
 
   pull_request:
@@ -91,7 +90,7 @@ jobs:
         chart_version="${{ steps.read_chart_yaml.outputs.version }}"
         pre_release=""
 
-        if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
+        if [[ "${{steps.branch_names.outputs.branch_name}}" != "release/kubernetes-agent/v1" ]]
         then
             pre_release="-${{steps.branch_names.outputs.branch_name}}-$(date +'%Y%m%d%H%M%S')"
         fi
@@ -112,8 +111,8 @@ jobs:
 
   publish_to_octopus:
     runs-on: ubuntu-latest
-    # We publish to Artifactory if this is not a main commit, or if it is, that it's a versioning commit
-    if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart')) }}
+    # We publish to Artifactory if this is not a release/kubernetes-agent/v1 commit, or if it is, that it's a versioning commit
+    if: ${{ github.ref != 'refs/heads/release/kubernetes-agent/v1' || (github.ref == 'refs/heads/release/kubernetes-agent/v1' && startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart')) }}
     needs: version_and_package
     permissions:
       # You might need to add other permissions here like `contents: read` depending on what else your job needs to do
