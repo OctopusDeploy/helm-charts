@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.7.3
+
+### Patch Changes
+
+- 43916a4: Bump the failureThreshold to fix startup probe problems
+
 ## 1.7.2
 
 ### Patch Changes
