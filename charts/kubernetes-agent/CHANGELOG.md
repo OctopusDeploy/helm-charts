@@ -6,6 +6,24 @@
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.7.3
+
+### Patch Changes
+
+- 43916a4: Bump the failureThreshold to fix startup probe problems
+
+## 1.7.2
+
+### Patch Changes
+
+- 3a77239: Don't include the Readme.md.gotmpl in the chart
+
+## 1.7.1
+
+### Patch Changes
+
+- 9a97ae5: Update kubernetes-agent-tentacle to 8.1.1858. Includes fix to mkdir failing during container startup
+
 ## 1.7.0
 
 ### Minor Changes
