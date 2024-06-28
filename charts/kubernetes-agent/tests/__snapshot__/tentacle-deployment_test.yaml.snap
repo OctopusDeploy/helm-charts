@@ -104,6 +104,7 @@ should match snapshot:
                   command:
                     - cat
                     - /etc/octopus/initialized
+                failureThreshold: 100
                 initialDelaySeconds: 2
                 periodSeconds: 2
               volumeMounts:
