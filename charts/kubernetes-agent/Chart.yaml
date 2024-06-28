@@ -9,6 +9,6 @@ maintainers:
     email: "support@octopus.com"
     url: "https://octopus.com"
 type: application
-version: "1.7.1"
+version: "1.7.2"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
 appVersion: "8.1.1858"
