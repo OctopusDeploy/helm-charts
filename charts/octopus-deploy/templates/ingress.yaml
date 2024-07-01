@@ -63,10 +63,10 @@ metadata:
 {{- if $.Values.octopus.ingress.pollingTentacles.labels }}
 {{ toYaml $.Values.octopus.ingress.pollingTentacles.labels | indent 4 }}
 {{- end }}
-{{- with $.Values.octopus.ingress.annotations }}
   annotations:
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-{{ toYaml . | indent 4 }}
+{{- if $.Values.octopus.ingress.pollingTentacles.annotations }}
+{{ toYaml $.Values.octopus.ingress.pollingTentacles.annotations | indent 4 }}
 {{- end }}
 spec:
   tls:
