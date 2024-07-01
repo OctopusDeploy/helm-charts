@@ -3,14 +3,14 @@ kind: Service
 metadata:
   name: {{ template "octopus.fullname" . }}
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "octopus.name" . }}
+    helm.sh/chart: {{ template "octopus.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   type: {{ .Values.octopus.service.type }}
   selector:
-    app: {{ template "octopus.name" . }}
+    app.kubernetes.io/name: {{ template "octopus.name" . }}
   ports:
     - name: web
       port: {{.Values.octopus.webPort}}
@@ -31,10 +31,10 @@ kind: Service
 metadata:
   name: octopus-deploy-node{{ . }}
   labels:
-    app: {{ template "octopus.name" $ }}
-    chart: {{ template "octopus.chart" $ }}
-    release: {{ $.Release.Name }}
-    heritage: {{ $.Release.Service }}
+    app.kubernetes.io/name: {{ template "octopus.name" $ }}
+    helm.sh/chart: {{ template "octopus.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
 spec:
   type: {{ $root.Values.octopus.service.type }}
   ports:

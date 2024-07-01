@@ -3,10 +3,10 @@ apiVersion: v1
 metadata:
   name: package-repository-claim
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "octopus.name" . }}
+    helm.sh/chart: {{ template "octopus.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -28,10 +28,10 @@ apiVersion: v1
 metadata:
   name: artifacts-claim
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "octopus.name" . }}
+    helm.sh/chart: {{ template "octopus.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -53,10 +53,10 @@ apiVersion: v1
 metadata:
   name: task-log-claim
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "octopus.name" . }}
+    helm.sh/chart: {{ template "octopus.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
