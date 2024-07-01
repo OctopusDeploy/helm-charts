@@ -44,7 +44,7 @@ should match snapshot:
             - env:
                 - name: ACCEPT_EULA
                   value: "N"
-                - name: TargetName
+                - name: AgentName
                   value: ""
                 - name: ServerCommsAddresses
                   value: ""
@@ -54,6 +54,8 @@ should match snapshot:
                   value: ""
                 - name: Space
                   value: Default
+                - name: DeploymentTargetEnabled
+                  value: "false"
                 - name: TargetEnvironment
                   value: ""
                 - name: TargetRole
@@ -62,9 +64,13 @@ should match snapshot:
                   value: ""
                 - name: TargetTenantTag
                   value: ""
+                - name: DefaultNamespace
+                  value: ""
                 - name: TargetTenantedDeploymentParticipation
                   value: Untenanted
-                - name: DefaultNamespace
+                - name: WorkerEnabled
+                  value: "false"
+                - name: WorkerPools
                   value: ""
                 - name: OCTOPUS__K8STENTACLE__NAMESPACE
                   value: NAMESPACE
@@ -92,7 +98,7 @@ should match snapshot:
                   value: "true"
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: octopusdeploy/kubernetes-agent-tentacle:8.1.1858
+              image: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle:8.1.1861-pull-969
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:
