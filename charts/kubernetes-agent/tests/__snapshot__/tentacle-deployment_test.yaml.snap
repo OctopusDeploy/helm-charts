@@ -98,7 +98,7 @@ should match snapshot:
                   value: "true"
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: octopusdeploy/kubernetes-agent-tentacle:8.1.1858
+              image: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle:8.1.1861-pull-969
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:
