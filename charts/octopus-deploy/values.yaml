@@ -96,6 +96,12 @@ octopus:
     labels: {}
     path: /
     hosts: []
+    className: ""
+    pollingTentacles:
+      enabled: false
+      annotations: {}
+      labels: {}
+      hostPrefix: "polling"
 
   statefulSet:
     annotations: {}
