@@ -4,7 +4,7 @@
 
 A Helm chart for the Octopus Kubernetes Agent
 
-**Homepage:** <https://octopus.com> 
+**Homepage:** <https://octopus.com>  
 **Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
 
 ## Maintainers
@@ -79,7 +79,7 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| imagePullSecrets | list | `[]` | custom registry pullSecret<br> See https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod |
+| imagePullSecrets | list | `[]` | custom registry pullSecret<br> See https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod These are used for the tentacle and script pods |
 | nameOverride | string | `""` | Override the name of the app |
 
 ----------------------------------------------

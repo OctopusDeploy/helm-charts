@@ -5,6 +5,7 @@ nameOverride: ""
 
 # -- custom registry pullSecret<br>
 # See https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+# These are used for the tentacle and script pods
 imagePullSecrets: []
 #   - name: "registry-secret-name"
 
