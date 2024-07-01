@@ -38,6 +38,7 @@ spec:
                 - /etc/octopus/initialized
             initialDelaySeconds: 2
             periodSeconds: 2
+            failureThreshold: 100
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}
