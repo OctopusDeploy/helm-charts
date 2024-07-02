@@ -75,6 +75,14 @@ agent:
   # @section -- Agent values
   enableMetricsCapture: true
 
+  # -- The host, port, username and password of the proxy server to connect to Octopus Server with
+  # @section -- Agent values
+  pollingProxy:
+    host: ""
+    port: 80
+    username: ""
+    password: ""
+
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
   image:
