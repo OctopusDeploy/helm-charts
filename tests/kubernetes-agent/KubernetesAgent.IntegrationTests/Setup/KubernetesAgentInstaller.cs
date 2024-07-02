@@ -131,18 +131,6 @@ public class KubernetesAgentInstaller
         return !string.IsNullOrWhiteSpace(customHelmChartVersion) ? customHelmChartVersion : "1.*.*";
     }
 
-    static string? GetImageAndRepository(string? tentacleImageAndTag)
-    {
-        if (tentacleImageAndTag is null)
-            return null;
-
-        var parts = tentacleImageAndTag.Split(":");
-        var repo = parts[0];
-        var tag = parts[1];
-
-        return $"--set agent.image.repository=\"{repo}\" --set agent.image.tag=\"{tag}\"";
-    }
-
     async Task<string> GetAgentThumbprint()
     {
         string? thumbprint = null;
