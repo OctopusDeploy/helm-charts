@@ -75,7 +75,7 @@ agent:
   # @section -- Agent values
   enableMetricsCapture: true
 
-  # -- The host, port, username and password of the proxy server to connect to Octopus Server with
+  # -- The host, port, username and password of the proxy server to use for polling connections
   # @section -- Agent values
   pollingProxy:
     host: ""

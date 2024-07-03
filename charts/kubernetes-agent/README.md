@@ -34,7 +34,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
-| agent.pollingProxy | object | `{"host":"","password":"","port":80,"username":""}` | The host, port, username and password of the proxy server to connect to Octopus Server with |
+| agent.pollingProxy | object | `{"host":"","password":"","port":80,"username":""}` | The host, port, username and password of the proxy server to use for polling connections |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
 | agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
 | agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
