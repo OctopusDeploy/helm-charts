@@ -78,9 +78,9 @@ agent:
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
   image:
-    repository: octopusdeploy/kubernetes-agent-tentacle
+    repository: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1880"
+    tag: "8.1.1861-pull-969"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
