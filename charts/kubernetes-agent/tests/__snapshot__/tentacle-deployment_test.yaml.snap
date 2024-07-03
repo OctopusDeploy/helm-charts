@@ -44,8 +44,10 @@ should match snapshot:
             - env:
                 - name: ACCEPT_EULA
                   value: "N"
-                - name: TargetName
+                - name: AgentName
                   value: ""
+                - name: DeploymentTargetEnabled
+                  value: "true"
                 - name: ServerCommsAddresses
                   value: ""
                 - name: ServerCommsAddress

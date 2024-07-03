@@ -42,8 +42,10 @@ spec:
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}
-            - name: "TargetName"
+            - name: "AgentName"
               value: {{ .Values.agent.targetName | quote }}
+            - name: "DeploymentTargetEnabled"
+              value: "true"
             - name: "ServerCommsAddresses"
               value: {{ join "," .Values.agent.serverCommsAddresses | quote }}
             - name: "ServerCommsAddress"

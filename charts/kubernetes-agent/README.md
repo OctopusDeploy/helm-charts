@@ -4,7 +4,7 @@
 
 A Helm chart for the Octopus Kubernetes Agent
 
-**Homepage:** <https://octopus.com>  
+**Homepage:** <https://octopus.com> 
 **Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
 
 ## Maintainers
