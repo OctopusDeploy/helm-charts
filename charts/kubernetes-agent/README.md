@@ -29,7 +29,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1880"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1861-pull-969"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
