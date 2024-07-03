@@ -6,6 +6,12 @@
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.8.0
+
+### Minor Changes
+
+- 34ce133: Add support for using imagePullSecrets on script pods
+
 ## 1.7.3
 
 ### Patch Changes
