@@ -119,7 +119,7 @@ public class KubernetesAgentInstaller
             "--install",
             "--atomic",
             $"-f \"{valuesFilePath}\"",
-            hasRegistrySecret ? $"--set imagePullSecrets=\"{{{RegistrySecretName}}}\"" : null,
+            hasRegistrySecret ? $"--set imagePullSecrets[0].name=\"{RegistrySecretName}\"" : null,
             $"--version \"{chartVersion}\"",
             NamespaceFlag,
             KubeConfigFlag,
