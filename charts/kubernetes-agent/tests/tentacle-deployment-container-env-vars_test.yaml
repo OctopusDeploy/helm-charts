@@ -209,11 +209,10 @@ tests:
     agent:
       pollingProxy:
         host: example.com
-        password: "pw-1234"
   asserts:
   - exists:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyHost')]
-  - exists:
+  - notExists:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPassword')]
 
 - it: "Sets environment variable if image pull secrets set"
