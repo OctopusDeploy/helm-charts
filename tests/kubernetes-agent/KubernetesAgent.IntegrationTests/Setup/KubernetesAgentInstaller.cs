@@ -4,6 +4,7 @@ using System.Text;
 using Halibut;
 using Halibut.Diagnostics;
 using KubernetesAgent.Integration.Setup.Common;
+using Newtonsoft.Json;
 using Octopus.Client.Model;
 using Octopus.Tentacle.Client;
 using Octopus.Tentacle.Client.Retries;
@@ -43,17 +44,23 @@ public class KubernetesAgentInstaller
 
     public string Namespace => $"octopus-agent-{AgentName}";
 
+    const string RegistrySecretName = "docker-registry-secret";
+
     public Uri SubscriptionId { get; } = PollingSubscriptionIdGenerator.Generate();
 
     public async Task<TentacleClient> InstallAgent()
     {
         var listeningPort = BuildServerHalibutRuntimeAndListen();
         var valuesFilePath = await WriteValuesFile(listeningPort);
-        var arguments = BuildAgentInstallArguments(valuesFilePath);
 
         var sw = new Stopwatch();
         sw.Restart();
 
+        CreateNamespace();
+
+        var hasRegistrySecret = await AddDockerHubRegistryCredentialSecret(logger);
+        
+        var arguments = BuildAgentInstallArguments(valuesFilePath, hasRegistrySecret);
 
         var result = ProcessRunner.RunWithLogger(helmExePath, temporaryDirectory, logger, arguments);
         sw.Stop();
@@ -68,13 +75,12 @@ public class KubernetesAgentInstaller
         var thumbprint = await GetAgentThumbprint();
 
         logger.Information("Agent certificate thumbprint: {Thumbprint:l}", thumbprint);
-        
+
         ServerHalibutRuntime.Trust(thumbprint);
-        
+
         BuildTentacleClient(thumbprint);
-        
+
         return TentacleClient;
-        
     }
 
     async Task<string> WriteValuesFile(int listeningPort)
@@ -104,7 +110,7 @@ public class KubernetesAgentInstaller
         return valuesFilePath;
     }
 
-    string BuildAgentInstallArguments(string valuesFilePath)
+    string BuildAgentInstallArguments(string valuesFilePath, bool hasRegistrySecret)
     {
         var chartVersion = GetChartVersion();
         var args = new[]
@@ -113,8 +119,8 @@ public class KubernetesAgentInstaller
             "--install",
             "--atomic",
             $"-f \"{valuesFilePath}\"",
+            hasRegistrySecret ? $"--set imagePullSecrets=\"{{{RegistrySecretName}}}\"" : null,
             $"--version \"{chartVersion}\"",
-            "--create-namespace",
             NamespaceFlag,
             KubeConfigFlag,
             AgentName,
@@ -124,23 +130,70 @@ public class KubernetesAgentInstaller
         return string.Join(" ", args.WhereNotNull());
     }
 
+    void CreateNamespace()
+    {
+        var result = ProcessRunner.Run(kubeCtlExePath, temporaryDirectory, "create", "namespace", Namespace);
+
+        if (result.ExitCode != 0)
+        {
+            logger.Error("Failed to create namespace {Namespace}", Namespace);
+            throw new InvalidOperationException($"Failed to create namespace {Namespace}.");
+        }
+    }
+
+    async Task<bool> AddDockerHubRegistryCredentialSecret(ILogger logger)
+    {
+        var username = Environment.GetEnvironmentVariable("DockerHub_Username");
+        var password = Environment.GetEnvironmentVariable("DockerHub_Password");
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            return false;
+        }
+
+        using var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStreamFromPartialName("docker-registry-credentials-secret.yaml"));
+
+        var secretYaml = await reader.ReadToEndAsync();
+
+        var config = new Dictionary<string, object>
+        {
+            ["auths"] = new Dictionary<string, object>
+            {
+                ["https://index.docker.io/v1/"] = new
+                {
+                    username,
+                    password,
+                    auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"))
+                }
+            }
+        };
+
+        var configJson = JsonConvert.SerializeObject(config, Formatting.None);
+
+        secretYaml = secretYaml
+            .Replace("#{Name}", RegistrySecretName)
+            .Replace("#{Namespace}", Namespace)
+            .Replace("#{DockerConfigJson}", Convert.ToBase64String(Encoding.UTF8.GetBytes(configJson)));
+
+        var filePath = Path.Combine(temporaryDirectory.Directory.FullName, "docker-registry-credentials-secret.yaml");
+        await File.WriteAllTextAsync(filePath, secretYaml, Encoding.UTF8);
+
+        var result = ProcessRunner.RunWithLogger(kubeCtlExePath, temporaryDirectory, this.logger, "apply", $"-f {filePath}");
+        
+        if (result.ExitCode != 0)
+        {
+            logger.Error("Failed to create docker hub registry secret {SecretName}", RegistrySecretName);
+            throw new InvalidOperationException($"Failed to create docker hub registry secret {RegistrySecretName}.");
+        }
+
+        return true;
+    }
+
     static string GetChartVersion()
     {
         var customHelmChartVersion = Environment.GetEnvironmentVariable("KubernetesIntegrationTests_HelmChartVersion");
 
         return !string.IsNullOrWhiteSpace(customHelmChartVersion) ? customHelmChartVersion : "1.*.*";
-    }
-
-    static string? GetImageAndRepository(string? tentacleImageAndTag)
-    {
-        if (tentacleImageAndTag is null)
-            return null;
-
-        var parts = tentacleImageAndTag.Split(":");
-        var repo = parts[0];
-        var tag = parts[1];
-
-        return $"--set agent.image.repository=\"{repo}\" --set agent.image.tag=\"{tag}\"";
     }
 
     async Task<string> GetAgentThumbprint()
@@ -154,7 +207,7 @@ public class KubernetesAgentInstaller
             thumbprint = await result.StandardOutput.ReadToEndAsync();
             if (result.ExitCode != 0)
             {
-                logger.Error("Failed to load thumbprint. Exit code {ExitCode}", result.ExitCode); 
+                logger.Error("Failed to load thumbprint. Exit code {ExitCode}", result.ExitCode);
             }
 
             if (!string.IsNullOrWhiteSpace(thumbprint))
@@ -201,6 +254,7 @@ public class KubernetesAgentInstaller
 
         return ServerHalibutRuntime.Listen();
     }
+
     string NamespaceFlag => $"--namespace \"{Namespace}\"";
     string KubeConfigFlag => $"--kubeconfig \"{kubeConfigPath}\"";
 
@@ -208,7 +262,8 @@ public class KubernetesAgentInstaller
     {
         if (isAgentInstalled)
         {
-            var uninstallArgs = string.Join(" ",
+            var uninstallArgs = string.Join(
+                " ",
                 "uninstall",
                 KubeConfigFlag,
                 NamespaceFlag,
