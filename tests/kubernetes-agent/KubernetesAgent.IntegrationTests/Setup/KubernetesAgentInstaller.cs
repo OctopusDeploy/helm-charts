@@ -132,7 +132,7 @@ public class KubernetesAgentInstaller
 
     void CreateNamespace()
     {
-        var result = ProcessRunner.Run(kubeCtlExePath, temporaryDirectory, "create", "namespace", Namespace);
+        var result = ProcessRunner.Run(kubeCtlExePath, temporaryDirectory, "create", "namespace", Namespace, KubeConfigFlag);
 
         if (result.ExitCode != 0)
         {
@@ -178,7 +178,7 @@ public class KubernetesAgentInstaller
         var filePath = Path.Combine(temporaryDirectory.Directory.FullName, "docker-registry-credentials-secret.yaml");
         await File.WriteAllTextAsync(filePath, secretYaml, Encoding.UTF8);
 
-        var result = ProcessRunner.RunWithLogger(kubeCtlExePath, temporaryDirectory, this.logger, "apply", $"-f {filePath}");
+        var result = ProcessRunner.RunWithLogger(kubeCtlExePath, temporaryDirectory, this.logger, "apply", $"-f {filePath}", KubeConfigFlag);
         
         if (result.ExitCode != 0)
         {
