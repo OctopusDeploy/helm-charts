@@ -50,6 +50,10 @@
       <EmbeddedResource Include="Setup\Common\Certificates\Tentacle.pfx">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="Setup\docker-registry-credentials-secret.yaml" />
+      <EmbeddedResource Include="Setup\docker-registry-credentials-secret.yaml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
