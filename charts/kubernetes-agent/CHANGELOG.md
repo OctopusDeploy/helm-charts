@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.9.0
+
+### Minor Changes
+
+- 8536deb: Add support for polling proxy server via new `agent.pollingProxy` values
+
 ## 1.8.0
 
 ### Minor Changes
