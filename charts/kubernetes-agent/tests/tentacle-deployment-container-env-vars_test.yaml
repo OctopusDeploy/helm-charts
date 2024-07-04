@@ -162,6 +162,59 @@ tests:
           key: bearer-token
           name: the-agent-name-lobster-tentacle-server-auth
 
+- it: "sets polling proxy information if host ifs specified"
+  set:
+    agent:
+      pollingProxy:
+        host: "example.com"
+        port: 1234
+        username: "user"
+        password: "pw-1234"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyHost')].value
+      value: "example.com"
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPort')].value
+      value: 1234
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyUsername')].value
+      value: "user"
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPassword')].valueFrom
+      value: 
+        secretKeyRef:
+          key: polling-proxy-password
+          name: octopus-agent-tentacle-server-auth
+
+- it: "does not include polling proxy information if host is not specified"
+  set:
+    agent:
+      pollingProxy:
+        port: 1234
+        username: "user"
+        password: "pw-1234"
+  asserts:
+  - notExists:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyHost')]
+  - notExists:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPort')]
+  - notExists:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyUsername')]
+  - notExists:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPassword')]
+
+- it: "does not include polling proxy password if not specified"
+  set:
+    agent:
+      pollingProxy:
+        host: example.com
+  asserts:
+  - exists:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyHost')]
+  - notExists:
+      path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPassword')]
+
 - it: "Sets environment variable if image pull secrets set"
   set:
     imagePullSecrets: ["secret-1", "secret-2"]
