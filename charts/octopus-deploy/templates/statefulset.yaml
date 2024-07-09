@@ -8,25 +8,20 @@ metadata:
   {{ toYaml .Values.octopus.statefulSet.annotations | indent 2 }}
   {{- end }}
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  {{- include "labels" . | nindent 4 }}
   {{- if .Values.octopus.statefulSet.labels }}
   {{ toYaml .Values.octopus.statefulSet.labels | indent 2 }}
   {{- end }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "octopus.name" . }}
-      release: {{ .Release.Name }}
+    {{- include "octopus.selectorLabels" . | nindent 6 }}
   serviceName: {{ template "octopus.fullname" . }}
   replicas: {{.Values.octopus.replicaCount}}
   template:
     metadata:
       labels:
-        app: {{ template "octopus.name" . }}
-        release: {{ .Release.Name }}
+      {{- include "octopus.selectorLabels" . | nindent 8 }}
       {{- if .Values.octopus.pods.labels }}
       {{ toYaml .Values.octopus.pods.labels | indent 2 }}
       {{- end }}
@@ -212,5 +207,9 @@ data:
   licenseKey: {{.Values.octopus.licenseKeyBase64 | b64enc}}
   {{- end}}
   masterKey: {{.Values.octopus.masterKey | b64enc}}
+  {{- if  .Values.mssql.enabled }}
+  dbConnectionString: {{include "octopus.mssql.connectionString" . | b64enc}}
+  {{- else }}
   dbConnectionString: {{ tpl .Values.octopus.databaseConnectionString . | b64enc}}
+  {{- end }}
 {{- end }}

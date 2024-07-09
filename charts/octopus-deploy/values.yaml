@@ -156,3 +156,12 @@ dockerHub:
   # kubectl create secret docker-registry regcred --docker-username=myusername --docker-password=mypassword --dry-run=client -o="jsonpath={.data.\.dockerconfigjson}"
   # See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   creds:
+
+mssql: 
+  enabled: true
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: "Password01!"
+
+global:
+  # Set the default storageClass to be used for all persistent volume claims
+  storageClass: ""

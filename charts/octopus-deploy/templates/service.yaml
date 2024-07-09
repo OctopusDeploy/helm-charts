@@ -3,14 +3,11 @@ kind: Service
 metadata:
   name: {{ template "octopus.fullname" . }}
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "labels" . | nindent 4 }}
 spec:
   type: {{ .Values.octopus.service.type }}
   selector:
-    app: {{ template "octopus.name" . }}
+    {{- include "octopus.selectorLabels" . | nindent 4 }}
   ports:
     - name: web
       port: {{.Values.octopus.webPort}}
@@ -31,10 +28,7 @@ kind: Service
 metadata:
   name: octopus-deploy-node{{ . }}
   labels:
-    app: {{ template "octopus.name" $ }}
-    chart: {{ template "octopus.chart" $ }}
-    release: {{ $.Release.Name }}
-    heritage: {{ $.Release.Service }}
+    {{ include "labels" . | nindent 4 }}
 spec:
   type: {{ $root.Values.octopus.service.type }}
   ports:

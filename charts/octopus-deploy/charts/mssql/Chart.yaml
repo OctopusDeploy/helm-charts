@@ -1,0 +1,7 @@
+apiVersion: v2
+name: mssql
+description: A Helm chart to deploy mssql to Kubernetes for Octopus Server
+
+type: application
+
+version: 0.0.1

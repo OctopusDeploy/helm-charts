@@ -32,6 +32,22 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Common Labels 
+*/}}
+{{- define "labels" -}}
+app: {{ include "octopus.name" . }}
+chart: {{ include "octopus.chart" . }}
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end -}}
+
+{{/* Selector Labels for octopus */}}
+{{- define "octopus.selectorLabels" -}}
+{{include "labels" . }}
+component: octopus-server
+{{- end -}}
+
+{{/*
 The name of the service account to use
 */}}
 {{- define "octopus.serviceAccountName" -}}
@@ -48,4 +64,18 @@ Allows the acceptEULA value to accept a bool or string.
 */}}
 {{- define "octopus.acceptEulaStr" -}}
 {{- and (ne (toString .Values.octopus.acceptEula) "N") (or (eq (toString .Values.octopus.acceptEula) "Y") (eq .Values.octopus.acceptEula true)) | ternary "Y" "N" | quote   -}}
+{{- end -}}
+
+{{/*
+Templates out the server host to be used if the mssql subchart is enabled
+*/}}
+{{- define "octopus.mssql.server" -}}
+{{- printf "%s-0.%s" (include "mssql.name" .) (include "mssql.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Templates out the database connection string to be used if the mssql subchart is enabled
+*/}}
+{{- define "octopus.mssql.connectionString" -}}
+{{- printf "Server=%s;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=SA;Password=%s;Encrypt=True;Connection Timeout=30;" (include "octopus.mssql.server" .) .Values.mssql.SA_PASSWORD -}}
 {{- end -}}
