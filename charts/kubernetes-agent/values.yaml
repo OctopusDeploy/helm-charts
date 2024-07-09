@@ -123,6 +123,13 @@ scriptPods:
   # @section -- Script pod values
   disruptionBudgetEnabled: true
 
+  # -- The resource limits and requests assigned to script pod containers
+  # @section -- Script pod values
+  resources: 
+    requests:
+      memory: "100Mi"
+      cpu: "20m"
+
   serviceAccount:
     # -- The name of the service account used for executing script pods
     # @section -- Script pod values
