@@ -71,7 +71,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
-| scriptPods.resources | object | `{"requests":{"cpu":"20m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
+| scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |

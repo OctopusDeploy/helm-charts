@@ -128,7 +128,7 @@ scriptPods:
   resources: 
     requests:
       memory: "100Mi"
-      cpu: "20m"
+      cpu: "25m"
 
   serviceAccount:
     # -- The name of the service account used for executing script pods
