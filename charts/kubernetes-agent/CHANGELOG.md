@@ -6,6 +6,13 @@
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.10.0
+
+### Minor Changes
+
+- 7999cbb: Support configuring script pod resource requirements
+
+
 ## 1.9.0
 
 ### Minor Changes
