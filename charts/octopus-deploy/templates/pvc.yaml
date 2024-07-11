@@ -3,10 +3,7 @@ apiVersion: v1
 metadata:
   name: package-repository-claim
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "labels" . | nindent 4 }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -14,10 +11,8 @@ spec:
     {{- else }}
     - {{.Values.octopus.packageRepositoryVolume.storageAccessMode}}
     {{- end }}
-  {{- if (eq "-" (.Values.octopus.packageRepositoryVolume.storageClassName | toString)) }}
-  storageClassName: ""
-  {{- else if .Values.octopus.packageRepositoryVolume.storageClassName }}
-  storageClassName: "{{ .Values.octopus.packageRepositoryVolume.storageClassName }}"
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.packageRepositoryVolume.storageClassName) }}
+  storageClassName: {{ $storageClass }}
   {{- end }}
   resources:
     requests:
@@ -28,10 +23,7 @@ apiVersion: v1
 metadata:
   name: artifacts-claim
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "labels" . | nindent 4 }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -39,10 +31,8 @@ spec:
     {{- else }}
     - {{.Values.octopus.artifactVolume.storageAccessMode}}
     {{- end }}
-  {{- if (eq "-" (.Values.octopus.artifactVolume.storageClassName | toString)) }}
-  storageClassName: ""
-  {{- else if .Values.octopus.artifactVolume.storageClassName }}
-  storageClassName: "{{ .Values.octopus.artifactVolume.storageClassName }}"
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.artifactVolume.storageClassName) }}
+  storageClassName: {{ $storageClass }}
   {{- end }}
   resources:
     requests:
@@ -53,10 +43,7 @@ apiVersion: v1
 metadata:
   name: task-log-claim
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "labels" . | nindent 4 }}
 spec:
   accessModes:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
@@ -64,10 +51,8 @@ spec:
     {{- else }}
     - {{.Values.octopus.taskLogVolume.storageAccessMode}}
       {{- end }}
-  {{- if (eq "-" (.Values.octopus.taskLogVolume.storageClassName | toString)) }}
-  storageClassName: ""
-  {{- else if .Values.octopus.taskLogVolume.storageClassName }}
-  storageClassName: "{{ .Values.octopus.taskLogVolume.storageClassName }}"
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.taskLogVolume.storageClassName) }}
+  storageClassName: {{ $storageClass }}
   {{- end }}
   resources:
     requests:

@@ -60,17 +60,17 @@ spec:
           - name: DB_CONNECTION_STRING
             valueFrom:
               secretKeyRef:
-                name: connectionstring
+                name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
                 key: secret
           - name: ADMIN_USERNAME
             valueFrom:
               secretKeyRef:
-                name: adminusername
+                name: {{printf "%s-%s" $.Release.Name "adminusername"}}
                 key: secret
           - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: adminpassword
+                name: {{printf "%s-%s" $.Release.Name "adminpassword"}}
                 key: secret
           - name: ADMIN_EMAIL
             value: {{.Values.octopus.email}}
@@ -82,13 +82,13 @@ spec:
             # Without a HA license, the stateful set can have a replica count of 1.
             valueFrom:
               secretKeyRef:
-                name: licensekey
+                name: {{printf "%s-%s" $.Release.Name "licensekey"}}
                 key: secret
           {{- end}}
           - name: MASTER_KEY
             valueFrom:
               secretKeyRef:
-                name: masterkey
+                name: {{printf "%s-%s" $.Release.Name "masterkey"}}
                 key: secret
         {{- if not .Values.octopus.enableDockerInDocker }}
           - name: DISABLE_DIND
