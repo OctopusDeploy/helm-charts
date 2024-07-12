@@ -25,7 +25,7 @@ public class KubernetesClusterInstaller : IDisposable
         this.kubeCtlPath = kubeCtlPath;
         this.logger = logger;
 
-        clusterName = $"helm-octopus-agent-int-{DateTime.Now:yyyyMMddhhmmss}";
+        clusterName = $"octo-test-{Guid.NewGuid():N}-{DateTime.Now:yyyyMMddhhmmss}";
         kubeConfigName = $"{clusterName}.config";
     }
 
