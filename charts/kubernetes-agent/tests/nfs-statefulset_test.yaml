@@ -22,3 +22,18 @@ tests:
   - equal:
       path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir.sizeLimit
       value: 100Gi
+
+- it: does not set serviceName if Release.IsInstall is false
+  release:
+    upgrade: true
+  asserts:
+  - notExists:
+      path: spec.serviceName
+
+- it: sets serviceName if Release.IsInstall is true
+  release:
+    upgrade: false
+  asserts:
+  - equal:
+      path: spec.serviceName
+      value: octopus-agent-nfs

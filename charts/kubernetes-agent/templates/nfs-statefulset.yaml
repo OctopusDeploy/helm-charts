@@ -10,6 +10,9 @@ spec:
   selector:
     matchLabels:
         app.kubernetes.io/name: {{ include "nfs.name" .}}
+  {{- if .Release.IsInstall }}
+  serviceName: {{ include "nfs.name" .}}
+  {{- end }}
   template:
     metadata:
       {{- with .Values.persistence.nfs.metadata.annotations }}

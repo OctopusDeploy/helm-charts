@@ -11,6 +11,7 @@ should match snapshot:
       selector:
         matchLabels:
           app.kubernetes.io/name: octopus-agent-nfs
+      serviceName: octopus-agent-nfs
       template:
         metadata:
           labels:
