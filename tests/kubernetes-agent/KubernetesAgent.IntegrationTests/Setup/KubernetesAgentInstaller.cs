@@ -23,19 +23,21 @@ public class KubernetesAgentInstaller
     readonly string kubeCtlExePath;
     readonly TemporaryDirectory temporaryDirectory;
     readonly ILogger logger;
+    readonly string? chartDirectoryName;
     readonly string kubeConfigPath;
     protected HalibutRuntime ServerHalibutRuntime { get; private set; } = null!;
     protected TentacleClient TentacleClient { get; private set; } = null!;
 
     bool isAgentInstalled;
 
-    public KubernetesAgentInstaller(TemporaryDirectory temporaryDirectory, string helmExePath, string kubeCtlExePath, string kubeConfigPath, ILogger logger)
+    public KubernetesAgentInstaller(TemporaryDirectory temporaryDirectory, string helmExePath, string kubeCtlExePath, string kubeConfigPath, ILogger logger, string? chartDirectoryName = null)
     {
         this.temporaryDirectory = temporaryDirectory;
         this.helmExePath = helmExePath;
         this.kubeCtlExePath = kubeCtlExePath;
         this.kubeConfigPath = kubeConfigPath;
         this.logger = logger;
+        this.chartDirectoryName = chartDirectoryName;
 
         AgentName = Guid.NewGuid().ToString("N");
     }
@@ -125,7 +127,8 @@ public class KubernetesAgentInstaller
             NamespaceFlag,
             KubeConfigFlag,
             AgentName,
-            ArtifactoryAgentOciRepository
+            //Use the local directory if it exists, otherwise pull from artifactory
+            chartDirectoryName ?? ArtifactoryAgentOciRepository
         };
 
         return string.Join(" ", args.WhereNotNull());

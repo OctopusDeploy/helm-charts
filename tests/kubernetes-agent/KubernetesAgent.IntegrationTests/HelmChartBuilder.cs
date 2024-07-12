@@ -32,7 +32,7 @@ namespace KubernetesAgent.Integration
             ];
         }
         
-        static DirectoryInfo GetChartsDirectory()
+        public static DirectoryInfo GetChartsDirectory()
         {
             var chartsDirectory = Path.Combine(AppContext.BaseDirectory);
             var currentDirectory = new DirectoryInfo(chartsDirectory);

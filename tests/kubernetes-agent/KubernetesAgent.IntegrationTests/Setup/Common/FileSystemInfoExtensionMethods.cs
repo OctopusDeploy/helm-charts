@@ -1,9 +1,17 @@
+using System.Runtime.InteropServices;
+
 namespace KubernetesAgent.Integration.Setup.Common;
 
 public static class FileSystemInfoExtensionMethods
 {
     public static void MakeExecutable(this FileSystemInfo fsObject)
     {
+        //if we are on windows, we don't need to do this
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            return;
+        }
+        
         var result = ProcessRunner.Run("chmod", "-R", "+x", fsObject.FullName);
         if (result.ExitCode != 0)
         {
