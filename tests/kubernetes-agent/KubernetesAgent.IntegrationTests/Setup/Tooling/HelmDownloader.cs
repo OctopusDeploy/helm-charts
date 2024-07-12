@@ -6,7 +6,7 @@ namespace KubernetesAgent.Integration.Setup.Tooling;
 
 public class HelmDownloader : ToolDownloader
 {
-    const string LatestVersion = "v3.8.0";
+    const string LatestVersion = "v3.15.3";
     public HelmDownloader( ILogger logger)
         : base("helm", logger)
     {
