@@ -6,6 +6,7 @@ namespace KubernetesAgent.Integration.Setup;
 
 public class KubernetesClusterInstaller : IDisposable
 {
+    static int clusterCount = 0;
     readonly string clusterName;
     readonly string kubeConfigName;
 
@@ -25,7 +26,9 @@ public class KubernetesClusterInstaller : IDisposable
         this.kubeCtlPath = kubeCtlPath;
         this.logger = logger;
 
-        clusterName = $"octo-test-{Guid.NewGuid():N}-{DateTime.Now:yyyyMMddhhmmss}";
+        //hack to get a unique time for multiple clusters
+        var count = Interlocked.Increment(ref clusterCount);
+        clusterName = $"octo-test-{DateTime.Now.AddSeconds(count):yyyyMMddhhmmss}";
         kubeConfigName = $"{clusterName}.config";
     }
 
