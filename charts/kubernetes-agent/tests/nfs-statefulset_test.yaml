@@ -1,6 +1,27 @@
 suite: "persistence"
 templates:
-- templates/nfs-statefulset.yaml
+  - templates/nfs-statefulset.yaml
+kubernetesProvider:
+  scheme:
+    "apps/v1/StatefulSet":
+      gvr:
+        group: "apps"
+        version: "v1"
+        resource: "statefulsets"
+      namespaced: true
+  objects:
+  - kind: StatefulSet
+    apiVersion: "apps/v1"
+    metadata:
+      name: "empty-serviceName-nfs"
+      namespace: "NAMESPACE"
+  - kind: StatefulSet
+    apiVersion: "apps/v1"
+    metadata:
+      name: "populated-serviceName-nfs"
+      namespace: "NAMESPACE"
+    spec:
+      serviceName: "populated-serviceName-nfs"
 tests:
 - it: "is not created when storageClassName has a value"
   set:
@@ -23,17 +44,26 @@ tests:
       path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir.sizeLimit
       value: 100Gi
 
-- it: does not set serviceName if Release.IsInstall is false
-  release:
-    upgrade: true
+- it: does not set serviceName if the StatefulSet exists and has an empty serviceName
+  set:
+    nameOverride: "empty-serviceName"
   asserts:
+  - equal:
+      path: metadata.name
+      value: "empty-serviceName-nfs"
   - notExists:
       path: spec.serviceName
 
-- it: sets serviceName if Release.IsInstall is true
-  release:
-    upgrade: false
+- it: sets serviceName if the StatefulSet doesn't exist
   asserts:
   - equal:
       path: spec.serviceName
       value: octopus-agent-nfs
+
+- it: sets serviceName if the StatefulSet exists and is set to same service name  
+  set:
+    nameOverride: "populated-ServiceName"
+  asserts:
+  - equal:
+      path: spec.serviceName
+      value: populated-ServiceName-nfs

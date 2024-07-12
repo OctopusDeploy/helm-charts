@@ -2,17 +2,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "nfs.name" .}}
+  name: {{ include "nfs.name" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ include "nfs.name" .}}
+    app.kubernetes.io/name: {{ include "nfs.name" . }}
 spec:
   selector:
     matchLabels:
-        app.kubernetes.io/name: {{ include "nfs.name" .}}
-  {{- if .Release.IsInstall }}
-  serviceName: {{ include "nfs.name" .}}
-  {{- end }}
+        app.kubernetes.io/name: {{ include "nfs.name" . }}
+  {{- $ss := (lookup "apps/v1" "StatefulSet" .Release.Namespace (include "nfs.name" .)) }}
+  {{- if not $ss }}
+  {{/* If the stateful set doesn't exist */}}
+  serviceName: {{ include "nfs.name" . }}  
+  {{- else if (index $ss "spec.serviceName" ) }}
+  {{/* Or it does exist and it already has a non-empty serviceName */}}
+  serviceName: {{ include "nfs.name" . }}
+  {{- end }}  
   template:
     metadata:
       {{- with .Values.persistence.nfs.metadata.annotations }}
