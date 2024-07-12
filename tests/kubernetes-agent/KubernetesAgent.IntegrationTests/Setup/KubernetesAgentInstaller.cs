@@ -121,6 +121,7 @@ public class KubernetesAgentInstaller
             $"-f \"{valuesFilePath}\"",
             hasRegistrySecret ? $"--set imagePullSecrets[0].name=\"{RegistrySecretName}\"" : null,
             $"--version \"{chartVersion}\"",
+            "--disable-openapi-validation",
             NamespaceFlag,
             KubeConfigFlag,
             AgentName,
