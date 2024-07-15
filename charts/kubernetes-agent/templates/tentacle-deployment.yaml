@@ -100,6 +100,12 @@ spec:
               value: {{ .Values.agent.pollingConnectionCount | quote }}
             - name: "OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE"
               value: {{ .Values.agent.enableMetricsCapture| quote }}
+            {{- if .Values.imagePullSecrets }}
+            - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
+              value: {{ join "," .Values.imagePullSecrets | quote}}
+            {{- end }}
+            - name: "OCTOPUS__K8STENTACLE__PODRESOURCEJSON"
+              value: {{ .Values.scriptPods.resources | toJson | quote }}
             {{- if .Values.agent.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:
@@ -127,6 +133,21 @@ spec:
             {{- end}}
             - name: "OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE"
               value: {{ .Values.persistence.size | quote }}
+            {{- if .Values.agent.pollingProxy.host }}
+            - name: "TentaclePollingProxyHost"
+              value: {{ .Values.agent.pollingProxy.host | quote }}
+            - name: "TentaclePollingProxyPort"
+              value: {{ .Values.agent.pollingProxy.port }}
+            - name: "TentaclePollingProxyUsername"
+              value: {{ .Values.agent.pollingProxy.username | quote }}              
+            {{- if .Values.agent.pollingProxy.password }}
+            - name: "TentaclePollingProxyPassword"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
+                  key: polling-proxy-password
+            {{- end }}            
+            {{- end }}
           {{- with .Values.agent.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

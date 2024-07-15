@@ -6,6 +6,25 @@
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.10.0
+
+### Minor Changes
+
+- 7999cbb: Support configuring script pod resource requirements
+
+
+## 1.9.0
+
+### Minor Changes
+
+- 8536deb: Add support for polling proxy server via new `agent.pollingProxy` values
+
+## 1.8.0
+
+### Minor Changes
+
+- 34ce133: Add support for using imagePullSecrets on script pods
+
 ## 1.7.3
 
 ### Patch Changes

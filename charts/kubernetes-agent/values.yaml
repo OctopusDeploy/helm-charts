@@ -5,6 +5,7 @@ nameOverride: ""
 
 # -- custom registry pullSecret<br>
 # See https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+# These are used for the tentacle and script pods
 imagePullSecrets: []
 #   - name: "registry-secret-name"
 
@@ -88,12 +89,20 @@ agent:
       # @section -- Agent as Worker initial values
       workerPools: [ ]
 
+  # -- The host, port, username and password of the proxy server to use for polling connections
+  # @section -- Agent values
+  pollingProxy:
+    host: ""
+    port: 80
+    username: ""
+    password: ""
+
   # -- The repository, pullPolicy & tag to use for the agent image
   # @section -- Agent values
   image:
     repository: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1861-pull-969"
+    tag: "8.1.1917-pull-969"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -127,6 +136,13 @@ scriptPods:
   # -- If true, the script pods will be created with a disruption budget to prevent them from being evicted
   # @section -- Script pod values
   disruptionBudgetEnabled: true
+
+  # -- The resource limits and requests assigned to script pod containers
+  # @section -- Script pod values
+  resources: 
+    requests:
+      memory: "100Mi"
+      cpu: "25m"
 
   serviceAccount:
     # -- The name of the service account used for executing script pods

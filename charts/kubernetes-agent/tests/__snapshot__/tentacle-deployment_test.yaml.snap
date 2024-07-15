@@ -7,7 +7,7 @@ should match snapshot:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.1.1858
+        app.kubernetes.io/version: 8.1.1917-pull-969
         helm.sh/chart: kubernetes-agent-2.0.0-alpha.0
       name: octopus-agent-tentacle
       namespace: NAMESPACE
@@ -23,7 +23,7 @@ should match snapshot:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: octopus-agent
-            app.kubernetes.io/version: 8.1.1858
+            app.kubernetes.io/version: 8.1.1917-pull-969
             helm.sh/chart: kubernetes-agent-2.0.0-alpha.0
         spec:
           affinity:
@@ -96,9 +96,11 @@ should match snapshot:
                   value: "5"
                 - name: OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE
                   value: "true"
+                - name: OCTOPUS__K8STENTACLE__PODRESOURCEJSON
+                  value: '{"requests":{"cpu":"25m","memory":"100Mi"}}'
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle:8.1.1861-pull-969
+              image: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle:8.1.1917-pull-969
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:
