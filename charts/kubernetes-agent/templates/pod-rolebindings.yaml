@@ -4,7 +4,7 @@
 {{- $podDeleterClusterRoleName := include "kubernetes-agent.scriptPodDeleterClusterRoleName" . -}}  
 {{- $podWorkerRoleName := include "kubernetes-agent.scriptPodWorkerRoleName" . -}}
 
-{{- if $.Values.agent.target.isEnabled }}
+{{- if $.Values.agent.deploymentTarget.isEnabled }}
 {{- range $targetNamespace := $.Values.scriptPods.serviceAccount.targetNamespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
