@@ -88,7 +88,7 @@ agent:
   image:
     repository: docker.packages.octopushq.com/octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1894-pull-969"
+    tag: "8.1.1908"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -122,6 +122,13 @@ scriptPods:
   # -- If true, the script pods will be created with a disruption budget to prevent them from being evicted
   # @section -- Script pod values
   disruptionBudgetEnabled: true
+
+  # -- The resource limits and requests assigned to script pod containers
+  # @section -- Script pod values
+  resources: 
+    requests:
+      memory: "100Mi"
+      cpu: "25m"
 
   serviceAccount:
     # -- The name of the service account used for executing script pods

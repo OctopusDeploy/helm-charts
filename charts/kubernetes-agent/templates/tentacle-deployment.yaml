@@ -100,6 +100,8 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
               value: {{ join "," .Values.imagePullSecrets | quote}}
             {{- end }}
+            - name: "OCTOPUS__K8STENTACLE__PODRESOURCEJSON"
+              value: {{ .Values.scriptPods.resources | toJson | quote }}
             {{- if .Values.agent.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:
