@@ -1,8 +1,25 @@
 # Octopus Deploy Helm Chart
 
-[introduction here]
+This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes cluster using the [Helm](https://helm.sh) package manager.
+
+[TODO: point to GitHub Container Registry for charts]
+
+![Helm Chart Architecture](helm-chart-architecture.png)
+
 
 ## Quick Start
+This section shows you how to get Octopus running as quickly as possible on your own Kubernetes infrastructure. 
+
+If you are creating a long-lived, production Octopus instance we recommend you read the Configuration section below.
+
+### License Key
+You will need a license key to install Octopus. You can [start a trial](https://octopus.com/start) (choose `Server` to run Octopus on your own infrastructure), or retrieve your existing license key from the [Control Center](https://octopus.com/control-center/). 
+
+You will need the Base64 encoded version of the license key.
+
+[TODO: control center image]
+
+
 (this section is appropriate for quickly spinning up a trial)
 License Key
 Just run this command
