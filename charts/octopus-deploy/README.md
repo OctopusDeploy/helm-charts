@@ -1,5 +1,28 @@
 # Octopus Deploy Helm Chart
 
+[introduction here]
+
+## Quick Start
+(this section is appropriate for quickly spinning up a trial)
+License Key
+Just run this command
+Kubectl port forward (link to ingress section)
+MS SQL subchart
+Master key (link to master key below)
+Persistent Volume (default storage class, otherwise link to persistent volume section below)
+
+
+## Configuration
+(this section is for when you want a production grade Octopus instance)
+SQL Server
+Master Key
+License Key 
+Persistent Volumes
+Ingress
+Workers
+
+
+--------- previous version -----------------
 This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes cluster using the [Helm](https://helm.sh) package manager.
 
 The chart packages are available on [DockerHub](https://hub.docker.com/r/octopusdeploy/octopusdeploy-helm).
