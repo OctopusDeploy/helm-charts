@@ -7,7 +7,7 @@ tests:
     scriptPods:
       serviceAccount:
         targetNamespaces: ["ns-1", "ns-2", "ns-3"]
-    deploymentTarget.agent.enabled: true
+    agent.deploymentTarget.enabled: true
   asserts:
   - hasDocuments:
       count: 4
@@ -17,7 +17,7 @@ tests:
     scriptPods:
       serviceAccount:
         targetNamespaces: ["ns-1"]
-    deploymentTarget.agent.enabled: true
+    agent.deploymentTarget.enabled: true
   asserts:
   - matchSnapshot: {}
 
@@ -26,7 +26,7 @@ tests:
     scriptPods:
       serviceAccount:
         targetNamespaces: []
-    deploymentTarget.agent.enabled: true
+    agent.deploymentTarget.enabled: true
   asserts:
   - hasDocuments:
       count: 1
@@ -36,7 +36,7 @@ tests:
 
 - it: "only creates the default rolebinding by default"
   set:
-    deploymentTarget.agent.enabled: true
+    agent.deploymentTarget.enabled: true
   asserts:
   - hasDocuments:
       count: 1
@@ -50,6 +50,16 @@ tests:
       nfs:
         watchdog:
           enabled: false
+    agent.deploymentTarget.enabled: true
   asserts:
     - hasDocuments:
         count: 0
+        
+- it: "creates 2 role-bindings when worker is enabled, regardless of target namespaces"
+  set:
+    agent.deploymentTarget.enabled: false
+    scriptPods.serviceAccount.targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+    persistence.nfs.watchdog.enabled: false
+  asserts:
+    - hasDocuments:
+        count: 1
