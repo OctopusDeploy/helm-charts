@@ -7,6 +7,7 @@ tests:
     scriptPods:
       serviceAccount:
         targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+    deploymentTarget.agent.enabled: true
   asserts:
   - hasDocuments:
       count: 4
@@ -16,6 +17,8 @@ tests:
     scriptPods:
       serviceAccount:
         targetNamespaces: ["ns-1"]
+    deploymentTarget:
+      isEnabled: true
   asserts:
   - matchSnapshot: {}
 
