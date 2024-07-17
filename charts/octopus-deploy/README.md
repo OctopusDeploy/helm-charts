@@ -8,7 +8,7 @@ This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes clus
 ## Quick Start
 This section shows you how to get Octopus running as quickly as possible on your own Kubernetes infrastructure. 
 
-If you are creating a long-lived, production Octopus instance we recommend you read the Configuration section below.
+If you are creating a long-lived, production Octopus instance we recommend you read the [Configuration](#configuration) section below.
 
 Once you have your license key, you can run the command below to install Octopus Deploy:
 
