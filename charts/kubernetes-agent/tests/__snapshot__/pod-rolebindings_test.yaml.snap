@@ -4,11 +4,11 @@ matches snapshot with one target namespace:
     kind: RoleBinding
     metadata:
       name: octopus-agent-scripts-RELEASE-NAME-binding
-      namespace: NAMESPACE
+      namespace: ns-1
     roleRef:
       apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: octopus-agent-scripts-RELEASE-NAME-worker-role
+      kind: ClusterRole
+      name: octopus-agent-scripts-RELEASE-NAME-role
     subjects:
       - kind: ServiceAccount
         name: octopus-agent-scripts
