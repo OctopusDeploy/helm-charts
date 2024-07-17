@@ -1,0 +1,19 @@
+suite: "pod permissions"
+templates:
+- templates/pod-workerrolebindings.yaml
+tests:
+
+- it: "creates a role-bindings when worker is enabled, regardless of target namespaces"
+  set:
+    agent.worker.enabled: true
+    scriptPods.serviceAccount.targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+  asserts:
+    - hasDocuments:
+        count: 1
+
+- it: "Does not create a rolebinding if not acting as a worker"
+  set:
+    agent.worker.enabled: false
+  asserts:
+    - hasDocuments:
+        count: 0

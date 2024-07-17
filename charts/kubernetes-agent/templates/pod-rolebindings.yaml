@@ -2,7 +2,6 @@
 {{- $podServiceAccountFullName := include "kubernetes-agent.scriptPodServiceAccountFullName" . -}}
 {{- $podClusterRoleName := include "kubernetes-agent.scriptPodClusterRoleName" . -}}
 {{- $podDeleterClusterRoleName := include "kubernetes-agent.scriptPodDeleterClusterRoleName" . -}}  
-{{- $podWorkerRoleName := include "kubernetes-agent.scriptPodWorkerRoleName" . -}}
 
 {{- if .Values.agent.deploymentTarget.enabled }}
 {{- range $targetNamespace := $.Values.scriptPods.serviceAccount.targetNamespaces }}
@@ -21,21 +20,6 @@ roleRef:
   name: {{ $podClusterRoleName }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}
-{{ else }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: {{ printf "%s-worker-binding" $podServiceAccountFullName }}
-  namespace: {{ $.Release.Namespace | quote }}
-subjects:
-  - kind: ServiceAccount
-    name: {{ $podServiceAccountName }}
-    namespace: {{ $.Release.Namespace | quote }}
-roleRef:
-  kind: Role
-  name: {{ $podWorkerRoleName }}
-  apiGroup: rbac.authorization.k8s.io
 {{- end -}}
 {{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName)}}
 ---
