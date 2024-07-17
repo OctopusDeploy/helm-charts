@@ -24,6 +24,6 @@ jobs:
         run: helm package --version '0.1.0' 'charts/octopus-deploy'
         
       - name: Push Chart
-        run: helm push 'octopusdeploy-helm-0.1.0.tgz' oci://ghcr.io/octopusdeploy/octopusdeploy-helm
+        run: helm push 'octopusdeploy-helm-0.1.0.tgz' oci://ghcr.io/octopusdeploy
         
      
