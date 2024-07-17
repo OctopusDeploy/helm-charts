@@ -4,10 +4,6 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      octopus-version:
-        description: 'The SemVer version of Octopus to publish.  e.g. 2022.4.20121'
-        required: true
 
 jobs:
   publish:
@@ -21,13 +17,13 @@ jobs:
         with:
           version: 'v3.15.3'
           
-      - name: Login to DockerHub
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Login to GitHub container registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u  ${{github.actor}} --password-stdin
           
       - name: Package Chart
-        run: helm package --version '${{ inputs.octopus-version }}' --app-version '${{ inputs.octopus-version }}' 'charts/octopus-deploy'
+        run: helm package --version '0.1.0' 'charts/octopus-deploy'
         
-      - name: Push Chart to DockerHub
-        run: helm push 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz' oci://registry-1.docker.io/octopusdeploy
+      - name: Push Chart
+        run: helm push 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz' oci://ghcr.io/octopusdeploy/octopusdeploy-helm
         
      
