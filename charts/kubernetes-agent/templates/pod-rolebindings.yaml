@@ -26,7 +26,7 @@ roleRef:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ printf "%s-binding" $podServiceAccountFullName }}
+  name: {{ printf "%s-worker-binding" $podServiceAccountFullName }}
   namespace: {{ $.Release.Namespace | quote }}
 subjects:
   - kind: ServiceAccount
