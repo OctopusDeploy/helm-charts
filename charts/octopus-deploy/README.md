@@ -13,7 +13,15 @@ If you are creating a long-lived, production Octopus instance we recommend you r
 Once you have your license key, you can run the command below to install Octopus Deploy:
 
 ```
-TODO: helm command from control center
+helm upgrade octopus-deploy \
+--install \
+--namespace octopus-deploy \
+--create-namespace \
+--set octopus.acceptEula="Y" \
+--set octopus.licenseKeyBase64="<Your License Key>"
+--set global.storageClass="longhorn" \
+--set mssql.enabled="true" \
+oci://<helm-chart-url>
 ```
 
 ### License Key
