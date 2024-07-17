@@ -55,11 +55,11 @@ tests:
     - hasDocuments:
         count: 0
         
-- it: "creates 2 role-bindings when worker is enabled, regardless of target namespaces"
+- it: "creates 1 role-bindings when DeploymentTarget is disabled"
   set:
     agent.deploymentTarget.enabled: false
     scriptPods.serviceAccount.targetNamespaces: ["ns-1", "ns-2", "ns-3"]
-    persistence.nfs.watchdog.enabled: false
+    persistence.nfs.watchdog.enabled: true
   asserts:
     - hasDocuments:
         count: 1
