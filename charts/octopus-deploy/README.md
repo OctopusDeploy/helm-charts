@@ -125,7 +125,11 @@ You'll likely want to allow external traffic to your Octopus instance, and this 
 
 This requires an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) to be running in your cluster.
 
-An example of a values file which configures ingress for the web portal using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
+There are two types of traffic which you will typically want to configure ingress for:
+- Web requests for the portal and HTTP API
+- [Polling Tentacles](#polling-tentacles).  This will be required if you are using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have virtual machines with Polling Tentacles installed. 
+
+An example of a values file which configures ingress for HTTP traffic to the web portal and HTTP API using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
 
 ```
 octopus:
@@ -138,14 +142,13 @@ octopus:
       - octopus.example.com 
 ```
 
-#### Polling Tentacles
+#### <a name="polling-tentacles"></a>Polling Tentacles (including the Octopus Kubernetes Agent)
 
-If you have Virtual Machines with an [Octopus Polling Tentacle](https://octopus.com/docs/infrastructure/deployment-targets/tentacle/tentacle-communication#polling-tentacles) installed, you will also need to configure Kubernetes to allow Polling Tentacle traffic. 
-
+If you are deploying to Kubernetes using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have Virtual Machines with an [Octopus Polling Tentacle](https://octopus.com/docs/infrastructure/deployment-targets/tentacle/tentacle-communication#polling-tentacles) installed, you will also need to configure ingress to allow Polling Tentacle traffic. 
 
 If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  
 
-The following configuration will create an ingress endpoint for each Octopus replica. 
+The following configuration will create an ingress endpoint for each Octopus node (replica). 
 
 
 ```
@@ -166,5 +169,6 @@ The resulting endpoints will be:
 - polling1.octopus.example.com
 - etc, for each replica
 
-Your [Polling tentacles must be configured poll every Octopus server node](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha).
-
+Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
+- [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster) 
+- [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
