@@ -39,6 +39,8 @@ You will need the Base64 encoded version of the license key.
 
 The Quick Start section above is optimized for simplicity.  Below we explain the optional configuration. 
 
+![Architecture](helm-chart-architecture.png)
+
 ### SQL Server
 Octopus Deploy requires a Microsoft SQL Server database.
 
