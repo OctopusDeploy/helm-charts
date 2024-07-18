@@ -10,7 +10,7 @@ This section shows you how to get Octopus running as quickly as possible on your
 
 If you are creating a long-lived, production Octopus instance we recommend you read the [Configuration](#configuration) section below.
 
-Once you have your license key, you can run the command below to install Octopus Deploy:
+Once you have your [license key](#license-key), you can run the command below to install Octopus Deploy:
 
 ```
 helm upgrade octopus-deploy \
