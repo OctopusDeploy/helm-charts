@@ -67,7 +67,7 @@ See the Microsoft documentation for more [SQL Server installation options](https
 **It is important you store the master key!**  
 If you ever need to create a new Octopus instance and wish to use keep all your existing data, then the master key is required.  
 
-The master key is generated, stored in Kubernetes secret, and output when the Helm chart is installed.  If you need to supply an existing master key, then this can be done as follows 
+By default the master key is generated, stored in Kubernetes secret, and output when the Helm chart is installed.  If you need to supply an existing master key this can be done as follows 
 
 ```
 octopus:
