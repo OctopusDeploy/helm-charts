@@ -5,6 +5,8 @@
     "kubernetes-agent": "1.7.0"
   },
   "changesets": [
-    "brave-files-explain"
+    "brave-files-explain",
+    "clean-flowers-hide",
+    "witty-mice-think"
   ]
 }
