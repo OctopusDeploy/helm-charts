@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.10.1
+
+### Patch Changes
+
+- d8a61d7: Make v1 agent compatible with the latest changes to Tentacle
+
 ## 1.10.0
 
 ### Minor Changes
