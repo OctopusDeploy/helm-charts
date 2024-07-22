@@ -163,6 +163,10 @@ scriptPods:
     clusterRole:
       rules: []
 
+      
+  image:
+    name: octopusdeploy/worker-tools
+
 # @section -- Persistence
 persistence:
   

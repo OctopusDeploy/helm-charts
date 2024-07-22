@@ -70,6 +70,10 @@ spec:
               value: {{ .Values.agent.worker.enabled | quote }}
             - name: "WorkerPools"
               value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
+            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODCONTAINERIMAGE"
+              value: {{ $.Values.scriptPods.image.name | quote}}
+            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODCONTAINERIMAGETAG"
+              value: {{ $.Values.scriptPods.image.tag | quote}}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
