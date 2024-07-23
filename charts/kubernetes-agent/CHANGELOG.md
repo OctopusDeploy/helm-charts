@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.10.2
+
+### Patch Changes
+
+- d8a1a9f: Fix an issue with imagePullSecrets not being serialized in environment variables correctly
+
 ## 1.10.1
 
 ### Patch Changes
