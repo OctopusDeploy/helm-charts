@@ -1,5 +1,5 @@
 ---
-"kubernetes-agent": patch
+"kubernetes-agent": minor
 ---
 
 Added role for worker pods
