@@ -163,9 +163,17 @@ scriptPods:
     clusterRole:
       rules: []
 
+  deploymentTarget:
+    image:
+      repository: ""
+      pullPolicy: IfNotPresent
+      tag: ""
       
-  image:
-    name: octopusdeploy/worker-tools
+  worker:
+    image:
+      repository: octopusdeploy/worker-tools
+      pullPolicy: IfNotPresent
+      tag: "ubuntu.22.04"
 
 # @section -- Persistence
 persistence:
