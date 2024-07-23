@@ -98,7 +98,7 @@ spec:
               value: {{ .Values.agent.enableMetricsCapture| quote }}
             {{- if .Values.imagePullSecrets }}
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
-              value: {{ join "," .Values.imagePullSecrets | quote}}
+              value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}
             {{- end }}
             - name: "OCTOPUS__K8STENTACLE__PODRESOURCEJSON"
               value: {{ .Values.scriptPods.resources | toJson | quote }}
