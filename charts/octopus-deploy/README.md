@@ -31,10 +31,6 @@ You will need the Base64 encoded version of the license key.
 
 [TODO: control center image]
 
-### Port forwarding
-[TODO]
-
-
 ## Configuration
 
 The Quick Start section above is optimized for simplicity.  Below we explain the optional configuration. 
