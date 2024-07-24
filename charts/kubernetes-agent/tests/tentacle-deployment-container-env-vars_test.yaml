@@ -305,5 +305,17 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
         value: "1.0.0-worker"
     - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
+        value: "IfNotPresent"
+        
+- it: "When running as a worker, the script-pod image fields are already populated"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
+        value: "octopusdeploy/worker-tools"
+    - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
+        value: "ubuntu-22.04"
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
         value: "IfNotPresent"
