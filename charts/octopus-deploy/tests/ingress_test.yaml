@@ -1,0 +1,53 @@
+suite: ingress 
+templates:
+  - ingress.yaml
+tests:
+  - it: ingress should render
+    values: 
+      - ./values/ingress.yaml
+    asserts:
+      - isKind:
+          of: Ingress
+        documentIndex: 0
+  - it: polling tentacles should render
+    values: 
+      - ./values/ingress.yaml
+    asserts:
+      - isKind:
+          of: Ingress
+        documentIndex: 1
+      - equal:
+          path: spec.tls[0].hosts
+          value:
+            - "polling0.example.com"
+            - "polling0.internal.example.com"
+        documentIndex: 1
+      - equal:
+          path: spec.rules[0].host
+          value: "polling0.example.com"
+        documentIndex: 1
+      - equal:
+          path: spec.rules[1].host
+          value: "polling0.internal.example.com"
+        documentIndex: 1
+
+  - it: number of polling tentacle ingress objects get created with replicas
+    values:
+      - ./values/ingress.yaml
+    set:
+      octopus.replicaCount: 3
+    asserts:
+      - hasDocuments:
+          count: 4
+      - equal:
+          path: spec.rules[0].host
+          value: "polling0.example.com"
+        documentIndex: 1
+      - equal:
+          path: spec.rules[0].host
+          value: "polling1.example.com"
+        documentIndex: 2
+      - equal:
+          path: spec.rules[0].host
+          value: "polling2.example.com"
+        documentIndex: 3

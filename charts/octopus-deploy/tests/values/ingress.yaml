@@ -1,0 +1,8 @@
+octopus:
+  ingress:
+    enabled: true
+    path: /
+    hosts: ["example.com", "internal.example.com"]
+    pollingTentacles:
+      enabled: true
+      hostPrefix: "polling"
