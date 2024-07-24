@@ -7,8 +7,8 @@ octopus:
 
   # The below 5 options are not required if createSecrets is false
   # The master key is used to encrypt secrets. Generate a key with: openssl rand 16 | base64
-  masterKey: GENERATE_ME
-  databaseConnectionString: GENERATE_ME
+  masterKey: ""
+  databaseConnectionString: ""
   # The Octopus admin username
   username:
   # The Octopus admin password
@@ -162,3 +162,13 @@ dockerHub:
   # kubectl create secret docker-registry regcred --docker-username=myusername --docker-password=mypassword --dry-run=client -o="jsonpath={.data.\.dockerconfigjson}"
   # See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   creds:
+
+mssql: 
+  enabled: false
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: ""
+
+global:
+  # Set the default storageClass to be used for all persistent volume claims
+  # this is overridden by the storageClassName in the individual volume claims if specified
+  storageClass: ""
