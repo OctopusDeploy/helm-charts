@@ -265,57 +265,72 @@ tests:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODRESOURCEJSON')].value
         value: '{"limits":{"cpu":"100m","memory":"1Gi"},"requests":{"cpu":"10m","memory":"50Mi"}}'
-#        
-#- it: "Sets Image Pod from DeploymentTarget Values if DeploymentTarget is enabled"
-#  set:
-#      agent.deploymentTarget.Enabled: true
-#      agent.worker.Enabled: false
-#      scriptPods.deploymentTarget.image.repository: "deployment_target_image_repository"
-#      scriptPods.deploymentTarget.image.tag: "1.0.0-deploymentTarget"
-#      scriptPods.deploymentTarget.image.pullPolicy: "Always"
-#      scriptPods.worker.image.repository: "should_not_use_this"
-#      scriptPods.worker.image.tag: "should_not_use_this"
-#      scriptPods.worker.image.pullPolicy: "should_not_use_this"
-#  asserts:
-#    - equal:
-#        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
-#        value: "deployment_target_image_repository"
-#    - equal:
-#        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
-#        value: "1.0.0-deploymentTarget"
-#    - equal:
-#        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
-#        value: "Always"
-#        
-#- it: "Sets Image Pod from Worker Values if Worker is enabled"
-#  set:
-#    agent.deploymentTarget.Enabled: false
-#    agent.worker.Enabled: true
-#    scriptPods.worker.image.repository: "worker_image_repository"
-#    scriptPods.worker.image.tag: "1.0.0-worker"
-#    scriptPods.worker.image.pullPolicy: "IfNotPresent"
-#    scriptPods.deploymentTarget.image.repository: "should_not_use_this"
-#    scriptPods.deploymentTarget.image.tag: "should_not_use_this"
-#    scriptPods.deploymentTarget.image.pullPolicy: "should_not_use_this"
-#  asserts:
-#    - equal:
-#        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
-#        value: "worker_image_repository"
-#    - equal:
-#        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
-#        value: "1.0.0-worker"
-#    - equal:
-#        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
-#        value: "IfNotPresent"
-#        
+
+- it: "Sets Image Pod from DeploymentTarget Values if DeploymentTarget is enabled"
+  set:
+    agent.deploymentTarget.enabled: true
+    agent.worker.enabled: false
+    scriptPods.deploymentTarget.image:
+      repository: "deployment_target_image_repository"
+      tag: "1.0.0-deploymentTarget"
+      pullPolicy: "Always"
+    scriptPods.worker.image:
+      repository: "should_not_use_this"
+      tag: "should_not_use_this"
+      pullPolicy: "should_not_use_this"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
+        value: "deployment_target_image_repository"
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
+        value: "1.0.0-deploymentTarget"
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
+        value: "Always"
+
+- it: "Sets Image Pod from Worker Values if Worker is enabled"
+  set:
+    agent.deploymentTarget.enabled: false
+    agent.worker.enabled: true
+    scriptPods.deploymentTarget.image:
+      repository: "should_not_use_this"
+      tag: "should_not_use_this"
+      pullPolicy: "should_not_use_this"
+    scriptPods.worker.image:
+      repository: "worker_image_repository"
+      tag: "1.0.0-worker"
+      pullPolicy: "IfNotPresent"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
+        value: "worker_image_repository"
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
+        value: "1.0.0-worker"
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
+        value: "IfNotPresent"
+
 - it: "When running as a worker, the script-pod image fields are already populated"
+  set:
+    agent.deploymentTarget.enabled: false
+    agent.worker.enabled: true
   asserts:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
         value: "octopusdeploy/worker-tools"
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
-        value: "ubuntu-22.04"
+        value: "ubuntu.22.04"
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
         value: "IfNotPresent"
+        
+- it: "When running as a deployment Target, script pod image is not set by default"
+  set:
+    agent.deploymentTarget.enabled: true
+    agent.worker.enabled: false
+  asserts:
+    - notExists:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE')].value
