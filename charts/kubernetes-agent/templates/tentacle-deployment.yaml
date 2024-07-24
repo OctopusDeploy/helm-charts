@@ -68,9 +68,9 @@ spec:
               value: {{ .Values.agent.deploymentTarget.initial.tenantedDeploymentParticipation | quote }}
             - name: "WorkerPools"
               value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
-            {{- if "true" }}
-            {{include "kubernetes-agent.scriptPodEnvVars" . | nindent 12}}
-            {{- else if .Values.agent.worker.enabled}}
+            {{- if .Values.agent.deploymentTarget.enabled }}
+            {{include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.deploymentTarget.image | nindent 12}}
+            {{- else if .Values.agent.worker.enabled }}
             {{ include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.worker.image | nindent 12}}
             {{- end }}
             {{- with .Values.agent.machinePolicyName }}

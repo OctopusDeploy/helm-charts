@@ -108,20 +108,16 @@ The name of the PersistentVolumeClaim to configure
 The Env-var block required to set image name, tag and pullpolicy
 */}}
 {{- define "kubernetes-agent.scriptPodEnvVars" -}}
+{{- if .repository }}
 - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE"
-  value: "FakeValue"
+  value: {{ .repository | quote}}
 {{- end }}
-{{/*{{printf "value: \"FakeValue\"" | indent 14 }}*/}}
-{{/*{{- if .repository }}*/}}
-{{/*- name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE"*/}}
-{{/*  value: {{ .repository | quote}}*/}}
-{{/*    {{- end }}*/}}
-{{/*    {{- if .tag }}*/}}
-{{/*- name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG"*/}}
-{{/*  value: {{ .tag | quote}}*/}}
-{{/*  {{- end }}*/}}
-{{/*  {{- if ..pullPolicy }}*/}}
-{{/*- name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY"*/}}
-{{/*  value: {{ .pullPolicy | quote}}*/}}
-{{/*    {{- end }}*/}}
-{{/*{{- end }}*/}}
+{{- if .tag }}
+- name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG"
+  value: {{ .tag | quote}}
+{{- end }}
+{{- if .pullPolicy }}
+- name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY"
+  value: {{ .pullPolicy | quote}}
+{{- end }}
+{{- end }}
