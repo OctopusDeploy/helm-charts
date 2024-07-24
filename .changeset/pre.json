@@ -2,11 +2,15 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "kubernetes-agent": "1.7.0"
+    "kubernetes-agent": "1.7.0",
+    "octopus-deploy": "0.0.0"
   },
   "changesets": [
     "brave-files-explain",
     "clean-flowers-hide",
+    "empty-peas-occur",
+    "modern-pumas-matter",
+    "nice-tomatoes-scream",
     "witty-mice-think"
   ]
 }
