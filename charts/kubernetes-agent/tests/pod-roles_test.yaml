@@ -1,0 +1,23 @@
+suite: "pod permissions"
+templates:
+  - templates/pod-roles.yaml
+tests:
+  - it: "worker role is created if worker is enabled"
+    set:
+      agent.worker.enabled: true
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups:
+              - '*'
+            resources: ["*"]
+            verbs: ["*"]
+          documentIndex: 1
+
+  - it: "worker role is not created if worker is disabled"
+    set:
+      agent.worker.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
