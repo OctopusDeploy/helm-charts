@@ -2,101 +2,75 @@
 
 This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes cluster using the [Helm](https://helm.sh) package manager.
 
-The chart packages are available on [DockerHub](https://hub.docker.com/r/octopusdeploy/octopusdeploy-helm).
+[TODO: point to GitHub Container Registry for charts]
 
-## Usage
 
-### tl;dr
+## Quick Start
+This section shows you how to get Octopus running as quickly as possible on your own Kubernetes infrastructure. 
+
+If you are creating a long-lived, production Octopus instance we recommend you read the [Configuration](#configuration) section below.
+
+Once you have your [license key](#license-key), you can run the command below to install Octopus Deploy:
 
 ```
-helm install octopus-deploy oci://registry-1.docker.io/octopusdeploy/octopusdeploy-helm  --values values.yaml
+helm upgrade octopus-deploy \
+--install \
+--namespace octopus-deploy \
+--create-namespace \
+--set octopus.acceptEula="Y" \
+--set octopus.licenseKeyBase64="<Your License Key>"
+--set global.storageClass="longhorn" \
+--set mssql.enabled="true" \
+oci://<helm-chart-url>
 ```
 
-### Pre-requisites
+### License Key
+You will need a license key to install Octopus. You can [start a trial](https://octopus.com/start) (choose `Server` to run Octopus on your own infrastructure), or retrieve your existing license key from the [Control Center](https://octopus.com/control-center/). 
 
-#### Database 
+You will need the Base64 encoded version of the license key.
 
-[Octopus requires a SQL Server database](https://octopus.com/docs/installation/sql-server-database).  
+[TODO: control center image]
 
-SQL Server can be [installed via Helm](https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-containers-deploy-helm-charts-kubernetes) into your Kubernetes cluster.   
-Alternatively, there are many other [installation options](https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup), or your cloud provider may offer a hosted option. 
+## Configuration
 
-**You will need the database connection string.** 
-This should look something like:
+The Quick Start section above is optimized for simplicity.  Below we explain the optional configuration. 
+
+![Architecture](helm-chart-architecture.png)
+
+### SQL Server
+Octopus Deploy requires a Microsoft SQL Server database.
+
+The Quick Start installs SQL Server as a sub-chart. 
+
+If you want to host SQL Server independently, you must supply the connection string: 
+
+```
+octopus:
+  databaseConnectionString: <Your connection string>
+```
+
+The database connection string should look something like:
 
 ```
 Server=tcp:octopus-deploy.database.windows.net,1433;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus-deploy;Password={your_password};Encrypt=True;Connection Timeout=30;
 ```
 
-#### Master key
+See the Microsoft documentation for more [SQL Server installation options](https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup).
+
+
+### Master Key
 
 [Octopus uses a master key to encrypt sensitive values](https://octopus.com/docs/security/data-encryption). 
 
-**You must generate a master key, and store it safely.**  
+**It is important you store the master key!**  
+If you ever need to create a new Octopus instance and wish to use keep all your existing data, then the master key is required.  
 
-The master key can be generated with
-
-```
-openssl rand -base64 16
-```
-
-### Values
-
-A minimal example of a values file for installing this chart:
+By default the master key is generated, stored in Kubernetes secret, and output when the Helm chart is installed.  If you need to supply an existing master key this can be done as follows 
 
 ```
 octopus:
-  acceptEula: "Y" # It is required to accept the Octopus EULA https://octopus.com/legal/customer-agreement
-  masterKey: <generated master key - base64> 
-  databaseConnectionString: <your sql server database connection string> 
-  licenseKeyBase64: <your base64 encoded license key>   
-  username: <admin username>
-  password: <admin password> 
-  packageRepositoryVolume:
-    size: 1Gi 
-    storageClassName: "azure-file"
-    storageAccessMode: ReadWriteOnce
-  # The volume used for persisting deployment artifacts: https://octopus.com/docs/projects/deployment-process/artifacts
-  artifactVolume:
-    size: 1Gi 
-    storageClassName: "azure-file"
-    storageAccessMode: ReadWriteOnce
- # Volume used for task logs: https://octopus.com/docs/support/get-the-raw-output-from-a-task
-  taskLogVolume: 
-    size: 1Gi 
-    storageClassName: "azure-file"
-    storageAccessMode: ReadWriteOnce
-
+  masterKey: <Your master key>
 ```
-
-### Ingress
-
-There are two types of traffic which you will typically want to allow from outside the cluster:
-- HTTP requests to the Octopus web portal 
-- Polling Tentacle communication 
-
-For the web portal, a common approach is to use a [Kubernetes ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/). This requires an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) to be running in your cluster.
-
-An example of a values file which configures ingress for the web portal using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
-
-```
-octopus:
-  ingress:
-    enabled: true
-    annotations: 
-      kubernetes.io/ingress.class: nginx
-    path: /
-    hosts:
-      - octopus.example.com 
-```
-
-#### Polling Tentacles
-
-Polling Tentacles are more complicated than web traffic, as [polling tentacles must poll every Octopus server node](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha).
-
-For this reason, this Helm chart doesn't provision an ingress resource for polling tentacles.  
-
-If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  When registering your polling tentacles, you will need to configure them to poll each node. 
 
 ### Persistent Volumes
 
@@ -108,12 +82,21 @@ This chart requires persistent volumes to store:
 
 These volumes are shared across Octopus nodes. 
 
-For each, an optional persistent volume claim class name can be supplied. This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 0). 
-ReadWriteOnce or ReadWriteMany can be used for single node clusters.
-A dash (i.e. "-") means use an empty string as the storageClass attribute. This effectively means there is no automatic provisioning of persistent volumes, and the volumes need to be created externally outside of this chart.
-A [falsy value](https://helm.sh/docs/chart_template_guide/control_structures/#ifelse) means the storageClass attribute is not defined, and the default value may be used. Most cloud providers support automatic provisioning of ReadWriteOnce volumes. 
+By default, your Kubernetes cluster's [default storage class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/) will be used.
 
-An example of configuring the persistent volumes is shown below:
+This default can be overriden in two ways.
+
+You can configure the storage class to be used for all three of the persistent volumes above (and for the SQL Server sub-chart if enabled) via:
+
+```
+global:
+  storageClass: "<your storage class name>"
+```
+
+This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 0). 
+ReadWriteOnce or ReadWriteMany can be used for single node clusters.
+
+Alternatively, each volume may be configured individually. An example is shown below.
 
 ```
 octopus:
@@ -131,3 +114,59 @@ octopus:
     storageAccessMode: ReadWriteOnce
 ```
 
+Notes on the `storageClassName` values:   
+A dash (i.e. "-") means use an empty string as the storageClass attribute. This effectively means there is no automatic provisioning of persistent volumes, and the volumes need to be created externally outside of this chart.
+A [falsy value](https://helm.sh/docs/chart_template_guide/control_structures/#ifelse) means the storageClass attribute is not defined, and the default value may be used. Most cloud providers support automatic provisioning of ReadWriteOnce volumes. 
+
+### Ingress
+You'll likely want to allow external traffic to your Octopus instance, and this generally means configuring [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). 
+
+This requires an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) to be running in your cluster.
+
+There are two types of traffic which you will typically want to configure ingress for:
+- Web requests for the portal and HTTP API
+- [Polling Tentacles](#polling-tentacles).  This will be required if you are using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have virtual machines with Polling Tentacles installed. 
+
+An example of a values file which configures ingress for HTTP traffic to the web portal and HTTP API using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
+
+```
+octopus:
+  ingress:
+    enabled: true
+    annotations: 
+      kubernetes.io/ingress.class: nginx
+    path: /
+    hosts:
+      - octopus.example.com 
+```
+
+#### <a name="polling-tentacles"></a>Polling Tentacles (including the Octopus Kubernetes Agent)
+
+If you are deploying to Kubernetes using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have Virtual Machines with an [Octopus Polling Tentacle](https://octopus.com/docs/infrastructure/deployment-targets/tentacle/tentacle-communication#polling-tentacles) installed, you will also need to configure ingress to allow Polling Tentacle traffic. 
+
+If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  
+
+The following configuration will create an ingress endpoint for each Octopus node (replica). 
+
+
+```
+octopus:
+  ingress:
+    enabled: true
+    hosts: 
+      - octopus.example.com
+    pollingTentacles:
+          enabled: true
+          annotations: {}
+          labels: {}
+          hostPrefix: "polling"
+```
+
+The resulting endpoints will be:
+- polling0.octopus.example.com
+- polling1.octopus.example.com
+- etc, for each replica
+
+Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
+- [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster) 
+- [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
