@@ -1,5 +1,5 @@
 ---
-"kubernetes-agent": minor
+"octopus-deploy": minor
 ---
 
 Add polling tentacle ingress support
