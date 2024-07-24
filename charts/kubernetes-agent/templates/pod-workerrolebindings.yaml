@@ -1,0 +1,20 @@
+{{- $podServiceAccountName := include "kubernetes-agent.scriptPodServiceAccountName" . -}}
+{{- $podServiceAccountFullName := include "kubernetes-agent.scriptPodServiceAccountFullName" . -}}  
+{{- $podWorkerRoleName := include "kubernetes-agent.scriptPodWorkerRoleName" . -}}
+
+{{- if .Values.agent.worker.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-worker-binding" $podServiceAccountFullName }}
+  namespace: {{ $.Release.Namespace | quote }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $podServiceAccountName }}
+    namespace: {{ $.Release.Namespace | quote }}
+roleRef:
+  kind: Role
+  name: {{ $podWorkerRoleName }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end -}}

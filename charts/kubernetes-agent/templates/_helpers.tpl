@@ -72,6 +72,15 @@ Create the name of the pod cluster role for deleting pods
 {{- printf "%s-delete-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 
+
+{{/*
+Create the name of the pod (namespaced) role for creating pods, and updating tentacle
+*/}}
+{{- define "kubernetes-agent.scriptPodWorkerRoleName" -}}
+{{- printf "%s-worker-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
+{{- end }}
+
+
 {{/*
 Create the name of the pod cluster role binding to use
 */}}
