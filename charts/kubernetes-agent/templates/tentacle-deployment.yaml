@@ -66,6 +66,8 @@ spec:
               value: {{ .Values.agent.deploymentTarget.initial.defaultNamespace | quote }}
             - name: "TargetTenantedDeploymentParticipation"
               value: {{ .Values.agent.deploymentTarget.initial.tenantedDeploymentParticipation | quote }}
+            - name: "WorkerEnabled"
+              value: {{ .Values.agent.worker.enabled | quote }}
             - name: "WorkerPools"
               value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
             {{- if .Values.agent.deploymentTarget.enabled }}

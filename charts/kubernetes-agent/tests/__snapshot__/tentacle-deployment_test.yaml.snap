@@ -100,7 +100,7 @@ should match snapshot:
                   value: '{"requests":{"cpu":"25m","memory":"100Mi"}}'
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: docker.packages.octopushq.com/kubernetes-agent:8.1.1932-pull-980
+              image: octopusdeploy/kubernetes-agent-tentacle:8.1.1925
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:
