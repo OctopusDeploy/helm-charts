@@ -12,6 +12,8 @@ on:
 jobs:
   paths_filter:
     runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.filter.outputs.octopus-deploy }}
 
     steps:
       - uses: actions/checkout@v4
