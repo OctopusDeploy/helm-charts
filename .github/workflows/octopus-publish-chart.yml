@@ -22,7 +22,7 @@ jobs:
           filters: |
             octopus-deploy:
               - charts/octopus-deploy/**
-              - .github/workflows/octopus-publish-chart.yaml
+              - .github/workflows/octopus-publish-chart.yml
           
 
   test:
