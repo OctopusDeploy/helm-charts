@@ -70,32 +70,11 @@ spec:
               value: {{ .Values.agent.worker.enabled | quote }}
             - name: "WorkerPools"
               value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
-              {{- if $.Values.agent.deploymentTarget.enabled }}
-                {{- if $.Values.scriptPods.deploymentTarget.image.repository }}
-            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE"
-              value: {{ $.Values.scriptPods.deploymentTarget.image.repository | quote}}
-                {{- end }}
-                {{- if $.Values.scriptPods.deploymentTarget.image.tag }}
-            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG"
-              value: {{ $.Values.scriptPods.deploymentTarget.image.tag | quote}}
-              {{- end }}
-              {{- if $.Values.scriptPods.deploymentTarget.image.pullPolicy }}
-            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY"
-              value: {{ $.Values.scriptPods.worker.image.pullPolicy | quote}}
-              {{- end }}
-              {{- else if $.Values.agent.worker.enabled }}
-              {{- if $.Values.scriptPods.worker.image.repository }}
-            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGE"
-              value: {{ $.Values.scriptPods.worker.image.repository | quote}}
-              {{- end }}
-              {{- if $.Values.scriptPods.worker.image.tag }}
-            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG"
-              value: {{ $.Values.scriptPods.worker.image.tag | quote}}
-              {{- end }}
-              {{- if $.Values.scriptPods.worker.image.pullPolicy }}
-            - name: "OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY"
-              value: {{ $.Values.scriptPods.worker.image.pullPolicy | quote}}
-              {{- end }}
+            {{- if .Values.agent.deploymentTarget.enabled }}
+              {{include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.deploymentTarget.image }}
+            {{- else if .Values.agent.worker.enabled }}
+              {{include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.worker.image }}
+            {{-end }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
