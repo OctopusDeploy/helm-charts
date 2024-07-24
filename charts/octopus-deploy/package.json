@@ -3,7 +3,5 @@
   "version": "0.0.0",
   "private": true,
   "description": "Helm chart to install Octopus Deploy",
-  "scripts": {
-  },
   "author": "Octopus Deploy"
 }
