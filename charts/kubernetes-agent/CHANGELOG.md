@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.10.3
+
+### Patch Changes
+
+- 2c2ef66: Update Tentacle to fix an issue with whitespaces not being allowed in target roles
+
 ## 1.10.2
 
 ### Patch Changes
