@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.2
+
+### Minor Changes
+
+- 76ed7d8: Added role for worker pods
+
 ## 2.0.0-alpha.1
 
 ### Major Changes
