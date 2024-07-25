@@ -163,12 +163,16 @@ scriptPods:
     clusterRole:
       rules: []
 
+  # -- The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget
+  # @section -- Script pod values
   deploymentTarget:
     image:
       repository: ""
       pullPolicy: IfNotPresent
       tag: ""
       
+  # -- The repository, pullPolicy & tag to use for the script-pod image used when running as a worker
+  # @section -- Script pod values
   worker:
     image:
       repository: octopusdeploy/worker-tools
