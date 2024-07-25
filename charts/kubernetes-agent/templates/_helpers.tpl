@@ -112,3 +112,16 @@ The name of the PersistentVolumeClaim to configure
 {{- include "nfs.pvcName" . }}
 {{- end }}
 {{- end }}
+
+{{/* 
+Turns the imagePullSecrets map into a CSV.
+*/}}
+{{- define "kubernetes-agent.imagePullSecretsCsv" -}}
+{{- if .Values.imagePullSecrets }}
+{{- $imagePullSecretCsv := (first .Values.imagePullSecrets).name }}
+{{- range $i, $val := (rest .Values.imagePullSecrets) }}
+    {{- $imagePullSecretCsv = (printf "%s,%s" $imagePullSecretCsv $val.name) }}
+{{- end }}
+{{- $imagePullSecretCsv }}
+{{- end }}
+{{- end }}
