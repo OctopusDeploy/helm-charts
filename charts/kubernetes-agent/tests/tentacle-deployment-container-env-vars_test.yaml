@@ -242,13 +242,24 @@ tests:
   - notExists:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPassword')]
 
-- it: "Sets environment variable if image pull secrets set"
+- it: "Sets environment variable if multiple image pull secrets set"
   set:
-    imagePullSecrets: ["secret-1", "secret-2"]
+    imagePullSecrets:
+    - name: secret-1
+    - name: secret-2
   asserts:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES')].value
         value: "secret-1,secret-2"
+
+- it: "Sets environment variable if single image pull secret"
+  set:
+    imagePullSecrets:
+    - name: secret-1
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES')].value
+        value: "secret-1"
 
 
 - it: "Sets resource json if script pods resources changed"
