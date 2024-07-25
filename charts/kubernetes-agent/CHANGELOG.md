@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.3
+
+### Patch Changes
+
+- 7c683de: Forward merge changes from 1.10.1 - 1.10.3 to latest
+
 ## 2.0.0-alpha.2
 
 ### Minor Changes
