@@ -44,8 +44,6 @@ spec:
               value: {{ .Values.agent.acceptEula | quote }}
             - name: "AgentName"
               value: {{ .Values.agent.name | quote }}
-            - name: "DeploymentTargetEnabled"
-              value: "true"
             - name: "ServerCommsAddresses"
               value: {{ join "," .Values.agent.serverCommsAddresses | quote }}
             - name: "ServerCommsAddress"
