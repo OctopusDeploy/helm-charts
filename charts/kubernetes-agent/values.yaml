@@ -168,7 +168,7 @@ scriptPods:
   deploymentTarget:
     image:
       repository: ""
-      pullPolicy: IfNotPresent
+      pullPolicy: ""
       tag: ""
       
   # -- The repository, pullPolicy & tag to use for the script-pod image used when running as a worker
