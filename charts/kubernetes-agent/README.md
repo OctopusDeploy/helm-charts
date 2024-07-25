@@ -93,7 +93,7 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| scriptPods.deploymentTarget | object | `{"image":{"pullPolicy":"IfNotPresent","repository":"","tag":""}}` | The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget |
+| scriptPods.deploymentTarget | object | `{"image":{"pullPolicy":"","repository":"","tag":""}}` | The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
