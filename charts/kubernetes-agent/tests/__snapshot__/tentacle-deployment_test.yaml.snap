@@ -46,8 +46,6 @@ should match snapshot:
                   value: "N"
                 - name: AgentName
                   value: ""
-                - name: DeploymentTargetEnabled
-                  value: "true"
                 - name: ServerCommsAddresses
                   value: ""
                 - name: ServerCommsAddress
