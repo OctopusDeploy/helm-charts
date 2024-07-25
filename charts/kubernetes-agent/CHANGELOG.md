@@ -1,5 +1,17 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.3
+
+### Patch Changes
+
+- 7c683de: Forward merge changes from 1.10.1 - 1.10.3 to latest
+
+## 2.0.0-alpha.2
+
+### Minor Changes
+
+- 76ed7d8: Added role for worker pods
+
 ## 2.0.0-alpha.1
 
 ### Major Changes
@@ -15,6 +27,24 @@
 ### Major Changes
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+
+## 1.10.3
+
+### Patch Changes
+
+- 2c2ef66: Update Tentacle to fix an issue with whitespaces not being allowed in target roles
+
+## 1.10.2
+
+### Patch Changes
+
+- d8a1a9f: Fix an issue with imagePullSecrets not being serialized in environment variables correctly
+
+## 1.10.1
+
+### Patch Changes
+
+- d8a61d7: Make v1 agent compatible with the latest changes to Tentacle
 
 ## 1.10.0
 
