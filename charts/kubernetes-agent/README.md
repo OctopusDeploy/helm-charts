@@ -25,7 +25,8 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
 | agent.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the agent pod |
-| agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
+| agent.bearerToken | string | `""` | A JWT bearer token used to authenticate with the target Octopus Server |
+| agent.bearerTokenSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in the `bearer-token` key. |
 | agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
@@ -34,10 +35,12 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
+| agent.password | string | `""` | The password of the user used to authenticate with the target Octopus Server |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.pollingProxy | object | `{"host":"","password":"","port":80,"username":""}` | The host, port, username and password of the proxy server to use for polling connections |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
-| agent.serverApiKey | string | `""` | An Octopus Server API key use to authenticate with the target Octopus Server |
+| agent.serverApiKey | string | `""` | An Octopus Server API key used to authenticate with the target Octopus Server |
+| agent.serverApiKeySecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in the `api-key` key. |
 | agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverCommsAddresses | list | `[]` | The polling communication URLs of the target Octopus Servers when running in High Availability (HA) |
@@ -53,6 +56,8 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.targetTenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
 | agent.targetTenants | list | `[]` | The target tenants to register the agent with |
 | agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
+| agent.username | string | `""` | The username of the user used to authenticate with the target Octopus Server |
+| agent.usernamePasswordSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in the `username` and `password` keys. |
 
 ### Persistence
 

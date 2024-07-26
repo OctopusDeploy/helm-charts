@@ -149,6 +149,19 @@ tests:
           key: api-key
           name: the-agent-name-lobster-tentacle-server-auth
 
+- it: "Uses the existing server API key secret name if specified"
+  set:
+    agent:
+      serverApiKey: APIKEY-blkadsjfldsjflksd
+      serverApiKeySecretName: myCoolSecretName
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'ServerApiKey')].valueFrom
+      value: 
+        secretKeyRef:
+          key: api-key
+          name: myCoolSecretName
+
 - it: "Sets bearer token if specified"
   set:
     nameOverride: the-agent-name-lobster
@@ -161,6 +174,68 @@ tests:
         secretKeyRef:
           key: bearer-token
           name: the-agent-name-lobster-tentacle-server-auth
+
+- it: "Uses existing bearer token secret name if specified"
+  set:
+    nameOverride: the-agent-name-lobster
+    agent:
+      bearerToken: fkadjsgfjkaeuwygfkuwyafgu3gwfkua36wgfu3wgkujafghj
+      bearerTokenSecretName: myCoolSecretName
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'BearerToken')].valueFrom
+      value: 
+        secretKeyRef:
+          key: bearer-token
+          name: myCoolSecretName
+
+- it: "Sets username if specified"
+  set:
+    nameOverride: the-agent-name-lobster
+    agent:
+      username: "user-name"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'ServerUsername')].valueFrom
+      value: 
+        secretKeyRef:
+          key: username
+          name: the-agent-name-lobster-tentacle-server-auth
+
+- it: "Sets password if specified"
+  set:
+    nameOverride: the-agent-name-lobster
+    agent:
+      password: "password-1"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'ServerPassword')].valueFrom
+      value: 
+        secretKeyRef:
+          key: password
+          name: the-agent-name-lobster-tentacle-server-auth
+
+- it: "Sets username if specified"
+  set:
+    nameOverride: the-agent-name-lobster
+    agent:
+      username: "user-name"
+      password: "password-1"
+      usernamePasswordSecretName: "myCoolSecretName"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'ServerUsername')].valueFrom
+      value: 
+        secretKeyRef:
+          key: username
+          name: myCoolSecretName
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'ServerPassword')].valueFrom
+      value: 
+        secretKeyRef:
+          key: password
+          name: myCoolSecretName
+
 
 - it: "sets polling proxy information if host ifs specified"
   set:
