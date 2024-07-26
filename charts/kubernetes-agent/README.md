@@ -28,7 +28,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1948"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1925"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -93,14 +93,14 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| scriptPods.deploymentTarget | object | `{"image":{"pullPolicy":"","repository":"","tag":""}}` | The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget |
+| scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |
 | scriptPods.serviceAccount.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
-| scriptPods.worker | object | `{"image":{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}}` | The repository, pullPolicy & tag to use for the script-pod image used when running as a worker |
+| scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}` | The repository, pullPolicy & tag to use for the script-pod image used when running as a worker |
 
 ### Other Values
 
