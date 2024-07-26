@@ -164,7 +164,7 @@ scriptPods:
       rules: []
 
   deploymentTarget:
-    # -- The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget
+    # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target
     # @section -- Script pod values
     image:
       repository: ""
