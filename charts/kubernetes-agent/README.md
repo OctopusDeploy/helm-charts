@@ -93,14 +93,14 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script-pod image used when the cluster is a deploymentTarget |
+| scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |
 | scriptPods.serviceAccount.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
-| scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}` | The repository, pullPolicy & tag to use for the script-pod image used when running as a worker |
+| scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a worker |
 
 ### Other Values
 
