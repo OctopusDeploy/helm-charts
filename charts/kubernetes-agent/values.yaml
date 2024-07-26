@@ -172,7 +172,7 @@ scriptPods:
       tag: ""
       
   worker:
-    # -- The repository, pullPolicy & tag to use for the script-pod image used when running as a worker
+    # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a worker
     # @section -- Script pod values
     image:
       repository: octopusdeploy/worker-tools
