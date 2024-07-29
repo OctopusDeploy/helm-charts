@@ -53,7 +53,7 @@ kind: Ingress
 metadata:
   name: octopus-deploy-polling-node{{ . }}
   labels:
-    {{- include "labels" . | nindent 4 }}
+    {{- include "labels" $ | nindent 4 }}
 {{- if $.Values.octopus.ingress.pollingTentacles.labels }}
 {{ toYaml $.Values.octopus.ingress.pollingTentacles.labels | indent 4 }}
 {{- end }}
