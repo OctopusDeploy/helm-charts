@@ -19,9 +19,8 @@ helm upgrade octopus-deploy \
 --create-namespace \
 --set octopus.acceptEula="Y" \
 --set octopus.licenseKeyBase64="<Your License Key>"
---set global.storageClass="longhorn" \
 --set mssql.enabled="true" \
-oci://<helm-chart-url>
+oci://ghcr.io/octopusdeploy/octopusdeploy-helm
 ```
 
 ### License Key
@@ -65,7 +64,7 @@ See the Microsoft documentation for more [SQL Server installation options](https
 **It is important you store the master key!**  
 If you ever need to create a new Octopus instance and wish to use keep all your existing data, then the master key is required.  
 
-By default the master key is generated, stored in Kubernetes secret, and output when the Helm chart is installed.  If you need to supply an existing master key this can be done as follows 
+By default, the master key is generated, stored in Kubernetes secret, and output when the Helm chart is installed.  If you need to supply an existing master key this can be done as follows 
 
 ```
 octopus:
@@ -84,7 +83,7 @@ These volumes are shared across Octopus nodes.
 
 By default, your Kubernetes cluster's [default storage class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/) will be used.
 
-This default can be overriden in two ways.
+This default can be overridden in two ways.
 
 You can configure the storage class to be used for all three of the persistent volumes above (and for the SQL Server sub-chart if enabled) via:
 
@@ -103,20 +102,16 @@ octopus:
   packageRepositoryVolume:
     size: 20Gi 
     storageClassName: "azure-file"
-    storageAccessMode: ReadWriteOnce
+    storageAccessMode: ReadWriteMany
   artifactVolume:
     size: 1Gi 
     storageClassName: "azure-file"
-    storageAccessMode: ReadWriteOnce
+    storageAccessMode: ReadWriteMany
   taskLogVolume: 
     size: 1Gi 
     storageClassName: "azure-file"
-    storageAccessMode: ReadWriteOnce
+    storageAccessMode: ReadWriteMany
 ```
-
-Notes on the `storageClassName` values:   
-A dash (i.e. "-") means use an empty string as the storageClass attribute. This effectively means there is no automatic provisioning of persistent volumes, and the volumes need to be created externally outside of this chart.
-A [falsy value](https://helm.sh/docs/chart_template_guide/control_structures/#ifelse) means the storageClass attribute is not defined, and the default value may be used. Most cloud providers support automatic provisioning of ReadWriteOnce volumes. 
 
 ### Ingress
 You'll likely want to allow external traffic to your Octopus instance, and this generally means configuring [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). 

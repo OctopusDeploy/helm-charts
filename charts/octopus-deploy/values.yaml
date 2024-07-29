@@ -61,11 +61,6 @@ octopus:
   # For each, an optional persistent volume claim class name can be supplied. This storage class must support
   # ReadWriteMany access modes for HA clusters.
   # ReadWriteOnce or ReadWriteMany can be used for single node clusters.
-  # A dash (i.e. "-") means use an empty string as the storageClass attribute. This effectively means there
-  # is no automatic provisioning of persistent volumes, and the PV's need to be created externally outside of this chart.
-  # An falsy value (https://helm.sh/docs/chart_template_guide/control_structures/#ifelse defines falsy) means the
-  # storageClass attribute is not defined, and the default value may be used. Most cloud providers support automatic
-  # provisioning of ReadWriteOnce volumes.
   # Just be aware that ReadWriteOnce volumes can only be used with a replicaCount of 1, as higher replica counts means
   # multiple Octopus nodes writing to the same volume at the same time,
   # requiring ReadWriteMany volumes. Also note that the storageAccessMode value is automatically set to ReadWriteMany
