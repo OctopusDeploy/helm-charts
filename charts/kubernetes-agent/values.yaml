@@ -112,6 +112,27 @@ agent:
       memory: "150Mi"
       cpu: "100m"
 
+  # -- The tolerations to apply to the agent pod
+  # @section -- Agent values
+  tolerations: []
+
+  # -- The affinities to apply to the agent pod
+  # @section -- Agent values
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+                - amd64
+
   debug:
     # -- Disables automatic pod cleanup
     # @section -- Agent values
@@ -148,6 +169,27 @@ scriptPods:
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
     clusterRole:
       rules: []
+  
+  # -- The tolerations to apply to script pods
+  # @section -- Script pod values
+  tolerations: []
+
+  # -- The affinities to apply to script pods
+  # @section -- Script pod values
+  affinity: 
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+                - amd64
 
 # @section -- Persistence
 persistence:

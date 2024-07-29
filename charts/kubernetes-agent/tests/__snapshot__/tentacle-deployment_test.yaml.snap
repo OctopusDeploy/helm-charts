@@ -94,6 +94,8 @@ should match snapshot:
                   value: "true"
                 - name: OCTOPUS__K8STENTACLE__PODRESOURCEJSON
                   value: '{"requests":{"cpu":"25m","memory":"100Mi"}}'
+                - name: OCTOPUS__K8STENTACLE__PODAFFINITYJSON
+                  value: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}'
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
               image: octopusdeploy/kubernetes-agent-tentacle:8.1.1948
