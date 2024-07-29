@@ -1,10 +1,26 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.1
+
+### Major Changes
+
+- 0e07367: New values schema to allow installation of the agent as either an Octopus Deployment Target or Worker
+
+### Patch Changes
+
+- 84f7f36: Merge changes from 1.7.1 - 1.10.0 to latest
+
 ## 2.0.0-alpha.0
 
 ### Major Changes
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+
+## 1.10.0
+
+### Minor Changes
+
+- 7999cbb: Support configuring script pod resource requirements
 
 ## 1.9.0
 

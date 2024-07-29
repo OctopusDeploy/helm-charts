@@ -100,7 +100,7 @@ public class KubernetesAgentInstaller
         Tentacle.Services.NoListen: 'true'";
 
         valuesFile = valuesFile
-            .Replace("#{TargetName}", AgentName)
+            .Replace("#{AgentName}", AgentName)
             .Replace("#{ServerCommsAddress}", serverCommsAddress)
             .Replace("#{ConfigMapData}", configMapData);
 

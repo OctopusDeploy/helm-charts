@@ -42,8 +42,8 @@ spec:
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}
-            - name: "TargetName"
-              value: {{ .Values.agent.targetName | quote }}
+            - name: "AgentName"
+              value: {{ .Values.agent.name | quote }}
             - name: "ServerCommsAddresses"
               value: {{ join "," .Values.agent.serverCommsAddresses | quote }}
             - name: "ServerCommsAddress"
@@ -52,22 +52,28 @@ spec:
               value: {{ .Values.agent.serverUrl | quote }}
             - name: "Space"
               value: {{ .Values.agent.space | quote }}
+            - name: "DeploymentTargetEnabled"
+              value: {{ .Values.agent.deploymentTarget.enabled | quote }}
             - name: "TargetEnvironment"
-              value: {{ join "," .Values.agent.targetEnvironments | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.initial.environments | quote }}
             - name: "TargetRole"
-              value: {{ join "," .Values.agent.targetRoles | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.initial.tags | quote }}
             - name: "TargetTenant"
-              value: {{ join "," .Values.agent.targetTenants | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.initial.tenants | quote }}
             - name: "TargetTenantTag"
-              value: {{ join "," .Values.agent.targetTenantTags | quote }}
+              value: {{ join "," .Values.agent.deploymentTarget.initial.tenantTags | quote }}
+            - name: "DefaultNamespace"
+              value: {{ .Values.agent.deploymentTarget.initial.defaultNamespace | quote }}
             - name: "TargetTenantedDeploymentParticipation"
-              value: {{ .Values.agent.targetTenantedDeploymentParticipation | quote }}
+              value: {{ .Values.agent.deploymentTarget.initial.tenantedDeploymentParticipation | quote }}
+            - name: "WorkerEnabled"
+              value: {{ .Values.agent.worker.enabled | quote }}
+            - name: "WorkerPools"
+              value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
             {{- end }}
-            - name: "DefaultNamespace"
-              value: {{ .Values.agent.defaultNamespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
               value: {{ .Release.Namespace | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
@@ -98,6 +104,8 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
               value: {{ join "," .Values.imagePullSecrets | quote}}
             {{- end }}
+            - name: "OCTOPUS__K8STENTACLE__PODRESOURCEJSON"
+              value: {{ .Values.scriptPods.resources | toJson | quote }}
             {{- if .Values.agent.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:

@@ -7,8 +7,8 @@ should match snapshot:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.1.1890
-        helm.sh/chart: kubernetes-agent-2.0.0-alpha.0
+        app.kubernetes.io/version: 8.1.1925
+        helm.sh/chart: kubernetes-agent-2.0.0-alpha.1
       name: octopus-agent-tentacle
       namespace: NAMESPACE
     spec:
@@ -23,8 +23,8 @@ should match snapshot:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: octopus-agent
-            app.kubernetes.io/version: 8.1.1890
-            helm.sh/chart: kubernetes-agent-2.0.0-alpha.0
+            app.kubernetes.io/version: 8.1.1925
+            helm.sh/chart: kubernetes-agent-2.0.0-alpha.1
         spec:
           affinity:
             nodeAffinity:
@@ -44,7 +44,7 @@ should match snapshot:
             - env:
                 - name: ACCEPT_EULA
                   value: "N"
-                - name: TargetName
+                - name: AgentName
                   value: ""
                 - name: ServerCommsAddresses
                   value: ""
@@ -54,6 +54,8 @@ should match snapshot:
                   value: ""
                 - name: Space
                   value: Default
+                - name: DeploymentTargetEnabled
+                  value: "false"
                 - name: TargetEnvironment
                   value: ""
                 - name: TargetRole
@@ -62,9 +64,13 @@ should match snapshot:
                   value: ""
                 - name: TargetTenantTag
                   value: ""
+                - name: DefaultNamespace
+                  value: ""
                 - name: TargetTenantedDeploymentParticipation
                   value: Untenanted
-                - name: DefaultNamespace
+                - name: WorkerEnabled
+                  value: "false"
+                - name: WorkerPools
                   value: ""
                 - name: OCTOPUS__K8STENTACLE__NAMESPACE
                   value: NAMESPACE
@@ -75,7 +81,7 @@ should match snapshot:
                 - name: OCTOPUS__K8STENTACLE__HELMRELEASENAME
                   value: RELEASE-NAME
                 - name: OCTOPUS__K8STENTACLE__HELMCHARTVERSION
-                  value: 2.0.0-alpha.0
+                  value: 2.0.0-alpha.1
                 - name: OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP
                   value: "false"
                 - name: OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE
@@ -90,9 +96,11 @@ should match snapshot:
                   value: "5"
                 - name: OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE
                   value: "true"
+                - name: OCTOPUS__K8STENTACLE__PODRESOURCEJSON
+                  value: '{"requests":{"cpu":"25m","memory":"100Mi"}}'
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: octopusdeploy/kubernetes-agent-tentacle:8.1.1890
+              image: octopusdeploy/kubernetes-agent-tentacle:8.1.1925
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:

@@ -47,4 +47,50 @@ spec:
                   number: {{ $port }}
 {{- end }}
 {{- end }}
+{{- if .Values.octopus.ingress.pollingTentacles.enabled }}
+{{- range untilStep 0 (.Values.octopus.replicaCount | int) 1 }}
+{{ $replica := . -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: octopus-deploy-polling-node{{ . }}
+  labels:
+    app: {{ template "octopus.name" $ }}
+    chart: {{ template "octopus.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+{{- if $.Values.octopus.ingress.pollingTentacles.labels }}
+{{ toYaml $.Values.octopus.ingress.pollingTentacles.labels | indent 4 }}
+{{- end }}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+{{- if $.Values.octopus.ingress.pollingTentacles.annotations }}
+{{ toYaml $.Values.octopus.ingress.pollingTentacles.annotations | indent 4 }}
+{{- end }}
+spec:
+  tls:
+    - hosts:
+{{- range $.Values.octopus.ingress.hosts }}
+        - {{ printf "%s%d.%s" $.Values.octopus.ingress.pollingTentacles.hostPrefix $replica . | quote }}
+{{- end }}
+  {{- if $.Values.octopus.ingress.className }}
+  ingressClassName: {{ $.Values.octopus.ingress.className | quote }}
+  {{- end }}
+  rules:
+{{- $port := $.Values.octopus.tentaclePort -}}
+{{- range $.Values.octopus.ingress.hosts }}
+    - host: {{ printf "%s%d.%s" $.Values.octopus.ingress.pollingTentacles.hostPrefix $replica . | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: octopus-deploy-node{{ $replica }}
+                port:
+                  number: {{ $port }}
+{{- end }}
+{{- end }}  
+{{- end }}
 {{- end }}
