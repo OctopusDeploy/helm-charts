@@ -34,13 +34,13 @@ agent:
   # -- A JWT bearer token used to authenticate with the target Octopus Server
   # @section -- Agent values
   bearerToken: ""
-  # -- The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in `data.bearer-token`.
+  # -- The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in `data.bearer-token` in secret.
   # @section -- Agent values
   bearerTokenSecretName: ""
   # -- An Octopus Server API key used to authenticate with the target Octopus Server
   # @section -- Agent values
   serverApiKey: ""
-  # -- The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key`.
+  # -- The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret.
   # @section -- Agent values
   serverApiKeySecretName: ""
   # -- The username of the user used to authenticate with the target Octopus Server
@@ -49,7 +49,7 @@ agent:
   # -- The password of the user used to authenticate with the target Octopus Server
   # @section -- Agent values
   password: ""  
-  # -- The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password`.
+  # -- The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret.
   # @section -- Agent values
   usernamePasswordSecretName: ""
   # -- The Space to register the agent in
