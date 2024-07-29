@@ -29,7 +29,7 @@ If release name contains chart name it will be used as a full name.
 {{/* Selector Labels for mssql */}}
 {{- define "mssql.selectorLabels" -}}
 {{include "labels" . }}
-component: mssql
+app.kubernetes.io/component: mssql
 {{- end -}}
 
 {{- define "mssql.storageClass" -}}

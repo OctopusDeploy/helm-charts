@@ -35,16 +35,16 @@ Create chart name and version as used by the chart label.
 Common Labels 
 */}}
 {{- define "labels" -}}
-app: {{ include "octopus.name" . }}
-chart: {{ include "octopus.chart" . }}
-release: {{ .Release.Name }}
-heritage: {{ .Release.Service }}
+app.kubernetes.io/name: {{ include "octopus.name" . }}
+helm.sh/chart: {{ include "octopus.chart" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/* Selector Labels for octopus */}}
 {{- define "octopus.selectorLabels" -}}
 {{include "labels" . }}
-component: octopus-server
+app.kubernetes.io/component: octopus-server
 {{- end -}}
 
 {{/*

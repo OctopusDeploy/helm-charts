@@ -5,10 +5,7 @@ kind: Ingress
 metadata:
   name: {{ $name }}
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "labels" . | nindent 4 }}
 {{- if .Values.octopus.ingress.labels }}
 {{ toYaml .Values.octopus.ingress.labels | indent 4 }}
 {{- end }}
@@ -56,10 +53,7 @@ kind: Ingress
 metadata:
   name: octopus-deploy-polling-node{{ . }}
   labels:
-    app: {{ template "octopus.name" $ }}
-    chart: {{ template "octopus.chart" $ }}
-    release: {{ $.Release.Name }}
-    heritage: {{ $.Release.Service }}
+    {{- include "labels" . | nindent 4 }}
 {{- if $.Values.octopus.ingress.pollingTentacles.labels }}
 {{ toYaml $.Values.octopus.ingress.pollingTentacles.labels | indent 4 }}
 {{- end }}
