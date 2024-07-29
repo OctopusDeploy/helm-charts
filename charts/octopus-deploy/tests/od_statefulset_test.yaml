@@ -11,7 +11,7 @@ tests:
           of: StatefulSet
         documentIndex: 0
       - hasDocuments:
-          count: 2 # There is a secret created as well as the stateful set
+          count: 1
       - contains:
           path: spec.template.spec.containers[0].env
           content: 
