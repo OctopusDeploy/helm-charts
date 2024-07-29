@@ -81,7 +81,11 @@ spec:
             pathType: Prefix
             backend:
               service:
+                {{- if (eq ($.Values.octopus.replicaCount | int) 1)}} # If there is only one node, point at main service
+                name: {{ template "octopus.fullname" $ }}
+                {{- else }}
                 name: octopus-deploy-node{{ $replica }}
+                {{- end }}
                 port:
                   number: {{ $port }}
 {{- end }}
