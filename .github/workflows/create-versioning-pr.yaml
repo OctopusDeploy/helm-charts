@@ -79,6 +79,22 @@ jobs:
         createGitHubReleases: false
       env:
         GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
+      
+    - name: Determine changed packages
+      id: changed_packages
+      run: |
+        odPackageVersion=$(jq -r .version charts/octopus-deploy/package.json)
+        odChartVersion=$(yq -r .version charts/octopus-deploy/Chart.yaml)
+        kaPackageVersion=$(jq -r .version charts/kubernetes-agent/package.json)
+        kaChartVersion=$(yq -r .version charts/kubernetes-agent/Chart.yaml)
+        
+        if [[ "$odPackageVersion" != "$odChartVersion" ]]; then
+          echo "odChartChanged=true" >> $GITHUB_OUTPUT
+        fi
+        if [[ "$kaPackageVersion" != "$kaChartVersion" ]]; then
+          echo "kaChartChanged=true" >> $GITHUB_OUTPUT
+        fi
+      if: steps.changesets.outputs.hasChangesets == 'true'
     
     - name: 'Update version in Octopus Deploy Chart.yaml'
       run: |
@@ -88,7 +104,7 @@ jobs:
         git config user.name "github-actions[bot]"
         git add charts/octopus-deploy/Chart.yaml
         git commit -m "Update chart version in charts/octopus-deploy/Chart.yaml"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.odChartChanged == 'true'
         
 
     - name: 'Update version in Kubernetes Agent chart.yaml and pnpm-lock.yaml'
@@ -101,7 +117,7 @@ jobs:
         git add charts/kubernetes-agent/Chart.yaml
         git add pnpm-lock.yaml
         git commit -m "Update chart version in charts/kubernetes-agent/Chart.yaml and pnpm-lock.yaml"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.kaChartChanged == 'true'
 
     - name: 'Update version in Kubernetes Agent test snapshots'
       run: |
@@ -109,7 +125,7 @@ jobs:
         helm unittest -u charts/kubernetes-agent
         git add charts/kubernetes-agent/tests/__snapshot__/*
         git commit -m "Update chart version in Kubernetes agent test snapshots"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.kaChartChanged == 'true'
 
     - name: 'Update version in Kubernetes Agent Readme'
       working-directory: charts/kubernetes-agent
@@ -117,7 +133,7 @@ jobs:
         npm run generate-agent-docs
         git add README.md
         git commit -m "Update chart version in Kubernetes agent readme"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.kaChartChanged == 'true'
 
     - name: 'Push changes'
       run: |
