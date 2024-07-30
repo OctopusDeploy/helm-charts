@@ -50,19 +50,13 @@ spec:
       volumes:
         - name: octopus-volume
           emptyDir:
-            sizeLimit: {{ .Values.persistence.size}}
+            sizeLimit: {{ .Values.persistence.size }}
+      {{- with .Values.persistence.nfs.affinity }}
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: kubernetes.io/os
-                  operator: In
-                  values:
-                    - linux
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64
-                    - amd64
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.persistence.nfs.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end -}}

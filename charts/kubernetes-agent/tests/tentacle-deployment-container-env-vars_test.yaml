@@ -277,6 +277,41 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODRESOURCEJSON')].value
         value: '{"limits":{"cpu":"100m","memory":"1Gi"},"requests":{"cpu":"10m","memory":"50Mi"}}'
 
+- it: Sets script pod affinity json if script pod affinity is changed
+  set:
+    scriptPods:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - arm64
+                - amd64
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODAFFINITYJSON')].value
+        value: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}'
+
+- it: Sets pod tolerations json if script pod tolerations defined
+  set:
+    scriptPods:
+      tolerations:
+      - key: "tol-1"
+        operator: "Equal"
+        value: "val-1"
+        effect: "NoSchedule"
+      - key: "tol-21"
+        operator: "Equal"
+        value: "val-2"
+        effect: "NoSchedule"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODTOLERATIONSJSON')].value
+        value: '[{"effect":"NoSchedule","key":"tol-1","operator":"Equal","value":"val-1"},{"effect":"NoSchedule","key":"tol-21","operator":"Equal","value":"val-2"}]'
+
 - it: "Sets Image Pod from DeploymentTarget Values if DeploymentTarget is enabled"
   set:
     agent.deploymentTarget.enabled: true
