@@ -175,3 +175,55 @@ tests:
           value:
             - name: secret-1
             - name: secret-2
+
+  - it: Changes affinity if changed
+    set:
+      agent:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                  - arm64
+                  - amd64
+    asserts:
+      - equal:
+          path: spec.template.spec.affinity
+          value: 
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - arm64
+                    - amd64
+
+  - it: Sets pod tolerations tolerations defined
+    set:
+      agent:
+        tolerations:
+        - key: "tol-1"
+          operator: "Equal"
+          value: "val-1"
+          effect: "NoSchedule"
+        - key: "tol-21"
+          operator: "Equal"
+          value: "val-2"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "tol-1"
+            operator: "Equal"
+            value: "val-1"
+            effect: "NoSchedule"
+          - key: "tol-21"
+            operator: "Equal"
+            value: "val-2"
+            effect: "NoSchedule"

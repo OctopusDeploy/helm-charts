@@ -111,10 +111,16 @@ spec:
             {{- end }}
             - name: "OCTOPUS__K8STENTACLE__PODRESOURCEJSON"
               value: {{ .Values.scriptPods.resources | toJson | quote }}
+            - name: "OCTOPUS__K8STENTACLE__PODAFFINITYJSON"
+              value: {{ .Values.scriptPods.affinity | toJson | quote }}
+            {{- with .Values.scriptPods.tolerations }}
+            - name: "OCTOPUS__K8STENTACLE__PODTOLERATIONSJSON"
+              value: {{ .| toJson | quote }}
+            {{- end }}
             {{- if .Values.agent.serverApiKey }}
             - name: "ServerApiKey"
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
                   key: api-key
             {{- end }}
@@ -189,20 +195,6 @@ spec:
             - mountPath: /octopus
               name: tentacle-home
         {{- end}}
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: kubernetes.io/os
-                  operator: In
-                  values:
-                    - linux
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64
-                    - amd64
       volumes:
         - name: tentacle-home
           persistentVolumeClaim:
@@ -211,5 +203,12 @@ spec:
         - name: octopus-server-certificate-configmap
           configMap:
             name: "octopus-server-certificate"
-        {{- end }}
-
+        {{- end }}    
+      {{- with .Values.agent.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
+      {{- with .Values.agent.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
