@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.4
+
+### Minor Changes
+
+- e333640: Allow the container used by script pods to be modified for both worker and deployment target
+
+### Patch Changes
+
+- 63badca: Forward merge changes from 1.11.0 to latest
+
 ## 2.0.0-alpha.3
 
 ### Patch Changes
