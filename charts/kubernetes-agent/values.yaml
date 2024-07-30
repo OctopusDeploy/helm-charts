@@ -216,6 +216,27 @@ persistence:
       annotations: {}
       labels: {}
 
+    # -- The tolerations to apply to the NFS pod
+    # @section -- Persistence
+    tolerations: []
+
+    # -- The affinities to apply to the NFS pod
+    # @section -- Persistence
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                  - linux
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - arm64
+                  - amd64
+
     watchdog:
       # -- If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive
       # @section -- Persistence
