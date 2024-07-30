@@ -11,4 +11,4 @@ maintainers:
 type: application
 version: "1.10.3"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
-appVersion: "8.1.1948"
+appVersion: "8.1.1974"
