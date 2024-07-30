@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.11.0
+
+### Minor Changes
+
+- 957f69f: Add ability to modify agent, nfs and script pod affinity and tolerations
+
 ## 1.10.3
 
 ### Patch Changes
