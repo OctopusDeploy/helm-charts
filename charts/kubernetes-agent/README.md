@@ -1,10 +1,10 @@
 # kubernetes-agent
 
-![Version: 1.10.3](https://img.shields.io/badge/Version-1.10.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1948](https://img.shields.io/badge/AppVersion-8.1.1948-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 1.10.3](https://img.shields.io/badge/Version-1.10.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1974](https://img.shields.io/badge/AppVersion-8.1.1974-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 A Helm chart for the Octopus Kubernetes Agent
 
-**Homepage:** <https://octopus.com> 
+**Homepage:** <https://octopus.com>  
 **Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
 
 ## Maintainers
@@ -24,12 +24,13 @@ A Helm chart for the Octopus Kubernetes Agent
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
+| agent.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the agent pod |
 | agent.bearerToken | string | `""` | A JWT bearer token use to authenticate with the target Octopus Server |
 | agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1948"}` | The repository, pullPolicy & tag to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.1.1974"}` | The repository, pullPolicy & tag to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -51,13 +52,16 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.targetTenantTags | list | `[]` | The target tenant tags to register the agent with |
 | agent.targetTenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
 | agent.targetTenants | list | `[]` | The target tenants to register the agent with |
+| agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
 
 ### Persistence
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| persistence.nfs.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the NFS pod |
 | persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.0.1"}` | The repository, pullPolicy & tag to use for the NFS server |
 | persistence.nfs.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the NFS pod & container |
+| persistence.nfs.tolerations | list | `[]` | The tolerations to apply to the NFS pod |
 | persistence.nfs.watchdog.enabled | bool | `true` | If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive |
 | persistence.nfs.watchdog.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-nfs-watchdog","tag":"0.1.0"}` | The repository, pullPolicy & tag to use for the NFS watchdog |
 | persistence.nfs.watchdog.initial_backoff_seconds | string | `""` | The initial backoff time in seconds to retry failed NFS checks @default 0.5 |
@@ -70,12 +74,14 @@ A Helm chart for the Octopus Kubernetes Agent
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| scriptPods.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to script pods |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |
 | scriptPods.serviceAccount.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
+| scriptPods.tolerations | list | `[]` | The tolerations to apply to script pods |
 
 ### Other Values
 
