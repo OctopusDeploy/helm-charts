@@ -4,7 +4,7 @@
 
 A Helm chart for the Octopus Kubernetes Agent
 
-**Homepage:** <https://octopus.com> 
+**Homepage:** <https://octopus.com>  
 **Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
 
 ## Maintainers
@@ -76,6 +76,7 @@ A Helm chart for the Octopus Kubernetes Agent
 |-----|------|---------|-------------|
 | scriptPods.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to script pods |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
+| scriptPods.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image. If left blank, will use the `octopusdeploy/kubernetes-agent-tools-base` image. |
 | scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |

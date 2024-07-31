@@ -64,6 +64,7 @@ spec:
               value: {{ join "," .Values.agent.targetTenantTags | quote }}
             - name: "TargetTenantedDeploymentParticipation"
               value: {{ .Values.agent.targetTenantedDeploymentParticipation | quote }}
+            {{- include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.image | nindent 12 }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
