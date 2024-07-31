@@ -109,19 +109,33 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__PODTOLERATIONSJSON"
               value: {{ .| toJson | quote }}
             {{- end }}
-            {{- if .Values.agent.serverApiKey }}
+            {{- if or .Values.agent.serverApiKey .Values.agent.serverApiKeySecretName }}
             - name: "ServerApiKey"
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
+                  name: {{ .Values.agent.serverApiKeySecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: api-key
             {{- end }}
-            {{- if .Values.agent.bearerToken }}
+            {{- if or .Values.agent.bearerToken .Values.agent.bearerTokenSecretName  }}
             - name: "BearerToken"
               valueFrom:
                 secretKeyRef: 
-                  name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
+                  name: {{ .Values.agent.bearerTokenSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: bearer-token
+            {{- end }}
+            {{- if or .Values.agent.username .Values.agent.usernamePasswordSecretName }}
+            - name: "ServerUsername"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
+                  key: username
+            {{- end }}
+            {{- if or .Values.agent.password .Values.agent.usernamePasswordSecretName }}
+            - name: "ServerPassword"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
+                  key: password
             {{- end }}
             {{- if .Values.agent.certificate }}
             - name: "TentacleCertificateBase64"
