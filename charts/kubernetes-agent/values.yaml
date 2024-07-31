@@ -191,6 +191,13 @@ scriptPods:
                 - arm64
                 - amd64
 
+  # -- The repository, pullPolicy & tag to use for the script pod image. If left blank, will use the `octopusdeploy/kubernetes-agent-tools-base` image.
+  # @section -- Script pod values
+  image:
+    repository: ""
+    pullPolicy: ""
+    tag: ""
+
 # @section -- Persistence
 persistence:
   
