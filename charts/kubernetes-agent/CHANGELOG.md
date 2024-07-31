@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.13.0
+
+### Minor Changes
+
+- 196860f: Add ability to use existing secrets to provide auth info
+
 ## 1.12.0
 
 ### Minor Changes
