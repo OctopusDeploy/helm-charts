@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.12.0
+
+### Minor Changes
+
+- 083adb9: Backport support for changing script pod image, tag and pullPolicy
+
 ## 1.11.0
 
 ### Minor Changes
