@@ -27,6 +27,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "kubernetes-agent.serviceAccountName" . }}
+      {{- with .Values.agent.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
@@ -107,7 +111,11 @@ spec:
               value: {{ .Values.scriptPods.affinity | toJson | quote }}
             {{- with .Values.scriptPods.tolerations }}
             - name: "OCTOPUS__K8STENTACLE__PODTOLERATIONSJSON"
-              value: {{ .| toJson | quote }}
+              value: {{ . | toJson | quote }}
+            {{- end }}
+            {{- with .Values.scriptPods.securityContext }}
+            - name: "OCTOPUS__K8STENTACLE__PODSECURITYCONTEXTJSON"
+              value: {{ . | toJson | quote }}
             {{- end }}
             {{- if or .Values.agent.serverApiKey .Values.agent.serverApiKeySecretName }}
             - name: "ServerApiKey"
