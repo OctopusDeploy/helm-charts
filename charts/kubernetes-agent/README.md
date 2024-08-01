@@ -4,7 +4,7 @@
 
 A Helm chart for the Octopus Kubernetes Agent
 
-**Homepage:** <https://octopus.com> 
+**Homepage:** <https://octopus.com>  
 **Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
 
 ## Maintainers
@@ -39,6 +39,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.pollingProxy | object | `{"host":"","password":"","port":80,"username":""}` | The host, port, username and password of the proxy server to use for polling connections |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
+| agent.securityContext | object | `{}` | The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0` |
 | agent.serverApiKey | string | `""` | An Octopus Server API key used to authenticate with the target Octopus Server |
 | agent.serverApiKeySecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret. |
 | agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
@@ -83,6 +84,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image. If left blank, will use the `octopusdeploy/kubernetes-agent-tools-base` image. |
 | scriptPods.resources | object | `{"requests":{"cpu":"25m","memory":"100Mi"}}` | The resource limits and requests assigned to script pod containers |
+| scriptPods.securityContext | object | `{}` | The security context to apply to the script pods |
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |

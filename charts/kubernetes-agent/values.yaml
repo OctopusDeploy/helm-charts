@@ -147,6 +147,10 @@ agent:
               values:
                 - arm64
                 - amd64
+  
+  # -- The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0`
+  # @section -- Agent values
+  securityContext: {}
 
   debug:
     # -- Disables automatic pod cleanup
@@ -205,6 +209,10 @@ scriptPods:
               values:
                 - arm64
                 - amd64
+  
+  # -- The security context to apply to the script pods
+  # @section -- Script pod values
+  securityContext: {}
 
   # -- The repository, pullPolicy & tag to use for the script pod image. If left blank, will use the `octopusdeploy/kubernetes-agent-tools-base` image.
   # @section -- Script pod values
