@@ -5,8 +5,7 @@
     "description": "The official Octopus helm charts",
     "scripts": {
         "changeset": "changeset",
-        "ci:version": "run changeset version && install",
-        "publish-version-tags": "pnpm changeset publish && git push --follow-tags"
+        "ci:version": "run changeset version && install"
     },
     "devDependencies": {
         "@changesets/cli": "^2.27.1"
