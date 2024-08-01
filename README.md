@@ -8,9 +8,11 @@ This repository contains the officially supported [Helm](https://helm.sh) chart 
 
 ## Kubernetes agent
 
-The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using Octopus Deploy. The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-agent).
+The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using Octopus Deploy.
 
-The chart can be found at [here](./charts/kubernetes-agent).
+The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-agent), where you can pull it using Helm.
+
+The source code for the chart can be found at [here](./charts/kubernetes-agent).
 
 ### Values documentation
 
@@ -22,8 +24,8 @@ As the structure of the `values.yaml` may change between major versions, see bel
 
 The Kubernetes agent Helm chart follows [Semantic Versioning](https://semver.org/). Generally, version updates can be interpreted as follows:
 
-- *major* - Breaking changes to the chart. This may include adding or removing of resources, the executing container images or breaking changes to the structure of the `values.yaml`.
-- *minor* - New non-breaking features. New features or improvements to either the containers or helm chart itself. 
+- *major* - Breaking changes to the chart. This may include adding or removing of resources, breaking changes in the agent application image or breaking changes to the structure of the `values.yaml`.
+- *minor* - New non-breaking features. New features or improvements to the agent application or helm chart itself. 
 - *patch* - Minor non-breaking bug fixes or changes that do not introduce new features.
 
 The `main` branch will reflect the current development version of the chart. This may be the latest released version or if a new version is in development, may be a pre-release version.
