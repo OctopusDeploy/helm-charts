@@ -117,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1979"
+    tag: "8.1.1985"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -161,6 +161,10 @@ agent:
               values:
                 - arm64
                 - amd64
+  
+  # -- The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0`
+  # @section -- Agent values
+  securityContext: {}
 
   debug:
     # -- Disables automatic pod cleanup
@@ -219,6 +223,10 @@ scriptPods:
               values:
                 - arm64
                 - amd64
+  
+  # -- The security context to apply to the script pods
+  # @section -- Script pod values
+  securityContext: {}
 
   deploymentTarget:
     # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target
