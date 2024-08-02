@@ -203,7 +203,7 @@ tests:
                     - arm64
                     - amd64
 
-  - it: Sets pod tolerations tolerations defined
+  - it: Sets pod tolerations if defined
     set:
       agent:
         tolerations:
@@ -227,3 +227,18 @@ tests:
             operator: "Equal"
             value: "val-2"
             effect: "NoSchedule"
+
+  - it: Sets pod security context if defined
+    set:
+      agent:
+        securityContext:
+          runAsUser: 10101
+          runAsGroup: 234
+          fsGroup: 545
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext
+          value:
+            runAsUser: 10101
+            runAsGroup: 234
+            fsGroup: 545

@@ -38,6 +38,12 @@
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.14.0
+
+### Minor Changes
+
+- ca3bc11: Add support for setting pods securityContext
+
 ## 1.13.0
 
 ### Minor Changes
