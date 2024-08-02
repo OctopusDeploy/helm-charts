@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.14.0
+
+### Minor Changes
+
+- ca3bc11: Add support for setting pods securityContext
+
 ## 1.13.0
 
 ### Minor Changes
