@@ -33,8 +33,9 @@ jobs:
     - name: 'Tag version'
       run: |
         version=$(jq -r .version charts/kubernetes-agent/package.json)
-        git tag $version
-        git push origin refs/tags/$version
+        tag="kubernetes-agent/$version"
+        git tag $tag
+        git push origin refs/tags/$tag
 
   version:
     runs-on: ubuntu-latest
