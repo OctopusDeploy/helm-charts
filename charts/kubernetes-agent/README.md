@@ -1,21 +1,34 @@
-# kubernetes-agent
+
+## Kubernetes agent
 
 ![Version: 2.0.0-alpha.5](https://img.shields.io/badge/Version-2.0.0--alpha.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.1985](https://img.shields.io/badge/AppVersion-8.1.1985-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
-A Helm chart for the Octopus Kubernetes Agent
+The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using [Octopus Deploy](https://octopus.com).
 
-**Homepage:** <https://octopus.com> 
-**Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
+The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-agent), where you can pull it using Helm.
+
+The source code for the chart can be found at [here](./charts/kubernetes-agent).
+
+### Versions
+
+The Kubernetes agent Helm chart follows [Semantic Versioning](https://semver.org/). Generally, version updates can be interpreted as follows:
+
+- *major* - Breaking changes to the chart. This may include adding or removing of resources, breaking changes in the agent application image or breaking changes to the structure of the `values.yaml`.
+- *minor* - New non-breaking features. New features or improvements to the agent application or helm chart itself.
+- *patch* - Minor non-breaking bug fixes or changes that do not introduce new features.
+
+The `main` branch will reflect the current development version of the chart. This may be the latest released version or if a new version is in development, may be a pre-release version.
+
+| Version   | Branch                                                                                                                               | Readme                                                                                                                  | values.yaml                                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 2 (alpha) | [main](./charts/kubernetes-agent)                                                                                                    | This file                                                                             | [here](./charts/kubernetes-agent/values.yaml)                                                                             |
+| 1         | [release/kubernetes-agent/v1](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v1/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/values.yaml) |
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
 | Octopus Deploy | <support@octopus.com> | <https://octopus.com> |
-
-## Source Code
-
-* <https://github.com/OctopusDeploy/helm-charts>
 
 ## Values
 
