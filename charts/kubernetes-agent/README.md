@@ -8,7 +8,7 @@ The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/
 
 The source code for the chart can be found at [here](./charts/kubernetes-agent).
 
-### Versions
+## Versions
 
 The Kubernetes agent Helm chart follows [Semantic Versioning](https://semver.org/). Generally, version updates can be interpreted as follows:
 
@@ -18,12 +18,10 @@ The Kubernetes agent Helm chart follows [Semantic Versioning](https://semver.org
 
 The `main` branch will reflect the current development version of the chart. This may be the latest released version or if a new version is in development, may be a pre-release version.
 
-
 | Version   | Branch                                                                                                                               | Readme                                                                                                                  | values.yaml                                                                                                               |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | 2 (alpha) | [main](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/kubernetes-agent)                                               | This file                                                                                                               | [here](./values.yaml)                                                                                                     |
 | 1         | [release/kubernetes-agent/v1](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v1/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/values.yaml) |
-
 
 ## Maintainers
 
