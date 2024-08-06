@@ -1,0 +1,27 @@
+name: Version Charts
+
+on:
+  push:
+    branches:
+      - main
+      - release/kubernetes-agent/v*
+    paths:
+      - charts/kubernetes-agent/**
+      - .github/workflows/tag-agent.yaml
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    # When a changesets generated Versioning PR is merged, we want to publish the version as a tag
+    if: ${{ startsWith(github.event.commits[0].message, 'Version Charts') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
+
+      - name: 'Tag version'
+        run: |
+          version=$(jq -r .version charts/kubernetes-agent/package.json)
+          tag="kubernetes-agent/$version"
+          git tag $tag
+          git push origin refs/tags/$tag

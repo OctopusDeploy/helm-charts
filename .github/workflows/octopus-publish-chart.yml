@@ -1,12 +1,10 @@
 name: Publish Octopus Deploy Chart
 
 on:
-
   push:
     branches:
     - main
     - release/octopus-deploy/v*
-
   workflow_dispatch:
 
 jobs:
@@ -14,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.filter.outputs.octopus-deploy }}
-
     steps:
       - uses: actions/checkout@v4
 
@@ -75,11 +72,18 @@ jobs:
           full_version="$chart_version$pre_release"
 
           echo "CHART_VERSION=$full_version" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=octopusdeploy-helm-$full_version.tgz" >> $GITHUB_OUTPUT
 
       - name: Package Chart
         run: helm package --version '${{ steps.version.outputs.CHART_VERSION }}' 'charts/octopus-deploy'
         
+      - uses: actions/upload-artifact@v3
+        name: Upload packaged chart
+        with:
+          name: '${{ steps.version.outputs.PACKAGE_NAME }}'
+          path: '${{ github.workspace }}/octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz'
+
+      # Only push the chart for real if it's a branch build OR it's the versioning PR
       - name: Push Chart
+        if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
         run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://ghcr.io/octopusdeploy
-        
-     
