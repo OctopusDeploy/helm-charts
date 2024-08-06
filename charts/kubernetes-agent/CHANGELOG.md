@@ -1,5 +1,34 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.5
+
+### Patch Changes
+
+- 470f8c0: Forward merge 1.14.0 to latest
+- 811e5cb: Forward merge from 1.12.0 to latest
+
+## 2.0.0-alpha.4
+
+### Minor Changes
+
+- e333640: Allow the container used by script pods to be modified for both worker and deployment target
+
+### Patch Changes
+
+- 63badca: Forward merge changes from 1.11.0 to latest
+
+## 2.0.0-alpha.3
+
+### Patch Changes
+
+- 7c683de: Forward merge changes from 1.10.1 - 1.10.3 to latest
+
+## 2.0.0-alpha.2
+
+### Minor Changes
+
+- 76ed7d8: Added role for worker pods
+
 ## 2.0.0-alpha.1
 
 ### Major Changes
@@ -15,6 +44,48 @@
 ### Major Changes
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+
+## 1.14.0
+
+### Minor Changes
+
+- ca3bc11: Add support for setting pods securityContext
+
+## 1.13.0
+
+### Minor Changes
+
+- 196860f: Add ability to use existing secrets to provide auth info
+
+## 1.12.0
+
+### Minor Changes
+
+- 083adb9: Backport support for changing script pod image, tag and pullPolicy
+
+## 1.11.0
+
+### Minor Changes
+
+- 957f69f: Add ability to modify agent, nfs and script pod affinity and tolerations
+
+## 1.10.3
+
+### Patch Changes
+
+- 2c2ef66: Update Tentacle to fix an issue with whitespaces not being allowed in target roles
+
+## 1.10.2
+
+### Patch Changes
+
+- d8a1a9f: Fix an issue with imagePullSecrets not being serialized in environment variables correctly
+
+## 1.10.1
+
+### Patch Changes
+
+- d8a61d7: Make v1 agent compatible with the latest changes to Tentacle
 
 ## 1.10.0
 

@@ -27,6 +27,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "kubernetes-agent.serviceAccountName" . }}
+      {{- with .Values.agent.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
@@ -70,6 +74,11 @@ spec:
               value: {{ .Values.agent.worker.enabled | quote }}
             - name: "WorkerPools"
               value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
+            {{- if .Values.agent.deploymentTarget.enabled }}
+            {{include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.deploymentTarget.image | nindent 12}}
+            {{- else if .Values.agent.worker.enabled }}
+            {{ include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.worker.image | nindent 12}}
+            {{- end }}
             {{- with .Values.agent.machinePolicyName }}
             - name: "MachinePolicy"
               value: {{ . | quote }}
@@ -102,23 +111,47 @@ spec:
               value: {{ .Values.agent.enableMetricsCapture| quote }}
             {{- if .Values.imagePullSecrets }}
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
-              value: {{ join "," .Values.imagePullSecrets | quote}}
+              value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}
             {{- end }}
             - name: "OCTOPUS__K8STENTACLE__PODRESOURCEJSON"
               value: {{ .Values.scriptPods.resources | toJson | quote }}
-            {{- if .Values.agent.serverApiKey }}
+            - name: "OCTOPUS__K8STENTACLE__PODAFFINITYJSON"
+              value: {{ .Values.scriptPods.affinity | toJson | quote }}
+            {{- with .Values.scriptPods.tolerations }}
+            - name: "OCTOPUS__K8STENTACLE__PODTOLERATIONSJSON"
+              value: {{ . | toJson | quote }}
+            {{- end }}
+            {{- with .Values.scriptPods.securityContext }}
+            - name: "OCTOPUS__K8STENTACLE__PODSECURITYCONTEXTJSON"
+              value: {{ . | toJson | quote }}
+            {{- end }}
+            {{- if or .Values.agent.serverApiKey .Values.agent.serverApiKeySecretName }}
             - name: "ServerApiKey"
               valueFrom:
-                secretKeyRef: 
-                  name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
+                secretKeyRef:
+                  name: {{ .Values.agent.serverApiKeySecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: api-key
             {{- end }}
-            {{- if .Values.agent.bearerToken }}
+            {{- if or .Values.agent.bearerToken .Values.agent.bearerTokenSecretName  }}
             - name: "BearerToken"
               valueFrom:
                 secretKeyRef: 
-                  name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
+                  name: {{ .Values.agent.bearerTokenSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: bearer-token
+            {{- end }}
+            {{- if or .Values.agent.username .Values.agent.usernamePasswordSecretName }}
+            - name: "ServerUsername"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
+                  key: username
+            {{- end }}
+            {{- if or .Values.agent.password .Values.agent.usernamePasswordSecretName }}
+            - name: "ServerPassword"
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
+                  key: password
             {{- end }}
             {{- if .Values.agent.certificate }}
             - name: "TentacleCertificateBase64"
@@ -184,20 +217,6 @@ spec:
             - mountPath: /octopus
               name: tentacle-home
         {{- end}}
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: kubernetes.io/os
-                  operator: In
-                  values:
-                    - linux
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64
-                    - amd64
       volumes:
         - name: tentacle-home
           persistentVolumeClaim:
@@ -206,5 +225,12 @@ spec:
         - name: octopus-server-certificate-configmap
           configMap:
             name: "octopus-server-certificate"
-        {{- end }}
-
+        {{- end }}    
+      {{- with .Values.agent.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
+      {{- with .Values.agent.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}

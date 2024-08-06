@@ -166,10 +166,79 @@ tests:
   
   - it: "adds image pulls secrets to deployment"
     set:
-      imagePullSecrets: ["secret-1", "secret-2"]
+      imagePullSecrets:
+      - name: secret-1
+      - name: secret-2
     asserts:
       - equal:
           path: spec.template.spec.imagePullSecrets
           value:
-            - secret-1
-            - secret-2
+            - name: secret-1
+            - name: secret-2
+
+  - it: Changes affinity if changed
+    set:
+      agent:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                  - arm64
+                  - amd64
+    asserts:
+      - equal:
+          path: spec.template.spec.affinity
+          value: 
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - arm64
+                    - amd64
+
+  - it: Sets pod tolerations if defined
+    set:
+      agent:
+        tolerations:
+        - key: "tol-1"
+          operator: "Equal"
+          value: "val-1"
+          effect: "NoSchedule"
+        - key: "tol-21"
+          operator: "Equal"
+          value: "val-2"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "tol-1"
+            operator: "Equal"
+            value: "val-1"
+            effect: "NoSchedule"
+          - key: "tol-21"
+            operator: "Equal"
+            value: "val-2"
+            effect: "NoSchedule"
+
+  - it: Sets pod security context if defined
+    set:
+      agent:
+        securityContext:
+          runAsUser: 10101
+          runAsGroup: 234
+          fsGroup: 545
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext
+          value:
+            runAsUser: 10101
+            runAsGroup: 234
+            fsGroup: 545

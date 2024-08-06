@@ -33,8 +33,12 @@ jobs:
         version: 8.15.2
         run_install: true
 
-    - name: Publish Version Tag
-      run: pnpm publish-version-tags
+    - name: 'Tag version'
+      run: |
+        version=$(jq -r .version charts/kubernetes-agent/package.json)
+        tag="kubernetes-agent/$version"
+        git tag $tag
+        git push origin refs/tags/$tag
 
   version:
     runs-on: ubuntu-latest

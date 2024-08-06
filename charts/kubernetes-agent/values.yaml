@@ -31,12 +31,27 @@ agent:
   # -- The subscription ID that is used to by the agent to identify itself with Octopus Server
   # @section -- Agent values
   serverSubscriptionId: ""
-  # -- A JWT bearer token use to authenticate with the target Octopus Server
+  # -- A JWT bearer token used to authenticate with the target Octopus Server
   # @section -- Agent values
   bearerToken: ""
-  # -- An Octopus Server API key use to authenticate with the target Octopus Server
+  # -- The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in `data.bearer-token` in secret.
+  # @section -- Agent values
+  bearerTokenSecretName: ""
+  # -- An Octopus Server API key used to authenticate with the target Octopus Server
   # @section -- Agent values
   serverApiKey: ""
+  # -- The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret.
+  # @section -- Agent values
+  serverApiKeySecretName: ""
+  # -- The username of the user used to authenticate with the target Octopus Server
+  # @section -- Agent values
+  username: ""
+  # -- The password of the user used to authenticate with the target Octopus Server
+  # @section -- Agent values
+  password: ""  
+  # -- The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret.
+  # @section -- Agent values
+  usernamePasswordSecretName: ""
   # -- The Space to register the agent in
   # @section -- Agent values
   space: "Default"
@@ -102,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.1925"
+    tag: "8.1.1985"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -125,6 +140,31 @@ agent:
     requests:
       memory: "150Mi"
       cpu: "100m"
+
+  # -- The tolerations to apply to the agent pod
+  # @section -- Agent values
+  tolerations: []
+
+  # -- The affinities to apply to the agent pod
+  # @section -- Agent values
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+                - amd64
+  
+  # -- The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0`
+  # @section -- Agent values
+  securityContext: {}
 
   debug:
     # -- Disables automatic pod cleanup
@@ -162,6 +202,47 @@ scriptPods:
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
     clusterRole:
       rules: []
+  
+  # -- The tolerations to apply to script pods
+  # @section -- Script pod values
+  tolerations: []
+
+  # -- The affinities to apply to script pods
+  # @section -- Script pod values
+  affinity: 
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+                - amd64
+  
+  # -- The security context to apply to the script pods
+  # @section -- Script pod values
+  securityContext: {}
+
+  deploymentTarget:
+    # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target
+    # @section -- Script pod values
+    image:
+      repository: ""
+      pullPolicy: ""
+      tag: ""
+      
+  worker:
+    # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a worker
+    # @section -- Script pod values
+    image:
+      repository: octopusdeploy/worker-tools
+      pullPolicy: IfNotPresent
+      tag: "ubuntu.22.04"
 
 # @section -- Persistence
 persistence:
@@ -187,6 +268,27 @@ persistence:
     metadata:
       annotations: {}
       labels: {}
+
+    # -- The tolerations to apply to the NFS pod
+    # @section -- Persistence
+    tolerations: []
+
+    # -- The affinities to apply to the NFS pod
+    # @section -- Persistence
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                  - linux
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - arm64
+                  - amd64
 
     watchdog:
       # -- If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive
