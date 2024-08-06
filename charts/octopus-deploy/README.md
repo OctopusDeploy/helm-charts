@@ -2,7 +2,7 @@
 
 This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes cluster using the [Helm](https://helm.sh) package manager.
 
-[TODO: point to GitHub Container Registry for charts]
+The published charts can be found in the [GitHub Container Registry repository](https://github.com/OctopusDeploy/helm-charts/pkgs/container/octopusdeploy-helm).
 
 
 ## Quick Start
