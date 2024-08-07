@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.0-alpha.6
+
+### Patch Changes
+
+- a304f07: Forward merge 1.14.1 to latest
+
 ## 2.0.0-alpha.5
 
 ### Patch Changes
