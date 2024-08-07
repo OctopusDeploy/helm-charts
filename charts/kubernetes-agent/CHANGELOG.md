@@ -43,7 +43,7 @@
 
 ### Major Changes
 
-- 05fa04c: Creating Kubernetes Agent v2 alpha prereleas
+- 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
 ## 1.14.1
 
