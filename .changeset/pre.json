@@ -5,6 +5,7 @@
     "kubernetes-agent": "1.7.0"
   },
   "changesets": [
+    "beige-tips-lie",
     "brave-files-explain",
     "clean-flowers-hide",
     "fluffy-coins-march",
