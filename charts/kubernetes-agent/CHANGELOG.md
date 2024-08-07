@@ -1,5 +1,6 @@
 # kubernetes-agent
 
+
 ## 2.0.0-alpha.5
 
 ### Patch Changes
@@ -43,7 +44,13 @@
 
 ### Major Changes
 
-- 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+- 05fa04c: Creating Kubernetes Agent v2 alpha prereleas
+
+## 1.14.1
+
+### Patch Changes
+
+- 0759fd8: Update kubernetes-agent-tentacle to 8.1.2007. Fixes an issue executing script pods when running on AWS Bottlerocket nodese
 
 ## 1.14.0
 
