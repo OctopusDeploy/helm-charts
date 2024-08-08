@@ -29,10 +29,20 @@ FILTER="{
       image: .agent.scriptPods.image
     }
   }
-} | del(..|nulls)"
+} | del(..|nulls) +
+{
+  targetName : null,
+  defaultNamespace: null,
+  targetRoles: null,
+  targetTentantTags: null,
+  targetTentantedDeploymentParticipation: null,
+  targetTenants: null,
+}"
+
 
 
 MIGRATED_VALUES=`helm get values --namespace=$NAMESPACE $RELEASE -o json | jq $FILTER | jq .`
-#echo $MIGRATED_VALUES
+echo $MIGRATED_VALUES
+exit
 
 helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE --set-json "agent=$MIGRATED_VALUES" --version=2.*.* $CHART --dry-run --debug
