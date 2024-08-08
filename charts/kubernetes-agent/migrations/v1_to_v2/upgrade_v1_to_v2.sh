@@ -4,7 +4,7 @@
 # The primary concern with this migration, is that some Values have changed location
 # in the Values file.
 # This script:
-# 1. Extracts values from currently installed kuberentes agent (in json)
+# 1. Extracts values from currently installed kubernetes agent (in json)
 # 2. Transforms the values into the shape expected by a V2 install, and stores in a helm override file using a jq filter
 # 3. Upgrades the helm chart - by resetting the release's values to those in the new chart then applying the previous
 #    current release modified values "over the top" then migrating the moved values
@@ -51,8 +51,8 @@ FILTER="{
   targetName : null,
   defaultNamespace: null,
   targetRoles: null,
-  targetTentantTags: null,
-  targetTentantedDeploymentParticipation: null,
+  targetTenantTags: null,
+  targetTenantedDeploymentParticipation: null,
   targetTenants: null,
   targetEnvironments: null
 }"
