@@ -4,12 +4,27 @@
 # The primary concern with this migration, is that some Values have changed location
 # in the Values file.
 # This script:
-## extracts values from currently installed kuberentes agent (in json)
-## transforms the values into the shape expected by a V2 install, and stores in a helm override file using a jq filter
-## upgrades the helm chart - by resetting the release's values, and applying the migrated values created in prior step
+# 1. Extracts values from currently installed kuberentes agent (in json)
+# 2. Transforms the values into the shape expected by a V2 install, and stores in a helm override file using a jq filter
+# 3. Upgrades the helm chart - by resetting the release's values to those in the new chart then applying the previous
+#    current release modified values "over the top" then migrating the moved values
+
 NAMESPACE=octopus-agent-theagent
 RELEASE=theagent
 CHART="oci://docker.packages.octopushq.com/kubernetes-agent"
+
+if ! command -v jq &> /dev/null
+then
+    echo "jq could not be found, and is required for this operation"
+    exit 1
+fi
+
+if ! command -v helm &> /dev/null
+then
+    echo "helm could not be found, and is required for this operation"
+    exit 1
+fi
+
 
 IFS='#'
 FILTER="{
@@ -42,7 +57,9 @@ FILTER="{
   targetEnvironments: null
 }"
 
-MIGRATED_VALUES=`helm get values --namespace=$NAMESPACE $RELEASE -o json | jq $FILTER | jq .`
+
+CURRENT_MANUALLY_SET_VALUES=`helm get values --namespace $NAMESPACE $RELEASE -o json`
+MIGRATED_VALUES=`jq $FILTER <<< $CURRENT_MANUALLY_SET_VALUES`
 #echo $MIGRATED_VALUES
 
 helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE --set-json "agent=$MIGRATED_VALUES" --version=2.*.* $CHART
