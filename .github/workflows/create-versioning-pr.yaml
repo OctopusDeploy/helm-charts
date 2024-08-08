@@ -8,6 +8,7 @@ on:
     paths:
     - charts/kubernetes-agent/**
     - .github/workflows/create-versioning-pr.yaml
+    - .changeset/*
     
 jobs:
   publish:
