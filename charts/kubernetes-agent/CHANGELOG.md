@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.0
+
+### Major Changes
+
+- 0e07367: Version 2.0.0 of the Octopus Kubernetes Agent that can be installed as either a deployment target or a worker
+
 ## 2.0.0-alpha.6
 
 ### Patch Changes
