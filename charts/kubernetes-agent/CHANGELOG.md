@@ -1,5 +1,26 @@
 # kubernetes-agent
 
+## 2.0.0
+
+### Major Changes
+
+- 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
+- 0e07367: New values schema to allow installation of the agent as either an Octopus Deployment Target or Worker
+
+### Minor Changes
+
+- 76ed7d8: Added role for worker pods
+- e333640: Allow the container used by script pods to be modified for both worker and deployment target
+
+### Patch Changes
+
+- a304f07: Forward merge 1.14.1 to latest
+- 63badca: Forward merge changes from 1.11.0 to latest
+- 7c683de: Forward merge changes from 1.10.1 - 1.10.3 to latest
+- 470f8c0: Forward merge 1.14.0 to latest
+- 811e5cb: Forward merge from 1.12.0 to latest
+- 84f7f36: Merge changes from 1.7.1 - 1.10.0 to latest
+
 ## 2.0.0-alpha.6
 
 ### Patch Changes
