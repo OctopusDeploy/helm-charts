@@ -18,10 +18,12 @@ FILTER="{
      enabled: true,
      initial: {
        defaultNamespace: .agent.defaultNamespace,
+       environments: .agent.targetEnvironments,
        tags: .agent.targetRoles,
        tenantTags: .agent.targetTentantTags,
        tenantedDeploymentParticipation: .agent.targetTenantedDeploymentParticipation,
        tenants: .agent.targetTenants
+
      }
   },
   scriptPods: {
@@ -37,12 +39,12 @@ FILTER="{
   targetTentantTags: null,
   targetTentantedDeploymentParticipation: null,
   targetTenants: null,
+  targetEnvironments: null
 }"
 
 
 
 MIGRATED_VALUES=`helm get values --namespace=$NAMESPACE $RELEASE -o json | jq $FILTER | jq .`
-echo $MIGRATED_VALUES
-exit
+#echo $MIGRATED_VALUES
 
 helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE --set-json "agent=$MIGRATED_VALUES" --version=2.*.* $CHART --dry-run --debug
