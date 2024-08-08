@@ -1,33 +1,89 @@
 name: Publish Octopus Deploy Chart
 
 on:
-
-  # Allows you to run this workflow manually from the Actions tab
+  push:
+    branches:
+    - main
+    - release/octopus-deploy/v*
   workflow_dispatch:
-    inputs:
-      octopus-version:
-        description: 'The SemVer version of Octopus to publish.  e.g. 2022.4.20121'
-        required: true
 
 jobs:
-  publish:
+  paths_filter:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.filter.outputs.octopus-deploy }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            octopus-deploy:
+              - charts/octopus-deploy/**
+              - .github/workflows/octopus-publish-chart.yml
+          
+
+  test:
+    needs: paths_filter
+    if: needs.paths_filter.outputs.result == 'true'
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-          
+      - uses: actions/checkout@v4
+
       - name: Install Helm
         uses: azure/setup-helm@v3
         with:
-          version: 'v3.13.2'
-          
-      - name: Login to DockerHub
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          
+          version: 'v3.15.3'
+
+      - name: Run Helm unit tests
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+          helm unittest charts/octopus-deploy
+            
+      - name: Login to GitHub container registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u  ${{github.actor}} --password-stdin
+
+      - name: Parse Chart config
+        uses: pietrobolcato/action-read-yaml@1.1.0
+        id: read_chart_yaml
+        with:
+          config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
+
+      - name: Get branch names
+        id: branch_names
+        uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
+
+      - name: Generate chart version
+        id: version
+        shell: bash
+        run: |
+          chart_version="${{ steps.read_chart_yaml.outputs.version }}"
+          pre_release=""
+
+          if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
+          then
+              # underscores in branches make for illegal version-string, replace with "-"
+              cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
+              pre_release="-${cleansed_branch}-$(date +'%Y%m%d%H%M%S')"
+          fi
+
+          full_version="$chart_version$pre_release"
+
+          echo "CHART_VERSION=$full_version" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=octopusdeploy-helm-$full_version.tgz" >> $GITHUB_OUTPUT
+
       - name: Package Chart
-        run: helm package --version '${{ inputs.octopus-version }}' --app-version '${{ inputs.octopus-version }}' 'charts/octopus-deploy'
+        run: helm package --version '${{ steps.version.outputs.CHART_VERSION }}' 'charts/octopus-deploy'
         
-      - name: Push Chart to DockerHub
-        run: helm push 'octopusdeploy-helm-${{ inputs.octopus-version }}.tgz' oci://registry-1.docker.io/octopusdeploy
-        
-     
+      - uses: actions/upload-artifact@v3
+        name: Upload packaged chart
+        with:
+          name: '${{ steps.version.outputs.PACKAGE_NAME }}'
+          path: '${{ github.workspace }}/octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz'
+
+      # Only push the chart for real if it's a branch build OR it's the versioning PR
+      - name: Push Chart
+        if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+        run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://ghcr.io/octopusdeploy

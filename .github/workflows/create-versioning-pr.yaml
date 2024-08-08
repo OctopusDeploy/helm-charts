@@ -1,48 +1,24 @@
-name: Version Kubernetes Agent chart
+name: Version Charts 
 
 on:
   push:
     branches:
     - main
     - release/kubernetes-agent/v*
+    - release/octopus-deploy/v*
+    - octopus-v1
     paths:
     - charts/kubernetes-agent/**
+    - charts/octopus-deploy/**
     - .github/workflows/create-versioning-pr.yaml
     - .changeset/*
     
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-
-    # When a changesets generated Versioning PR is merged, we want to publish the version as a tag
-    if: ${{ startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart') }}
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }} 
-    
-    - name: setup-node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-
-    - uses: pnpm/action-setup@v4
-      with:
-        version: 8.15.2
-        run_install: true
-
-    - name: 'Tag version'
-      run: |
-        version=$(jq -r .version charts/kubernetes-agent/package.json)
-        tag="kubernetes-agent/$version"
-        git tag $tag
-        git push origin refs/tags/$tag
-
   version:
     runs-on: ubuntu-latest
 
     # For all pushes that aren't creating a versioning commit
-    if: ${{ !startsWith(github.event.commits[0].message, 'Version Kubernetes Agent Chart') }}
+    if: ${{ !startsWith(github.event.commits[0].message, 'Version Charts') }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -76,13 +52,40 @@ jobs:
       id: changesets
       uses: changesets/action@v1
       with:
-        commit: 'Version Kubernetes Agent Chart'
-        title: 'Version Kubernetes Agent Chart'
+        commit: 'Version Charts'
+        title: 'Version Charts'
         createGitHubReleases: false
       env:
         GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
+      
+    - name: Determine changed packages
+      id: changed_packages
+      run: |
+        odPackageVersion=$(jq -r .version charts/octopus-deploy/package.json)
+        odChartVersion=$(yq -r .version charts/octopus-deploy/Chart.yaml)
+        kaPackageVersion=$(jq -r .version charts/kubernetes-agent/package.json)
+        kaChartVersion=$(yq -r .version charts/kubernetes-agent/Chart.yaml)
+        
+        if [[ "$odPackageVersion" != "$odChartVersion" ]]; then
+          echo "odChartChanged=true" >> $GITHUB_OUTPUT
+        fi
+        if [[ "$kaPackageVersion" != "$kaChartVersion" ]]; then
+          echo "kaChartChanged=true" >> $GITHUB_OUTPUT
+        fi
+      if: steps.changesets.outputs.hasChangesets == 'true'
+    
+    - name: 'Update version in Octopus Deploy Chart.yaml'
+      run: |
+        version=$(jq -r .version charts/octopus-deploy/package.json)
+        version="$version" yq -i '.version = strenv(version)' charts/octopus-deploy/Chart.yaml
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add charts/octopus-deploy/Chart.yaml
+        git commit -m "Update chart version in charts/octopus-deploy/Chart.yaml"
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.odChartChanged == 'true'
+        
 
-    - name: 'Update version in Chart.yaml and pnpm-lock.yaml'
+    - name: 'Update version in Kubernetes Agent chart.yaml and pnpm-lock.yaml'
       run: |
         version=$(jq -r .version charts/kubernetes-agent/package.json)
         version="$version" yq -i '.version = strenv(version)' charts/kubernetes-agent/Chart.yaml
@@ -92,23 +95,23 @@ jobs:
         git add charts/kubernetes-agent/Chart.yaml
         git add pnpm-lock.yaml
         git commit -m "Update chart version in charts/kubernetes-agent/Chart.yaml and pnpm-lock.yaml"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.kaChartChanged == 'true'
 
-    - name: 'Update version in test snapshots'
+    - name: 'Update version in Kubernetes Agent test snapshots'
       run: |
         helm plugin install https://github.com/helm-unittest/helm-unittest.git
         helm unittest -u charts/kubernetes-agent
         git add charts/kubernetes-agent/tests/__snapshot__/*
         git commit -m "Update chart version in Kubernetes agent test snapshots"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.kaChartChanged == 'true'
 
-    - name: 'Update version in Readme'
+    - name: 'Update version in Kubernetes Agent Readme'
       working-directory: charts/kubernetes-agent
       run: |
         npm run generate-agent-docs
         git add README.md
         git commit -m "Update chart version in Kubernetes agent readme"
-      if: steps.changesets.outputs.hasChangesets == 'true'
+      if: steps.changesets.outputs.hasChangesets == 'true' && steps.changed_packages.outputs.kaChartChanged == 'true'
 
     - name: 'Push changes'
       run: |

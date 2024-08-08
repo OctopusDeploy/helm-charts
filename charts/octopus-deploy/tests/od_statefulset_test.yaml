@@ -11,7 +11,7 @@ tests:
           of: StatefulSet
         documentIndex: 0
       - hasDocuments:
-          count: 2 # There is a secret created as well as the stateful set
+          count: 1
       - contains:
           path: spec.template.spec.containers[0].env
           content: 
@@ -93,4 +93,25 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[?(@.name == 'NO_PROXY')].value
           value: example.com,example2.com
+        documentIndex: 0
+
+  - it: affinity is correctly set
+    set:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: example-key
+                    operator: In
+                    values:
+                      - val1
+    asserts:
+      - contains:
+          path: spec.template.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchExpressions
+          content:
+            key: "example-key"
+            operator: "In"
+            values:
+              - "val1"
         documentIndex: 0

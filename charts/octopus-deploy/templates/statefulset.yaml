@@ -8,25 +8,20 @@ metadata:
   {{ toYaml .Values.octopus.statefulSet.annotations | indent 2 }}
   {{- end }}
   labels:
-    app: {{ template "octopus.name" . }}
-    chart: {{ template "octopus.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  {{- include "labels" . | nindent 4 }}
   {{- if .Values.octopus.statefulSet.labels }}
   {{ toYaml .Values.octopus.statefulSet.labels | indent 2 }}
   {{- end }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "octopus.name" . }}
-      release: {{ .Release.Name }}
+    {{- include "octopus.selectorLabels" . | nindent 6 }}
   serviceName: {{ template "octopus.fullname" . }}
   replicas: {{.Values.octopus.replicaCount}}
   template:
     metadata:
       labels:
-        app: {{ template "octopus.name" . }}
-        release: {{ .Release.Name }}
+      {{- include "octopus.selectorLabels" . | nindent 8 }}
       {{- if .Values.octopus.pods.labels }}
       {{ toYaml .Values.octopus.pods.labels | indent 2 }}
       {{- end }}
@@ -35,141 +30,133 @@ spec:
       {{ toYaml .Values.octopus.pods.annotations | indent 2 }}
       {{- end }}
     spec:
-      serviceAccount: {{ template "octopus.serviceAccountName" . }}
+      serviceAccountName: {{ template "octopus.serviceAccountName" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
       {{ toYaml . | indent 8 }}
       {{- end }}
       {{- with .Values.affinity }}
       affinity:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
     {{- with .Values.octopus.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
       containers:
-              - name: octopus
-                image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
-                securityContext:
-                  {{- if .Values.octopus.enableDockerInDocker }}
-                  privileged: true
-                  {{- end }}
-                env:
-                  - name: ACCEPT_EULA
-                    value: {{ template "octopus.acceptEulaStr" . }} 
-                  - name: OCTOPUS_SERVER_NODE_NAME
-                    valueFrom:
-                      fieldRef:
-                        fieldPath: metadata.name
-                  - name: DB_CONNECTION_STRING
-                    valueFrom:
-                      secretKeyRef:
-                        name: octopus-deploy-secrets
-                        key: dbConnectionString
-                  {{- if .Values.octopus.username }}
-                  - name: ADMIN_USERNAME
-                    valueFrom:
-                      secretKeyRef:
-                        name: octopus-deploy-secrets
-                        key: adminUsername
-                  {{- end}}
-                  {{- if .Values.octopus.password }}
-                  - name: ADMIN_PASSWORD
-                    valueFrom:
-                      secretKeyRef:
-                        name: octopus-deploy-secrets
-                        key: adminPassword
-                  {{- end}}
-                  - name: ADMIN_EMAIL
-                    value: {{.Values.octopus.email}}
-                  - name: TASK_CAP
-                    value: !!str {{.Values.octopus.taskCap}}
-                  {{- if .Values.octopus.licenseKeyBase64 }}
-                  - name: OCTOPUS_SERVER_BASE64_LICENSE
-                    # Your license key goes here. When using more than one node, a HA license is required.
-                    # Without a HA license, the stateful set can have a replica count of 1.
-                    valueFrom:
-                      secretKeyRef:
-                        name: octopus-deploy-secrets
-                        key: licenseKey
-                  {{- end}}
-                  - name: MASTER_KEY
-                    valueFrom:
-                      secretKeyRef:
-                        name: octopus-deploy-secrets
-                        key: masterKey
-                {{- if not .Values.octopus.enableDockerInDocker }}
-                  - name: DISABLE_DIND
-                    value: !!str "Y"
-                {{- end }}
-                  - name: OCTOPUS_INSTALLED_VIA_HELM 
-                    value: "true"
-                {{- if .Values.octopus.proxy.http }}
-                  - name: HTTP_PROXY
-                    value: {{ .Values.octopus.proxy.http | quote }}
-                {{- end }}
-                {{- if .Values.octopus.proxy.https }}
-                  - name: HTTPS_PROXY
-                    value: {{ .Values.octopus.proxy.https | quote }}
-                {{- end }}
-                {{- if .Values.octopus.proxy.all }}
-                  - name: ALL_PROXY
-                    value: {{ .Values.octopus.proxy.all | quote }}
-                {{- end }}
-                {{- if .Values.octopus.proxy.excludedHostnames }}
-                  - name: NO_PROXY
-                    value: {{ join "," .Values.octopus.proxy.excludedHostnames | quote }}
-                {{- end }}
-                ports:
-                  - containerPort: 8080
-                    name: web
-                  - containerPort: 10943
-                    name: tentacle
-                volumeMounts:
-                  - name: package-repository-volume
-                    mountPath: /repository
-                  - name: artifacts-volume
-                    mountPath: /artifacts
-                  - name: task-log-volume
-                    mountPath: /taskLogs
-                  - name: server-log-volume
-                    mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
-                {{- if .Values.octopus.resources }}
-                resources:
+      - name: octopus
+        image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
+        securityContext:
+          {{- if .Values.octopus.enableDockerInDocker }}
+          privileged: true
+          {{- end }}
+        env:
+          - name: ACCEPT_EULA
+            value: {{ template "octopus.acceptEulaStr" . }} 
+          - name: OCTOPUS_SERVER_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: DB_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
+                key: secret
+          - name: ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{printf "%s-%s" $.Release.Name "adminusername"}}
+                key: secret
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{printf "%s-%s" $.Release.Name "adminpassword"}}
+                key: secret
+          - name: ADMIN_EMAIL
+            value: {{.Values.octopus.email}}
+          - name: TASK_CAP
+            value: !!str {{.Values.octopus.taskCap}}
+          {{- if .Values.octopus.licenseKeyBase64 }}
+          - name: OCTOPUS_SERVER_BASE64_LICENSE
+            # Your license key goes here. When using more than one node, a HA license is required.
+            # Without a HA license, the stateful set can have a replica count of 1.
+            valueFrom:
+              secretKeyRef:
+                name: {{printf "%s-%s" $.Release.Name "licensekey"}}
+                key: secret
+          {{- end}}
+          - name: MASTER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{printf "%s-%s" $.Release.Name "masterkey"}}
+                key: secret
+        {{- if not .Values.octopus.enableDockerInDocker }}
+          - name: DISABLE_DIND
+            value: !!str "Y"
+        {{- end }}
+          - name: OCTOPUS_INSTALLED_VIA_HELM 
+            value: "true"
+        {{- if .Values.octopus.proxy.http }}
+          - name: HTTP_PROXY
+            value: {{ .Values.octopus.proxy.http | quote }}
+        {{- end }}
+        {{- if .Values.octopus.proxy.https }}
+          - name: HTTPS_PROXY
+            value: {{ .Values.octopus.proxy.https | quote }}
+        {{- end }}
+        {{- if .Values.octopus.proxy.all }}
+          - name: ALL_PROXY
+            value: {{ .Values.octopus.proxy.all | quote }}
+        {{- end }}
+        {{- if .Values.octopus.proxy.excludedHostnames }}
+          - name: NO_PROXY
+            value: {{ join "," .Values.octopus.proxy.excludedHostnames | quote }}
+        {{- end }}
+        ports:
+          - containerPort: 8080
+            name: web
+          - containerPort: 10943
+            name: tentacle
+        volumeMounts:
+          - name: package-repository-volume
+            mountPath: /repository
+          - name: artifacts-volume
+            mountPath: /artifacts
+          - name: task-log-volume
+            mountPath: /taskLogs
+          - name: server-log-volume
+            mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
+        {{- if .Values.octopus.resources }}
+        resources:
 {{ toYaml .Values.octopus.resources | indent 18 }}
-                {{- end }}
-                readinessProbe:
-                  exec:
-                    command:
-                      - /bin/bash
-                      - -c
-                      - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/serverstatus/hosted/internal --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 60
-                livenessProbe:
-                  exec:
-                    command:
-                      - /bin/bash
-                      - -c
-                      - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 10
-                startupProbe:
-                  exec:
-                    command:
-                      - /bin/bash
-                      - -c
-                      - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
-                  failureThreshold: 30
-                  periodSeconds: 60
-            {{- if .Values.dockerHub.login }}
-            imagePullSecrets:
-              - name: dockerhubcreds
-            {{- end }}
+        {{- end }}
+        readinessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/serverstatus/hosted/internal --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 60
+        livenessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 10
+        startupProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
+          failureThreshold: 30
+          periodSeconds: 60
       terminationGracePeriodSeconds: 10
       volumes:
         - name: package-repository-volume
@@ -181,6 +168,10 @@ spec:
         - name: task-log-volume
           persistentVolumeClaim:
             claimName: task-log-claim
+      {{- if .Values.dockerHub.login }}
+      imagePullSecrets:
+        - name: dockerhubcreds
+      {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: server-log-volume
@@ -194,23 +185,3 @@ spec:
         resources:
           requests:
             storage: {{.Values.octopus.serverLogVolume.size}}
-{{- if .Values.octopus.createSecrets }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: octopus-deploy-secrets
-type: Opaque
-data:
-  {{- if .Values.octopus.username }}
-  adminUsername: {{.Values.octopus.username | b64enc}}
-  {{- end}}
-  {{- if .Values.octopus.password }}
-  adminPassword: {{.Values.octopus.password | b64enc}}
-  {{- end}}
-  {{- if .Values.octopus.licenseKeyBase64 }}
-  licenseKey: {{.Values.octopus.licenseKeyBase64 | b64enc}}
-  {{- end}}
-  masterKey: {{.Values.octopus.masterKey | b64enc}}
-  dbConnectionString: {{ tpl .Values.octopus.databaseConnectionString . | b64enc}}
-{{- end }}
