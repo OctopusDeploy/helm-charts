@@ -18,7 +18,7 @@ spec:
       {{- end }}
       labels:
         {{- include "kubernetes-agent.labels" . | nindent 8 }}
-	      {{- with .Values.agent.metadata.labels }}
+        {{- with .Values.agent.metadata.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
