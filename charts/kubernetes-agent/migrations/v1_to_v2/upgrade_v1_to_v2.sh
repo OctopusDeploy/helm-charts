@@ -36,7 +36,7 @@ FILTER="{
        environments: .agent.targetEnvironments,
        tags: .agent.targetRoles,
        tenantTags: .agent.targetTentantTags,
-       tenantedDeploymentParticipation: .agent.targetTenantedDeploymentParticipation,
+       tenantedDeploymentParticipation: "Untenanted",
        tenants: .agent.targetTenants
 
      }
