@@ -38,4 +38,8 @@ $JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenantTags")
 $JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenantedDeploymentParticipation") 
 $JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenants") 
 
-$JSON_OBJECT | ConvertTo-Json -Depth 5
+$MIGRATED_VALUES = $JSON.OBJECT.agent | ConvertTo-Json -Depth 3
+
+$MIGRATED_VALUES
+
+#helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE --set-json "agent=$MIGRATED_VALUES" --version=2.*.* $CHART
