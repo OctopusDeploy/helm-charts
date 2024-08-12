@@ -1,5 +1,6 @@
-# Migrating From V1 to V2
-## Overview
+# Migrations
+## Version 1 --> 2
+### Overview
 Version 2 of the Kubernetes-agent Helm chart was created such that the agent may also be utilised as a scalable worker
 by an OctopusDeploy server.
 
@@ -20,16 +21,15 @@ Specifically, the following data items have been moved:
 The following value must be set during the upgrade:
 * agent.deploymentTarget.enabled: true
 
+### Steps
 
-## How to Migrate from V1 to V2
-
-1. Fetch your overriden values from installed agent in pretty-printed json (from the agent subsection)
+1. Fetch overriden values from your installed agent
 ```
 RELEASE=theagent
 NAMESPACE=octopus-agent-$RELEASE
 helm get values --namespace $NAMESPACE $RELEASE > overridden_values.yaml
 ```
-2. Edit `overriden_values.yaml` in your editor of choice to move/add the fields specified above (and save!).
+2. Edit `overridden_values.yaml` in your editor of choice to move/add the fields specified above (and save!).
 
 3. Upgrade your release to V2.0.0 of the helm-chart, applying your modified values
 ```
