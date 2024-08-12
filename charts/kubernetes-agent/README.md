@@ -20,8 +20,13 @@ The `main` branch will reflect the current development version of the chart. Thi
 
 | Version   | Branch                                                                                                                               | Readme                                                                                                                  | values.yaml                                                                                                               |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 2 (alpha) | [main](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/kubernetes-agent)                                               | This file                                                                                                               | [here](./values.yaml)                                                                                                     |
+| 2         | [main](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/kubernetes-agent)                                               | This file                                                                                                               | [here](./values.yaml)                                                                                                     |
 | 1         | [release/kubernetes-agent/v1](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v1/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/values.yaml) |
+
+### Migrations
+Version 2 of the helm chart introduces some breaking changes in `values.yaml`, some elements were renamed, while others were moved.
+As such, upgrading from V1 to V2 of the helm chart requires user intervention.
+This is documented [here](http://github.com/OctopusDeploy/helm-charts/blob/kubernetes-agent/migrations/v1_to v2/README.md)
 
 ## Maintainers
 
