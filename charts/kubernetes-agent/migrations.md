@@ -1,12 +1,13 @@
 # Migrations
 ## Version 1 --> 2
 ### Overview
-Version 2 of the Kubernetes-agent Helm chart was created such that the agent may also be utilised as a scalable worker
-by an OctopusDeploy server.
+Version 2 of the Kubernetes-agent Helm chart was created to allow the agent to be used as a scalable worker
+by an OctopusDeploy instance.
 
-With this change, deploymentTarget specific Values were moved under a deploymentTarget specific parent node in `values.yml`.
+To support this change, deploymentTarget specific Values were moved under a deploymentTarget specific parent node in `values.yml`.
 
-Because of this change in structure, upgrading from V1 to V2 of the helm chart requires some additional steps.
+This change in structure, demands a manual process to move your existing values to the new shape when upgrading from
+v1 to v2.
 
 Specifically, the following data items have been moved:
 * agent.targetName => agent.name
@@ -16,7 +17,7 @@ Specifically, the following data items have been moved:
 * agent.targetTenantTags => agent.deploymentTarget.initial.tenantTag
 * agent.targetTenants => agent.deploymentTarget.initial.tenants
 * agent.targetTenantedDeploymentParticipation => agent.deploymentTarget.initial.targetTenantedDeploymentParticipation
-* agent.scriptPods.image => agent.scriptPods.deploymentTarget.image (fields unchanged otherwise)
+* agent.scriptPods.image => agent.scriptPods.deploymentTarget.image (child-fields are unchanged)
 
 The following value must be set during the upgrade:
 * agent.deploymentTarget.enabled: true
