@@ -25,7 +25,6 @@ then
     exit 1
 fi
 
-
 IFS='#'
 FILTER="{
   name: .agent.targetName,
@@ -35,10 +34,8 @@ FILTER="{
        defaultNamespace: .agent.defaultNamespace,
        environments: .agent.targetEnvironments,
        tags: .agent.targetRoles,
-       tenantTags: .agent.targetTentantTags,
-       tenantedDeploymentParticipation: "Untenanted",
+       tenantTags: .agent.targetTenantTags,
        tenants: .agent.targetTenants
-
      }
   },
   scriptPods: {
@@ -60,6 +57,6 @@ FILTER="{
 
 CURRENT_MANUALLY_SET_VALUES=`helm get values --namespace $NAMESPACE $RELEASE -o json`
 MIGRATED_VALUES=`jq $FILTER <<< $CURRENT_MANUALLY_SET_VALUES`
-#echo $MIGRATED_VALUES
+echo $MIGRATED_VALUES
 
-helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE --set-json "agent=$MIGRATED_VALUES" --version=2.*.* $CHART
+#helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE --set-json "agent=$MIGRATED_VALUES" --version=2.*.* $CHART

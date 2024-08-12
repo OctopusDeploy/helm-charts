@@ -13,10 +13,10 @@ Specifically, the following data items have been moved:
 * agent.defaultNamespace => agent.deploymentTarget.initial.defaultNamespace
 * agent.targetRoles => agent.deploymentTarget.initial.tags
 * agent.targetTenantTags => agent.deploymentTarget.initial.tenantTag
-* agent.targetTenantedDeploymentParticipation => agent.deploymentTarget.initial.tenantedDeploymentParticipation
 * agent.targetTenants => agent.deploymentTarget.initial.tenants
 * agent.scriptPods.image => agent.scriptPods.deploymentTarget.image (fields unchanged otherwise)
 
 The following value must be set during the upgrade:
 * agent.deploymentTarget.enabled: true
+* agent.targetTenantedDeploymentParticipation: "Untenanted"
 

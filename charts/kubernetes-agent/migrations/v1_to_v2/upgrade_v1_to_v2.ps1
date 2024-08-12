@@ -12,7 +12,6 @@ $INITIAL_VALUES = [PSCustomObject]@{
     environments = $JSON_OBJECT.agent.targetEnvironments
     tags = $JSON_OBJECT.agent.targetRoles
     tenantTags = $JSON_OBJECT.agent.targetTenantTags
-    tenantedDeploymentParticipation = "Untenanted"
     tenants = $JSON_OBJECT.agent.targetTenants
 }
 
@@ -28,17 +27,31 @@ $DEPLOYMENT_TARGET = [PSCustomObject]@{
   initial = $REDUCED_INITIAL_VALUES
 }
 
+$JSON_OBJECT
 
 $JSON_OBJECT.agent | Add-Member -MemberType NoteProperty -TypeName string -Name name -Value $JSON_OBJECT.agent.targetName
 $JSON_OBJECT.agent | Add-Member -MemberType NoteProperty -TypeName psobject -Name deploymentTarget -Value $DEPLOYMENT_TARGET
-$JSON_OBJECT.agent.PSObject.Properties.Remove("targetName") 
-$JSON_OBJECT.agent.PSObject.Properties.Remove("targetEnvironments") 
-$JSON_OBJECT.agent.PSObject.Properties.Remove("targetRoles") 
-$JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenantTags") 
-$JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenantedDeploymentParticipation") 
-$JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenants") 
+$JSON_OBJECT.agent.targetname = $null
+$JSON_OBJECT.agent.targetEnvironments = $null
+$JSON_OBJECT.agent.targetRoles = $null
+if(Get-Member -inputObject $JSON_OBJECT -name "targetTenantTags" -MemberType Properties) {
+    $JSON_OBJECT.agent.targetTenantTags = $null    
+}
+if(Get-Member -inputObject $JSON_OBJECT -name "targetTenants" -MemberType Properties)
+{
+    $JSON_OBJECT.agent.targetTenants = $null
+}
 
-$MIGRATED_VALUES = $JSON.OBJECT.agent | ConvertTo-Json -Depth 3
+# Because the existing Values are used to overwrite the chart (reset-then-reuse) we need to deliberately
+# force these values to null (removing them is onsufficient)
+#$JSON_OBJECT.agent.PSObject.Properties.Remove("targetName") 
+#$JSON_OBJECT.agent.PSObject.Properties.Remove("targetEnvironments") 
+#$JSON_OBJECT.agent.PSObject.Properties.Remove("targetRoles") 
+#$JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenantTags") 
+#$JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenantedDeploymentParticipation") 
+#$JSON_OBJECT.agent.PSObject.Properties.Remove("targetTenants") 
+
+$MIGRATED_VALUES = $JSON_OBJECT.agent | ConvertTo-Json -Depth 3
 
 $MIGRATED_VALUES
 
