@@ -27,7 +27,7 @@ The `main` branch will reflect the current development version of the chart. Thi
 Version 2 of the helm chart introduces breaking changes to `values.yaml`; some elements were renamed, while others were moved.
 
 As such, upgrading from V1 to V2 of the helm chart requires user intervention.
-This is documented [here](http://github.com/OctopusDeploy/helm-charts/blob/kubernetes-agent/migrations.md)
+This is documented [here](./migrations.md).
 
 ## Maintainers
 
