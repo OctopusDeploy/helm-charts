@@ -4,39 +4,44 @@
 
 ### Overview
 
-Version 2 of the Kubernetes-agent Helm chart was created to allow the agent to be used as a scalable worker
-by an OctopusDeploy instance.
+Version 2 of the Kubernetes agent was created to allow the agent to be used as a scalable worker in Octopus Server. As
+the chart can now be installed in two different scenario's (deployment target or worker), changes were made to
+the `values.yaml` structure.
 
-To support this change, deploymentTarget specific Values were moved under a deploymentTarget specific parent node
-in `values.yml`.
+To make it clearer which values apply to which scenario, certain Deployment Target specific values were moved under
+a `deploymentTarget` specific parent nodes in `values.yml`.
 
 This change in structure, demands a manual process to move your existing values to the new shape when upgrading from
 v1 to v2.
 
 Specifically, the following data items have been moved:
 
-| From                                        | To                                                                   | Comment                                      |
-|---------------------------------------------|----------------------------------------------------------------------|----------------------------------------------|
-| agent.targetName                            | agent.name                                                           | Generalised name, as may be worker or target |
-| agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                          |                                              |
-| agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                      |                                              |                                           
-| agent.targetRoles                           | agent.deploymentTarget.initial.tags                                  |                                              |                                              
-| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                             |                                              |                                       
-| agent.targetTenants                         | agent.deploymentTarget.initial.tenants                               |                                              |                                        
-| agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.targetTenantedDeploymentParticipation |                                              |
-| agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                              | Child fields are unchanged                   |
+| From                                        | To                                                                   | Comment                                               |
+|---------------------------------------------|----------------------------------------------------------------------|-------------------------------------------------------|
+| agent.targetName                            | agent.name                                                           | Generalised name, as may be worker or target          |
+| agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                          |                                                       |
+| agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                      | Nay be unset - can be ignored if null                 |                                           
+| agent.targetRoles                           | agent.deploymentTarget.initial.tags                                  | In 2024.3 target roles have been replaced with 'tags' |                                              
+| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                             | May be unset - can be ignored if null.                |                                       
+| agent.targetTenants                         | agent.deploymentTarget.initial.tenants                               | May be unset - can be ignored if null.                |                                        
+| agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
+| agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                              | Child fields are unchanged                            |
 
 The following value must be set during the upgrade:
 
-* agent.deploymentTarget.enabled: true
+| Value name | Value | Comment |
+|--|--|--|
+|agent.deploymentTarget.enabled | true | Specifies the helm install should act as a deployment target (not worker) |
 
 ### Steps
 
 1. Fetch overriden values from your installed agent
 
 ```
-RELEASE=theagent
-NAMESPACE=octopus-agent-$RELEASE
+# Release and namespace can be found in Octopus Server, on the 'Connectivity' page of the DeploymentTarget being upgraded
+RELEASE=<Helm Release Name>
+NAMESPACE=<Namespace>
+
 helm get values --namespace $NAMESPACE $RELEASE > overridden_values.yaml
 ```
 
