@@ -5,6 +5,7 @@
 ### Major Changes
 
 - 0e07367: Version 2.0.0 of the Octopus Kubernetes Agent that can be installed as either a deployment target or a worker
+- Requires manual migration see [migrations](./migrations.md)
 
 ## 2.0.0-alpha.6
 
