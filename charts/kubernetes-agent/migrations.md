@@ -1,4 +1,9 @@
 # Migrations
+The Kubernetes Agent adheres to the principles of "Semantic Versioning" to define its version, this implies there are three ways
+the chart may be upgraded:
+* Patch upgrade (*.*.1) - backwards compatible bugfix, upgrade can be executed without additional changes
+* Minor upgrade (*.1.*) - backwards compatible enhancement, upgrade can be executed without additional changes (new version adds new capabilities)
+* Major upgrade (1.*.*) - breaking-change (eg Values file structure changes), will require user-input to perform upgrade
 
 ## Version 1 --> 2
 
