@@ -1,8 +1,7 @@
 # Migrations
 ## Version 1 --> 2
 ### Overview
-Version 2 of the Kubernetes-agent Helm chart was created to allow the agent to be used as a scalable worker
-by an OctopusDeploy instance.
+Version 2 of the Kubernetes agent was created to allow the agent to be used as a scalable worker in Octopus Server. As the chart can now be installed in two different scenario's (deployment target or worker), changes were made to the `values.yaml` structure.
 
 To support this change, deploymentTarget specific Values were moved under a deploymentTarget specific parent node in `values.yml`.
 
