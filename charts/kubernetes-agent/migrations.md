@@ -43,7 +43,7 @@ The following value must be set during the upgrade:
 1. Fetch overriden values from your installed agent
 
 ```
-# Release and namespace can be found in Octopus Server, on the 'Connectivity' page of the DeploymentTarget being upgraded
+# Release and namespace can be found in Octopus Server, on the 'Connectivity' page of the Deployment Target being upgraded
 RELEASE=<Helm Release Name>
 NAMESPACE=<Namespace>
 
