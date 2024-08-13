@@ -19,7 +19,13 @@ a `deploymentTarget` specific parent nodes in `values.yml`.
 This change in structure, demands a manual process to move your existing values to the new shape when upgrading from
 v1 to v2.
 
-Specifically, the following data items have been moved:
+The following value must be set during the upgrade:
+
+| Value name | Value | Comment |
+|--|--|--|
+|agent.deploymentTarget.enabled | true | Specifies the helm install should act as a deployment target (not worker) |
+
+The following data items have been moved or renamed; data types, and content remain unchanged:
 
 | From                                        | To                                                                        | Comment                                               |
 |---------------------------------------------|---------------------------------------------------------------------------|-------------------------------------------------------|
@@ -31,12 +37,6 @@ Specifically, the following data items have been moved:
 | agent.targetTenants                         | agent.deploymentTarget.initial.tenants                                    | May be unset - can be ignored if null.                |                                        
 | agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.<br/>targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
 | agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                                   | Child fields are unchanged                            |
-
-The following value must be set during the upgrade:
-
-| Value name | Value | Comment |
-|--|--|--|
-|agent.deploymentTarget.enabled | true | Specifies the helm install should act as a deployment target (not worker) |
 
 ### Steps
 
