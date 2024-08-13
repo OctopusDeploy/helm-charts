@@ -29,7 +29,7 @@ Specifically, the following data items have been moved:
 | agent.targetRoles                           | agent.deploymentTarget.initial.tags                                  | In 2024.3 target roles have been replaced with 'tags' |                                              
 | agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                             | May be unset - can be ignored if null.                |                                       
 | agent.targetTenants                         | agent.deploymentTarget.initial.tenants                               | May be unset - can be ignored if null.                |                                        
-| agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
+| agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.<br/>targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
 | agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                              | Child fields are unchanged                            |
 
 The following value must be set during the upgrade:
