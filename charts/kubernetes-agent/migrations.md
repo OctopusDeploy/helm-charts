@@ -21,16 +21,16 @@ v1 to v2.
 
 Specifically, the following data items have been moved:
 
-| From                                        | To                                                                   | Comment                                               |
-|---------------------------------------------|----------------------------------------------------------------------|-------------------------------------------------------|
-| agent.targetName                            | agent.name                                                           | Generalised name, as may be worker or target          |
-| agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                          |                                                       |
-| agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                      | Nay be unset - can be ignored if null                 |                                           
-| agent.targetRoles                           | agent.deploymentTarget.initial.tags                                  | In 2024.3 target roles have been replaced with 'tags' |                                              
-| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                             | May be unset - can be ignored if null.                |                                       
-| agent.targetTenants                         | agent.deploymentTarget.initial.tenants                               | May be unset - can be ignored if null.                |                                        
+| From                                        | To                                                                        | Comment                                               |
+|---------------------------------------------|---------------------------------------------------------------------------|-------------------------------------------------------|
+| agent.targetName                            | agent.name                                                                | Generalised name, as may be worker or target          |
+| agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                               | N/A                                                   |
+| agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                           | Nay be unset - can be ignored if null                 |                                           
+| agent.targetRoles                           | agent.deploymentTarget.initial.tags                                       | In 2024.3 target roles have been replaced with 'tags' |                                              
+| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                                  | May be unset - can be ignored if null.                |                                       
+| agent.targetTenants                         | agent.deploymentTarget.initial.tenants                                    | May be unset - can be ignored if null.                |                                        
 | agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.<br/>targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
-| agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                              | Child fields are unchanged                            |
+| agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                                   | Child fields are unchanged                            |
 
 The following value must be set during the upgrade:
 
