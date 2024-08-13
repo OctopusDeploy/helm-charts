@@ -2,6 +2,9 @@
 
 ## 2.0.0
 
+### ⚠️ Breaking Changes
+Version 2 has breaking changes and upgrading from Version 1 requires manual migration of some `values.yaml` values. See the [migration notes](./migrations.md) for more information.
+
 ### Major Changes
 
 - 0e07367: Version 2.0.0 of the Octopus Kubernetes Agent that can be installed as either a deployment target or a worker
