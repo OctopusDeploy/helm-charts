@@ -1,8 +1,15 @@
 # kubernetes-agent
 
+## 2.0.1
+
+### Patch Changes
+
+- 12fd2af: Forward merge from release/kubernetes-agent/v1. Includes changes added in `1.14.2`.
+
 ## 2.0.0
 
 ### ⚠️ Breaking Changes
+
 Version 2 has breaking changes and upgrading from Version 1 requires manual migration of some `values.yaml` values. See the [migration notes](./migrations.md) for more information.
 
 ### Major Changes
