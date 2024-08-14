@@ -43,7 +43,7 @@ This is documented [here](./migrations.md).
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | agent.acceptEula | string | `"N"` | Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal) |
-| agent.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the agent pod |
+| agent.affinity | object | `{"nodeAffinity":<br/>{"requiredDuringSchedulingIgnoredDuringExecution":<br/>{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the agent pod |
 | agent.bearerToken | string | `""` | A JWT bearer token used to authenticate with the target Octopus Server |
 | agent.bearerTokenSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in `data.bearer-token` in secret. |
 | agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
