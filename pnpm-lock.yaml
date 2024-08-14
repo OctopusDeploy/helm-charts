@@ -18,6 +18,8 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
 
+  charts/octopus-deploy: {}
+
 packages:
 
   /@babel/runtime@7.25.0:
