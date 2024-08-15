@@ -4,6 +4,7 @@ templates:
 tests:
 - it: "is not created when target namespaces is not empty"
   set:
+    agent.worker.enabled: false
     scriptPods:
       serviceAccount:
         targetNamespaces: ["ns-1"]
@@ -14,3 +15,10 @@ tests:
 - it: "should match snapshot"
   asserts:
   - matchSnapshot: {}
+    
+- it: "worker should not attach cluster role binding to serviceAccount"
+  set:
+    agent.worker.enabled: true
+  asserts:
+    - hasDocuments:
+        count: 0
