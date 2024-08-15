@@ -4,7 +4,6 @@ templates:
 tests:
 - it: "is not created when target namespaces is not empty"
   set:
-    agent.worker.enabled: false
     scriptPods:
       serviceAccount:
         targetNamespaces: ["ns-1"]
