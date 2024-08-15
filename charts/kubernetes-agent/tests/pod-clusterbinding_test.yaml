@@ -14,3 +14,10 @@ tests:
 - it: "should match snapshot"
   asserts:
   - matchSnapshot: {}
+    
+- it: "worker should not attach cluster role binding to serviceAccount"
+  set:
+    agent.worker.enabled: true
+  asserts:
+    - hasDocuments:
+        count: 0
