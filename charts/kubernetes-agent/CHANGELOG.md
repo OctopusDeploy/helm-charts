@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.0.2
+
+### Patch Changes
+
+- c6d5a7c: Limit worker influence to local namespace
+
 ## 2.0.1
 
 ### Patch Changes
