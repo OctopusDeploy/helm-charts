@@ -1,4 +1,4 @@
-# Octopus Deploy Helm Chart
+![image](https://github.com/user-attachments/assets/3e878865-4499-4bf7-9552-8e83722e9868)# Octopus Deploy Helm Chart
 
 This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes cluster using the [Helm](https://helm.sh) package manager.
 
@@ -163,4 +163,5 @@ The resulting endpoints will be:
 - etc, for each replica
 
 Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
-- [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster) 
+- [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster)
+- [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
