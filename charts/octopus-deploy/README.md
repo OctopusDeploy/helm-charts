@@ -28,7 +28,7 @@ You will need a license key to install Octopus. You can [start a trial](https://
 
 You will need the Base64 encoded version of the license key.
 
-[TODO: control center image]
+![image](https://github.com/user-attachments/assets/996be942-171a-4619-a53c-3285b073b37f)
 
 ## Configuration
 
