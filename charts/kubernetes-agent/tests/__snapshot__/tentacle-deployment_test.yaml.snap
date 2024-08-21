@@ -7,7 +7,7 @@ should match snapshot:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.1.2049
+        app.kubernetes.io/version: 8.1.2099
         helm.sh/chart: kubernetes-agent-1.14.2
       name: octopus-agent-tentacle
       namespace: NAMESPACE
@@ -23,7 +23,7 @@ should match snapshot:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: octopus-agent
-            app.kubernetes.io/version: 8.1.2049
+            app.kubernetes.io/version: 8.1.2099
             helm.sh/chart: kubernetes-agent-1.14.2
         spec:
           affinity:
@@ -80,6 +80,8 @@ should match snapshot:
                   value: 1.14.2
                 - name: OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP
                   value: "false"
+                - name: OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG
+                  value: "false"
                 - name: OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE
                   value: octopusdeploy/kubernetes-agent-nfs-watchdog:0.1.0
                 - name: OCTOPUS__TENTACLE__LOGLEVEL
@@ -98,7 +100,7 @@ should match snapshot:
                   value: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}'
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: octopusdeploy/kubernetes-agent-tentacle:8.1.2049
+              image: octopusdeploy/kubernetes-agent-tentacle:8.1.2099
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:

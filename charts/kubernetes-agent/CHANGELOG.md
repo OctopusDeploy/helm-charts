@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- c8a7da3: Update kubernetes-agent-tentacle to 8.1.2049. Removes the `KubernetesScriptServiceV1Alpha` service
+- c8a7da3: Update kubernetes-agent-tentacle to 8.1.2099. Removes the `KubernetesScriptServiceV1Alpha` service
 
 ## 1.14.1
 
