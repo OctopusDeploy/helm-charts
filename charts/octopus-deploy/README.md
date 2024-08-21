@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/3e878865-4499-4bf7-9552-8e83722e9868)# Octopus Deploy Helm Chart
+# Octopus Deploy Helm Chart
 
 This chart installs [Octopus Deploy](https://octopus.com) into a Kubernetes cluster using the [Helm](https://helm.sh) package manager.
 
