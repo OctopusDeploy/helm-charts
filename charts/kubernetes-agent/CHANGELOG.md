@@ -73,6 +73,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.15.0
+
+### Minor Changes
+
+- 0392acd: Update kubernetes-agent-tentacle to 8.1.2099. Adds support for writing script pod events to task log and also improves script cancellation performance.
+
 ## 1.14.2
 
 ### Patch Changes
@@ -83,7 +89,7 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 ### Patch Changes
 
-- 0759fd8: Update kubernetes-agent-tentacle to 8.1.2007. Fixes an issue executing script pods when running on AWS Bottlerocket nodese
+- 0759fd8: Update kubernetes-agent-tentacle to 8.1.2007. Fixes an issue executing script pods when running on AWS Bottlerocket nodes
 
 ## 1.14.0
 
