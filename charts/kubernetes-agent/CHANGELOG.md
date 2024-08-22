@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.15.0
+
+### Minor Changes
+
+- 0392acd: Update kubernetes-agent-tentacle to 8.1.2099. Adds support for writing script pod events to task log and also improves script cancellation performance.
+
 ## 1.14.2
 
 ### Patch Changes
