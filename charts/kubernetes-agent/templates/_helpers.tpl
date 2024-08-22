@@ -72,6 +72,12 @@ Create the name of the pod cluster role for deleting pods
 {{- printf "%s-delete-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 
+{{/*
+Create the name of the pod cluster role for creating a persistent volume
+*/}}
+{{- define "kubernetes-agent.scriptPodPvMakerClusterRoleName" -}}
+{{- printf "%s-pv-maker-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
+{{- end }}
 
 {{/*
 Create the name of the pod (namespaced) role for creating pods, and updating tentacle
@@ -85,6 +91,13 @@ Create the name of the pod (namespaced) role for creating pods, and updating ten
 Create the name of the pod cluster role binding to use
 */}}
 {{- define "kubernetes-agent.scriptPodClusterRoleBindingName" -}}
+{{- printf "%s-binding" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
+Create the name of the pod cluster role binding to allow for PV modification
+*/}}
+{{- define "kubernetes-agent.scriptPodPvMakerClusterRoleBindingName" -}}
 {{- printf "%s-binding" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 

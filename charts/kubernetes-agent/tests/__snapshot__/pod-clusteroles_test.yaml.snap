@@ -28,3 +28,22 @@ should match snapshot:
         verbs:
           - delete
           - list
+  3: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: octopus-agent-scripts-RELEASE-NAME-pv-maker-role
+    rules:
+      - apiGroups:
+          - '*'
+        resources:
+          - persistentvolumes
+          - persistentvolumeclaims
+          - persistentvolumeclaims/status
+        verbs:
+          - create
+          - delete
+          - get
+          - list
+          - watch
+          - update
