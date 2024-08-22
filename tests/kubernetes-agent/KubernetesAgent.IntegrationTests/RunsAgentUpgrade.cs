@@ -64,7 +64,7 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
             .WithScriptFile(new ScriptFile(packageName, DataStream.FromBytes(packageBytes)))
             .Build();
 
-        void onScriptStatusResponseReceived(ScriptExecutionStatus res) => logger.Information("{Output}", res.ToString());
+        void onScriptStatusResponseReceived(ScriptExecutionStatus res) => logger.Information("{Output}", string.Join(Environment.NewLine, res.Logs));
         async Task onScriptCompleted(CancellationToken t)
         {
             await Task.CompletedTask; 
