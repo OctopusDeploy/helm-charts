@@ -4,7 +4,7 @@ namespace KubernetesAgent.Integration.Setup.Tooling
 {
     public class KindDownloader : ToolDownloader
     {
-        const string LatestKindVersion = "v0.22.0";
+        const string LatestKindVersion = "v0.24.0";
 
         public KindDownloader(ILogger logger)
             : base("kind", logger)

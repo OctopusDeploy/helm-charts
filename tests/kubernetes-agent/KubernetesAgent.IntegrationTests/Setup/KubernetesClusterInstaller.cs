@@ -115,11 +115,10 @@ public class KubernetesClusterInstaller : IDisposable
     
     public void Dispose()
     {
-        var result = ProcessRunner.RunWithLogger(kindExePath, tempDir, logger,
-            $"delete cluster --name={clusterName}");
+        var result = ProcessRunner.RunWithLogger(kindExePath, tempDir, logger,$"delete cluster --name={clusterName}");
         if (result.ExitCode != 0)
         {
-            logger.Error("Failed to delete Kind kubernetes cluster {ClusterName}", clusterName);
+            logger.Warning("Failed to delete Kind kubernetes cluster {ClusterName}", clusterName);
         }
     }
 }
