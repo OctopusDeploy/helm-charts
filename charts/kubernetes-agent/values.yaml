@@ -103,7 +103,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.2049"
+    tag: "8.1.2099"
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -220,6 +220,11 @@ scriptPods:
     repository: ""
     pullPolicy: ""
     tag: ""
+
+  logging:  
+    # -- Disables script pod events being written to Octopus Server task log
+    # @section -- Script pod values
+    disablePodEventsInTaskLog: false
 
 # @section -- Persistence
 persistence:

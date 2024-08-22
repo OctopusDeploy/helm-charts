@@ -396,3 +396,13 @@ tests:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODSECURITYCONTEXTJSON')].value
         value: '{"fsGroup":99,"runAsGroup":431,"runAsUser":1234}'
+
+- it: "Has the script pods disablePodEventsInTaskLog env var set"
+  set:
+    scriptPods:
+      logging:
+        disablePodEventsInTaskLog: true
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG')].value
+        value: "true"
