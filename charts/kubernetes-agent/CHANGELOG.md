@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.1.0
+
+### Minor Changes
+
+- f335f7e: Forward merge from release/kubernetes-agent/v1 version `1.15.0`. Includes all changes in `1.15.0`
+
 ## 2.0.2
 
 ### Patch Changes
