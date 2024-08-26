@@ -1,0 +1,7 @@
+suite: "pod permissions"
+templates:
+- templates/auto-upgrader-clusterrole.yaml
+tests:
+- it: "should match snapshot"
+  asserts:
+  - matchSnapshot: {}
