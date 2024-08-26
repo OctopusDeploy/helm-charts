@@ -38,14 +38,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Create the name of the service account to use for Tentacle
 */}}
 {{- define "kubernetes-agent.serviceAccountName" -}}
 {{- .Values.agent.serviceAccount.name | default (printf "%s-tentacle" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Create the name of the service account to use for script pods
 */}}
 {{- define "kubernetes-agent.scriptPodServiceAccountName" -}}
 {{- .Values.scriptPods.serviceAccount.name | default (printf "%s-scripts" (include "kubernetes-agent.name" .)) }}
@@ -56,6 +56,20 @@ Used for the pod cluster role & clusterrole binding as they are not namespaced.
 */}}
 {{- define "kubernetes-agent.scriptPodServiceAccountFullName" -}}
 {{- printf "%s-%s" ( include "kubernetes-agent.scriptPodServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use for the auto upgrader
+*/}}
+{{- define "kubernetes-agent.autoUpgraderServiceAccountName" -}}
+{{- print "octopus-agent-auto-upgrader" }}
+{{- end }}
+
+{{/*
+Used for the auto upgrader cluster role & clusterrole binding as they are not namespaced
+*/}}
+{{- define "kubernetes-agent.autoUpgraderServiceAccountFullName" -}}
+{{- printf "%s-%s" ( include "kubernetes-agent.autoUpgraderServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -70,6 +84,20 @@ Create the name of the pod cluster role for deleting pods
 */}}
 {{- define "kubernetes-agent.scriptPodDeleterClusterRoleName" -}}
 {{- printf "%s-delete-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
+Create the name of the cluster role for performing auto upgrades
+*/}}
+{{- define "kubernetes-agent.autoUpgraderClusterRoleName" -}}
+{{- printf "%s-role" (include "kubernetes-agent.autoUpgraderServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
+Create the name of the auto upgrader cluster role binding to use
+*/}}
+{{- define "kubernetes-agent.autoUpgraderClusterRoleBindingName" -}}
+{{- printf "%s-binding" (include "kubernetes-agent.autoUpgraderServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
