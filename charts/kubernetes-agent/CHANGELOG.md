@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.16.0
+
+### Minor Changes
+
+- ad4867c: Add service account used by Octopus Server to perform automatic upgrades
+
 ## 1.15.0
 
 ### Minor Changes
