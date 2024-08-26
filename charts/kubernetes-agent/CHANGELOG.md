@@ -79,6 +79,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.16.0
+
+### Minor Changes
+
+- ad4867c: Add service account used by Octopus Server to perform automatic upgrades
+
 ## 1.15.0
 
 ### Minor Changes
