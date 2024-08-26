@@ -59,14 +59,14 @@ Used for the pod cluster role & clusterrole binding as they are not namespaced.
 {{- end }}
 
 {{/*
-Create the name of the service account to use for the auto upgrader
+Create the name of the service account used by Octopus Server to perform automatic upgrades
 */}}
 {{- define "kubernetes-agent.autoUpgraderServiceAccountName" -}}
 {{- print "octopus-agent-auto-upgrader" }}
 {{- end }}
 
 {{/*
-Used for the auto upgrader cluster role & clusterrole binding as they are not namespaced
+Used for the auto upgrader service account cluster role & clusterrole binding as they are not namespaced
 */}}
 {{- define "kubernetes-agent.autoUpgraderServiceAccountFullName" -}}
 {{- printf "%s-%s" ( include "kubernetes-agent.autoUpgraderServiceAccountName" .) .Release.Name | trunc 63 | trimSuffix "-" }}
