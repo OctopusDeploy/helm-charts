@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name:  {{ include "kubernetes-agent.autoUpgraderClusterRoleBindingName" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "kubernetes-agent.autoUpgraderServiceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "kubernetes-agent.autoUpgraderClusterRoleName" . }}
+  apiGroup: rbac.authorization.k8s.io
