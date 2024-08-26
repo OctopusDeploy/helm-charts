@@ -3,7 +3,7 @@ These are used for the NFS container & resources
 */}}
 
 {{- define "nfs.name"}}
-{{- printf "%s-nfs" (include "kubernetes-agent.name" .) | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-nfs-blah" (include "kubernetes-agent.name" .) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "nfs.fullName"}}
@@ -11,7 +11,7 @@ These are used for the NFS container & resources
 {{- end }}
 
 {{- define "nfs.pvName"}}
-{{- printf "%s-pv-%s-blahasfgasdg" (include "nfs.fullName" .) .Values.persistence.size | lower  }}
+{{- printf "%s-pv-%s" (include "nfs.fullName" .) .Values.persistence.size | lower  }}
 {{- end }}
 
 {{- define "nfs.pvcName"}}

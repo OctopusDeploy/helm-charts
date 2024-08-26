@@ -4,17 +4,17 @@ should match snapshot:
     kind: StatefulSet
     metadata:
       labels:
-        app.kubernetes.io/name: octopus-agent-nfs
-      name: octopus-agent-nfs
+        app.kubernetes.io/name: octopus-agent-nfs-blah
+      name: octopus-agent-nfs-blah
       namespace: NAMESPACE
     spec:
       selector:
         matchLabels:
-          app.kubernetes.io/name: octopus-agent-nfs
+          app.kubernetes.io/name: octopus-agent-nfs-blah
       template:
         metadata:
           labels:
-            app.kubernetes.io/name: octopus-agent-nfs
+            app.kubernetes.io/name: octopus-agent-nfs-blah
         spec:
           affinity:
             nodeAffinity:
@@ -38,7 +38,7 @@ should match snapshot:
                   value: "true"
               image: octopusdeploy/nfs-server:1.0.1
               imagePullPolicy: IfNotPresent
-              name: octopus-agent-nfs
+              name: octopus-agent-nfs-blah
               ports:
                 - containerPort: 2049
               resources:

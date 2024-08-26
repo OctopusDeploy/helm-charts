@@ -126,7 +126,7 @@ The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
 {{- if .Values.persistence.storageClassName }}
-{{- printf "%s-pvc-blah" (include "kubernetes-agent.fullName" .) }}
+{{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
 {{- else }}
 {{- include "nfs.pvcName" . }}
 {{- end }}

@@ -48,7 +48,7 @@ tests:
   asserts:
   - equal:
       path: spec.csi.volumeAttributes.server
-      value: octopus-agent-nfs.NAMESPACE.svc.cluster.local
+      value: octopus-agent-nfs-blah.NAMESPACE.svc.cluster.local
   - equal:
       path: spec.csi.volumeAttributes.share
       value: "/"
