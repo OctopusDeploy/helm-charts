@@ -7,7 +7,7 @@ should match snapshot:
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: octopus-agent-scripts-RELEASE-NAME-role-blah
+      name: octopus-agent-scripts-RELEASE-NAME-role
     subjects:
       - kind: ServiceAccount
         name: octopus-agent-scripts

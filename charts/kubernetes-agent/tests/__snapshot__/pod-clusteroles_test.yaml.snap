@@ -3,7 +3,7 @@ should match snapshot:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      name: octopus-agent-scripts-RELEASE-NAME-role-blah
+      name: octopus-agent-scripts-RELEASE-NAME-role
     rules:
       - apiGroups:
           - '*'

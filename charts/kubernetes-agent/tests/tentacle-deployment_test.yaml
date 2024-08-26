@@ -24,7 +24,7 @@ tests:
           of: apps/v1
       - equal:
           path: spec.template.spec.containers[0].name
-          value: octopus-agent-tentacle
+          value: octopus-agent-tentacle-blah
       - contains:
           path: spec.template.spec.containers[0].env
           content:
@@ -57,7 +57,7 @@ tests:
           of: apps/v1
       - equal:
           path: spec.template.spec.containers[0].name
-          value: octopus-agent-tentacle
+          value: octopus-agent-tentacle-blah
       - notContains:
           path: spec.template.spec.containers[0].env
           content:
@@ -86,7 +86,7 @@ tests:
           of: apps/v1
       - equal:
           path: spec.template.spec.containers[0].name
-          value: octopus-agent-tentacle
+          value: octopus-agent-tentacle-blah
       - notContains:
           path: spec.template.spec.containers[0].env
           content:
@@ -109,7 +109,7 @@ tests:
           of: apps/v1
       - equal:
           path: spec.template.spec.containers[0].name
-          value: octopus-agent-tentacle
+          value: octopus-agent-tentacle-blah
       - contains:
           path: spec.template.spec.containers[0].env
           content:

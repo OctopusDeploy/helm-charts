@@ -32,7 +32,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
+        - name: {{printf "%s-tentacle-blah" (include "kubernetes-agent.name" .) }}
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           startupProbe:

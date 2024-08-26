@@ -102,7 +102,7 @@ should match snapshot:
                   value: 10Gi
               image: octopusdeploy/kubernetes-agent-tentacle:8.1.2099
               imagePullPolicy: IfNotPresent
-              name: octopus-agent-tentacle
+              name: octopus-agent-tentacle-blah
               resources:
                 requests:
                   cpu: 100m

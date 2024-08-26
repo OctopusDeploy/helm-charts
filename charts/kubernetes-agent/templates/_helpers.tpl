@@ -76,7 +76,7 @@ Used for the auto upgrader cluster role & clusterrole binding as they are not na
 Create the name of the pod cluster role to use
 */}}
 {{- define "kubernetes-agent.scriptPodClusterRoleName" -}}
-{{- printf "%s-role-blah" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
+{{- printf "%s-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
 {{- end }}
 
 {{/*
