@@ -5,7 +5,7 @@ should match snapshot:
     metadata:
       annotations:
         pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
-      name: octopus-agent-nfs-release-name-pv-10gi
+      name: octopus-agent-nfs-foo-release-name-pv-10gi
     spec:
       accessModes:
         - ReadWriteMany
@@ -14,9 +14,9 @@ should match snapshot:
       csi:
         driver: nfs.csi.k8s.io
         volumeAttributes:
-          server: octopus-agent-nfs.NAMESPACE.svc.cluster.local
+          server: octopus-agent-nfs-foo.NAMESPACE.svc.cluster.local
           share: /
-        volumeHandle: octopus-agent-nfs.NAMESPACE.svc.cluster.local/octopus##
+        volumeHandle: octopus-agent-nfs-foo.NAMESPACE.svc.cluster.local/octopus##
       mountOptions:
         - nfsvers=4.1
         - lookupcache=none
@@ -24,4 +24,4 @@ should match snapshot:
         - timeo=50
         - retrans=4
       persistentVolumeReclaimPolicy: Retain
-      storageClassName: octopus-agent-nfs-RELEASE-NAME-csi
+      storageClassName: octopus-agent-nfs-foo-RELEASE-NAME-csi

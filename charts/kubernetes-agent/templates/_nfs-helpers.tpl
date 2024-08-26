@@ -3,7 +3,7 @@ These are used for the NFS container & resources
 */}}
 
 {{- define "nfs.name"}}
-{{- printf "%s-nfs" (include "kubernetes-agent.name" .) | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-nfs-foo" (include "kubernetes-agent.name" .) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "nfs.fullName"}}
