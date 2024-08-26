@@ -111,14 +111,14 @@ Create the name of the pod cluster role binding to use
 The name of the secret to store the authentication information (bearer token/api key)
 */}}
 {{- define "kubernetes-agent.secrets.serverAuth" -}}
-{{- printf "%s-tentacle-server-auth-blah" ( include "kubernetes-agent.name" . ) }}
+{{- printf "%s-tentacle-server-auth" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
 {{/*
 The name of the secret to store the agent's base64 certificate
 */}}
 {{- define "kubernetes-agent.secrets.certificate" -}}
-{{- printf "%s-tentacle-certificate-blah" ( include "kubernetes-agent.name" . ) }}
+{{- printf "%s-tentacle-certificate" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
 {{/*
