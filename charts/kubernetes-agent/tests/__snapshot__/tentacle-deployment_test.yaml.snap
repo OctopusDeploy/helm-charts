@@ -83,7 +83,7 @@ should match snapshot:
                 - name: OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG
                   value: "false"
                 - name: OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE
-                  value: octopusdeploy/kubernetes-agent-nfs-watchdog:0.1.0
+                  value: octopusdeploy/kubernetes-agent-nfs-watchdog:0.2.0
                 - name: OCTOPUS__TENTACLE__LOGLEVEL
                   value: Info
                 - name: TentacleHome
@@ -121,7 +121,7 @@ should match snapshot:
             - env:
                 - name: watchdog_directory
                   value: /octopus
-              image: octopusdeploy/kubernetes-agent-nfs-watchdog:0.1.0
+              image: octopusdeploy/kubernetes-agent-nfs-watchdog:0.2.0
               imagePullPolicy: IfNotPresent
               name: nfs-watchdog
               volumeMounts:
