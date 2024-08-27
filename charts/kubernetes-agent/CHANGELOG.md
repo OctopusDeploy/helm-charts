@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.16.1
+
+### Patch Changes
+
+- d2f8ec0: Bump kubernetes-agent-nfs-watchdog default tag to 0.2.0
+
 ## 1.16.0
 
 ### Minor Changes
