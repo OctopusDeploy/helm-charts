@@ -55,5 +55,5 @@ helm get values --namespace $NAMESPACE $RELEASE > overridden_values.yaml
 3. Upgrade your release to V2.0.0 of the helm-chart, applying your modified values
 
 ```
-helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE -f overriden_values.yaml --version=2.*.* "oci://docker.packages.octopushq.com/kubernetes-agent"
+helm upgrade --atomic --reset-then-reuse-values --namespace=$NAMESPACE $RELEASE -f overriden_values.yaml --version="2.*.*" "oci://docker.packages.octopushq.com/kubernetes-agent"
 ```
