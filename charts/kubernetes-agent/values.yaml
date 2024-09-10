@@ -19,7 +19,7 @@ agent:
   # -- The URL of the target Octopus Server to register this agent with
   # @section -- Agent values
   serverUrl: ""
-  # -- The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format.
+  # -- The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information.
   # @section -- Agent values
   serverCertificate: ""
   # -- The polling communication URL of the target Octopus Server
