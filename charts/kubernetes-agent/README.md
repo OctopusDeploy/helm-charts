@@ -5,7 +5,7 @@
 A Helm chart for the Octopus Kubernetes Agent
 
 **Homepage:** <https://octopus.com> 
-**Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent)
+**Documentation:** [https://octopus.com/docs/](https://octopus.com/docs/kubernetes/targets/kubernetes-agent)
 
 ## Maintainers
 
@@ -42,7 +42,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.securityContext | object | `{}` | The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0` |
 | agent.serverApiKey | string | `""` | An Octopus Server API key used to authenticate with the target Octopus Server |
 | agent.serverApiKeySecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret. |
-| agent.serverCertificate | string | `""` | The base64-encoded public x509 certificate used by the target Octopus Server. Must be in the PEM/CER format. |
+| agent.serverCertificate | string | `""` | The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information. |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverCommsAddresses | list | `[]` | The polling communication URLs of the target Octopus Servers when running in High Availability (HA) |
 | agent.serverSubscriptionId | string | `""` | The subscription ID that is used to by the agent to identify itself with Octopus Server |
