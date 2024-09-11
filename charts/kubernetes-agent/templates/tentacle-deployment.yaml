@@ -33,7 +33,7 @@ spec:
       {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
-          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.agent.image.repository }}:{{ include "kubernetes-agent.fullImageTag" . }}"
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           startupProbe:
             exec:
