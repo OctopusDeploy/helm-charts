@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.0.1
+
+### Patch Changes
+
+- 0c6d4c9: Fix notes not rendering when specifying master key
+
 ## 1.0.0
 
 ### Major Changes
