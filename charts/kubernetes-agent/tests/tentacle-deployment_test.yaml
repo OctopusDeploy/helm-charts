@@ -266,4 +266,4 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "octopusdeploy/kubernetes-agent-tentacle:8.1.2099-bullseye-slim"
+          value: "octopusdeploy/kubernetes-agent-tentacle:8.2.2165-bullseye-slim"

@@ -103,7 +103,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.1.2099"
+    tag: "8.2.2165"
     tagSuffix: ""
    
   serviceAccount:
