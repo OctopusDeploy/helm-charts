@@ -33,7 +33,7 @@ spec:
       {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
-          image: {{ include "kubernetes-agent.fullImage" . }}
+          image: {{ include "kubernetes-agent.fullImage" . | quote }}
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           startupProbe:
             exec:

@@ -168,7 +168,7 @@ The base image for the agent, without any suffixes.
 Defaults to the Chart Appversion.
 */}}
 {{- define "kubernetes-agent.image" -}}
-{{- print .Values.agent.image.repository }}:{{- print .Values.agent.image.tag | default .Chart.AppVersion}}
+{{- printf "%s:%s" .Values.agent.image.repository (.Values.agent.image.tag | default .Chart.AppVersion) }}
 {{- end }}
 
 {{/*
