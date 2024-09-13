@@ -176,7 +176,7 @@ tests:
             - name: secret-1
             - name: secret-2
 
-  - it: Changes affinity if changed
+  - it: "Changes affinity if changed"
     set:
       agent:
         affinity:
@@ -203,7 +203,7 @@ tests:
                     - arm64
                     - amd64
 
-  - it: Sets pod tolerations if defined
+  - it: "Sets pod tolerations if defined"
     set:
       agent:
         tolerations:
@@ -228,7 +228,7 @@ tests:
             value: "val-2"
             effect: "NoSchedule"
 
-  - it: Sets pod security context if defined
+  - it: "Sets pod security context if defined"
     set:
       agent:
         securityContext:
@@ -242,3 +242,28 @@ tests:
             runAsUser: 10101
             runAsGroup: 234
             fsGroup: 545
+  
+  - it: "includes the tag suffix in the agent image tag when defined"
+    set:
+      agent:
+        image:
+          repository: "myImageRepository"
+          pullPolicy: IfNotPresent
+          tag: "1.2.3"
+          tagSuffix: "bullseye-slim"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "myImageRepository:1.2.3-bullseye-slim"
+          
+  - it: "uses default agent image with suffix when tag is undefined"
+    set:
+      agent:
+        image:
+          pullPolicy: IfNotPresent
+          tag: ""
+          tagSuffix: "bullseye-slim"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "octopusdeploy/kubernetes-agent-tentacle:8.2.2165-bullseye-slim"
