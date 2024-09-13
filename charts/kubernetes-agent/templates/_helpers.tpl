@@ -164,20 +164,20 @@ The Env-var block required to set image name, tag and pullpolicy
 {{- end }}
 
 {{/*
-The base image tag for the agent, without any suffixes.
+The base image for the agent, without any suffixes.
 Defaults to the Chart Appversion.
 */}}
-{{- define "kubernetes-agent.imageTag" -}}
-{{- print .Values.agent.image.tag | default .Chart.AppVersion}}
+{{- define "kubernetes-agent.image" -}}
+{{- print .Values.agent.image.repository }}:{{- print .Values.agent.image.tag | default .Chart.AppVersion}}
 {{- end }}
 
 {{/*
-The complete image tag for the agent, including any optional suffixes.
+The complete image for the agent, including any optional suffixes.
 */}}
-{{- define "kubernetes-agent.fullImageTag" -}}
+{{- define "kubernetes-agent.fullImage" -}}
 {{- if .Values.agent.image.tagSuffix }}
-{{- printf "%s-%s" (include "kubernetes-agent.imageTag" .) .Values.agent.image.tagSuffix }}
+{{- printf "%s-%s" (include "kubernetes-agent.image" .) .Values.agent.image.tagSuffix }}
 {{- else }}
-{{- (include "kubernetes-agent.imageTag" .) }}
+{{- (include "kubernetes-agent.image" .) }}
 {{- end }}
 {{- end }}
