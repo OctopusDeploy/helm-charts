@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.3.0
+
+### Minor Changes
+
+- afc20ca: Forward merge from release/kubernetes-agent/v1 version `1.17.0`. Includes all changes in `1.17.0`
+
 ## 2.2.1
 
 ### Patch Changes
