@@ -35,6 +35,10 @@ spec:
       nodeSelector:
       {{ toYaml . | indent 8 }}
       {{- end }}
+      {{- with .Values.octopus.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
