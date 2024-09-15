@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.1.0
+
+### Minor Changes
+
+- 5f87e5b: Add topology spread constraints
+
 ## 1.0.1
 
 ### Patch Changes
