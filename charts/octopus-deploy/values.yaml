@@ -125,6 +125,7 @@ octopus:
   #    cpu: "1"
 
   tolerations: [] 
+  topologySpreadConstraints: []
 
   serviceAccount:
     create: false
