@@ -33,7 +33,7 @@ The following data items have been moved or renamed; data types, and content rem
 | agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                               | N/A                                                   |
 | agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                           | May be unset - can be ignored if null                 |                                           
 | agent.targetRoles                           | agent.deploymentTarget.initial.tags                                       | In 2024.3 target roles have been replaced with 'tags' |                                              
-| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                                  | May be unset - can be ignored if null.                |                                       
+| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTags                                 | May be unset - can be ignored if null.                |                                       
 | agent.targetTenants                         | agent.deploymentTarget.initial.tenants                                    | May be unset - can be ignored if null.                |                                        
 | agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.<br/>targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
 | agent.scriptPods.image                      | agent.scriptPods.deploymentTarget.image                                   | Child fields are unchanged                            |
