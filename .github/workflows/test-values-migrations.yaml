@@ -1,0 +1,26 @@
+name: test-values-migrations
+run-name: "Test Values Migrations"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'charts/**/values-migrations-tests/**'
+      - 'charts/**/values-migrations/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.3'
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v ./...

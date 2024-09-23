@@ -1,0 +1,4 @@
+agent:
+  targetName: "agent-name"
+  targetEnvironments: ["env1", "env2"]
+  targetRoles: ["tag1", "tag2" ]
