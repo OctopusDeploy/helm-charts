@@ -4,25 +4,47 @@
 
 ### Minor Changes
 
-- afc20ca: Forward merge from release/kubernetes-agent/v1 version `1.17.0`. Includes all changes in `1.17.0`
+- afc20ca: Forward merge from `release/kubernetes-agent/v1` version `1.17.0`.
+
+#### 1.17.0
+
+> - eb21cd0: Updated the Kubernetes Tentacle to version 8.2.2165, featuring an upgrade from .NET 6 to .NET 8
+> 
+>   - This release now uses a Debian 12 base image and features a libssl update from v1 to v3
+> 
+>   Introduced support for an optional tag suffix in the agent image tag configuration within the Helm chart
+> 
+>   - This allows for choosing an alternative base distribution for the Kubernetes Tentacle image based on available options
 
 ## 2.2.1
 
 ### Patch Changes
 
-- 175382f: Forward merge from release/kubernetes-agent/v1 version `1.16.1`. Includes all changes in `1.16.1`
+- 175382f: Forward merge from `release/kubernetes-agent/v1` version `1.16.1`.
+
+#### 1.16.1
+
+> - d2f8ec0: Bump kubernetes-agent-nfs-watchdog default tag to 0.2.0
 
 ## 2.2.0
 
 ### Minor Changes
 
-- 250a69d: Forward merge from release/kubernetes-agent/v1 version `1.16.0`. Includes all changes in `1.16.0`
+- 250a69d: Forward merge from `release/kubernetes-agent/v1 version` `1.16.0`.
+
+#### 1.16.0
+
+> - ad4867c: Add service account used by Octopus Server to perform automatic upgrades
 
 ## 2.1.0
 
 ### Minor Changes
 
-- f335f7e: Forward merge from release/kubernetes-agent/v1 version `1.15.0`. Includes all changes in `1.15.0`
+- f335f7e: Forward merge from `release/kubernetes-agent/v1` version `1.15.0`.
+
+#### 1.15.0
+
+> - 0392acd: Update kubernetes-agent-tentacle to 8.1.2099. Adds support for writing script pod events to task log and also improves script cancellation performance.
 
 ## 2.0.2
 
@@ -34,7 +56,11 @@
 
 ### Patch Changes
 
-- 12fd2af: Forward merge from release/kubernetes-agent/v1. Includes changes added in `1.14.2`.
+- 12fd2af: Forward merge from `release/kubernetes-agent/v1` version `1.14.2`.
+
+#### 1.14.2
+
+> - c8a7da3: Update kubernetes-agent-tentacle to 8.1.2049. Removes the `KubernetesScriptServiceV1Alpha` service
 
 ## 2.0.0
 
@@ -50,14 +76,24 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 ### Patch Changes
 
-- a304f07: Forward merge 1.14.1 to latest
+- a304f07: Forward merge from `release/kubernetes-agent/v1` version `1.14.1`.
+
+#### 1.14.1
+
+> - 0759fd8: Update kubernetes-agent-tentacle to 8.1.2007. Fixes an issue executing script pods when running on AWS Bottlerocket nodes 
 
 ## 2.0.0-alpha.5
 
 ### Patch Changes
 
-- 470f8c0: Forward merge 1.14.0 to latest
-- 811e5cb: Forward merge from 1.12.0 to latest
+- 470f8c0: Forward merge from `release/kubernetes-agent/v1` version `1.14.0`.
+- 811e5cb: Forward merge from `release/kubernetes-agent/v1` version `1.12.0`.
+
+#### 1.12.0 -> 1.14.0
+
+> - ca3bc11: Add support for setting pods securityContext
+> - 196860f: Add ability to use existing secrets to provide auth info
+> - 083adb9: Backport support for changing script pod image, tag and pullPolicy
 
 ## 2.0.0-alpha.4
 
@@ -67,7 +103,7 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 ### Patch Changes
 
-- 63badca: Forward merge changes from 1.11.0 to latest
+- 63badca: Forward merge from `release/kubernetes-agent/v1` version `1.11.0`.
 
 ## 2.0.0-alpha.3
 
