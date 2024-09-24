@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.23.1'
-          path: charts/kubernetes-agent/value-migrations-tests
+          cache-dependency-path: "**/go.sum"
 
       - name: Test
         working-directory: charts/kubernetes-agent/value-migrations-tests
