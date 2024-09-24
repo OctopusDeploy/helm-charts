@@ -1,4 +1,4 @@
-module value-migrations-tests
+module value_migrations_tests
 
 go 1.23.1
 
