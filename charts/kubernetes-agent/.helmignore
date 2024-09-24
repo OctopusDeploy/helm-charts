@@ -28,5 +28,6 @@ package.json
 package-lock.json
 # Tests
 tests/
+value-migrations-tests/
 # Docs templating
 README.md.gotmpl

@@ -32,9 +32,6 @@ agent:
   {{- if .agent.targetTenantedDeploymentParticipation }}
   targetTenantedDeploymentParticipation: null
   {{- end}}
-  {{- if .agent.scriptPods.image }}
-  image: null
-  {{- end}}
 {{- if .scriptPods.image }}
 scriptPods:
   image: null
