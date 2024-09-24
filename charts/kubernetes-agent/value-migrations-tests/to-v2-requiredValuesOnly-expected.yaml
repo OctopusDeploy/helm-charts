@@ -1,0 +1,10 @@
+agent:
+  name: "agent-name"
+  deploymentTarget:
+    enabled: true
+    initial:
+      environments: ["env1", "env2"]
+      tags: ["tag1", "tag2" ]
+  targetEnvironments: null
+  targetName: null
+  targetRoles: null

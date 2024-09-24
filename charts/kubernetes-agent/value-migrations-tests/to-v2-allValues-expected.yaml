@@ -1,0 +1,25 @@
+agent:
+  name: "agent-name"
+  deploymentTarget:
+    enabled: true
+    initial:
+      defaultNamespace: "default-namespace"
+      environments: ["env1", "env2"]
+      tags: ["tag1", "tag2" ]
+      tenantedDeploymentParticipation: Tenanted
+      tenants: ["tenant1", "tenant2"]
+      tenantTags: ["tenantTag1", "tenantTag2"]
+  targetEnvironments: null
+  targetName: null
+  targetRoles: null
+  targetTenantTags: null
+  targetTenantedDeploymentParticipation: null
+  targetTenants: null
+  defaultNamespace: null
+scriptPods:
+  image: null
+  deploymentTarget:
+    image:
+      repository: octopusdeploy/kubernetes-agent-tentacle
+      pullPolicy: IfNotPresent
+      tag: "ubuntu.22.04"    
