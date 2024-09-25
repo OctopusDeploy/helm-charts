@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.4.0
+
+### Minor Changes
+
+- c716463: Added migration to facilitate automatic upgrades from Kubernetes agent v1 to v2
+
 ## 2.3.0
 
 ### Minor Changes
