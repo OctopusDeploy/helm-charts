@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.18.0
+
+### Minor Changes
+
+- 5700a03: Bump Tentacle version to 8.2.2264 to include an image pull policy workaround that ensures the agent uses the latest tools image
+
 ## 1.17.0
 
 ### Minor Changes
