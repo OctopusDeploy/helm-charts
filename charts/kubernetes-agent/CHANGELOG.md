@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.5.0
+
+### Minor Changes
+
+- 05adf88: Forward merge from release/kubernetes-agent/v1 version `1.18.0`. Includes all changes in `1.18.0`
+
 ## 2.4.0
 
 ### Minor Changes
