@@ -103,6 +103,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.18.0
+
+### Minor Changes
+
+- 5700a03: Bump Tentacle version to 8.2.2264 to include an image pull policy workaround that ensures the agent uses the latest tools image
+
 ## 1.17.0
 
 ### Minor Changes
