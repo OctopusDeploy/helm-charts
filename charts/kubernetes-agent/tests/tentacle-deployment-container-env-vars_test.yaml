@@ -242,7 +242,7 @@ tests:
     agent:
       pollingProxy:
         host: "example.com"
-        port: 1234
+        port: "1234"
         username: "user"
         password: "pw-1234"
   asserts:
@@ -251,7 +251,7 @@ tests:
       value: "example.com"
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPort')].value
-      value: 1234
+      value: "1234"
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyUsername')].value
       value: "user"
