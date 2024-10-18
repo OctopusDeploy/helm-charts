@@ -250,6 +250,21 @@ scriptPods:
     # @section -- Script pod values
     disablePodEventsInTaskLog: false
 
+  proxies:
+    http_proxy:
+      host: ""
+      port: 80
+      username: ""
+      password: ""
+    https_proxy:
+      host: ""
+      port: 80
+      username: ""
+      password: ""
+    no_proxy:
+      hosts: []
+
+
 # @section -- Persistence
 persistence:
   
