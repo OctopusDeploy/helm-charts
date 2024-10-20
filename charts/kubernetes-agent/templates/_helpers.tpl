@@ -192,7 +192,7 @@ The complete image for the agent, including any optional suffixes.
 {{- end }}
 
 {{- define "kubernetes-agent.scriptPodProxies" -}}
-{{- if or .Values.scriptPods.proxies.http_proxy.host .Values.scriptPods.proxies.https_proxy.host .Values.scriptPods.proxies.no_proxy.hosts }}
+{{- if or .Values.scriptPods.proxies.http_proxy .Values.scriptPods.proxies.https_proxy .Values.scriptPods.proxies.no_proxy }}
 {{- "true" }}
 {{- else }}
 {{- "" }}

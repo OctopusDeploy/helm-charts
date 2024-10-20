@@ -250,19 +250,16 @@ scriptPods:
     # @section -- Script pod values
     disablePodEventsInTaskLog: false
 
-  proxies:
-    http_proxy:
-      host: ""
-      port: 80
-      username: ""
-      password: ""
-    https_proxy:
-      host: ""
-      port: 80
-      username: ""
-      password: ""
-    no_proxy:
-      hosts: []
+  proxies:    
+    # -- The URI of the HTTP proxy server to be used during script operations
+    # @section -- Script pod values
+    http_proxy: ""
+    # -- The URI of the HTTPS proxy server to be used during script operations
+    # @section -- Script pod values
+    https_proxy: ""
+    # -- A comma-separated list of host names or IP addresses that should not go through any proxy
+    # @section -- Script pod values
+    no_proxy: ""
 
 
 # @section -- Persistence

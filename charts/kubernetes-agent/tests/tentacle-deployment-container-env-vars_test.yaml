@@ -482,9 +482,7 @@ tests:
   set:
     scriptPods:
       proxies:
-        http_proxy:
-          host: "example.com"
-          port: 1234
+        http_proxy: "http://example.com:1234"
   asserts:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODPROXIESSECRETNAME')].value
