@@ -251,7 +251,7 @@ tests:
       value: "example.com"
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyPort')].value
-      value: 1234
+      value: "1234"
   - equal:
       path: spec.template.spec.containers[0].env[?(@.name == 'TentaclePollingProxyUsername')].value
       value: "user"
