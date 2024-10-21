@@ -176,7 +176,7 @@ spec:
             - name: "TentaclePollingProxyHost"
               value: {{ .Values.agent.pollingProxy.host | quote }}
             - name: "TentaclePollingProxyPort"
-              value: {{ .Values.agent.pollingProxy.port }}
+              value: {{ .Values.agent.pollingProxy.port | quote }}
             - name: "TentaclePollingProxyUsername"
               value: {{ .Values.agent.pollingProxy.username | quote }}              
             {{- if .Values.agent.pollingProxy.password }}
