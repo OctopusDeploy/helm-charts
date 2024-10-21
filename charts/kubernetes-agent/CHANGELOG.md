@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.6.0
+
+### Minor Changes
+
+- fcae25e: Add support for custom HTTP/S proxies in script pods
+
+### Patch Changes
+
+- 158ce99: Forward merge from release/kubernetes-agent/v1 version 1.18.1. Includes all changes in 1.18.1
+
 ## 2.5.0
 
 ### Minor Changes
