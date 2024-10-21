@@ -117,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.2.2264"
+    tag: "8.2.2346"
     tagSuffix: ""
    
   serviceAccount:
@@ -249,6 +249,18 @@ scriptPods:
     # -- Disables script pod events being written to Octopus Server task log
     # @section -- Script pod values
     disablePodEventsInTaskLog: false
+
+  proxies:    
+    # -- The URI of the HTTP proxy server to be used during script operations
+    # @section -- Script pod values
+    http_proxy: ""
+    # -- The URI of the HTTPS proxy server to be used during script operations
+    # @section -- Script pod values
+    https_proxy: ""
+    # -- A comma-separated list of host names or IP addresses that should not go through any proxy
+    # @section -- Script pod values
+    no_proxy: ""
+
 
 # @section -- Persistence
 persistence:

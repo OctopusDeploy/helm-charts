@@ -127,6 +127,10 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__PODSECURITYCONTEXTJSON"
               value: {{ . | toJson | quote }}
             {{- end }}
+            {{ if (include "kubernetes-agent.scriptPodProxies" .) }}
+            - name: "OCTOPUS__K8STENTACLE__PODPROXIESSECRETNAME"
+              value: "scripts-proxies"
+            {{- end }}
             {{- if or .Values.agent.serverApiKey .Values.agent.serverApiKeySecretName }}
             - name: "ServerApiKey"
               valueFrom:
