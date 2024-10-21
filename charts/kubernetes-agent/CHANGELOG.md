@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.18.1
+
+### Patch Changes
+
+- dc457bf: Fix a quoting issue with agent.pollingProxy.port
+
 ## 1.18.0
 
 ### Minor Changes
