@@ -115,7 +115,7 @@ This is documented [here](./migrations.md).
 | persistence.nfs.watchdog.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-nfs-watchdog","tag":"0.2.0"}` | The repository, pullPolicy & tag to use for the NFS watchdog |
 | persistence.nfs.watchdog.initial_backoff_seconds | string | `""` | The initial backoff time in seconds to retry failed NFS checks @default 0.5 |
 | persistence.nfs.watchdog.loop_seconds | string | `""` | The frequency in seconds to check the NFS server @default 5 |
-| persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10:w! |
+| persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
 | persistence.size | string | `"10Gi"` | The size of the volume to create |
 | persistence.storageClassName | string | `""` | if provided, will disable the default persistence configuration and create a PVC with the provided storage class |
 

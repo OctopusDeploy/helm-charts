@@ -330,7 +330,7 @@ persistence:
       initial_backoff_seconds: ""
       # -- The total time to retry failed NFS checks before giving up and deleting the pod
       # @section -- Persistence
-      # @default 10:w!
+      # @default 10
       timeout_seconds: ""
       # -- The repository, pullPolicy & tag to use for the NFS watchdog
       # @section -- Persistence
