@@ -119,7 +119,9 @@ agent:
     pullPolicy: IfNotPresent
     tag: "8.2.2346"
     tagSuffix: ""
-    
+  
+  # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. 
+  # @section -- Agent values
   upgrade:
     username: ""
     password: ""
