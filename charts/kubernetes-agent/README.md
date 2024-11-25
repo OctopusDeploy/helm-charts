@@ -70,7 +70,7 @@ This is documented [here](./migrations.md).
 | agent.serviceAccount.name | string | Generates a name based on `agent.name` | The name of the service account for the agent pod |
 | agent.space | string | `"Default"` | The Space to register the agent in |
 | agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
-| agent.upgrade | object | `{"password":"","registry":"","username":""}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.  |
+| agent.upgrade | object | `{"dockerAuth":{"password":"","registry":"","username":""}}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.  |
 | agent.username | string | `""` | The username of the user used to authenticate with the target Octopus Server |
 | agent.usernamePasswordSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret. |
 
@@ -115,7 +115,7 @@ This is documented [here](./migrations.md).
 | persistence.nfs.watchdog.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-nfs-watchdog","tag":"0.2.0"}` | The repository, pullPolicy & tag to use for the NFS watchdog |
 | persistence.nfs.watchdog.initial_backoff_seconds | string | `""` | The initial backoff time in seconds to retry failed NFS checks @default 0.5 |
 | persistence.nfs.watchdog.loop_seconds | string | `""` | The frequency in seconds to check the NFS server @default 5 |
-| persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
+| persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10:w! |
 | persistence.size | string | `"10Gi"` | The size of the volume to create |
 | persistence.storageClassName | string | `""` | if provided, will disable the default persistence configuration and create a PVC with the provided storage class |
 
