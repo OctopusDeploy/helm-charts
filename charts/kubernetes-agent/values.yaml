@@ -119,6 +119,11 @@ agent:
     pullPolicy: IfNotPresent
     tag: "8.2.2346"
     tagSuffix: ""
+    
+  upgrade:
+    username: ""
+    password: ""
+    registry: ""
    
   serviceAccount:
     # -- The name of the service account for the agent pod
@@ -330,12 +335,6 @@ persistence:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.2.0"
-
-upgrade:
-  username: ""
-  password: ""
-  registry: ""
-    
 
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored
