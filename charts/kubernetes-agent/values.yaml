@@ -322,7 +322,7 @@ persistence:
       initial_backoff_seconds: ""
       # -- The total time to retry failed NFS checks before giving up and deleting the pod
       # @section -- Persistence
-      # @default 10
+      # @default 10:w!
       timeout_seconds: ""
       # -- The repository, pullPolicy & tag to use for the NFS watchdog
       # @section -- Persistence
@@ -330,6 +330,12 @@ persistence:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.2.0"
+
+upgrade:
+  username: ""
+  password: ""
+  registry: ""
+    
 
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored

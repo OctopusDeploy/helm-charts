@@ -198,3 +198,8 @@ The complete image for the agent, including any optional suffixes.
 {{- "" }}
 {{- end }}
 {{- end }}
+
+{{- define "upgrader.createDockerConfig" -}}
+{{ $b64AuthString := ((printf "%s:%s" .Values.upgrade.username .Values.upgrade.password) | b64enc) }}
+{{- (printf "{\"auths\":{\"%s\":{\"auth\":\"%s\"}}}" .Values.upgrade.registry $b64AuthString) | b64enc }} 
+{{- end }}
