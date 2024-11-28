@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.7.0
+
+### Minor Changes
+
+- a3c9dec: Add `agent.upgrade.dockerAuth` to support authenticating the docker calls when performing an automatic upgrade via Octopus Server.
+
 ## 2.6.0
 
 ### Minor Changes
