@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.7.1
+
+### Patch Changes
+
+- 0778065: Update the AppVersion in Chart.yaml to match values file.
+
 ## 2.7.0
 
 ### Minor Changes
