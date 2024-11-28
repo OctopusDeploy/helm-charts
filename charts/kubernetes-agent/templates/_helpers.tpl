@@ -198,3 +198,8 @@ The complete image for the agent, including any optional suffixes.
 {{- "" }}
 {{- end }}
 {{- end }}
+
+{{- define "kubernetes-agent.createHelmRegistryConfig" -}}
+{{ $b64AuthString := ((printf "%s:%s" .Values.agent.upgrade.dockerAuth.username .Values.agent.upgrade.dockerAuth.password) | b64enc) }}
+{{- (printf "{\"auths\":{\"%s\":{\"auth\":\"%s\"}}}" .Values.agent.upgrade.dockerAuth.registry $b64AuthString) | b64enc }} 
+{{- end }}

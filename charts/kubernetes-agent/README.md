@@ -49,7 +49,7 @@ This is documented [here](./migrations.md).
 | agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.2.2346","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.2.2481","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -70,6 +70,7 @@ This is documented [here](./migrations.md).
 | agent.serviceAccount.name | string | Generates a name based on `agent.name` | The name of the service account for the agent pod |
 | agent.space | string | `"Default"` | The Space to register the agent in |
 | agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
+| agent.upgrade | object | `{"dockerAuth":{"password":"","registry":"","username":""}}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.  |
 | agent.username | string | `""` | The username of the user used to authenticate with the target Octopus Server |
 | agent.usernamePasswordSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret. |
 

@@ -117,8 +117,16 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.2.2346"
+    tag: "8.2.2481"
     tagSuffix: ""
+  
+  # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. 
+  # @section -- Agent values
+  upgrade:
+    dockerAuth:
+      username: ""
+      password: ""
+      registry: ""
    
   serviceAccount:
     # -- The name of the service account for the agent pod

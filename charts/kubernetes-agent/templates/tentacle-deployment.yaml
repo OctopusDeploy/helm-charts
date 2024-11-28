@@ -193,7 +193,7 @@ spec:
           {{- end}}
           volumeMounts:
             - mountPath: /octopus
-              name: tentacle-home  
+              name: tentacle-home
             {{- if .Values.agent.serverCertificate }}
             - name: octopus-server-certificate-configmap
               mountPath: /etc/ssl/certs/octopus-server-certificate.pem
@@ -231,7 +231,7 @@ spec:
         - name: octopus-server-certificate-configmap
           configMap:
             name: "octopus-server-certificate"
-        {{- end }}    
+        {{- end }}
       {{- with .Values.agent.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
