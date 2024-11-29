@@ -1,6 +1,6 @@
 # kubernetes-agent
 
-![Version: 1.18.1](https://img.shields.io/badge/Version-1.18.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.2.2264](https://img.shields.io/badge/AppVersion-8.2.2264-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 1.18.1](https://img.shields.io/badge/Version-1.18.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.2.2481](https://img.shields.io/badge/AppVersion-8.2.2481-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 A Helm chart for the Octopus Kubernetes Agent
 
@@ -31,7 +31,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.defaultNamespace | string | `""` | The default Kubernetes namespace for deployments |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.2.2264","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.2.2481","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -57,6 +57,7 @@ A Helm chart for the Octopus Kubernetes Agent
 | agent.targetTenantedDeploymentParticipation | string | `"Untenanted"` | Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`. |
 | agent.targetTenants | list | `[]` | The target tenants to register the agent with |
 | agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
+| agent.upgrade | object | `{"dockerAuth":{"password":"","registry":"","username":""}}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.  |
 | agent.username | string | `""` | The username of the user used to authenticate with the target Octopus Server |
 | agent.usernamePasswordSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret. |
 
