@@ -64,7 +64,13 @@ public class HelmUpgradeTests(ITestOutputHelper output) : IAsyncLifetime
             .WithScriptFile(new ScriptFile(packageName, DataStream.FromBytes(packageBytes)))
             .Build();
 
-        void onScriptStatusResponseReceived(ScriptExecutionStatus res) => logger.Information("{Output}", string.Join(Environment.NewLine, res.Logs));
+        void onScriptStatusResponseReceived(ScriptExecutionStatus res)
+        {
+            foreach (var log in res.Logs)
+            {
+                logger.Information("[Script] {Date} | {Source} | {Text}", log.Occurred, log.Source, log.Text);
+            }
+        }
         async Task onScriptCompleted(CancellationToken t)
         {
             await Task.CompletedTask; 

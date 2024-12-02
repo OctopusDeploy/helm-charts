@@ -131,6 +131,18 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.19.0
+
+### Minor Changes
+
+- 248cf57: Script pod logs are now encrypted to avoid leaking sensitive values
+
+## 1.18.2
+
+### Patch Changes
+
+- d117535: Add `agent.upgrade.dockerAuth` to support authenticating the docker calls when performing an automatic upgrade via Octopus Server.
+
 ## 1.18.1
 
 ### Patch Changes
