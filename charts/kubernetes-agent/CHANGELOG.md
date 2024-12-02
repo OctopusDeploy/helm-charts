@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.19.0
+
+### Minor Changes
+
+- 248cf57: Script pod logs are now encrypted to avoid leaking sensitive values
+
 ## 1.18.2
 
 ### Patch Changes
