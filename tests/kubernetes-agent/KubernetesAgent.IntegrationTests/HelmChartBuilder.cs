@@ -17,7 +17,7 @@ namespace KubernetesAgent.Integration
             }
 
             var output = packager.StandardOutput.ReadToEnd();
-            return output.Split(":")[^1].ToString().Trim();
+            return output.Split(":", 2)[^1].ToString().Trim();
         }
 
         static string[] GetHelmChartPackageArguments(string version)
