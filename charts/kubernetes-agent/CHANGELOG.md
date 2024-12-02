@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.8.0
+
+### Minor Changes
+
+- 3e1c038: Forward merge from release/kubernetes-agent/v1 version `1.19.0`. Includes all changes in `1.19.0`
+
 ## 2.7.1
 
 ### Patch Changes
