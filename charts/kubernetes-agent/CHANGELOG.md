@@ -137,6 +137,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.19.1
+
+### Patch Changes
+
+- f55beb1: Updated tentacle to resolve errors during calls to 'helm registry login'
+
 ## 1.19.0
 
 ### Minor Changes
