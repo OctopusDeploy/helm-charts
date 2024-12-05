@@ -339,6 +339,12 @@ persistence:
         pullPolicy: IfNotPresent
         tag: "0.2.0"
 
+ # Used to enable the Kubernetes Monitor
+# Do not use this, as it is not supported at the moment
+# @ignored
+kubernetes-monitor-chart:
+  enabled: false
+
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored
 testing:
