@@ -10,7 +10,7 @@
 
 ### Minor Changes
 
-- 3e1c038: Forward merge from release/kubernetes-agent/v1 version `1.19.0`. Includes all changes in `1.19.0`.  This resolves [CVE-2024-12226](https://advisories.octopus.com/post/2024/sa2024-10/).
+- 3e1c038: Forward merge from release/kubernetes-agent/v1 version `1.19.0`. Includes all changes in `1.19.0`. This resolves [CVE-2024-12226](https://advisories.octopus.com/post/2024/sa2024-10/).
 
 ## 2.7.1
 
