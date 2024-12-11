@@ -10,7 +10,7 @@
 
 ### Minor Changes
 
-- 3e1c038: Forward merge from release/kubernetes-agent/v1 version `1.19.0`. Includes all changes in `1.19.0`
+- 3e1c038: Forward merge from release/kubernetes-agent/v1 version `1.19.0`. Includes all changes in `1.19.0`. This resolves [CVE-2024-12226](https://advisories.octopus.com/post/2024/sa2024-10/).
 
 ## 2.7.1
 
@@ -153,7 +153,7 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 ### Minor Changes
 
-- 248cf57: Script pod logs are now encrypted to avoid leaking sensitive values
+- 248cf57: Script pod logs are now encrypted to avoid leaking sensitive values. This resolves [CVE-2024-12226](https://advisories.octopus.com/post/2024/sa2024-10/).
 
 ## 1.18.2
 
