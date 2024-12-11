@@ -77,7 +77,7 @@ jobs:
       - name: Package Chart
         run: helm package --version '${{ steps.version.outputs.CHART_VERSION }}' 'charts/octopus-deploy'
         
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         name: Upload packaged chart
         with:
           name: '${{ steps.version.outputs.PACKAGE_NAME }}'
