@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.19.2
+
+### Patch Changes
+
+- 897f59b: Fix scriptPods.image.pullPolicy not working
+
 ## 1.19.1
 
 ### Patch Changes
