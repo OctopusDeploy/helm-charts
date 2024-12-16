@@ -106,7 +106,7 @@ jobs:
     - name: Package Chart
       run: helm package './charts/kubernetes-agent' --version '${{ steps.version.outputs.CHART_VERSION }}'
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       name: Upload packaged chart
       with:
         name: '${{ steps.version.outputs.PACKAGE_NAME }}'
@@ -122,7 +122,7 @@ jobs:
       id-token: write # This is required to obtain an ID token from GitHub Actions for the job
     steps:
     - name: Download packaged chart
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
 

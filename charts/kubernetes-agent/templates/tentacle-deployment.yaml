@@ -88,7 +88,7 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME"
               value: {{ include "kubernetes-agent.scriptPodServiceAccountName" . | quote }}
             - name: "OCTOPUS__K8STENTACLE__PODVOLUMECLAIMNAME"
-              value: {{ (include "kubernetes-agent.pvcName" .)  | quote}}
+              value: {{ (include "kubernetes-agent.pvcName" .)  | quote }}
             - name: "OCTOPUS__K8STENTACLE__HELMRELEASENAME"
               value: {{ .Release.Name | quote}}
             - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
