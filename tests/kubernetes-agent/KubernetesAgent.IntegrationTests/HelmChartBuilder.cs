@@ -10,6 +10,12 @@ namespace KubernetesAgent.Integration
             var version = GetChartVersion();
             version = $"{version}-{DateTime.Now:yyyymdHHmmss}";
             
+            var dependencyBuilder = ProcessRunner.Run(helmExecutable, directory, GetHelmDependencyBuildArguments());
+            if (dependencyBuilder.ExitCode != 0)
+            {
+                throw new Exception($"Failed to update dependencies for Helm chart. Exit code: {dependencyBuilder.ExitCode}");
+            }
+
             var packager = ProcessRunner.Run(helmExecutable, directory, GetHelmChartPackageArguments(version));
             if (packager.ExitCode != 0)
             {
@@ -32,6 +38,17 @@ namespace KubernetesAgent.Integration
             ];
         }
         
+        static string[] GetHelmDependencyBuildArguments()
+        {
+            var chartsDirectory = GetChartsDirectory().FullName;
+            return
+            [
+                "dependency",
+                "build",
+                chartsDirectory
+            ];
+        }
+
         static DirectoryInfo GetChartsDirectory()
         {
             var chartsDirectory = Path.Combine(AppContext.BaseDirectory);
