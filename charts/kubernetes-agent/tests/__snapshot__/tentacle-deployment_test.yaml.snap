@@ -70,8 +70,6 @@ should match snapshot:
                   value: Untenanted
                 - name: WorkerEnabled
                   value: "false"
-                - name: WorkerPools
-                  value: ""
                 - name: OCTOPUS__K8STENTACLE__NAMESPACE
                   value: NAMESPACE
                 - name: OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME
