@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 2.8.2
+
+### Patch Changes
+
+- afb6307: Forward merge from release/kubernetes-agent/v1 version `1.19.2`. Includes all changes in `1.19.2`
+- 3f5398d: Don't include an empty WorkerPools env var if not a worker
+
 ## 2.8.1
 
 ### Patch Changes
