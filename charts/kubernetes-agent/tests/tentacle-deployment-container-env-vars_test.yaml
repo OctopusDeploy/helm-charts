@@ -108,16 +108,28 @@ tests:
       path: spec.template.spec.containers[0].env[?(@.name == 'TargetRole')].value
       value: "web,admin"
 
-- it: "Sets worker pools"
+- it: "Sets worker pools if worker enabled"
   set:
     agent:
       worker:
+        enabled: true
         initial:
           workerPools: [WorkerPools-3, MyAwesomeWorkerPool]
   asserts:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'WorkerPools')].value
         value: "WorkerPools-3,MyAwesomeWorkerPool"
+
+- it: "Does not set worker pools if worker disabled"
+  set:
+    agent:
+      worker:
+        enabled: false
+        initial:
+          workerPools: [WorkerPools-3, MyAwesomeWorkerPool]
+  asserts:
+    - notExists:
+        path: spec.template.spec.containers[0].env[?(@.name == 'WorkerPools')].value
 
 - it: "Sets machine policy if specified"
   set:
