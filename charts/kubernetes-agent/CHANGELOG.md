@@ -143,6 +143,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.19.2
+
+### Patch Changes
+
+- 897f59b: Fix scriptPods.image.pullPolicy not working
+
 ## 1.19.1
 
 ### Patch Changes

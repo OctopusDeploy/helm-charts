@@ -407,7 +407,7 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
         value: "1.0.0-deploymentTarget"
     - equal:
-        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODPULLPOLICY')].value
         value: "Always"
 
 - it: "Sets Image Pod from Worker Values if Worker is enabled"
@@ -430,7 +430,7 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
         value: "1.0.0-worker"
     - equal:
-        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODPULLPOLICY')].value
         value: "IfNotPresent"
 
 - it: "When running as a worker, the script-pod image fields are already populated"
@@ -445,7 +445,7 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGETAG')].value
         value: "ubuntu.22.04"
     - equal:
-        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODIMAGEPULLPOLICY')].value
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__SCRIPTPODPULLPOLICY')].value
         value: "IfNotPresent"
         
 - it: "When running as a deployment Target, script pod image is not set by default"
