@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 2.9.0
+
+### Minor Changes
+
+- 42f1092: Forward merge from release/kubernetes-agent/v1 version `1.20.0`. Includes all changes in `1.20.0`.
+  The agent now supports Kubernetes server versions 1.28–1.31.
+
 ## 2.8.2
 
 ### Patch Changes
