@@ -150,6 +150,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.20.0
+
+### Minor Changes
+
+- 38cc3ba: Bump Tentacle version to 8.2.2540 to upgrade the version of the dotnet Kubernetes Client library. The agent now supports Kubernetes server versions 1.28–1.31.
+
 ## 1.19.2
 
 ### Patch Changes
