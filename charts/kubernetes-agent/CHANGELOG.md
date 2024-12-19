@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.20.0
+
+### Minor Changes
+
+- 38cc3ba: Bump Tentacle version to 8.2.2540 to upgrade the version of the dotnet Kubernetes Client library. The agent now supports Kubernetes server versions 1.28–1.31.
+
 ## 1.19.2
 
 ### Patch Changes
