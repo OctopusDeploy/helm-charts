@@ -81,6 +81,11 @@ octopus:
     size: 1Gi 
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
+  # Volume used for archived audit logs: https://octopus.com/docs/security/users-and-teams/auditing#archived-audit-events
+  auditLogVolume:
+    size: 1Gi
+    storageClassName: ""
+    storageAccessMode: ReadWriteOnce
 
   service:
     type: NodePort 
