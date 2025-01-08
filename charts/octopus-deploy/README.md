@@ -18,7 +18,7 @@ helm upgrade octopus-deploy \
 --namespace octopus-deploy \
 --create-namespace \
 --set octopus.acceptEula="Y" \
---set octopus.licenseKeyBase64="<Your License Key>"
+--set octopus.licenseKeyBase64="<Your License Key>" \
 --set mssql.enabled="true" \
 oci://ghcr.io/octopusdeploy/octopusdeploy-helm
 ```
