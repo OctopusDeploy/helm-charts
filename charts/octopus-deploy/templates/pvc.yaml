@@ -69,11 +69,11 @@ spec:
     {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
     - ReadWriteMany
     {{- else }}
-    - {{.Values.octopus.taskLogVolume.storageAccessMode}}
+    - {{.Values.octopus.auditLogVolume.storageAccessMode}}
     {{- end }}
-  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.taskLogVolume.storageClassName) }}
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.auditLogVolume.storageClassName) }}
   storageClassName: {{ $storageClass }}
   {{- end }}
   resources:
     requests:
-      storage: {{.Values.octopus.taskLogVolume.size}}
+      storage: {{.Values.octopus.auditLogVolume.size}}
