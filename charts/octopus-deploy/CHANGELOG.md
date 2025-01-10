@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.2.0
+
+### Minor Changes
+
+- 8a5779f: Added audit log PVC
+
 ## 1.1.0
 
 ### Minor Changes
