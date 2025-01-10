@@ -57,3 +57,23 @@ spec:
   resources:
     requests:
       storage: {{.Values.octopus.taskLogVolume.size}}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: audit-log-claim
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+    - ReadWriteMany
+    {{- else }}
+    - {{.Values.octopus.auditLogVolume.storageAccessMode}}
+    {{- end }}
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.auditLogVolume.storageClassName) }}
+  storageClassName: {{ $storageClass }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{.Values.octopus.auditLogVolume.size}}
