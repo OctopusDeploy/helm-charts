@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.9.1
+
+### Patch Changes
+
+- b43aef0: Forward merge from release/kubernetes-agent/v1 version `1.20.1`. Includes the increase to the maximum buffer size for the output scanner in the bootstrap runner.
+
 ## 2.9.0
 
 ### Minor Changes
