@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.3.0
+
+### Minor Changes
+
+- 1a009d8: Updated installed Octopus Server version to 2024.4
+
 ## 1.2.0
 
 ### Minor Changes
