@@ -103,6 +103,9 @@ jobs:
         echo "CHART_VERSION=$full_version" >> $GITHUB_OUTPUT
         echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
 
+    - name: Download Helm dependencies
+      run: helm dependency build './charts/kubernetes-agent'
+
     - name: Package Chart
       run: helm package './charts/kubernetes-agent' --version '${{ steps.version.outputs.CHART_VERSION }}'
 
