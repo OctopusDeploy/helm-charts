@@ -1,0 +1,173 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{printf "%s-tentacle-pre" (include "kubernetes-agent.name" .) }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "kubernetes-agent.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-9"
+    "helm.sh/hook-delete-policy": "before-hook-creation,on-hook-success"
+    {{- with .Values.agent.metadata.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  serviceAccountName: {{ include "kubernetes-agent.preinstall.serviceAccountName" . }}
+  {{- with .Values.agent.securityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  containers:
+    - name: {{printf "%s-tentacle-pre" (include "kubernetes-agent.name" .) }}
+      image: {{ include "kubernetes-agent.fullImage" . | quote }}
+      command:
+        - "/scripts/register.sh"
+      imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
+      env:
+        - name: "ACCEPT_EULA"
+          value: {{ .Values.agent.acceptEula | quote }}
+        - name: "AgentName"
+          value: {{ .Values.agent.name | quote }}
+        - name: "ServerCommsAddresses"
+          value: {{ join "," .Values.agent.serverCommsAddresses | quote }}
+        - name: "ServerCommsAddress"
+          value: {{ .Values.agent.serverCommsAddress | quote }}
+        - name: "ServerUrl"
+          value: {{ .Values.agent.serverUrl | quote }}
+        - name: "Space"
+          value: {{ .Values.agent.space | quote }}
+        - name: "DeploymentTargetEnabled"
+          value: {{ .Values.agent.deploymentTarget.enabled | quote }}
+        - name: "TargetEnvironment"
+          value: {{ join "," .Values.agent.deploymentTarget.initial.environments | quote }}
+        - name: "TargetRole"
+          value: {{ join "," .Values.agent.deploymentTarget.initial.tags | quote }}
+        - name: "TargetTenant"
+          value: {{ join "," .Values.agent.deploymentTarget.initial.tenants | quote }}
+        - name: "TargetTenantTag"
+          value: {{ join "," .Values.agent.deploymentTarget.initial.tenantTags | quote }}
+        - name: "DefaultNamespace"
+          value: {{ .Values.agent.deploymentTarget.initial.defaultNamespace | quote }}
+        - name: "TargetTenantedDeploymentParticipation"
+          value: {{ .Values.agent.deploymentTarget.initial.tenantedDeploymentParticipation | quote }}
+        - name: "WorkerEnabled"
+          value: {{ .Values.agent.worker.enabled | quote }}
+        - name: "WorkerPools"
+          value: {{ join "," .Values.agent.worker.initial.workerPools | quote }}
+        {{- if .Values.agent.deploymentTarget.enabled }}
+        {{include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.deploymentTarget.image | nindent 8}}
+        {{- else if .Values.agent.worker.enabled }}
+        {{ include "kubernetes-agent.scriptPodEnvVars" .Values.scriptPods.worker.image | nindent 8}}
+        {{- end }}
+        {{- with .Values.agent.machinePolicyName }}
+        - name: "MachinePolicy"
+          value: {{ . | quote }}
+        {{- end }}
+        - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
+          value: {{ .Release.Namespace | quote }}
+        - name: "OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP"
+          value: {{ .Values.agent.debug.disableAutoPodCleanup | quote }}
+        - name: "OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG"
+          value: {{ .Values.scriptPods.logging.disablePodEventsInTaskLog | quote }}
+        - name: "OCTOPUS__TENTACLE__LOGLEVEL"
+          value: {{ .Values.agent.logLevel }}
+        - name: "TentacleHome"
+          value: "/octopus"
+        - name: "TentacleApplications"
+          value: "/octopus/Applications"
+        - name: "TentaclePollingConnectionCount"
+          value: {{ .Values.agent.pollingConnectionCount | quote }}
+        - name: "OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE"
+          value: {{ .Values.agent.enableMetricsCapture| quote }}
+        {{- if .Values.imagePullSecrets }}
+        - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
+          value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}
+        {{- end }}
+        {{- if or .Values.agent.serverApiKey .Values.agent.serverApiKeySecretName }}
+        - name: "ServerApiKey"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.agent.serverApiKeySecretName | default (include "kubernetes-agent.preinstall.secrets.serverAuth" .) }}
+              key: api-key
+        {{- end }}
+        {{- if or .Values.agent.bearerToken .Values.agent.bearerTokenSecretName  }}
+        - name: "BearerToken"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.agent.bearerTokenSecretName | default (include "kubernetes-agent.preinstall.secrets.serverAuth" .) }}
+              key: bearer-token
+        {{- end }}
+        {{- if or .Values.agent.username .Values.agent.usernamePasswordSecretName }}
+        - name: "ServerUsername"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.preinstall.secrets.serverAuth" .) }}
+              key: username
+        {{- end }}
+        {{- if or .Values.agent.password .Values.agent.usernamePasswordSecretName }}
+        - name: "ServerPassword"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.preinstall.secrets.serverAuth" .) }}
+              key: password
+        {{- end }}
+        {{- if .Values.agent.certificate }}
+        - name: "TentacleCertificateBase64"
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "kubernetes-agent.preinstall.secrets.certificate" . }}
+              key: certificate
+        {{- end}}
+        {{- if .Values.agent.serverSubscriptionId }}
+        - name: "ServerSubscriptionId"
+          value: {{ .Values.agent.serverSubscriptionId | quote }}
+        {{- end}}
+        {{- if .Values.agent.pollingProxy.host }}
+        - name: "TentaclePollingProxyHost"
+          value: {{ .Values.agent.pollingProxy.host | quote }}
+        - name: "TentaclePollingProxyPort"
+          value: {{ .Values.agent.pollingProxy.port | quote }}
+        - name: "TentaclePollingProxyUsername"
+          value: {{ .Values.agent.pollingProxy.username | quote }}
+        {{- if .Values.agent.pollingProxy.password }}
+        - name: "TentaclePollingProxyPassword"
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "kubernetes-agent.preinstall.secrets.serverAuth" . }}
+              key: polling-proxy-password
+        {{- end }}
+        {{- end }}
+      {{- with .Values.agent.resources }}
+      resources:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
+      volumeMounts:
+        - mountPath: /octopus
+          name: temp-dir
+        {{- if .Values.agent.serverCertificate }}
+        - name: octopus-server-certificate-configmap
+          mountPath: /etc/ssl/certs/octopus-server-certificate.pem
+          subPath: octopus-server-certificate.pem
+          readOnly: false
+        {{- end }}
+  volumes:
+    - name: temp-dir
+      emptyDir: {}
+    {{- if .Values.agent.serverCertificate }}
+    - name: octopus-server-certificate-configmap
+      configMap:
+        name: "octopus-server-certificate-pre"
+    {{- end }}
+  {{- with .Values.agent.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end}}
+  {{- with .Values.agent.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end}}

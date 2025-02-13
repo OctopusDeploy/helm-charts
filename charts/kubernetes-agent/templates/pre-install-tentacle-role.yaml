@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ printf "%s-role" (include "kubernetes-agent.serviceAccountName" .) }}
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    {{- include "kubernetes-agent.hookAnnotationsWithSuccessDelete" . | nindent 4 }}
+rules:
+- apiGroups: ["*"]
+  resources: ["pods", "pods/log", "configmaps", "secrets", "events"]
+  verbs: ["*"]
