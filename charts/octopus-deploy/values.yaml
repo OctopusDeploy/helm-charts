@@ -155,6 +155,14 @@ octopus:
             - get
             - watch
             - list
+  # Pod security context settings
+  podSecurityContext: {}
+  # Container security context settings
+  # IMPORTANT: When enableDockerInDocker is true (default), the container must run as privileged.
+  # If setting security contexts that conflict with privileged mode, set enableDockerInDocker to false.
+  containerSecurityContext: {}
+  # Custom directory for Octopus server configuration when using non-root security contexts
+  serverConfigurationDirectory:
 
 dockerHub:
   # Set to true to create a secret containing the docker registry password

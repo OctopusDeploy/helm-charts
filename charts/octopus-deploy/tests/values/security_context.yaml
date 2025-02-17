@@ -1,0 +1,14 @@
+octopus:
+  enableDockerInDocker: false
+  podSecurityContext:
+    fsGroup: 999
+    fsGroupChangePolicy: "OnRootMismatch"
+    runAsGroup: 999
+    runAsNonRoot: true
+    runAsUser: 999
+  containerSecurityContext:
+    privileged: false
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999

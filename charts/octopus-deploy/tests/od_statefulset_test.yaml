@@ -131,3 +131,47 @@ tests:
           path: spec.template.spec.topologySpreadConstraints[0].labelSelector.matchLabels
           value:
             app.kubernetes.io/component: octopus-server
+            
+  - it: podSecurityContext is configurable
+    values:
+      - ./values/required.yaml
+      - ./values/security_context.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext
+          value:
+            fsGroup: 999
+            fsGroupChangePolicy: "OnRootMismatch"
+            runAsGroup: 999
+            runAsNonRoot: true
+            runAsUser: 999
+        documentIndex: 0
+
+  - it: containerSecurityContext is configurable
+    values:
+      - ./values/required.yaml
+      - ./values/security_context.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext
+          value:
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 999
+            runAsGroup: 999
+        documentIndex: 0
+
+  - it: serverConfigurationDirectory is configurable
+    set:
+      octopus:
+        serverConfigurationDirectory: /home/octopus/.octopus-nonroot/
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == "OCTOPUS_SERVER_CONFIGURATION_DIRECTORY")].value
+          value: /home/octopus/.octopus-nonroot/
+        documentIndex: 0
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == "USER")].value
+          value: octopus
+        documentIndex: 0
