@@ -237,5 +237,5 @@ The name of the secret to store the authentication information (bearer token/api
 Create the name of the service account to use for Tentacle Preinstallation
 */}}
 {{- define "kubernetes-agent.preinstall.serviceAccountName" -}}
-{{- .Values.agent.preinstall.serviceAccount.name | printf "%s-pre" (include "kubernetes-agent.serviceAccountName" .) }}
+{{- .Values.agent.preinstall.serviceAccount.name | default (printf "%s-pre" (include "kubernetes-agent.serviceAccountName" .)) }}
 {{- end }}
