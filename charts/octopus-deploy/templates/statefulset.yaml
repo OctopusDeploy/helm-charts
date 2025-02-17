@@ -30,6 +30,10 @@ spec:
       {{ toYaml .Values.octopus.pods.annotations | indent 2 }}
       {{- end }}
     spec:
+      {{- with .Values.octopus.podSecurityContext }}
+      securityContext:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ template "octopus.serviceAccountName" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -51,6 +55,9 @@ spec:
       - name: octopus
         image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
         securityContext:
+          {{- with .Values.octopus.containerSecurityContext }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           {{- if .Values.octopus.enableDockerInDocker }}
           privileged: true
           {{- end }}
@@ -61,6 +68,12 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          {{- if .Values.octopus.serverConfigurationDirectory }}
+          - name: OCTOPUS_SERVER_CONFIGURATION_DIRECTORY
+            value: {{ .Values.octopus.serverConfigurationDirectory }}
+          - name: USER
+            value: octopus
+          {{- end}}
           - name: DB_CONNECTION_STRING
             valueFrom:
               secretKeyRef:
