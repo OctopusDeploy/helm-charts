@@ -76,6 +76,10 @@ spec:
           value: {{ .Values.scriptPods.logging.disablePodEventsInTaskLog | quote }}
         - name: "OCTOPUS__TENTACLE__LOGLEVEL"
           value: {{ .Values.agent.logLevel }}
+        - name: "OCTOPUS__TENTACLE__TENTACLECONFIGMAPNAME"
+          value: "tentacle-config-pre"
+        - name: "OCTOPUS__TENTACLE__TENTACLEENCRYPTIONSECRETNAME"
+          value: "tentacle-secret-pre"
         - name: "TentacleHome"
           value: "/octopus"
         - name: "TentacleApplications"
