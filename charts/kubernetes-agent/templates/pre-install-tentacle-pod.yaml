@@ -22,6 +22,7 @@ spec:
   securityContext:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  restartPolicy: OnFailure
   containers:
     - name: {{printf "%s-tentacle-pre" (include "kubernetes-agent.name" .) }}
       image: {{ include "kubernetes-agent.fullImage" . | quote }}
