@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tentacle-config-pre
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    {{- include "kubernetes-agent.defaultHookAnnotations" . | nindent 4 }}
+{{- with .Values.testing.tentacle.configMap.data }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end -}}
