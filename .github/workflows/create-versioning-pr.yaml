@@ -42,7 +42,6 @@ jobs:
 
     - uses: pnpm/action-setup@v4
       with:
-        version: 8.15.2
         run_install: true
 
     - name: Install YQ
