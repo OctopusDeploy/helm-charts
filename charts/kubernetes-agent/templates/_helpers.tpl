@@ -203,3 +203,39 @@ The complete image for the agent, including any optional suffixes.
 {{ $b64AuthString := ((printf "%s:%s" .Values.agent.upgrade.dockerAuth.username .Values.agent.upgrade.dockerAuth.password) | b64enc) }}
 {{- (printf "{\"auths\":{\"%s\":{\"auth\":\"%s\"}}}" .Values.agent.upgrade.dockerAuth.registry $b64AuthString) | b64enc }} 
 {{- end }}
+
+{{/*
+Hook annotations
+*/}}
+{{- define "kubernetes-agent.defaultHookAnnotations" -}}
+"helm.sh/hook": "pre-install"
+"helm.sh/hook-weight": "-10"
+"helm.sh/hook-delete-policy": "before-hook-creation"
+{{- end }}
+
+{{- define "kubernetes-agent.hookAnnotationsWithSuccessDelete" -}}
+"helm.sh/hook": "pre-install"
+"helm.sh/hook-weight": "-10"
+"helm.sh/hook-delete-policy": "before-hook-creation,on-hook-success"
+{{- end }}
+
+{{/*
+The name of the secret to store the agent's base64 certificate for the preinstall hook
+*/}}
+{{- define "kubernetes-agent.preinstall.secrets.certificate" -}}
+{{- printf "%s-pre" ( include "kubernetes-agent.secrets.certificate" . ) }}
+{{- end }}
+
+{{/*
+The name of the secret to store the authentication information (bearer token/api key) for the preinstall hook
+*/}}
+{{- define "kubernetes-agent.preinstall.secrets.serverAuth" -}}
+{{- printf "%s-pre" ( include "kubernetes-agent.secrets.serverAuth" . ) }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use for Tentacle Preinstallation
+*/}}
+{{- define "kubernetes-agent.preinstall.serviceAccountName" -}}
+{{- .Values.agent.preinstall.serviceAccount.name | default (printf "%s-pre" (include "kubernetes-agent.serviceAccountName" .)) }}
+{{- end }}

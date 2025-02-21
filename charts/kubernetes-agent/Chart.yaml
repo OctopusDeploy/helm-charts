@@ -8,6 +8,11 @@ maintainers:
   - name: "Octopus Deploy"
     email: "support@octopus.com"
     url: "https://octopus.com"
+dependencies:
+  - name: kubernetes-monitor-chart
+    version: "0.4.0"
+    repository: "oci://docker.io/octopusdeploy"
+    condition: kubernetes-monitor-chart.enabled
 type: application
 version: "2.9.1"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
