@@ -7,5 +7,5 @@ metadata:
     {{- include "kubernetes-agent.hookAnnotationsWithSuccessDelete" . | nindent 4 }}
 rules:
 - apiGroups: ["*"]
-  resources: ["pods", "pods/log", "configmaps", "secrets", "events"]
+  resources: ["configmaps", "secrets"]
   verbs: ["*"]
