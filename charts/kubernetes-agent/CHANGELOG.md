@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.10.0
+
+### Minor Changes
+
+- c4b0588: Add kubernetes monitor as a sub-chart
+
 ## 2.9.1
 
 ### Patch Changes

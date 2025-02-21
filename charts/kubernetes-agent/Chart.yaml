@@ -14,6 +14,6 @@ dependencies:
     repository: "oci://docker.io/octopusdeploy"
     condition: kubernetes-monitor-chart.enabled
 type: application
-version: "2.9.1"
+version: "2.10.0"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
 appVersion: "8.2.2585"
