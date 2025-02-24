@@ -1,0 +1,86 @@
+suite: "persistence"
+release:
+  namespace: test-namespace
+templates:
+  - templates/custom-pv.yaml
+tests:
+  - it: "should match snapshot"
+    asserts:
+      - matchSnapshot: {}
+
+  - it: "is not created when storageClassName has a value and customPersistentVolume is not enabled"
+    set:
+      persistence:
+        storageClassName: "value"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: "has Helm Release name in name"
+    set:
+      persistence:
+        storageClassName: "value"
+        customPersistentVolume:
+          enabled: true
+    asserts:
+      - matchRegex:
+          path: metadata.name
+          pattern: "RELEASE-NAME"
+
+  - it: "set storage capacity to be persistence size"
+    set:
+      persistence:
+        size: 100Gi
+        storageClassName: "value"
+        customPersistentVolume:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.capacity.storage
+          value: 100Gi
+
+  - it: "It passes CSI configuration correctly"
+    set:
+      persistence:
+        storageClassName: "value"
+        customPersistentVolume:
+          enabled: true
+          csi:
+            driver: custom.storage.k8s.io
+            volumeHandle: foo
+
+    asserts:
+      - equal:
+          path: spec.csi.driver
+          value: custom.storage.k8s.io
+      - equal:
+          path: spec.csi.volumeHandle
+          value: foo
+
+  - it: "It passes mount optionscorrectly"
+    set:
+      persistence:
+        storageClassName: "value"
+        customPersistentVolume:
+          enabled: true
+          mountOptions:
+            - "foo"
+
+    asserts:
+      - equal:
+          path: spec.mountOptions[0]
+          value: foo
+
+  - it: "uses the correct claimRef"
+    set:
+      persistence:
+        storageClassName: "value"
+        customPersistentVolume:
+          enabled: true
+    asserts:
+      - matchRegex:
+          path: spec.claimRef.name
+          pattern: "RELEASE-NAME"
+      - equal:
+          path: spec.claimRef.namespace
+          value: test-namespace
