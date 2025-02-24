@@ -24,11 +24,38 @@ The `main` branch will reflect the current development version of the chart. Thi
 | 1         | [release/kubernetes-agent/v1](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v1/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/values.yaml) |
 
 ### Migrations
+
 Version 2 of the helm chart introduces breaking changes to `values.yaml`; some elements were renamed, while others were moved.
 
 As such, upgrading from V1 to V2 of the helm chart requires user intervention.
 
 This is documented [here](./migrations.md).
+
+## Persistence
+
+By default unless `persistence.storageClassName` has been set this chart will deploy a local NFS storage provisioner.
+If using your own Storage Class, please ensure that you are using a ReadWriteMany (RWX) access mode class.
+
+### Custom Persistent Volumes
+
+If you are using an implementation that does not use standard StorageClasses for PersistentVolumeClaim management, such as the
+Google Cloud's [Cloud Storage FUSE CSI driver](https://cloud.google.com/kubernetes-engine/docs/how-to/cloud-storage-fuse-csi-driver-setup)
+then this chart can be configured to use a custom PV.
+
+As an example, using Cloud Storage FUSE CSI on Google Kubernetes Engine:
+
+```yaml
+persistence:
+  storageClassName: "gcs-storage"
+  customPersistentVolume:
+    enabled: true
+    csi:
+      driver: gcsfuse.csi.storage.gke.io
+      volumeHandle: gcs-bucket-name
+    mountOptions:
+      - implicit-dirs
+```
+
 
 {{ template "chart.maintainersSection" . }}
 

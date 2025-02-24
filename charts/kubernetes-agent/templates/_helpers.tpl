@@ -141,6 +141,17 @@ The name of the PersistentVolumeClaim to configure
 {{- end }}
 {{- end }}
 
+{{/*
+The name of the PersistentVolume to configure
+*/}}
+{{- define "kubernetes-agent.pvName" -}}
+{{- if .Values.persistence.storageClassName }}
+{{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
+{{- else }}
+{{- include "nfs.pvName" . }}
+{{- end }}
+{{- end }}
+
 {{/* 
 Turns the imagePullSecrets map into a CSV.
 */}}
