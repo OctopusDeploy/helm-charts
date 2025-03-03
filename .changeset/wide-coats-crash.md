@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Bumped kubernetes monitor subchart
+Update Kubernetes Monitor subchart to 0.4.1
