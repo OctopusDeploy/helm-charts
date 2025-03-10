@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.21.0
+
+### Minor Changes
+
+- f183f60: Updated tentacle to fix issue with registering agent behind a proxy
+
 ## 1.20.1
 
 ### Patch Changes
