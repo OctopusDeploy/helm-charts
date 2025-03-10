@@ -5,6 +5,7 @@ on:
     branches:
     - main
     - release/kubernetes-agent/v*
+    - kevjt/update-action
     paths:
     - charts/kubernetes-agent/**
     - .github/workflows/create-versioning-pr.yaml
