@@ -106,7 +106,7 @@ spec:
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
               value: {{ .Values.agent.logLevel }}
             - name: "OCTOPUS__K8STENTACLE__KUBERNETESMONITORENABLED"
-              value: {{ .Values.kubernetes-monitor-chart.enabled | quote }}
+              value: {{ .Values.kubernetesMonitorChart.enabled | quote }}
             - name: "TentacleHome"
               value: "/octopus"
             - name: "TentacleApplications"
