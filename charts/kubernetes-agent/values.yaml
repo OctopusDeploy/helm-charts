@@ -352,7 +352,7 @@ persistence:
  # Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
 # @ignored
-kubernetesMonitorChart:
+kubernetesMonitor:
   enabled: false
 
 # Used for integration testing to avoid registering with a real Octopus Server

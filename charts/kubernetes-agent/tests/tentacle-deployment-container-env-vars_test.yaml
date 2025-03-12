@@ -502,7 +502,7 @@ tests:
   
 - it: "sets whether the kubernetes monitor chart is enabled"
   set:
-    kubernetesMonitorChart:
+    kubernetesMonitor:
       enabled: true
   asserts:
     - equal:
