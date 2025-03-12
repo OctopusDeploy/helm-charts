@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.11.1
+
+### Patch Changes
+
+- b46689d: Update Kubenetes Monitor subchart to 0.5.0
+
 ## 2.11.0
 
 ### Minor Changes
