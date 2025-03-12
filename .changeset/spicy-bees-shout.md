@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Update OKM subchart to 0.5.0
+Update Kubenetes Monitor subchart to 0.5.0
