@@ -117,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.3.2727"
+    tag: "8.3.2741"
     tagSuffix: ""
   
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. 
@@ -352,7 +352,7 @@ persistence:
  # Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
 # @ignored
-kubernetes-monitor-chart:
+kubernetesMonitor:
   enabled: false
 
 # Used for integration testing to avoid registering with a real Octopus Server
