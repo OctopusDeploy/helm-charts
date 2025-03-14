@@ -6,13 +6,13 @@ metadata:
   name: {{ $name }}
   labels:
     {{- include "labels" . | nindent 4 }}
-{{- if .Values.octopus.ingress.labels }}
-{{ toYaml .Values.octopus.ingress.labels | indent 4 }}
-{{- end }}
-{{- with .Values.octopus.ingress.annotations }}
-  annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
+    {{- if .Values.octopus.ingress.labels }}
+    {{- toYaml .Values.octopus.ingress.labels | nindent 4 }}
+    {{- end }}
+    {{- with .Values.octopus.ingress.annotations }}
+      annotations:
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
 {{- if .Values.octopus.ingress.tls }}
   tls:
@@ -54,20 +54,20 @@ metadata:
   name: octopus-deploy-polling-node{{ . }}
   labels:
     {{- include "labels" $ | nindent 4 }}
-{{- if $.Values.octopus.ingress.pollingTentacles.labels }}
-{{ toYaml $.Values.octopus.ingress.pollingTentacles.labels | indent 4 }}
-{{- end }}
+    {{- if $.Values.octopus.ingress.pollingTentacles.labels }}
+    {{- toYaml $.Values.octopus.ingress.pollingTentacles.labels | nindent 4 }}
+    {{- end }}
   annotations:
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-{{- if $.Values.octopus.ingress.pollingTentacles.annotations }}
-{{ toYaml $.Values.octopus.ingress.pollingTentacles.annotations | indent 4 }}
-{{- end }}
+    {{- if $.Values.octopus.ingress.pollingTentacles.annotations }}
+    {{- toYaml $.Values.octopus.ingress.pollingTentacles.annotations | nindent 4 }}
+    {{- end }}
 spec:
   tls:
     - hosts:
-{{- range $.Values.octopus.ingress.hosts }}
-        - {{ printf "%s%d.%s" $.Values.octopus.ingress.pollingTentacles.hostPrefix $replica . | quote }}
-{{- end }}
+      {{- range $.Values.octopus.ingress.hosts }}
+      - {{ printf "%s%d.%s" $.Values.octopus.ingress.pollingTentacles.hostPrefix $replica . | quote }}
+      {{- end }}
   {{- if $.Values.octopus.ingress.className }}
   ingressClassName: {{ $.Values.octopus.ingress.className | quote }}
   {{- end }}
