@@ -5,12 +5,12 @@ metadata:
   name: {{ template "octopus.fullname" . }}
   {{- if .Values.octopus.statefulSet.annotations }}
   annotations:
-  {{ toYaml .Values.octopus.statefulSet.annotations | indent 2 }}
+  {{- toYaml .Values.octopus.statefulSet.annotations | nindent 4 }}
   {{- end }}
   labels:
   {{- include "labels" . | nindent 4 }}
   {{- if .Values.octopus.statefulSet.labels }}
-  {{ toYaml .Values.octopus.statefulSet.labels | indent 2 }}
+  {{- toYaml .Values.octopus.statefulSet.labels | nindent 4 }}
   {{- end }}
 spec:
   selector:
@@ -23,11 +23,11 @@ spec:
       labels:
       {{- include "octopus.selectorLabels" . | nindent 8 }}
       {{- if .Values.octopus.pods.labels }}
-      {{ toYaml .Values.octopus.pods.labels | indent 2 }}
+      {{- toYaml .Values.octopus.pods.labels | nindent 8 }}
       {{- end }}
       {{- if .Values.octopus.pods.annotations }}
       annotations:
-      {{ toYaml .Values.octopus.pods.annotations | indent 2 }}
+      {{- toYaml .Values.octopus.pods.annotations | nindent 8 }}
       {{- end }}
     spec:
       {{- with .Values.octopus.podSecurityContext }}
@@ -37,7 +37,7 @@ spec:
       serviceAccountName: {{ template "octopus.serviceAccountName" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.octopus.topologySpreadConstraints }}
       topologySpreadConstraints:
@@ -47,10 +47,10 @@ spec:
       affinity:
       {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.octopus.tolerations }}
+      {{- with .Values.octopus.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: octopus
         image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
@@ -147,7 +147,7 @@ spec:
             mountPath: /eventExports
         {{- if .Values.octopus.resources }}
         resources:
-{{ toYaml .Values.octopus.resources | indent 18 }}
+        {{- toYaml .Values.octopus.resources | nindent 10 }}
         {{- end }}
         readinessProbe:
           exec:

@@ -175,3 +175,57 @@ tests:
           path: spec.template.spec.containers[0].env[?(@.name == "USER")].value
           value: octopus
         documentIndex: 0
+
+  - it: labels are configurable
+    values:
+      - ./values/required.yaml
+    set:
+        octopus:
+            pods:
+              labels:
+                  podtest: test1
+                  podtest2: test2
+            statefulSet:
+                labels:
+                    ststest: test1
+                    ststest2: test2
+    asserts:
+      - equal:
+          path: spec.template.metadata.labels.podtest
+          value: test1
+      - equal:
+          path: spec.template.metadata.labels.podtest2
+          value: test2
+      - equal:
+          path: metadata.labels.ststest
+          value: test1
+      - equal:
+          path: metadata.labels.ststest2
+          value: test2
+
+  - it: annotations are configurable
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        pods:
+          annotations:
+            example.com/podannotation1: test1
+            example.com/podannotation2: test2
+        statefulSet:
+          annotations:
+            example.com/stsannotation1: test1
+            example.com/stsannotation2: test2
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations["example.com/podannotation1"]
+          value: test1
+      - equal:
+          path: spec.template.metadata.annotations["example.com/podannotation2"]
+          value: test2
+      - equal:
+          path: metadata.annotations["example.com/stsannotation1"]
+          value: test1
+      - equal:
+          path: metadata.annotations["example.com/stsannotation2"]
+          value: test2
