@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.11.2
+
+### Patch Changes
+
+- 92dbe73: K8s Agent: Pass through Kubernetes Monitor enabled value for health checks
+
 ## 2.11.1
 
 ### Patch Changes
