@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.3.1
+
+### Patch Changes
+
+- 5a936e3: Fix indentation when using multiple annotations or labels
+
 ## 1.3.0
 
 ### Minor Changes
