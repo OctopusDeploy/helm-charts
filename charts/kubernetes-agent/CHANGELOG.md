@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.11.3
+
+### Patch Changes
+
+- 441a785: Update Kubernetes Monitor subchart to 0.7.0
+
 ## 2.11.2
 
 ### Patch Changes
