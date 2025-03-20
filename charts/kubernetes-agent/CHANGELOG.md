@@ -199,6 +199,16 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.22.0
+
+### Minor Changes
+
+- d6875bd: Update Kubernetes SDK to support Kubernetes 1.32
+
+### Patch Changes
+
+- d6875bd: Updated Tentacle to version 8.3.2757 which adds support for specifying init script pod resource limits.
+
 ## 1.21.0
 
 ### Minor Changes
