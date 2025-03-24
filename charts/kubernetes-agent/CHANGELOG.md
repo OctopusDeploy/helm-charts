@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.13.0
+
+### Minor Changes
+
+- 0aef448: Update Kubernetes Monitor subchart to 0.8.0
+
 ## 2.12.0
 
 ### Minor Changes
