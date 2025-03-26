@@ -213,6 +213,12 @@ Version 2 has breaking changes and upgrading from Version 1 requires manual migr
 
 - 05fa04c: Creating Kubernetes Agent v2 alpha prerelease
 
+## 1.23.0
+
+### Minor Changes
+
+- 9825818: Add support for setting annotations on script pods
+
 ## 1.22.0
 
 ### Minor Changes

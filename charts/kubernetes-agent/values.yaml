@@ -117,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.3.2757"
+    tag: "8.3.2786"
     tagSuffix: ""
   
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. 
@@ -195,6 +195,11 @@ scriptPods:
   # -- If true, the script pods will be created with a disruption budget to prevent them from being evicted
   # @section -- Script pod values
   disruptionBudgetEnabled: true
+
+  # -- Additional metadata to add to script pods
+  # @section -- Script pod values
+  metadata:
+    annotations: {}
 
   # -- The resource limits and requests assigned to script pod containers
   # @section -- Script pod values

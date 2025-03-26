@@ -480,6 +480,18 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODSECURITYCONTEXTJSON')].value
         value: '{"fsGroup":99,"runAsGroup":431,"runAsUser":1234}'
 
+- it: Sets pod annotations json if script pod metadata.annotations defined
+  set:
+    scriptPods:
+      metadata:
+        annotations:
+          "octopus.com/value-1": "heres-a-value"
+          "octopus.com/value-2": "do-a-thing"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODANNOTATIONSJSON')].value
+        value: '{"octopus.com/value-1":"heres-a-value","octopus.com/value-2":"do-a-thing"}'
+
 - it: "Has the script pods disablePodEventsInTaskLog env var set"
   set:
     scriptPods:
