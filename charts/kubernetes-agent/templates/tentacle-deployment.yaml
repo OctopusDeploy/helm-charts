@@ -119,6 +119,10 @@ spec:
             - name: "OCTOPUS__K8STENTACLE__PODSECURITYCONTEXTJSON"
               value: {{ . | toJson | quote }}
             {{- end }}
+            {{- with .Values.scriptPods.metadata.annotations }}
+            - name: "OCTOPUS__K8STENTACLE__PODANNOTATIONSJSON"
+              value: {{ . | toJson | quote }}
+            {{- end }}
             {{- if or .Values.agent.serverApiKey .Values.agent.serverApiKeySecretName }}
             - name: "ServerApiKey"
               valueFrom:
