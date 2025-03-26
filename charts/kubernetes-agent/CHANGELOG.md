@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.23.0
+
+### Minor Changes
+
+- 9825818: Add support for setting annotations on script pods
+
 ## 1.22.0
 
 ### Minor Changes
