@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.14.0
+
+### Minor Changes
+
+- cf05e3c: Forward merge from release/kubernetes-agent/v1 version 1.23.0. Adds support for setting annotations on script pods.
+
 ## 2.13.0
 
 ### Minor Changes
