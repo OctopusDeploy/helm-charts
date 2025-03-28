@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.14.1
+
+### Patch Changes
+
+- ff8f144: Update Kubernetes Monitor subchart to 0.9.0
+
 ## 2.14.0
 
 ### Minor Changes
