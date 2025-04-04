@@ -2,7 +2,7 @@
 
 The Kubernetes monitor is component installed alongside the Kubernetes agent that enables functionality used for [Kubernetes Live Object Status](https://octopus.com/docs/kubernetes/live-object-status).
 
-The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-monitor), where you can pull it using Helm.
+The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-monitor-chart), where you can pull it using Helm.
 
 The source for this Helm chart is not yet published openly, check back soon for updates here.
 
