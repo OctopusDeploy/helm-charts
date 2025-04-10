@@ -13,10 +13,19 @@ tests:
   - hasDocuments:
       count: 0
 
-- it: "is created when storageClassName is empty"
+- it: "is not created when volumeName has a value"
+  set:
+    persistence:
+      volumeName: "value"
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "is created when storageClassName and volumeName are empty"
   set:
     persistence:
       storageClassName: ""
+      volumeName: ""
   asserts:
   - hasDocuments:
       count: 1

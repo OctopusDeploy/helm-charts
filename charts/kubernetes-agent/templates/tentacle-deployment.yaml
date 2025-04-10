@@ -89,7 +89,7 @@ spec:
               value: {{ .Values.agent.debug.disableAutoPodCleanup | quote }}
             - name: "OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG"
               value: {{ .Values.scriptPods.logging.disablePodEventsInTaskLog | quote }}
-            {{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName) }}
+            {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
             - name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
               value: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
             {{- end }}
@@ -192,7 +192,7 @@ spec:
               subPath: octopus-server-certificate.pem
               readOnly: false
             {{- end }}
-        {{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName) }}
+        {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
         - name: nfs-watchdog
           image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
           imagePullPolicy: {{ .Values.persistence.nfs.watchdog.image.pullPolicy }}

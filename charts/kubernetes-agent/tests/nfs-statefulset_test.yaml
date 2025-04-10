@@ -10,6 +10,14 @@ tests:
   - hasDocuments:
       count: 0
 
+- it: "is not created when volumeName has a value"
+  set:
+    persistence:
+      volumeName: "value"
+  asserts:
+  - hasDocuments:
+      count: 0
+
 - it: "should match snapshot"
   asserts:
   - matchSnapshot: {}
