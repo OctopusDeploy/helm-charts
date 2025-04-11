@@ -8,6 +8,14 @@ tests:
       storageClassName: "my-storage-class"
   asserts:
     - matchSnapshot: {}
+
+- it: "should match snapshot when volumeName is set"
+  set:
+    persistence:
+      volumeName: "my-volume"
+  asserts:
+    - matchSnapshot: {}
+
 - it: "is not created when storageClassName is empty"
   set:
     persistence:
@@ -20,6 +28,14 @@ tests:
   set:
     persistence:
       storageClassName: "my-storage-class"
+  asserts:
+  - hasDocuments:
+      count: 1
+
+- it: "is created when volumeName has a value"
+  set:
+    persistence:
+      volumeName: "my-storage-class"
   asserts:
   - hasDocuments:
       count: 1
