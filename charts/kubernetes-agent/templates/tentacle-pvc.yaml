@@ -1,4 +1,4 @@
-{{- if .Values.persistence.storageClassName }}
+{{- if (include "kubernetes-agent.useCustomPvc" .) }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -8,7 +8,12 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ .Values.persistence.storageClassName | quote }}
+  {{- with .Values.persistence.storageClassName }}
+  storageClassName: {{ . | quote }}
+  {{- end }}  
+  {{- with .Values.persistence.volumeName }}
+  volumeName: {{ . | quote }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .Values.persistence.size}}
