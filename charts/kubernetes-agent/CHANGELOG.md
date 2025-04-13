@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 1.24.0
+
+### Minor Changes
+
+- 9dd2042: Add ability to bind PVC to specific PV via a volumeName
+
 ## 1.23.0
 
 ### Minor Changes
