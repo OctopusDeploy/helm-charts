@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.3.2
+
+### Patch Changes
+
+- 07c4a67: Fixed conditions logic for when createSecrets is false.
+
 ## 1.3.1
 
 ### Patch Changes
