@@ -93,7 +93,7 @@ spec:
             value: {{.Values.octopus.email}}
           - name: TASK_CAP
             value: !!str {{.Values.octopus.taskCap}}
-          {{- if .Values.octopus.licenseKeyBase64 }}
+          {{- if or .Values.octopus.licenseKeyBase64 (not .Values.octopus.createSecrets) }}
           - name: OCTOPUS_SERVER_BASE64_LICENSE
             # Your license key goes here. When using more than one node, a HA license is required.
             # Without a HA license, the stateful set can have a replica count of 1.
