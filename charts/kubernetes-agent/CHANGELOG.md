@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.15.0
+
+### Minor Changes
+
+- 2c69b27: Forward merge from release/kubernetes-agent/v1 version 1.24.0. Add ability to bind PVC to specific PV via a volumeName
+
 ## 2.14.3
 
 ### Patch Changes
