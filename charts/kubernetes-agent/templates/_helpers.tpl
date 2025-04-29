@@ -130,11 +130,23 @@ The name of the secret to store the agent's base64 certificate
 {{- printf "%s-tentacle-certificate" ( include "kubernetes-agent.name" . ) }}
 {{- end }}
 
+
+{{/*
+A value indicating if a custom PVC is being used (and thus the default storage should be disabled)
+*/}}
+{{- define "kubernetes-agent.useCustomPvc" -}}
+{{- if or .Values.persistence.storageClassName .Values.persistence.volumeName }}
+{{- "true" }}
+{{- else }}
+{{- "" }}
+{{- end }}
+{{- end }}
+
 {{/*
 The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
-{{- if .Values.persistence.storageClassName }}
+{{- if (include "kubernetes-agent.useCustomPvc" .) }}
 {{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
 {{- else }}
 {{- include "nfs.pvcName" . }}

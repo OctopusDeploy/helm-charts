@@ -292,6 +292,10 @@ persistence:
   # @section -- Persistence
   storageClassName: ""
 
+  # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
+  # @section -- Persistence
+  volumeName: ""
+
   # -- The size of the volume to create
   # @section -- Persistence
   size: 10Gi

@@ -123,6 +123,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
 | persistence.size | string | `"10Gi"` | The size of the volume to create |
 | persistence.storageClassName | string | `""` | if provided, will disable the default persistence configuration and create a PVC with the provided storage class |
+| persistence.volumeName | string | `""` | if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume |
 
 ### Script pod values
 
