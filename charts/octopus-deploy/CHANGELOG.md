@@ -1,5 +1,15 @@
 # octopus-deploy
 
+## 1.4.0
+
+### Minor Changes
+
+- 8c9085f: Update AppVersion to 2025.1
+
+### Patch Changes
+
+- f59bfbf: Fix ingress indentation
+
 ## 1.3.2
 
 ### Patch Changes
