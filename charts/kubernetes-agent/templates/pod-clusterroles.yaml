@@ -17,7 +17,7 @@ rules:
   verbs:
   - '*'
 {{- end }}
-{{- if and .Values.persistence.nfs.watchdog.enabled (not .Values.persistence.storageClassName)}}
+{{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
