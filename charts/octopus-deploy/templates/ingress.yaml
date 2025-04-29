@@ -9,10 +9,10 @@ metadata:
     {{- if .Values.octopus.ingress.labels }}
     {{- toYaml .Values.octopus.ingress.labels | nindent 4 }}
     {{- end }}
-    {{- with .Values.octopus.ingress.annotations }}
-      annotations:
+  {{- with .Values.octopus.ingress.annotations }}
+  annotations:
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- end }}
 spec:
 {{- if .Values.octopus.ingress.tls }}
   tls:
