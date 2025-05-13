@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.16.0
+
+### Minor Changes
+
+- 7458377: Upgrade kubernetes-monitor chart to v0.12.0
+
 ## 2.15.0
 
 ### Minor Changes
