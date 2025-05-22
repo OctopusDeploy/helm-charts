@@ -10,7 +10,7 @@ maintainers:
     url: "https://octopus.com"
 dependencies:
   - name: kubernetes-monitor-chart
-    version: "0.12.0"
+    version: "0.13.0"
     repository: "oci://docker.io/octopusdeploy"
     condition: kubernetesMonitor.enabled
     alias: kubernetesMonitor
