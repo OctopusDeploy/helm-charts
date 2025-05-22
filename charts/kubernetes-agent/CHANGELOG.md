@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.16.1
+
+### Patch Changes
+
+- b4718d1: Upgrade kubernetes-monitor chart to v0.13.0
+
+  Kubernetes monitor changes:
+
+  - fix: Invalidate k8s discovery cache more frequently to detect new CRDs
+
 ## 2.16.0
 
 ### Minor Changes
