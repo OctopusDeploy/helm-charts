@@ -30,3 +30,48 @@ tests:
   - equal:
       path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir.sizeLimit
       value: 100Gi
+
+- it: uses a backing volume when storageClassName is set
+  set:
+    persistence:
+        nfs:
+          backingVolume:
+            storageClassName: "my-storage-class"
+  asserts:
+    - equal:
+        path: spec.volumeClaimTemplates[0].spec.storageClassName
+        value: my-storage-class
+    - notExists:
+        path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir
+
+- it: does not use a backing volume when storageClassName is unset
+  asserts:
+    - notExists:
+        path: spec.volumeClaimTemplates
+    - exists:
+        path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir
+
+- it: uses readWriteOnce access mode for the backing volume when storageClassName is set and no accessModes are specified
+  set:
+    persistence:
+      nfs:
+        backingVolume:
+          storageClassName: "my-storage-class"
+  asserts:
+    - contains:
+        path: spec.volumeClaimTemplates[0].spec.accessModes
+        content: ReadWriteOnce
+
+- it: uses the accessModes specified in values for the backing volume when storageClassName is set
+  set:
+    persistence:
+      nfs:
+        backingVolume:
+          storageClassName: "my-storage-class"
+          accessModes: ["ReadWriteMany", "ReadWriteOnce"]
+  asserts:
+    - equal:
+        path: spec.volumeClaimTemplates[0].spec.accessModes
+        value:
+          - ReadWriteMany
+          - ReadWriteOnce

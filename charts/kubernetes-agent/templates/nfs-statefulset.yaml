@@ -47,10 +47,12 @@ spec:
           - mountPath: /octopus
             name: octopus-volume
       terminationGracePeriodSeconds: 30
+      {{- if not .Values.persistence.nfs.backingVolume.storageClassName }}
       volumes:
         - name: octopus-volume
           emptyDir:
             sizeLimit: {{ .Values.persistence.size }}
+      {{- end }}
       {{- with .Values.persistence.nfs.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
@@ -59,4 +61,15 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.persistence.nfs.backingVolume.storageClassName }}
+  volumeClaimTemplates:
+    - metadata:
+        name: octopus-volume
+      spec:
+        accessModes: {{ .Values.persistence.nfs.backingVolume.accessModes | toYaml | nindent 10 }}
+        storageClassName: {{ .Values.persistence.nfs.backingVolume.storageClassName }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+  {{- end }}
 {{- end -}}

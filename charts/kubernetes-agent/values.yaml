@@ -307,7 +307,16 @@ persistence:
       repository: octopusdeploy/nfs-server
       pullPolicy: IfNotPresent
       tag: "1.0.1"
-    
+
+    backingVolume:
+      # -- The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used
+      # @section -- Persistence
+      storageClassName: ""
+
+      # -- The access modes to use for the NFS Server's backing storage
+      # @section -- Persistence
+      accessModes: ["ReadWriteOnce"]
+
     # -- Additional metadata to add to the NFS pod & container
     # @section -- Persistence
     metadata:
