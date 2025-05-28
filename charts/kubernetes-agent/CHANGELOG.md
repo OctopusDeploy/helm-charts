@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.16.2
+
+### Patch Changes
+
+- 818d842: Fixed hook delete policy to correctly remove pre-installation resources on success
+
 ## 2.16.1
 
 ### Patch Changes
