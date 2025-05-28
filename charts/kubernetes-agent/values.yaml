@@ -309,9 +309,8 @@ persistence:
       tag: "1.0.1"
 
     backingVolume:
-      # -- The storage class name to use for the NFS Server's backing storage
+      # -- The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used
       # @section -- Persistence
-      # @default -- Uses an empty dir to store the NFS data
       storageClassName: ""
 
       # -- The access modes to use for the NFS Server's backing storage
