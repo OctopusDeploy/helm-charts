@@ -228,7 +228,7 @@ Hook annotations
 {{- define "kubernetes-agent.hookAnnotationsWithSuccessDelete" -}}
 "helm.sh/hook": "pre-install"
 "helm.sh/hook-weight": "-10"
-"helm.sh/hook-delete-policy": "before-hook-creation,on-hook-success"
+"helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 {{- end }}
 
 {{/*
