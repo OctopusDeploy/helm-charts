@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.17.0
+
+### Minor Changes
+
+- ea7d885: Added backing volume support for the NFS server
+
 ## 2.16.2
 
 ### Patch Changes
