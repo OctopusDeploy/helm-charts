@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.5.0
+
+### Minor Changes
+
+- b7b8475: Update AppVersion to 2025.2
+
 ## 1.4.0
 
 ### Minor Changes
