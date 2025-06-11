@@ -10,7 +10,7 @@ version: 1.4.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2025.1"
+appVersion: "2025.2"
 dependencies:
   - name: mssql
     condition: mssql.enabled
