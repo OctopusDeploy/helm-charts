@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.17.1
+
+### Patch Changes
+
+- 92df954: Update Tentacle to 8.3.3034 to fix an issue with fallback container tags and newer versions of Kubernetes.
+
 ## 2.17.0
 
 ### Minor Changes
