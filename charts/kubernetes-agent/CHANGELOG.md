@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.17.2
+
+### Patch Changes
+
+- b2de557: Updated the Kubernetes Monitor chart to 0.14.0
+
 ## 2.17.1
 
 ### Patch Changes
