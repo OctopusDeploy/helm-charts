@@ -129,11 +129,17 @@ spec:
           - name: NO_PROXY
             value: {{ join "," .Values.octopus.proxy.excludedHostnames | quote }}
         {{- end }}
+        {{- if .Values.octopus.grpcPort }}
+          - name: OCTOPUS_GRPC_SERVICES_PORT
+            value: {{.Values.octopus.grpcPort}}
+        {{- end }}
         ports:
           - containerPort: 8080
             name: web
           - containerPort: 10943
             name: tentacle
+          - containerPort: {{.Values.octopus.grpcPort}}
+            name: grpc
         volumeMounts:
           - name: package-repository-volume
             mountPath: /repository

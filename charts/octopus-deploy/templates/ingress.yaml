@@ -44,6 +44,7 @@ spec:
                   number: {{ $port }}
 {{- end }}
 {{- end }}
+{{- end }}
 {{- if .Values.octopus.ingress.pollingTentacles.enabled }}
 {{- range untilStep 0 (.Values.octopus.replicaCount | int) 1 }}
 {{ $replica := . -}}
@@ -89,6 +90,48 @@ spec:
                 port:
                   number: {{ $port }}
 {{- end }}
-{{- end }}  
+{{- end }}
+{{- end }}
+
+{{- if .Values.octopus.ingress.grpc.enabled }}
+{{ $name := include "octopus.fullname" . -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}-grpc
+  labels:
+    {{- include "labels" . | nindent 4 }}
+    {{- if .Values.octopus.ingress.grpc.labels }}
+    {{- toYaml .Values.octopus.ingress.grpc.labels | nindent 4 }}
+    {{- end }}
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+    {{- if .Values.octopus.ingress.grpc.annotations }}
+    {{- toYaml .Values.octopus.ingress.grpc.annotations | nindent 4 }}
+    {{- end }}
+spec:
+{{- if .Values.octopus.ingress.grpc.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ printf "%s.%s" $.Values.octopus.ingress.grpc.hostPrefix (index $.Values.octopus.ingress.hosts 0) | quote }}
+      secretName: {{ required "When configuring gRPC with TLS, a secret is required for the TLS" .secretName }}
+{{- end }}
+  {{- if .Values.octopus.ingress.className }}
+  ingressClassName: {{ .Values.octopus.ingress.className | quote }}
+  {{- end }}
+  rules:
+{{- $port := .Values.octopus.grpcPort -}}
+{{- range .Values.octopus.ingress.hosts }}
+    - host: {{ printf "%s.%s" $.Values.octopus.ingress.grpc.hostPrefix . | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $name }}
+                port:
+                  number: {{ $port }}
 {{- end }}
 {{- end }}
