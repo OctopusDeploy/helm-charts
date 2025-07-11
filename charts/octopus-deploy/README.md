@@ -129,11 +129,42 @@ An example of a values file which configures ingress for HTTP traffic to the web
 octopus:
   ingress:
     enabled: true
-    annotations: 
-      kubernetes.io/ingress.class: nginx
+    className: nginx
     path: /
     hosts:
       - octopus.example.com 
+```
+
+To enable TLS in the ingress, you can create a certificate using cert-manager, and then reference it in the ingress configuration. An example is shown below:
+
+Certificate:
+```
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: octopus-server-tls
+  namespace: octopus-server-namespace
+spec:
+  secretName: octopus-tls-secret
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - octopus.example.com
+```
+
+Values file:
+```
+octopus:
+  ingress:
+    enabled: true
+    className: "nginx"
+    hosts:
+      - octopus.example.com
+    tls:
+      - hosts:
+        - "octopus.example.com"
+        secretName: octopus-tls-secret
 ```
 
 #### <a name="polling-tentacles"></a>Polling Tentacles (including the Octopus Kubernetes Agent)
@@ -182,13 +213,20 @@ octopus:
 
 This will assign a public IP address to the service, and will allow you to connect over HTTP and GRPC. This is usually undesirable due to the insecure HTTP port being available, as well as the service taking up an IP address all by itself. As such, we generally recommended to use an ingress resource to configure external access to your server.
 
-To pass through the default SSL certificate, you can use the `nginx.ingress.kubernetes.io/ssl-passthrough: "true"` which will simply pass through the automatically generated, self-signed certificate that Octopus exposes to clients, which will work by default. You can do this by setting your helm values as follows:
+To pass through the default SSL certificate, you can use the `nginx.ingress.kubernetes.io/ssl-passthrough: "true"` which will simply pass through the automatically generated, self-signed certificate that Octopus exposes to clients, which will work by default. 
+Note that to do this, you must [enable SSL passthrough in your nginx ingress controller](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#ssl-passthrough).  
+
+To enable passthrough, you can set the following in your values file:
 ```
 octopus:
   ingress:
     enabled: true
-    hosts: 
+    hosts:
       - octopus.example.com
+    tls:
+      - hosts:
+        - "octopus.example.com"
+        secretName: octopus-tls-secret
     grpc:
       enabled: true
       annotations:
@@ -218,8 +256,12 @@ You can then set your ingress up as follows to enable the ingress:
 octopus:
   ingress:
     enabled: true
-    hosts: 
+    hosts:
       - octopus.example.com
+    tls:
+      - hosts:
+        - "octopus.example.com"
+        secretName: octopus-tls-secret
     grpc:
       enabled: true
       annotations: {}
@@ -242,7 +284,6 @@ metadata:
     app.kubernetes.io/instance: contoso-release
     app.kubernetes.io/managed-by: Helm
   annotations:
-    nginx.ingress.kubernetes.io/grpc-backend: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
 spec:
   tls:
