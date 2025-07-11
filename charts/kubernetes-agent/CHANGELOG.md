@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.18.0
+
+### Minor Changes
+
+- eb17bd6: Updated kubernetes monitor chart to v0.17.0
+
 ## 2.17.2
 
 ### Patch Changes
