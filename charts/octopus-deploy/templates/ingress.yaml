@@ -115,7 +115,7 @@ spec:
   tls:
     - hosts:
         - {{ printf "%s.%s" $.Values.octopus.ingress.grpc.hostPrefix (index $.Values.octopus.ingress.hosts 0) | quote }}
-      secretName: {{ required "When configuring gRPC with TLS, a secret is required for the TLS" .secretName }}
+      secretName: {{ required "When configuring gRPC with TLS, a secret is required for the TLS" $.Values.octopus.ingress.grpc.tls.secretName }}
 {{- end }}
   {{- if .Values.octopus.ingress.className }}
   ingressClassName: {{ .Values.octopus.ingress.className | quote }}

@@ -131,7 +131,7 @@ spec:
         {{- end }}
         {{- if .Values.octopus.grpcPort }}
           - name: OCTOPUS_GRPC_SERVICES_PORT
-            value: {{.Values.octopus.grpcPort}}
+            value: {{.Values.octopus.grpcPort | quote }}
         {{- end }}
         ports:
           - containerPort: 8080
