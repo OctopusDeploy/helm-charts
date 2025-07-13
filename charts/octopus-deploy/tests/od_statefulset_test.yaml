@@ -229,3 +229,26 @@ tests:
       - equal:
           path: metadata.annotations["example.com/stsannotation2"]
           value: test2
+  - it: extraEnv is configurable
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        extraEnv:
+          - name: EXAMPLE_ENV_VAR
+            value: example_value
+          - name: ANOTHER_ENV_VAR
+            valueFrom:
+              secretKeyRef:
+                name: example-secret
+                key: example-key
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'EXAMPLE_ENV_VAR')].value
+          value: example_value
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'ANOTHER_ENV_VAR')].valueFrom.secretKeyRef.name
+          value: example-secret
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'ANOTHER_ENV_VAR')].valueFrom.secretKeyRef.key
+          value: example-key
