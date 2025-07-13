@@ -1,0 +1,2 @@
+# Ignore the helm unittest debug output
+.debug

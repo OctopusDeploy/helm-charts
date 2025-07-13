@@ -164,6 +164,17 @@ octopus:
   # Custom directory for Octopus server configuration when using non-root security contexts
   serverConfigurationDirectory:
 
+  # Extra environment variables to set in the Octopus server container
+  # Example:
+  # extraEnv:
+  # - name: HTTPS_PROXY
+  #   value: http://example.com:3128
+  # - name: POD_NAME
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: metadata.name
+  extraEnv: []
+
 dockerHub:
   # Set to true to create a secret containing the docker registry password
   login: false

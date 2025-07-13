@@ -143,3 +143,13 @@ Templates out the database connection string to be used if the mssql subchart is
 {{- required "When not using the default in-cluster db (mssql.enabled=true), database connection string must be provided" .Values.octopus.databaseConnectionString -}}
 {{- end -}}
 {{- end -}}
+
+
+{{/*
+Templates out extra environment variables to be used
+*/}}
+{{- define "octopus.extraEnv" -}}
+{{- if .Values.octopus.extraEnv -}}
+{{- toYaml .Values.octopus.extraEnv -}}
+{{- end -}}
+{{- end -}}

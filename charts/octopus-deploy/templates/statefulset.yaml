@@ -62,6 +62,7 @@ spec:
           privileged: true
           {{- end }}
         env:
+          {{- include "octopus.extraEnv" . | nindent 10 }}
           - name: ACCEPT_EULA
             value: {{ template "octopus.acceptEulaStr" . }} 
           - name: OCTOPUS_SERVER_NODE_NAME
