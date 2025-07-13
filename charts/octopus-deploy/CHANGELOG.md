@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.6.0
+
+### Minor Changes
+
+- 497e288: Add extraEnv to add environment variables to the container
+
 ## 1.5.0
 
 ### Minor Changes
