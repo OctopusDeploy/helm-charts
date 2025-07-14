@@ -292,10 +292,6 @@ persistence:
   # @section -- Persistence
   storageClassName: ""
 
-  # -- if provided, will set the access modes for the persistent volume claim
-  # Should not be used under normal circumstances, and cannot be changed once set
-  # @ignored
-  accessModes: ["ReadWriteMany"]
 
   # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
   # @section -- Persistence
@@ -371,6 +367,10 @@ persistence:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.2.0"
+
+  # DO NOT USE THIS, it is not a supported configuration for customers and is only to be used by Octopus Developers
+  # @ignored
+  accessModes: ["ReadWriteMany"]
 
  # Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
