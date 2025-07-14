@@ -7,7 +7,7 @@ metadata:
     {{- include "kubernetes-agent.labels" . | nindent 4 }}
 spec:
   accessModes:
-    - ReadWriteMany
+    {{- .Values.persistence.accessModes | toYaml | nindent 4 }}
   {{- with .Values.persistence.storageClassName }}
   storageClassName: {{ . | quote }}
   {{- end }}  
