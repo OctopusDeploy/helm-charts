@@ -292,6 +292,7 @@ persistence:
   # @section -- Persistence
   storageClassName: ""
 
+
   # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
   # @section -- Persistence
   volumeName: ""
@@ -366,6 +367,10 @@ persistence:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.2.0"
+
+  # DO NOT USE THIS, it is not a supported configuration for customers and is only to be used by Octopus Developers
+  # @ignored
+  accessModes: ["ReadWriteMany"]
 
  # Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
