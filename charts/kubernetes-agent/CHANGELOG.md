@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.19.1
+
+### Patch Changes
+
+- f963fe5: Added custom access modes (for testing and dev purposes only)
+
 ## 2.19.0
 
 ### Minor Changes
