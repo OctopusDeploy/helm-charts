@@ -135,7 +135,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |
-| scriptPods.metadata | object | `{"annotations":{}}` | Additional metadata to add to script pods |
+| scriptPods.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to script pods |
 | scriptPods.proxies.http_proxy | string | `""` | The URI of the HTTP proxy server to be used during script operations |
 | scriptPods.proxies.https_proxy | string | `""` | The URI of the HTTPS proxy server to be used during script operations |
 | scriptPods.proxies.no_proxy | string | `""` | A comma-separated list of host names or IP addresses that should not go through any proxy |
