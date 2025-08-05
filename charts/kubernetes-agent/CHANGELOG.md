@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.20.0
+
+### Minor Changes
+
+- facc9b6: Add ability to define additional labels to the script pods
+
 ## 2.19.1
 
 ### Patch Changes
