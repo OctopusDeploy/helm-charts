@@ -520,3 +520,15 @@ tests:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__KUBERNETESMONITORENABLED')].value
         value: "true"
+
+- it: Sets pod labels json if script pod metadata.labels defined
+  set:
+    scriptPods:
+      metadata:
+        labels:
+          "azure.workload.identity/use": "true"
+          "octopus.com/value-2": "also-true"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODLABELSJSON')].value
+        value: '{"azure.workload.identity/use":"true","octopus.com/value-2":"also-true"}'

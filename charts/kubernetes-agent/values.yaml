@@ -200,6 +200,7 @@ scriptPods:
   # @section -- Script pod values
   metadata:
     annotations: {}
+    labels: {}
 
   # -- The resource limits and requests assigned to script pod containers
   # @section -- Script pod values
