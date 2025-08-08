@@ -1,0 +1,94 @@
+suite: test gRPC configuration
+tests:
+  - it: should expose gRPC port in service
+    template: service.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        grpcPort: 8443
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Service
+      - contains:
+          path: spec.ports
+          content:
+            name: grpc
+            port: 8443
+            targetPort: 8443
+            protocol: TCP
+
+  - it: should expose gRPC port in statefulset container
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        grpcPort: 8443
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            containerPort: 8443
+            name: grpc
+
+  - it: should create gRPC ingress when enabled
+    template: ingress.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        grpcPort: 8443
+        ingress:
+          enabled: true
+          hosts:
+            - octopus.example.com
+          grpc:
+            enabled: true
+            hostPrefix: "grpc"
+    asserts:
+      - hasDocuments:
+          count: 2  # Main ingress + gRPC ingress
+      - isKind:
+          of: Ingress
+        documentIndex: 1
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-octopus-deploy-grpc
+        documentIndex: 1
+      - equal:
+          path: metadata.annotations["nginx.ingress.kubernetes.io/backend-protocol"]
+          value: "GRPCS"
+        documentIndex: 1
+      - equal:
+          path: spec.rules[0].host
+          value: grpc.octopus.example.com
+        documentIndex: 1
+
+  - it: should create single gRPC ingress for HA setup
+    template: ingress.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        replicaCount: 3
+        grpcPort: 8443
+        ingress:
+          enabled: true
+          hosts:
+            - octopus.example.com
+          grpc:
+            enabled: true
+            hostPrefix: "grpc"
+    asserts:
+      - hasDocuments:
+          count: 2  # Main ingress + single gRPC ingress (load balances across all replicas)
+      - isKind:
+          of: Ingress
+        documentIndex: 1
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-octopus-deploy-grpc
+        documentIndex: 1
