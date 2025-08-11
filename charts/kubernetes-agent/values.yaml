@@ -398,6 +398,7 @@ autoUpgrader:
       verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
     - apiGroups: ["rbac.authorization.k8s.io"]
       resources: ["roles"]
+      verbs: ["escalate"]
 
  # Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
