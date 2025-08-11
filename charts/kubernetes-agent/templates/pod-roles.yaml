@@ -1,3 +1,18 @@
+{{- if .Values.agent.worker.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "kubernetes-agent.scriptPodWorkerRoleName" . }}
+  namespace: {{ $.Release.Namespace | quote }}
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+{{- end -}}
+
 {{- $podServiceAccountName := include "kubernetes-agent.scriptPodServiceAccountName" . -}}
 {{- $podServiceAccountFullName := include "kubernetes-agent.scriptPodServiceAccountFullName" . -}}
 {{- $podRoleName := include "kubernetes-agent.scriptPodRoleName" . -}}
