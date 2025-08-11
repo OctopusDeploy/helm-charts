@@ -108,6 +108,13 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 |-----|------|---------|-------------|
 | agent.worker.initial.workerPools | list | `[]` | The worker pools to associate with the worker |
 
+### Auto-upgrader configuration
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| autoUpgrader.selfNamespaceRoleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | Rules for managing the agent in its own namespace when using namespace-scoped roles |
+| autoUpgrader.targetNamespaceRoleRules | list | `[{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles","rolebindings"],"verbs":["create","update","patch","get","list","watch","delete"]},{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles"],"verbs":["escalate"]}]` | Rules for managing script pod roles in target namespaces when using namespace-scoped roles |
+
 ### Persistence
 
 | Key | Type | Default | Description |
@@ -144,7 +151,9 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |
+| scriptPods.serviceAccount.roleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | if defined, overrides the default Role rules when using namespace-scoped roles |
 | scriptPods.serviceAccount.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
+| scriptPods.serviceAccount.useNamespacedRoles | bool | `false` | Use namespace-scoped Roles instead of ClusterRoles |
 | scriptPods.tolerations | list | `[]` | The tolerations to apply to script pods |
 | scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a worker |
 
