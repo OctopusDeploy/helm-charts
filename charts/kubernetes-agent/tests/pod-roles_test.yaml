@@ -1,23 +1,62 @@
-suite: "pod permissions"
+suite: "pod namespace-scoped roles"
 templates:
-  - templates/pod-roles.yaml
+- templates/pod-roles.yaml
 tests:
-  - it: "worker role is created if worker is enabled"
-    set:
-      agent.worker.enabled: true
-    asserts:
-      - contains:
-          path: rules
-          content:
-            apiGroups:
-              - '*'
-            resources: ["*"]
-            verbs: ["*"]
-          documentIndex: 1
+- it: "is not created when useNamespacedRoles is false"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: false
+        targetNamespaces: ["ns-1", "ns-2"]
+  asserts:
+  - hasDocuments:
+      count: 0
 
-  - it: "worker role is not created if worker is disabled"
-    set:
-      agent.worker.enabled: false
-    asserts:
-      - hasDocuments:
-          count: 0
+- it: "is not created when targetNamespaces is empty"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: []
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "creates roles in each target namespace"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+  asserts:
+  - hasDocuments:
+      count: 3
+  - equal:
+      path: kind
+      value: Role
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["*"]
+        resources: ["*"]
+        verbs: ["*"]
+
+- it: "uses custom roleRules when provided"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+        roleRules:
+        - apiGroups: [""]
+          resources: ["pods"]
+          verbs: ["get", "list"]
+  asserts:
+  - hasDocuments:
+      count: 1
+  - equal:
+      path: rules[0].resources[0]
+      value: pods
+  - equal:
+      path: rules[0].verbs[0]
+      value: get

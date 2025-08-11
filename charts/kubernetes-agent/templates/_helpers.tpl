@@ -117,6 +117,27 @@ Create the name of the pod cluster role binding to use
 {{- end }}
 
 {{/*
+Create the name of the pod role (namespace-scoped) to use
+*/}}
+{{- define "kubernetes-agent.scriptPodRoleName" -}}
+{{- printf "%s-role" (include "kubernetes-agent.scriptPodServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
+Create the name of the auto upgrader self-namespace role
+*/}}
+{{- define "kubernetes-agent.autoUpgraderSelfRoleName" -}}
+{{- printf "%s-self-role" (include "kubernetes-agent.autoUpgraderServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
+Create the name of the auto upgrader target-namespace role
+*/}}
+{{- define "kubernetes-agent.autoUpgraderTargetRoleName" -}}
+{{- printf "%s-target-role" (include "kubernetes-agent.autoUpgraderServiceAccountFullName" .) }}
+{{- end }}
+
+{{/*
 The name of the secret to store the authentication information (bearer token/api key)
 */}}
 {{- define "kubernetes-agent.secrets.serverAuth" -}}
