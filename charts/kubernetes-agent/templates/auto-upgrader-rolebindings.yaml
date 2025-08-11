@@ -1,0 +1,41 @@
+{{- if .Values.scriptPods.serviceAccount.useNamespacedRoles }}
+{{- $autoUpgraderServiceAccountName := include "kubernetes-agent.autoUpgraderServiceAccountName" . -}}
+{{- $autoUpgraderSelfRoleName := include "kubernetes-agent.autoUpgraderSelfRoleName" . -}}
+{{- $autoUpgraderTargetRoleName := include "kubernetes-agent.autoUpgraderTargetRoleName" . -}}
+
+# RoleBinding for managing the agent in its own namespace
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-self-binding" $autoUpgraderServiceAccountName }}
+  namespace: {{ .Release.Namespace | quote }}
+subjects:
+- kind: ServiceAccount
+  name: {{ $autoUpgraderServiceAccountName }}
+  namespace: {{ .Release.Namespace | quote }}
+roleRef:
+  kind: Role
+  name: {{ $autoUpgraderSelfRoleName }}
+  apiGroup: rbac.authorization.k8s.io
+
+{{- if .Values.scriptPods.serviceAccount.targetNamespaces }}
+# RoleBindings for managing script pod roles/rolebindings in target namespaces
+{{- range $targetNamespace := $.Values.scriptPods.serviceAccount.targetNamespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-target-binding" $autoUpgraderServiceAccountName }}
+  namespace: {{ $targetNamespace | quote }}
+subjects:
+- kind: ServiceAccount
+  name: {{ $autoUpgraderServiceAccountName }}
+  namespace: {{ $.Release.Namespace | quote }}
+roleRef:
+  kind: Role
+  name: {{ $autoUpgraderTargetRoleName }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
+{{- end }}

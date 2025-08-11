@@ -5,3 +5,12 @@ tests:
 - it: "should match snapshot"
   asserts:
   - matchSnapshot: {}
+
+- it: "is not created when useNamespacedRoles is true"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+  asserts:
+  - hasDocuments:
+      count: 0

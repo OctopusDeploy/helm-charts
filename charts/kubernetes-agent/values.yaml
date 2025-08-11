@@ -217,6 +217,10 @@ scriptPods:
     # @section -- Script pod values
     annotations: {}
 
+    # -- Use namespace-scoped Roles instead of ClusterRoles
+    # @section -- Script pod values
+    useNamespacedRoles: false
+
     # -- Specifies that the pod service account should be constrained to target namespaces
     # @section -- Script pod values
     # @default -- Uses a ClusterRoleBinding to allow the service account to run in any namespace
@@ -227,6 +231,11 @@ scriptPods:
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
     clusterRole:
       rules: []
+    
+    # -- if defined, overrides the default Role rules when using namespace-scoped roles
+    # @section -- Script pod values
+    # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+    roleRules: []
   
   # -- The tolerations to apply to script pods
   # @section -- Script pod values
@@ -372,6 +381,24 @@ persistence:
   # DO NOT USE THIS, it is not a supported configuration for customers and is only to be used by Octopus Developers
   # @ignored
   accessModes: ["ReadWriteMany"]
+
+# @section -- Auto-upgrader configuration
+autoUpgrader:
+  # -- Rules for managing the agent in its own namespace when using namespace-scoped roles
+  # @section -- Auto-upgrader configuration
+  selfNamespaceRoleRules:
+    - apiGroups: [ "*" ]
+      resources: [ "*" ]
+      verbs: [ "*" ]
+  # -- Rules for managing script pod roles in target namespaces when using namespace-scoped roles
+  # @section -- Auto-upgrader configuration
+  targetNamespaceRoleRules:
+    - apiGroups: ["rbac.authorization.k8s.io"]
+      resources: ["roles", "rolebindings"]
+      verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
+    - apiGroups: ["rbac.authorization.k8s.io"]
+      resources: ["roles"]
+      verbs: ["escalate"]
 
  # Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
