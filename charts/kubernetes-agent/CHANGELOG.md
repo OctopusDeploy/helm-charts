@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.21.0
+
+### Minor Changes
+
+- 2bf9d52: Add ability to install without any clusterroles or clusterrolebindings
+
 ## 2.20.0
 
 ### Minor Changes
