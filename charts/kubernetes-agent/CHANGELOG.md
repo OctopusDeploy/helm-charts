@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.22.0
+
+### Minor Changes
+
+- 0bd6125: Update nfs-server image to 1.10 to address vulnerabilities
+
+### Patch Changes
+
+- ac10673: Fix tentacle version mismatch
+
 ## 2.21.0
 
 ### Minor Changes
