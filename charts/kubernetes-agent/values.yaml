@@ -317,7 +317,7 @@ persistence:
     image:
       repository: octopusdeploy/nfs-server
       pullPolicy: IfNotPresent
-      tag: "1.0.1"
+      tag: "1.1.0"
 
     backingVolume:
       # -- The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used
