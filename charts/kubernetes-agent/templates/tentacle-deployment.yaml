@@ -212,6 +212,18 @@ spec:
               subPath: octopus-server-certificate.pem
               readOnly: false
             {{- end }}
+            {{- if .Values.agent.securityContext.readOnlyRootFilesystem  }}
+            - mountPath: /Octopus
+              name: temp-dir
+            - mountPath: /tmp
+              name: temp-dir
+            - mountPath: /etc/octopus
+              name: temp-dir
+            - mountPath: /.dotnet
+              name: temp-dir
+            - mountPath: /root
+              name: temp-dir
+            {{- end }}
         {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
         - name: nfs-watchdog
           image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
@@ -243,6 +255,10 @@ spec:
         - name: octopus-server-certificate-configmap
           configMap:
             name: "octopus-server-certificate"
+        {{- end }}
+        {{- if .Values.agent.securityContext.readOnlyRootFilesystem  }}
+        - name: temp-dir
+          emptyDir: {}
         {{- end }}
       {{- with .Values.agent.affinity }}
       affinity:
