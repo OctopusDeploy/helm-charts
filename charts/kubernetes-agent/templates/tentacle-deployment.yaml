@@ -212,7 +212,7 @@ spec:
               subPath: octopus-server-certificate.pem
               readOnly: false
             {{- end }}
-            {{- if .Values.agent.securityContext.readOnlyRootFilesystem  }}
+            {{- if .Values.agent.securityContext.readOnlyRootFilesystem }}
             - mountPath: /Octopus
               name: temp-dir
             - mountPath: /tmp
