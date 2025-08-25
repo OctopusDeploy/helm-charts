@@ -117,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.3.3103"
+    tag: "8.3.3155"
     tagSuffix: ""
   
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. 
