@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.23.0
+
+### Minor Changes
+
+- 443d7bc: Adds EmptyDir mounts to the tentacle deployment when running with a read-only root filesystem
+
 ## 2.22.0
 
 ### Minor Changes
