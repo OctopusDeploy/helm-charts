@@ -311,6 +311,10 @@ persistence:
   # @section -- Persistence
   size: 10Gi
 
+  # -- The NFS server PV reclaim policy
+  # @section -- Persistence
+  persistentVolumeReclaimPolicy: Retain
+
   nfs:
     # -- The repository, pullPolicy & tag to use for the NFS server
     # @section -- Persistence
