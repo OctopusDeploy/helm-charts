@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.24.0
+
+### Minor Changes
+
+- e1d744f: Add ability to override PV retain policy
+
+### Patch Changes
+
+- e1d744f: Bump Tentacle to 8.3.3164
+
 ## 2.23.0
 
 ### Minor Changes
