@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{printf "%s-script-pod-template" (include "kubernetes-agent.name" .) }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  replicas: 0 # This should never be changed. This deployment is purely a template for script pods and will be ingested by Tentacle
+  template:
+    metadata:
+      {{- with .Values.scriptPods.metadata.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+	    {{- with .Values.scriptPods.metadata.labels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kubernetes-agent.scriptPodServiceAccountName" . }}
+      {{- with .Values.scriptPods.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{printf "%s-script-template" (include "kubernetes-agent.name" .) }}
+          #This will be replaced, we just put _some_ value here
+          image: docker.io/octopusdeploy/kubernetes-agent-tools-base:latest
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
+          env:
+            - name: "OCTOPUS__K8STENTACLE__NAMESPACE"
+              value: {{ .Release.Namespace | quote }}
+            - name: "OCTOPUS__K8STENTACLE__HELMRELEASENAME"
+              value: {{ .Release.Name | quote}}
+            - name: "OCTOPUS__K8STENTACLE__HELMCHARTVERSION"
+              value: {{ .Chart.Version | quote}}
+            - name: "OCTOPUS__K8STENTACLE__KUBERNETESMONITORENABLED"
+              value: {{ .Values.kubernetesMonitor.enabled | quote }}
+            - name: "OCTOPUS_RUNNING_IN_CONTAINER"
+              value: "Y"
+            - name: "TentacleHome"
+              value: "/octopus"
+            - name: "TentacleApplications"
+              value: "/octopus/Applications"
+            {{ if (include "kubernetes-agent.scriptPodProxies" .) }}
+            - name: "OCTOPUS__K8STENTACLE__PODPROXIESSECRETNAME"
+              value: "scripts-proxies"
+            {{- end }}
+          {{- with .Values.scriptPods.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
+        {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
+        - name: nfs-watchdog
+          image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
+          imagePullPolicy: {{ .Values.persistence.nfs.watchdog.image.pullPolicy }}
+          env:
+            - name: "watchdog_directory"
+              value: "/octopus"
+            {{ if .Values.persistence.nfs.watchdog.loop_seconds }}
+            - name: "watchdog_loop_seconds"
+              value: "{{ .Values.persistence.nfs.watchdog.loop_seconds }}"
+            {{ end }}
+            {{ if .Values.persistence.nfs.watchdog.initial_backoff_seconds }}
+            - name: "watchdog_initial_backoff_seconds"
+              value: "{{ .Values.persistence.nfs.watchdog.initial_backoff_seconds }}"
+            {{ end }}
+            {{ if .Values.persistence.nfs.watchdog.timeout_seconds }}
+            - name: "watchdog_timeout_seconds"
+              value: "{{ .Values.persistence.nfs.watchdog.timeout_seconds }}"
+            {{ end }}
+          volumeMounts:
+            - mountPath: /octopus
+              name: tentacle-home
+        {{- end}}
+      volumes:
+        - name: tentacle-home
+          persistentVolumeClaim:
+            claimName: {{ include "kubernetes-agent.pvcName" .}}
+      {{- with .Values.scriptPods.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
+      {{- with .Values.scriptPods.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
