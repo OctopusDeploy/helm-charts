@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.24.1
+
+### Patch Changes
+
+- 34d0ea8: Fix missing mounts in registration pod if running under a ReadOnly root filesystem
+
 ## 2.24.0
 
 ### Minor Changes
