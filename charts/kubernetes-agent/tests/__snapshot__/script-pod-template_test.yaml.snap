@@ -1,0 +1,48 @@
+should match snapshot:
+  1: |
+    apiVersion: agent.octopus.com/v1beta1
+    kind: ScriptPodTemplate
+    metadata:
+      labels:
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 8.3.3164
+        helm.sh/chart: kubernetes-agent-2.24.1
+      name: octopus-agent-RELEASE-NAME-test-script-pod-template
+      namespace: NAMESPACE
+    spec:
+      podSpec:
+        nodeSelector:
+          disktype: ssd
+      scriptContainerSpec:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      watchdogContainerSpec:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+should partially render successfully:
+  1: |
+    apiVersion: agent.octopus.com/v1beta1
+    kind: ScriptPodTemplate
+    metadata:
+      labels:
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 8.3.3164
+        helm.sh/chart: kubernetes-agent-2.24.1
+      name: octopus-agent-RELEASE-NAME-default
+      namespace: NAMESPACE
+    spec:
+      podSpec: {}
+      scriptContainerSpec:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      watchdogContainerSpec: {}

@@ -1,0 +1,47 @@
+suite: "Script Pod Template"
+templates:
+  - templates/script-pod-template.yaml
+tests:
+  - it: should not render when disabled
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should partially render successfully
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          scriptContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+    asserts:
+      - matchSnapshot: {}
+
+  - it: "should match snapshot"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          name: test-script-pod-template
+          podSpec:
+            nodeSelector:
+              disktype: ssd
+          scriptContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+          watchdogContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+    asserts:
+      - matchSnapshot: {}

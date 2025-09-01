@@ -294,6 +294,23 @@ scriptPods:
     # @section -- Script pod values
     no_proxy: ""
 
+  podTemplate:
+    # -- If enabled, creates a `ScriptPodTemplate` custom resource to define the template used for script pods
+    # -- overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster
+    # @section -- Script pod values
+    enabled: false
+    name: "default"
+    # -- Pod spec for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    podSpec: {}
+    # -- Watchdog container spec for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    scriptContainerSpec: {}
+    # -- Watchdog container spec for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    watchdogContainerSpec: {}
+
+
 
 # @section -- Persistence
 persistence:
@@ -404,7 +421,7 @@ autoUpgrader:
       resources: ["roles"]
       verbs: ["escalate"]
 
- # Used to enable the Kubernetes Monitor
+# Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
 # @ignored
 kubernetesMonitor:
