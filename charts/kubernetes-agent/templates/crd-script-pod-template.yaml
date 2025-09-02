@@ -4915,8 +4915,6 @@ spec:
                         might be configured in the container image.
                         Cannot be updated.
                       type: string
-                  required:
-                    - name
                   type: object
                 watchdogContainerSpec:
                   description: A single application container that you want to run within a pod.
@@ -6283,8 +6281,6 @@ spec:
                         might be configured in the container image.
                         Cannot be updated.
                       type: string
-                  required:
-                    - name
                   type: object
               type: object
             status:

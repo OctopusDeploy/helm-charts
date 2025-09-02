@@ -22,4 +22,8 @@ yq eval 'del(.spec.versions[].schema.openAPIV3Schema.properties.spec.properties.
 yq eval 'del(.spec.versions[].schema.openAPIV3Schema.properties.spec.properties.podSpec.properties.initContainers)' -i "$CRD_FILE"
 yq eval 'del(.spec.versions[].schema.openAPIV3Schema.properties.spec.properties.podSpec.properties.ephemeralContainers)' -i "$CRD_FILE"
 
+# Remove unnecessary fields from container specs in the CRD's openAPIV3Schema
+yq eval 'del(.spec.versions[].schema.openAPIV3Schema.properties.spec.properties.scriptContainerSpec.required)' -i "$CRD_FILE"
+yq eval 'del(.spec.versions[].schema.openAPIV3Schema.properties.spec.properties.watchdogContainerSpec.required)' -i "$CRD_FILE"
+
 echo "Successfully removed fields from $CRD_FILE"
