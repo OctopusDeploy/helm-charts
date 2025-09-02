@@ -148,7 +148,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | scriptPods.podTemplate.name | string | `"default"` | The name for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.podMetadata | object | `{"annotations":{},"labels":{}}` | Pod metadata for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.podSpec | object | `{}` | Pod spec for the `ScriptPodTemplate` |
-| scriptPods.podTemplate.scriptContainerSpec | object | `{}` | Watchdog container spec for the `ScriptPodTemplate` |
+| scriptPods.podTemplate.scriptContainerSpec | object | `{}` | Script container spec for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.watchdogContainerSpec | object | `{}` | Watchdog container spec for the `ScriptPodTemplate` |
 | scriptPods.proxies.http_proxy | string | `""` | The URI of the HTTP proxy server to be used during script operations |
 | scriptPods.proxies.https_proxy | string | `""` | The URI of the HTTPS proxy server to be used during script operations |
