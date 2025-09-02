@@ -39,6 +39,17 @@ spec:
             spec:
               description: spec defines the desired state of ScriptPodTemplate
               properties:
+                podMetadata:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    labels:
+                      additionalProperties:
+                        type: string
+                      type: object
+                  type: object
                 podSpec:
                   description: PodSpec is a description of a pod.
                   properties:

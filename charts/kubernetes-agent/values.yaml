@@ -303,6 +303,11 @@ scriptPods:
     # -- Pod spec for the `ScriptPodTemplate`
     # @section -- Script pod values
     podSpec: {}
+    # -- Pod spec for the `ScriptPodTemplate`
+    # @section -- Script pod metadata
+    podMetadata:
+      annotations: {}
+      labels: {}
     # -- Watchdog container spec for the `ScriptPodTemplate`
     # @section -- Script pod values
     scriptContainerSpec: {}

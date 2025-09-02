@@ -9,6 +9,8 @@ metadata:
 spec:
   podSpec:
     {{ toYaml .Values.scriptPods.podTemplate.podSpec | nindent 4 }}
+  podMetadata:
+    {{ toYaml .Values.scriptPods.podTemplate.podMetadata | nindent 4 }}
   scriptContainerSpec:
     {{ toYaml .Values.scriptPods.podTemplate.scriptContainerSpec | nindent 4 }}
   watchdogContainerSpec:

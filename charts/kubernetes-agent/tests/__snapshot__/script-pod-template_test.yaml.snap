@@ -12,6 +12,9 @@ should match snapshot:
       name: octopus-agent-RELEASE-NAME-test-script-pod-template
       namespace: NAMESPACE
     spec:
+      podMetadata:
+        annotations: {}
+        labels: {}
       podSpec:
         nodeSelector:
           disktype: ssd
@@ -39,6 +42,9 @@ should partially render successfully:
       name: octopus-agent-RELEASE-NAME-default
       namespace: NAMESPACE
     spec:
+      podMetadata:
+        annotations: {}
+        labels: {}
       podSpec: {}
       scriptContainerSpec:
         resources:
