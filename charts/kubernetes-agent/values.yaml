@@ -317,15 +317,12 @@ scriptPods:
     # @section -- Script pod values
     watchdogContainerSpec: {}
 
-
-
 # @section -- Persistence
 persistence:
   
   # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class
   # @section -- Persistence
   storageClassName: ""
-
 
   # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
   # @section -- Persistence
