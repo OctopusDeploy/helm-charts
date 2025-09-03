@@ -145,7 +145,6 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |
 | scriptPods.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to script pods |
 | scriptPods.podTemplate.enabled | bool | `false` | overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster |
-| scriptPods.podTemplate.name | string | `"default"` | The name for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.podMetadata | object | `{"annotations":{},"labels":{}}` | Pod metadata for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.podSpec | object | `{}` | Pod spec for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.scriptContainerSpec | object | `{}` | Script container spec for the `ScriptPodTemplate` |

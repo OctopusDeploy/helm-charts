@@ -29,7 +29,6 @@ tests:
       scriptPods:
         podTemplate:
           enabled: true
-          name: test-script-pod-template
           podSpec:
             nodeSelector:
               disktype: ssd

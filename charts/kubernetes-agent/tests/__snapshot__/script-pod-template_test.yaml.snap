@@ -9,7 +9,7 @@ should match snapshot:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3193
         helm.sh/chart: kubernetes-agent-2.24.1
-      name: octopus-agent-RELEASE-NAME-test-script-pod-template
+      name: octopus-agent
       namespace: NAMESPACE
     spec:
       podMetadata:
@@ -39,7 +39,7 @@ should partially render successfully:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3193
         helm.sh/chart: kubernetes-agent-2.24.1
-      name: octopus-agent-RELEASE-NAME-default
+      name: octopus-agent
       namespace: NAMESPACE
     spec:
       podMetadata:

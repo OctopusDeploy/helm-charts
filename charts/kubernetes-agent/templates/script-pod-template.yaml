@@ -2,7 +2,7 @@
 apiVersion: agent.octopus.com/v1beta1
 kind: ScriptPodTemplate
 metadata:
-  name: {{ include "kubernetes-agent.fullName" . }}-{{ .Values.scriptPods.podTemplate.name }}
+  name: {{ include "kubernetes-agent.name" . }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "kubernetes-agent.labels" . | nindent 4 }}

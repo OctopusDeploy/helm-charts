@@ -299,9 +299,6 @@ scriptPods:
     # -- overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster
     # @section -- Script pod values
     enabled: false
-    # -- The name for the `ScriptPodTemplate`
-    # @section -- Script pod values
-    name: "default"
     # -- Pod spec for the `ScriptPodTemplate`
     # @section -- Script pod values
     podSpec: {}
