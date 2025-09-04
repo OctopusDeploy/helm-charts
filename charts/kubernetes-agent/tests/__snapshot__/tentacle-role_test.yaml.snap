@@ -16,3 +16,9 @@ should match snapshot:
           - events
         verbs:
           - '*'
+      - apiGroups:
+          - agent.octopus.com
+        resources:
+          - '*'
+        verbs:
+          - '*'

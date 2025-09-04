@@ -117,7 +117,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.3.3164"
+    tag: "8.3.3193"
     tagSuffix: ""
   
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. 
@@ -294,6 +294,25 @@ scriptPods:
     # @section -- Script pod values
     no_proxy: ""
 
+  podTemplate:
+    # -- If enabled, creates a `ScriptPodTemplate` custom resource to define the template used for script pods
+    # -- overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster
+    # @section -- Script pod values
+    enabled: false
+    # -- Pod spec for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    podSpec: {}
+    # -- Pod metadata for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    podMetadata:
+      annotations: {}
+      labels: {}
+    # -- Script container spec for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    scriptContainerSpec: {}
+    # -- Watchdog container spec for the `ScriptPodTemplate`
+    # @section -- Script pod values
+    watchdogContainerSpec: {}
 
 # @section -- Persistence
 persistence:
@@ -301,7 +320,6 @@ persistence:
   # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class
   # @section -- Persistence
   storageClassName: ""
-
 
   # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
   # @section -- Persistence
@@ -404,7 +422,7 @@ autoUpgrader:
       resources: ["roles"]
       verbs: ["escalate"]
 
- # Used to enable the Kubernetes Monitor
+# Used to enable the Kubernetes Monitor
 # Do not use this, as it is not supported at the moment
 # @ignored
 kubernetesMonitor:

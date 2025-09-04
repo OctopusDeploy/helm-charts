@@ -1,0 +1,18 @@
+{{- if .Values.scriptPods.podTemplate.enabled -}}
+apiVersion: agent.octopus.com/v1beta1
+kind: ScriptPodTemplate
+metadata:
+  name: {{ include "kubernetes-agent.name" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "kubernetes-agent.labels" . | nindent 4 }}
+spec:
+  podSpec:
+    {{ toYaml .Values.scriptPods.podTemplate.podSpec | nindent 4 }}
+  podMetadata:
+    {{ toYaml .Values.scriptPods.podTemplate.podMetadata | nindent 4 }}
+  scriptContainerSpec:
+    {{ toYaml .Values.scriptPods.podTemplate.scriptContainerSpec | nindent 4 }}
+  watchdogContainerSpec:
+    {{ toYaml .Values.scriptPods.podTemplate.watchdogContainerSpec | nindent 4 }}
+{{- end  -}}
