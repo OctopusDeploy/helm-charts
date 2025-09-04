@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.25.0
+
+### Minor Changes
+
+- 5e55239: Add new `scriptPods.podTemplate` values node as a new method to modify the dynamically created script pods
+
 ## 2.24.1
 
 ### Patch Changes
