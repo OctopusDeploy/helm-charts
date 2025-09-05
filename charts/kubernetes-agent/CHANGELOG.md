@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.25.1
+
+### Patch Changes
+
+- 8fafee1: Fix an issue where the new `scriptpodtemplates` CRD was not in the special `crds` directory, causing issues when installing/upgradig in a cluster where the CRD already existed.
+
 ## 2.25.0
 
 ### Minor Changes
