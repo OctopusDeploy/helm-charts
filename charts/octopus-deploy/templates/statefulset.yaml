@@ -122,7 +122,7 @@ spec:
           - name: DB_CONNECTION_STRING
             valueFrom:
               secretKeyRef:
-                name: {{ printf "%s-connectionstring" .Release.Name }}
+                name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
                 key: secret
           {{- end }}
           - name: ADMIN_USERNAME
