@@ -32,26 +32,31 @@ spec:
           ports:
            - containerPort: {{ .Values.containers.ports.containerPort}}
           env:
-           - name: MSSQL_PID
-             value: "{{ .Values.MSSQL_PID}}"
-           - name: ACCEPT_EULA
-             value: "{{ .Values.ACCEPT_EULA | upper}}"
-           - name: MSSQL_AGENT_ENABLED
-             value: "{{ .Values.MSSQL_AGENT_ENABLED}}"
-           - name: SA_PASSWORD
-             valueFrom:
-              secretKeyRef:
-               name: {{ include "mssql.name" . }}
-               key: sa_password
+            - name: MSSQL_PID
+              value: "{{ .Values.MSSQL_PID}}"
+            - name: ACCEPT_EULA
+              value: "{{ .Values.ACCEPT_EULA | upper}}"
+            - name: MSSQL_AGENT_ENABLED
+              value: "{{ .Values.MSSQL_AGENT_ENABLED}}"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  {{- if .Values.createSecrets }}
+                  name: {{ include "mssql.name" . }}
+                  key: sa_password
+                  {{- else }}
+                  name: {{ .Release.Name }}-sapassword
+                  key: secret
+                  {{- end }}
           volumeMounts:
-           - name: mssql
-             mountPath: "/var/opt/mssql"
-           - name: mssql-config-volume
-             mountPath: /var/opt/config
+            - name: mssql
+              mountPath: "/var/opt/mssql"
+            - name: mssql-config-volume
+              mountPath: /var/opt/config
       volumes:        
       - name: mssql-config-volume
         configMap:
-         name: {{ include "mssql.name" . }}
+          name: {{ include "mssql.name" . }}
   volumeClaimTemplates:
     - metadata:
         name: mssql
