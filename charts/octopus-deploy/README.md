@@ -165,3 +165,54 @@ The resulting endpoints will be:
 Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
 - [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster)
 - [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
+
+
+### External Secrets Management
+
+By default, this chart creates and manages Kubernetes secrets automatically. However, you can configure it to use external secrets management systems like HashiCorp Vault, Azure Key Vault, AWS Secrets Manager, or External Secrets Operator (ESO).
+
+#### Using External Secrets
+
+To use external secrets, set `createSecrets: false` in your values:
+
+```yaml
+octopus:
+  createSecrets: false
+  # When createSecrets is false, the following fields are ignored
+  # masterKey: ""
+  # databaseConnectionString: ""  
+  # username: ""
+  # password: ""
+  # licenseKeyBase64: ""
+
+mssql:
+  enabled: true
+  createSecrets: false  # Must match octopus.createSecrets when using built-in SQL Server
+```
+
+#### Required External Secret Names
+
+When `createSecrets: false`, you must provide the following secrets in your cluster before deploying:
+
+| Secret Name | Key | Description |
+|-------------|-----|-------------|
+| `{{ .Release.Name }}-adminusername` | `secret` | Octopus admin username |
+| `{{ .Release.Name }}-adminpassword` | `secret` | Octopus admin password |
+| `{{ .Release.Name }}-masterkey` | `secret` | Master key for encrypting sensitive data |
+| `{{ .Release.Name }}-licensekey` | `secret` | Base64-encoded Octopus license key |
+
+##### When Using Built-in SQL Server (`mssql.enabled: true`)
+
+Additionally provide:
+| Secret Name | Key | Description |
+|-------------|-----|-------------|
+| `{{ .Release.Name }}-sapassword` | `secret` | SQL Server SA user password |
+
+The database connection string will be automatically constructed using the SA password.
+
+##### When Using External SQL Server
+
+Additionally provide:
+| Secret Name | Key | Description |
+|-------------|-----|-------------|
+| `{{ .Release.Name }}-connectionstring` | `secret` | Complete SQL Server connection string |

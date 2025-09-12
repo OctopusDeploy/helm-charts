@@ -2,7 +2,11 @@ octopus:
   # Must be set to "Y" or true to accept the EULA at https://octopus.com/legal/customer-agreement
   acceptEula: "N"
 
-  ## Allows the secrets to be managed via an external secrets provider
+  # Allows secrets to be managed via an external secrets provider
+  # - true: Chart creates and manages secrets automatically,
+  #         You can override individual secret values by using the fields below (masterKey, databaseConnectionString, username, password, licenseKeyBase64)
+  # - false: Use external secrets (e.g., from Vault, ESO etc) secret names must be
+  # Required secret names are documented in README.md
   createSecrets: true
 
   # The below 5 options are not required if createSecrets is false
@@ -186,7 +190,8 @@ dockerHub:
 mssql: 
   enabled: false
   ACCEPT_EULA: "Y"
-  SA_PASSWORD: ""
+  createSecrets: true # determines if the db password is auto generated should match octopus.createSecrets
+  SA_PASSWORD: "" # Will be ignored when createSecrets is false and will look for {{ .Release.Name }}-sapassword, You can override the password value here when createSecrets is true
 
 global:
   # Set the default storageClass to be used for all persistent volume claims
