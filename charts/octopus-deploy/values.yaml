@@ -6,12 +6,7 @@ octopus:
   # - true: Chart creates and manages secrets automatically,
   #         You can override individual secret values by using the fields below (masterKey, databaseConnectionString, username, password, licenseKeyBase64)
   # - false: Use external secrets (e.g., from Vault, ESO etc) secret names must be
-  # {{ .Release.Name }}-adminusername
-  # {{ .Release.Name }}-adminpassword
-  # {{ .Release.Name }}-connectionstring
-  # {{ .Release.Name }}-masterkey
-  # {{ .Release.Name }}-licensekey
-  #
+  # Required secret names are documented in README.md
   createSecrets: true
 
   # The below 5 options are not required if createSecrets is false
