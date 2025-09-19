@@ -51,9 +51,52 @@ spec:
       tolerations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
+      # Init container builds DB connection string if mssql enabled and createSecrets is false
+      {{- if and .Values.mssql.enabled (not .Values.octopus.createSecrets) }}
+      initContainers:
+      - name: init-connection-string
+        image: busybox:1.35
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Starting init container to create DB connection string..."
+            echo "Server={{ include "octopus.mssql.server" . }};Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=SA;Password=${SA_PASSWORD};Encrypt=True;Connection Timeout=30;" > /shared/db_connection_string
+            chmod 600 /shared/db_connection_string
+            echo "DB connection string written to /shared/db_connection_string"
+        env:
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-sapassword" .Release.Name }}
+                key: secret
+        volumeMounts:
+          - name: connection-string-vol
+            mountPath: /shared
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "10m"
+          limits:
+            memory: "32Mi"
+            cpu: "50m"
+      {{- end }}
       containers:
       - name: octopus
         image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
+        {{- if and .Values.mssql.enabled (not .Values.octopus.createSecrets) }}
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            echo "Reading connection string from file..."
+            export DB_CONNECTION_STRING=$(cat /shared/db_connection_string)
+            echo "Connection string loaded successfully"
+            exec ./install.sh
+        {{- end }}
         securityContext:
           {{- with .Values.octopus.containerSecurityContext }}
           {{- toYaml . | nindent 10 }}
@@ -75,11 +118,13 @@ spec:
           - name: USER
             value: octopus
           {{- end}}
+          {{- if and .Values.mssql.enabled .Values.octopus.createSecrets }}
           - name: DB_CONNECTION_STRING
             valueFrom:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
                 key: secret
+          {{- end }}
           - name: ADMIN_USERNAME
             valueFrom:
               secretKeyRef:
@@ -146,6 +191,11 @@ spec:
             mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
           - name: audit-log-volume
             mountPath: /eventExports
+          {{- if and .Values.mssql.enabled (not .Values.octopus.createSecrets) }}
+          - name: connection-string-vol
+            mountPath: /shared
+            readOnly: true
+          {{- end }}
         {{- if .Values.octopus.resources }}
         resources:
         {{- toYaml .Values.octopus.resources | nindent 10 }}
@@ -191,6 +241,11 @@ spec:
         - name: audit-log-volume
           persistentVolumeClaim:
             claimName: audit-log-claim
+        {{- if and .Values.mssql.enabled (not .Values.octopus.createSecrets) }}
+        - name: connection-string-vol
+          emptyDir:
+            sizeLimit: 1Mi
+        {{- end }}
       {{- if .Values.dockerHub.login }}
       imagePullSecrets:
         - name: dockerhubcreds
