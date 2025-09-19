@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.26.0
+
+### Minor Changes
+
+- 0cbc2b1: Update kubernetes-agent-tentacle to `8.3.3244` to support Kubernetes 1.33 and resolve a vulnerability in a dependent package
+
 ## 2.25.1
 
 ### Patch Changes
