@@ -118,9 +118,10 @@ You'll likely want to allow external traffic to your Octopus instance, and this 
 
 This requires an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) to be running in your cluster.
 
-There are two types of traffic which you will typically want to configure ingress for:
+There are three types of traffic which you will typically want to configure ingress for:
 - Web requests for the portal and HTTP API
 - [Polling Tentacles](#polling-tentacles).  This will be required if you are using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have virtual machines with Polling Tentacles installed. 
+- gRPC for the [Kubernetes Monitor](https://octopus.com/docs/kubernetes/live-object-status)
 
 An example of a values file which configures ingress for HTTP traffic to the web portal and HTTP API using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
 
@@ -128,11 +129,42 @@ An example of a values file which configures ingress for HTTP traffic to the web
 octopus:
   ingress:
     enabled: true
-    annotations: 
-      kubernetes.io/ingress.class: nginx
+    className: nginx
     path: /
     hosts:
       - octopus.example.com 
+```
+
+To enable TLS in the ingress, you can create a certificate using cert-manager, and then reference it in the ingress configuration. An example is shown below:
+
+Certificate:
+```
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: octopus-server-tls
+  namespace: octopus-server-namespace
+spec:
+  secretName: octopus-tls-secret
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - octopus.example.com
+```
+
+Values file:
+```
+octopus:
+  ingress:
+    enabled: true
+    className: "nginx"
+    hosts:
+      - octopus.example.com
+    tls:
+      - hosts:
+        - "octopus.example.com"
+        secretName: octopus-tls-secret
 ```
 
 #### <a name="polling-tentacles"></a>Polling Tentacles (including the Octopus Kubernetes Agent)
@@ -165,3 +197,111 @@ The resulting endpoints will be:
 Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
 - [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster)
 - [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
+
+#### <a name="grpc-communication"></a>gRPC Communication
+
+Octopus Server uses gRPC communication for the Kubernetes monitor. By default, Octopus Server will create a self-signed certificate on first start to serve gRPC clients, and clients will automatically trust this certificate. Octopus Server runs this gRPC server on port 8443 by default.
+
+The Octopus Deploy service exposes this port for you by default. To allow external consumers of this service, you can either set this service to be a LoadBalancer, or use an ingress (or the Gateway API).
+
+Setting the service to be a Load Balancer can be done by setting the following in the values:
+```
+octopus:
+  service:
+    type: LoadBalancer
+```
+
+This will assign a public IP address to the service, and will allow you to connect over HTTP and GRPC. This is usually undesirable due to the insecure HTTP port being available, as well as the service taking up an IP address all by itself. As such, we generally recommended to use an ingress resource to configure external access to your server.
+
+To pass through the default SSL certificate, you can use the `nginx.ingress.kubernetes.io/ssl-passthrough: "true"` which will simply pass through the automatically generated, self-signed certificate that Octopus exposes to clients, which will work by default. 
+Note that to do this, you must [enable SSL passthrough in your nginx ingress controller](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#ssl-passthrough).  
+
+To enable passthrough, you can set the following in your values file:
+```
+octopus:
+  ingress:
+    enabled: true
+    hosts:
+      - octopus.example.com
+    tls:
+      - hosts:
+        - "octopus.example.com"
+        secretName: octopus-tls-secret
+    grpc:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      labels: {}
+      hostPrefix: "grpc"
+```
+
+If you wish to terminate SSL rather than use passthrough, you must ensure that your certificate is issued by a CA that is generally trusted. Using a certificate from LetsEncrypt is the recommended way to do this. An example certificate would be:
+```
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: octopus-grpc-tls
+  namespace: octopus
+spec:
+  secretName: grpc-tls-secret
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames:
+  - grpc.octopus.example.com
+```
+
+You can then set your ingress up as follows to enable the ingress:
+```
+octopus:
+  ingress:
+    enabled: true
+    hosts:
+      - octopus.example.com
+    tls:
+      - hosts:
+        - "octopus.example.com"
+        secretName: octopus-tls-secret
+    grpc:
+      enabled: true
+      annotations: {}
+      labels: {}
+      hostPrefix: "grpc"
+      tls:
+        enabled: true
+        secretName: grpc-tls-secret
+```
+
+The resulting ingress will be as follows:
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: contoso-release-octopus-deploy-grpc
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.6.0
+    app.kubernetes.io/instance: contoso-release
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
+spec:
+  tls:
+  - hosts:
+    - grpc.octopus.example.com
+    secretName: grpc-tls-secret
+  rules:
+    - host: "grpc.octopus.example.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: contoso-release-octopus-deploy
+                port:
+                  number: 8443
+```
+Note that this will only make an ingress for the first defined host.
+
+This is confirmed as working with ingress-nginx. If you have other ingress controllers, it's worth checking their documentation to see any annotations that may be applicable to connect to secure gRPC backends.
