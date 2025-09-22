@@ -154,6 +154,18 @@ spec:
       volumeMounts:
         - mountPath: /octopus
           name: temp-dir
+        {{- if .Values.agent.securityContext.readOnlyRootFilesystem }}
+        - mountPath: /Octopus
+          name: temp-dir
+        - mountPath: /tmp
+          name: temp-dir
+        - mountPath: /etc/octopus
+          name: temp-dir
+        - mountPath: /.dotnet
+          name: temp-dir
+        - mountPath: /root
+          name: temp-dir
+        {{- end }}
         {{- if .Values.agent.serverCertificate }}
         - name: octopus-server-certificate-configmap
           mountPath: /etc/ssl/certs/octopus-server-certificate.pem

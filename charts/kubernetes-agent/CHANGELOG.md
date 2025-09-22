@@ -1,5 +1,79 @@
 # kubernetes-agent
 
+## 2.26.0
+
+### Minor Changes
+
+- 0cbc2b1: Update kubernetes-agent-tentacle to `8.3.3244` to support Kubernetes 1.33 and resolve a vulnerability in a dependent package
+
+## 2.25.1
+
+### Patch Changes
+
+- 8fafee1: Fix an issue where the new `scriptpodtemplates` CRD was not in the special `crds` directory, causing issues when installing/upgradig in a cluster where the CRD already existed.
+
+## 2.25.0
+
+### Minor Changes
+
+- 5e55239: Add new `scriptPods.podTemplate` values node as a new method to modify the dynamically created script pods
+
+## 2.24.1
+
+### Patch Changes
+
+- 34d0ea8: Fix missing mounts in registration pod if running under a ReadOnly root filesystem
+
+## 2.24.0
+
+### Minor Changes
+
+- e1d744f: Add ability to override PV retain policy
+
+### Patch Changes
+
+- e1d744f: Bump Tentacle to 8.3.3164
+
+## 2.23.0
+
+### Minor Changes
+
+- 443d7bc: Adds EmptyDir mounts to the tentacle deployment when running with a read-only root filesystem
+
+## 2.22.0
+
+### Minor Changes
+
+- 0bd6125: Update nfs-server image to 1.10 to address vulnerabilities
+
+### Patch Changes
+
+- ac10673: Fix tentacle version mismatch
+
+## 2.21.0
+
+### Minor Changes
+
+- 2bf9d52: Add ability to install without any clusterroles or clusterrolebindings
+
+## 2.20.0
+
+### Minor Changes
+
+- facc9b6: Add ability to define additional labels to the script pods
+
+## 2.19.1
+
+### Patch Changes
+
+- f963fe5: Added custom access modes (for testing and dev purposes only)
+
+## 2.19.0
+
+### Minor Changes
+
+- 32645b1: Upgrade kubernetes-monitor-chart to v0.18.0
+
 ## 2.18.0
 
 ### Minor Changes

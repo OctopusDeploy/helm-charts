@@ -1,6 +1,7 @@
 {{- $podServiceAccountName := include "kubernetes-agent.scriptPodServiceAccountName" . -}}
 {{- $podServiceAccountFullName := include "kubernetes-agent.scriptPodServiceAccountFullName" . -}}
 {{- $podClusterRoleName := include "kubernetes-agent.scriptPodClusterRoleName" . -}}
+{{- $podRoleName := include "kubernetes-agent.scriptPodRoleName" . -}}
 {{- $podDeleterClusterRoleName := include "kubernetes-agent.scriptPodDeleterClusterRoleName" . -}}  
 
 {{- if .Values.agent.deploymentTarget.enabled }}
@@ -16,8 +17,13 @@ subjects:
   name: {{ $podServiceAccountName }}
   namespace: {{ $.Release.Namespace | quote }}
 roleRef:
+  {{- if $.Values.scriptPods.serviceAccount.useNamespacedRoles }}
+  kind: Role
+  name: {{ $podRoleName }}
+  {{- else }}
   kind: ClusterRole
   name: {{ $podClusterRoleName }}
+  {{- end }}
   apiGroup: rbac.authorization.k8s.io
 {{- end -}}
 {{- end -}}

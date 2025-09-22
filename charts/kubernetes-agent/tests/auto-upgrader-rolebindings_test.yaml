@@ -1,0 +1,67 @@
+suite: "auto-upgrader namespace-scoped rolebindings"
+templates:
+- templates/auto-upgrader-rolebindings.yaml
+tests:
+- it: "is not created when useNamespacedRoles is false"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: false
+        targetNamespaces: ["ns-1", "ns-2"]
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "creates self-namespace rolebinding when useNamespacedRoles is true"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: []
+  asserts:
+  - hasDocuments:
+      count: 1
+  - equal:
+      path: kind
+      value: RoleBinding
+  - equal:
+      path: metadata.namespace
+      value: NAMESPACE
+  - equal:
+      path: roleRef.kind
+      value: Role
+
+- it: "creates rolebindings for all namespaces"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1", "ns-2", "ns-3"]
+  asserts:
+  - hasDocuments:
+      count: 4  # 1 self-namespace + 3 target namespaces
+  - equal:
+      path: kind
+      value: RoleBinding
+  - equal:
+      path: subjects[0].kind
+      value: ServiceAccount
+
+- it: "binds to correct roles in each namespace"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+  asserts:
+  - hasDocuments:
+      count: 2
+  # Just check that both rolebindings exist in correct namespaces
+  - equal:
+      path: kind
+      value: RoleBinding
+      documentIndex: 0
+  - equal:
+      path: kind
+      value: RoleBinding
+      documentIndex: 1

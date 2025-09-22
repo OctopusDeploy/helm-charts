@@ -1,5 +1,23 @@
 # octopus-deploy
 
+## 1.7.0
+
+### Minor Changes
+
+- e17782e: Fix server-log-volume to use global storage class name
+
+  Previously the server-log PVC omitted storageClassName when no explicit
+  octopus.serverLogVolume.storageClassName was provided, ignoring the
+  global override.
+
+- d5acf18: Update AppVersion to 2025.3
+
+## 1.6.0
+
+### Minor Changes
+
+- 497e288: Add extraEnv to add environment variables to the container
+
 ## 1.5.0
 
 ### Minor Changes

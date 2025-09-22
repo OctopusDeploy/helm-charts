@@ -9,8 +9,8 @@ spec:
   capacity:
     storage: {{ .Values.persistence.size }}
   accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
+    {{- .Values.persistence.accessModes | toYaml | nindent 4 }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistence.persistentVolumeReclaimPolicy }}
   storageClassName: {{ include "nfs.storageClassName" . }}
   mountOptions:
     - nfsvers=4.1

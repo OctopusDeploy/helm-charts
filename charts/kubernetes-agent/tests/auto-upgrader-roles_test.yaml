@@ -1,0 +1,90 @@
+suite: "auto-upgrader namespace-scoped roles"
+templates:
+- templates/auto-upgrader-roles.yaml
+tests:
+- it: "is not created when useNamespacedRoles is false"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: false
+        targetNamespaces: ["ns-1", "ns-2"]
+  asserts:
+  - hasDocuments:
+      count: 0
+
+- it: "creates self-namespace role when useNamespacedRoles is true"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: []
+  asserts:
+  - hasDocuments:
+      count: 1
+  - equal:
+      path: kind
+      value: Role
+  - equal:
+      path: metadata.namespace
+      value: NAMESPACE
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["*"]
+        resources: ["*"]
+        verbs: ["*"]
+
+- it: "creates self-namespace and target namespace roles"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1", "ns-2"]
+  asserts:
+  - hasDocuments:
+      count: 3  # 1 self-namespace + 2 target namespaces
+
+- it: "uses custom selfNamespaceRoleRules when provided"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: []
+    autoUpgrader:
+      selfNamespaceRoleRules:
+      - apiGroups: ["apps"]
+        resources: ["deployments"]
+        verbs: ["get", "update"]
+  asserts:
+  - hasDocuments:
+      count: 1
+  - equal:
+      path: rules[0].resources[0]
+      value: deployments
+  - equal:
+      path: rules[0].verbs[0]
+      value: get
+
+- it: "uses custom targetNamespaceRoleRules when provided"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+    autoUpgrader:
+      targetNamespaceRoleRules:
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        resources: ["roles"]
+        verbs: ["create", "update"]
+  asserts:
+  - hasDocuments:
+      count: 2  # 1 self-namespace + 1 target namespace
+  # Check that both are Roles
+  - equal:
+      path: kind
+      value: Role
+      documentIndex: 0
+  - equal:
+      path: kind  
+      value: Role
+      documentIndex: 1

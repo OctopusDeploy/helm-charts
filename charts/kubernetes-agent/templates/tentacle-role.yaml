@@ -7,3 +7,6 @@ rules:
 - apiGroups: ["*"]
   resources: ["pods", "pods/log", "configmaps", "secrets", "events"]
   verbs: ["*"]
+- apiGroups: ["agent.octopus.com"]
+  resources: ["*"]
+  verbs: ["*"]

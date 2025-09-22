@@ -1,6 +1,6 @@
 ## Kubernetes agent
 
-![Version: 2.18.0](https://img.shields.io/badge/Version-2.18.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.3.3034](https://img.shields.io/badge/AppVersion-8.3.3034-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 2.26.0](https://img.shields.io/badge/Version-2.26.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.3.3244](https://img.shields.io/badge/AppVersion-8.3.3244-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using [Octopus Deploy](https://octopus.com).
 
@@ -52,7 +52,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | agent.certificate | string | `""` | A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.3.3034","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.3.3244","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -108,6 +108,13 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 |-----|------|---------|-------------|
 | agent.worker.initial.workerPools | list | `[]` | The worker pools to associate with the worker |
 
+### Auto-upgrader configuration
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| autoUpgrader.selfNamespaceRoleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | Rules for managing the agent in its own namespace when using namespace-scoped roles |
+| autoUpgrader.targetNamespaceRoleRules | list | `[{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles","rolebindings"],"verbs":["create","update","patch","get","list","watch","delete"]},{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles"],"verbs":["escalate"]}]` | Rules for managing script pod roles in target namespaces when using namespace-scoped roles |
+
 ### Persistence
 
 | Key | Type | Default | Description |
@@ -115,7 +122,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | persistence.nfs.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the NFS pod |
 | persistence.nfs.backingVolume.accessModes | list | `["ReadWriteOnce"]` | The access modes to use for the NFS Server's backing storage |
 | persistence.nfs.backingVolume.storageClassName | string | `""` | The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used |
-| persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.0.1"}` | The repository, pullPolicy & tag to use for the NFS server |
+| persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.1.0"}` | The repository, pullPolicy & tag to use for the NFS server |
 | persistence.nfs.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the NFS pod & container |
 | persistence.nfs.tolerations | list | `[]` | The tolerations to apply to the NFS pod |
 | persistence.nfs.watchdog.enabled | bool | `true` | If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive |
@@ -123,6 +130,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | persistence.nfs.watchdog.initial_backoff_seconds | string | `""` | The initial backoff time in seconds to retry failed NFS checks @default 0.5 |
 | persistence.nfs.watchdog.loop_seconds | string | `""` | The frequency in seconds to check the NFS server @default 5 |
 | persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
+| persistence.persistentVolumeReclaimPolicy | string | `"Retain"` | The NFS server PV reclaim policy |
 | persistence.size | string | `"10Gi"` | The size of the volume to create |
 | persistence.storageClassName | string | `""` | if provided, will disable the default persistence configuration and create a PVC with the provided storage class |
 | persistence.volumeName | string | `""` | if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume |
@@ -135,7 +143,12 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |
-| scriptPods.metadata | object | `{"annotations":{}}` | Additional metadata to add to script pods |
+| scriptPods.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to script pods |
+| scriptPods.podTemplate.enabled | bool | `false` | overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster |
+| scriptPods.podTemplate.podMetadata | object | `{"annotations":{},"labels":{}}` | Pod metadata for the `ScriptPodTemplate` |
+| scriptPods.podTemplate.podSpec | object | `{}` | Pod spec for the `ScriptPodTemplate` |
+| scriptPods.podTemplate.scriptContainerSpec | object | `{}` | Script container spec for the `ScriptPodTemplate` |
+| scriptPods.podTemplate.watchdogContainerSpec | object | `{}` | Watchdog container spec for the `ScriptPodTemplate` |
 | scriptPods.proxies.http_proxy | string | `""` | The URI of the HTTP proxy server to be used during script operations |
 | scriptPods.proxies.https_proxy | string | `""` | The URI of the HTTPS proxy server to be used during script operations |
 | scriptPods.proxies.no_proxy | string | `""` | A comma-separated list of host names or IP addresses that should not go through any proxy |
@@ -144,7 +157,9 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | scriptPods.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | scriptPods.serviceAccount.clusterRole | object | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]` | if defined, overrides the default ClusterRole rules |
 | scriptPods.serviceAccount.name | string | `""` | The name of the service account used for executing script pods |
+| scriptPods.serviceAccount.roleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | if defined, overrides the default Role rules when using namespace-scoped roles |
 | scriptPods.serviceAccount.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
+| scriptPods.serviceAccount.useNamespacedRoles | bool | `false` | Use namespace-scoped Roles instead of ClusterRoles |
 | scriptPods.tolerations | list | `[]` | The tolerations to apply to script pods |
 | scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a worker |
 

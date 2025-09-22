@@ -62,8 +62,9 @@ spec:
           privileged: true
           {{- end }}
         env:
+          {{- include "octopus.extraEnv" . | nindent 10 }}
           - name: ACCEPT_EULA
-            value: {{ template "octopus.acceptEulaStr" . }} 
+            value: {{ template "octopus.acceptEulaStr" . }}
           - name: OCTOPUS_SERVER_NODE_NAME
             valueFrom:
               fieldRef:
@@ -111,7 +112,7 @@ spec:
           - name: DISABLE_DIND
             value: !!str "Y"
         {{- end }}
-          - name: OCTOPUS_INSTALLED_VIA_HELM 
+          - name: OCTOPUS_INSTALLED_VIA_HELM
             value: "true"
         {{- if .Values.octopus.proxy.http }}
           - name: HTTP_PROXY
@@ -205,10 +206,14 @@ spec:
         name: server-log-volume
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        {{- if (eq "-" (.Values.octopus.serverLogVolume.storageClassName | toString)) }}
+        {{- $explicit := (.Values.octopus.serverLogVolume.storageClassName | toString) -}}
+        {{- $global  := ($.Values.global.storageClass | toString) -}}
+        {{- if eq $explicit "-" }}
         storageClassName: ""
-        {{- else if .Values.octopus.serverLogVolume.storageClassName }}
-        storageClassName: "{{ .Values.octopus.serverLogVolume.storageClassName }}"
+        {{- else if $explicit }}
+        storageClassName: {{ $explicit | quote }}
+        {{- else if $global }}
+        storageClassName: {{ $global | quote }}
         {{- end }}
         resources:
           requests:
