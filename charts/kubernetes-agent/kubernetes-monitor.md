@@ -2,8 +2,6 @@
 
 The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-monitor), where you can pull it using Helm.
 
-The source code for the chart can be found at [here](./charts/kubernetes-monitor).
-
 ## Versions
 
 The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.org/). Generally, version updates can be interpreted as follows:
@@ -12,38 +10,15 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 - *minor* - New non-breaking features. New features or improvements to the Kubernetes monitor application or helm chart itself.
 - *patch* - Minor non-breaking bug fixes or changes that do not introduce new features.
 
-The `main` branch will reflect the current development version of the chart. This may be the latest released version or if a new version is in development, may be a pre-release version.
-
-| Version | Branch                                                                                       | Readme    | values.yaml           |
-| ------- | -------------------------------------------------------------------------------------------- | --------- | --------------------- |
-| 0       | [main](https://github.com/OctopusDeploy/lobster-watcher/tree/main/charts/kubernetes-monitor) | This file | [here](./values.yaml) |
-
 ----------------------------------------------
 
 ## Values
-
-### Registration
-
-| Key                                                      | Type   | Default        | Description                                                                                                                                                                                |
-| -------------------------------------------------------- | ------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| global.serverApiUrl                                      | string | `""`           | This is overridden by registration.serverApiUrl if both are set                                                                                                                            |
-| registration.configurationStoreType                      | string | `"kubernetes"` | Can be "kubernetes" or "file"                                                                                                                                                              |
-| registration.machineName                                 | string | `""`           | The machine name of the agent this monitor is responsible for                                                                                                                              |
-| registration.register                                    | bool   | `true`         | Automatically register the monitor with the Octopus Deploy server                                                                                                                          |
-| registration.serverAccessToken                           | string | `""`           | The access token to authenticate to Octopus Deploy to register with. Can be a bearer token or an API token.                                                                                |
-| registration.serverApiUrl                                | string | `""`           | The API URL of Octopus Deploy for registration                                                                                                                                             |
-| registration.serverCertificate                           | string | `""`           | The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format.                                 |
-| registration.serverCertificateSecretName                 | string | `""`           | The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. |
-| registration.serviceAccount.annotations                  | object | `{}`           | Additional annotations for the service account                                                                                                                                             |
-| registration.serviceAccount.automountServiceAccountToken | bool   | `true`         | Auto-mount service account token                                                                                                                                                           |
-| registration.serviceAccount.create                       | bool   | `true`         | Specifies whether a service account should be created for the registration hook                                                                                                            |
-| registration.serviceAccount.name                         | string | `""`           | Custom service account name                                                                                                                                                                |
-| registration.spaceId                                     | string | `""`           | The space id that the monitor is registering with                                                                                                                                          |
 
 ### Globals
 
 | Key                                | Type   | Default | Description                                                                    |
 | ---------------------------------- | ------ | ------- | ------------------------------------------------------------------------------ |
+| global.serverApiUrl                | string | `""`    | This is overridden by registration.serverApiUrl if both are set                |
 | global.serverCertificate           | string | `""`    | This is overridden by registration.serverCertificate if both are set           |
 | global.serverCertificateSecretName | string | `""`    | This is overridden by registration.serverCertificateSecretName if both are set |
 
@@ -56,6 +31,23 @@ The `main` branch will reflect the current development version of the chart. Thi
 | monitor.installationId      | string | `""`    | If setting up the agent without automatic registration, this is the installation id. If you provide this, you must also provide the authentication token. If you provide this, the monitor will not attempt to register with the server. |
 | monitor.serverGrpcUrl       | string | `""`    | The gRPC url (including the port) of the Octopus Deploy server to communicate with                                                                                                                                                       |
 | monitor.serverThumbprint    | string | `""`    | The thumbprint of the Octopus Deploy server the monitor is communicating with. This should only be used if you wish to pin the certificate.                                                                                              |
+
+### Registration
+
+| Key                                                      | Type   | Default        | Description                                                                                                                                                                                                                                                      |
+| -------------------------------------------------------- | ------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| registration.configurationStoreType                      | string | `"kubernetes"` | Can be "kubernetes" or "file"                                                                                                                                                                                                                                    |
+| registration.machineName                                 | string | `""`           | The machine name of the agent this monitor is responsible for                                                                                                                                                                                                    |
+| registration.register                                    | bool   | `true`         | Automatically register the monitor with the Octopus Deploy server                                                                                                                                                                                                |
+| registration.serverAccessToken                           | string | `""`           | The access token to authenticate to Octopus Deploy to register with. Can be a bearer token or an API token.                                                                                                                                                      |
+| registration.serverApiUrl                                | string | `""`           | The API URL of Octopus Deploy for registration                                                                                                                                                                                                                   |
+| registration.serverCertificate                           | string | `""`           | The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format.                                                                                                       |
+| registration.serverCertificateSecretName                 | string | `""`           | The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. Value must be set in `data.octopus-server-certificate.pem` in secret. |
+| registration.serviceAccount.annotations                  | object | `{}`           | Additional annotations for the service account                                                                                                                                                                                                                   |
+| registration.serviceAccount.automountServiceAccountToken | bool   | `true`         | Auto-mount service account token                                                                                                                                                                                                                                 |
+| registration.serviceAccount.create                       | bool   | `true`         | Specifies whether a service account should be created for the registration hook                                                                                                                                                                                  |
+| registration.serviceAccount.name                         | string | `""`           | Custom service account name                                                                                                                                                                                                                                      |
+| registration.spaceId                                     | string | `""`           | The space id that the monitor is registering with                                                                                                                                                                                                                |
 
 ### Other Values
 
