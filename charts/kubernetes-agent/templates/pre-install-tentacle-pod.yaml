@@ -39,7 +39,7 @@ spec:
         - name: "ServerCommsAddress"
           value: {{ .Values.agent.serverCommsAddress | quote }}
         - name: "ServerUrl"
-          value: {{ .Values.agent.serverUrl | quote }}
+          value: {{ (include "kubernetes-agent.serverApiUrl" .) | quote }}
         - name: "Space"
           value: {{ .Values.agent.space | quote }}
         - name: "DeploymentTargetEnabled"

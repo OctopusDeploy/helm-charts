@@ -294,3 +294,14 @@ The name of the secret to store the certificate data of the Octopus Server API
 {{- .Values.global.serverCertificateSecretName }}
 {{- end }}
 {{- end }}
+
+{{/*
+The server API url - the global is used unless overridden by the value in values.yaml
+*/}}
+{{- define "kubernetes-agent.serverApiUrl" -}}
+{{- if .Values.agent.serverUrl }}
+{{- .Values.agent.serverUrl }}
+{{- else if .Values.global.serverApiUrl }}
+{{- .Values.global.serverApiUrl }}
+{{- end }}
+{{- end }}
