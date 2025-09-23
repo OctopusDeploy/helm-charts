@@ -33,6 +33,8 @@ octopus:
   webPort: 80 
   # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
   tentaclePort: 10943 
+  # The port for gRPC communication
+  grpcPort: 8443
   # The number of server nodes to maintain  
   replicaCount: 1
 
@@ -102,6 +104,14 @@ octopus:
       annotations: {}
       labels: {}
       hostPrefix: "polling"
+    grpc:
+      enabled: false
+      annotations: {}
+      labels: {}
+      hostPrefix: "grpc"
+      tls:
+        enabled: false
+        secretName: ""
 
   statefulSet:
     annotations: {}
