@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.8.0
+
+### Minor Changes
+
+- 30b282f: Add gRPC configuration
+
 ## 1.7.0
 
 ### Minor Changes
