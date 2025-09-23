@@ -1,0 +1,29 @@
+suite: "pre install pod"
+templates:
+  - templates/pre-install-tentacle-pod.yaml
+  - templates/pre-install-tentacle-server-cert-configmap.yaml
+tests:
+  - it: "creates and uses configmap"
+    set:
+      agent:
+        serverCertificate: "CertificateValue"
+    asserts:
+      - template: pre-install-tentacle-server-cert-configmap.yaml
+        containsDocument:
+          apiVersion: v1
+          kind: ConfigMap
+          any: true
+      - template: pre-install-tentacle-pod.yaml
+        equal:
+          path: spec.volumes[?(@.name=='octopus-server-certificate-configmap')].configMap.name
+          value: "octopus-server-certificate-pre"
+
+  - it: "uses existing secret when provided"
+    set:
+      agent:
+        serverCertificateSecretName: "my-existing-secret"
+    asserts:
+      - template: pre-install-tentacle-pod.yaml
+        equal:
+          path: spec.volumes[?(@.name=='octopus-server-certificate-secret')].secret.secretName
+          value: "my-existing-secret"

@@ -88,7 +88,7 @@ spec:
         - name: "TentaclePollingConnectionCount"
           value: {{ .Values.agent.pollingConnectionCount | quote }}
         - name: "OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE"
-          value: {{ .Values.agent.enableMetricsCapture| quote }}
+          value: {{ .Values.agent.enableMetricsCapture | quote }}
         {{- if .Values.imagePullSecrets }}
         - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
           value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}
@@ -166,20 +166,31 @@ spec:
         - mountPath: /root
           name: temp-dir
         {{- end }}
-        {{- if .Values.agent.serverCertificate }}
+        {{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
         - name: octopus-server-certificate-configmap
           mountPath: /etc/ssl/certs/octopus-server-certificate.pem
           subPath: octopus-server-certificate.pem
           readOnly: false
+        {{- else if (include "kubernetes-agent.serverCertificate.secretName" .) }}
+        - name: octopus-server-certificate-secret
+          mountPath: /etc/ssl/certs/octopus-server-certificate.pem
+          subPath: octopus-server-certificate.pem
         {{- end }}
   volumes:
     - name: temp-dir
       emptyDir: {}
-    {{- if .Values.agent.serverCertificate }}
+    {{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
     - name: octopus-server-certificate-configmap
       configMap:
         name: "octopus-server-certificate-pre"
-    {{- end }}
+    {{- else if (include "kubernetes-agent.serverCertificate.secretName" .) }}
+    - name: octopus-server-certificate-secret
+      secret:
+        secretName: {{ include "kubernetes-agent.serverCertificate.secretName" . }}
+        items:
+          - key: octopus-server-certificate.pem
+            path: octopus-server-certificate.pem
+    {{- end}}
   {{- with .Values.agent.affinity }}
   affinity:
     {{- toYaml . | nindent 4 }}
