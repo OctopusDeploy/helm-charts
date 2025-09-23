@@ -67,6 +67,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | agent.serverApiKey | string | `""` | An Octopus Server API key used to authenticate with the target Octopus Server |
 | agent.serverApiKeySecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret. |
 | agent.serverCertificate | string | `""` | The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information. |
+| agent.serverCertificateSecretName | string | `""` | The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. Value must be set in `data.octopus-server-certificate.pem` in secret. |
 | agent.serverCommsAddress | string | `""` | The polling communication URL of the target Octopus Server |
 | agent.serverCommsAddresses | list | `[]` | The polling communication URLs of the target Octopus Servers when running in High Availability (HA) |
 | agent.serverSubscriptionId | string | `""` | The subscription ID that is used to by the agent to identify itself with Octopus Server |
@@ -75,7 +76,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | agent.serviceAccount.name | string | Generates a name based on `agent.name` | The name of the service account for the agent pod |
 | agent.space | string | `"Default"` | The Space to register the agent in |
 | agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
-| agent.upgrade | object | `{"dockerAuth":{"password":"","registry":"","username":""}}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.  |
+| agent.upgrade | object | `{"dockerAuth":{"password":"","registry":"","username":""}}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. |
 | agent.username | string | `""` | The username of the user used to authenticate with the target Octopus Server |
 | agent.usernamePasswordSecretName | string | `""` | The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret. |
 
@@ -114,6 +115,14 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 |-----|------|---------|-------------|
 | autoUpgrader.selfNamespaceRoleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | Rules for managing the agent in its own namespace when using namespace-scoped roles |
 | autoUpgrader.targetNamespaceRoleRules | list | `[{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles","rolebindings"],"verbs":["create","update","patch","get","list","watch","delete"]},{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles"],"verbs":["escalate"]}]` | Rules for managing script pod roles in target namespaces when using namespace-scoped roles |
+
+### Globals
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| global.serverApiUrl | string | `""` | This is overridden by agent.serverUrl if both are set |
+| global.serverCertificate | string | `""` | This is overridden by agent.serverCertificate if both are set |
+| global.serverCertificateSecretName | string | `""` | This is overridden by agent.serverCertificateSecretName if both are set |
 
 ### Persistence
 

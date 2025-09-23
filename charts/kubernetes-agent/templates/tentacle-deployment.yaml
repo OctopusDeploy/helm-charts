@@ -53,7 +53,7 @@ spec:
             - name: "ServerCommsAddress"
               value: {{ .Values.agent.serverCommsAddress | quote }}
             - name: "ServerUrl"
-              value: {{ .Values.agent.serverUrl | quote }}
+              value: {{ (include "kubernetes-agent.serverApiUrl" .) | quote }}
             - name: "Space"
               value: {{ .Values.agent.space | quote }}
             - name: "DeploymentTargetEnabled"
@@ -114,7 +114,7 @@ spec:
             - name: "TentaclePollingConnectionCount"
               value: {{ .Values.agent.pollingConnectionCount | quote }}
             - name: "OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE"
-              value: {{ .Values.agent.enableMetricsCapture| quote }}
+              value: {{ .Values.agent.enableMetricsCapture | quote }}
             {{- if .Values.imagePullSecrets }}
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
               value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}
@@ -206,11 +206,15 @@ spec:
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home
-            {{- if .Values.agent.serverCertificate }}
+            {{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
             - name: octopus-server-certificate-configmap
               mountPath: /etc/ssl/certs/octopus-server-certificate.pem
               subPath: octopus-server-certificate.pem
               readOnly: false
+            {{- else if (include "kubernetes-agent.serverCertificate.secretName" .) }}
+            - name: octopus-server-certificate-secret
+              mountPath: /etc/ssl/certs/octopus-server-certificate.pem
+              subPath: octopus-server-certificate.pem
             {{- end }}
             {{- if .Values.agent.securityContext.readOnlyRootFilesystem }}
             - mountPath: /Octopus
@@ -251,11 +255,18 @@ spec:
         - name: tentacle-home
           persistentVolumeClaim:
             claimName: {{ include "kubernetes-agent.pvcName" .}}
-        {{- if .Values.agent.serverCertificate }}
+        {{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
         - name: octopus-server-certificate-configmap
           configMap:
             name: "octopus-server-certificate"
-        {{- end }}
+        {{- else if (include "kubernetes-agent.serverCertificate.secretName" .) }}
+        - name: octopus-server-certificate-secret
+          secret:
+            secretName: {{ include "kubernetes-agent.serverCertificate.secretName" . }}
+            items:
+              - key: octopus-server-certificate.pem
+                path: octopus-server-certificate.pem
+        {{- end}}
         {{- if .Values.agent.securityContext.readOnlyRootFilesystem  }}
         - name: temp-dir
           emptyDir: {}
