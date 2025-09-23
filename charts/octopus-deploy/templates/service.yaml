@@ -13,6 +13,10 @@ spec:
       port: {{.Values.octopus.webPort}}
       targetPort: 8080
       protocol: TCP
+    - name: grpc
+      port: {{.Values.octopus.grpcPort}}
+      targetPort: {{.Values.octopus.grpcPort}}
+      protocol: TCP
   {{- if (eq (.Values.octopus.replicaCount | int) 1)}} # If there is only one node, expose the tentacle along with the web port
     - name: tentacle
       port: {{.Values.octopus.tentaclePort}}
@@ -34,6 +38,10 @@ spec:
     - name: web
       port: {{$.Values.octopus.webPort}}
       targetPort: 8080
+      protocol: TCP
+    - name: grpc
+      port: {{$.Values.octopus.grpcPort}}
+      targetPort: {{$.Values.octopus.grpcPort}}
       protocol: TCP
     - name: tentacle
       port: {{$.Values.octopus.tentaclePort}}
