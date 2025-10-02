@@ -10,7 +10,7 @@ Should render all options when crdDisabled is true:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3244
         helm.sh/chart: kubernetes-agent-2.27.0
-      name: octopus-agent-pod-=template
+      name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
       replicas: 0
@@ -42,7 +42,7 @@ Should render all options when crdDisabled is true:
             disktype: ssd
 should match snapshot:
   1: |
-    apiVersion: apps/v1
+    apiVersion: agent.octopus.com/v1beta1
     kind: ScriptPodTemplate
     metadata:
       labels:
@@ -82,7 +82,7 @@ should never have the containers key in the podSpec when crdDisabled is true:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3244
         helm.sh/chart: kubernetes-agent-2.27.0
-      name: octopus-agent-pod-=template
+      name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
       replicas: 0
@@ -108,7 +108,7 @@ should never have the containers key in the podSpec when crdDisabled is true:
             disktype: ssd
 should partially render successfully:
   1: |
-    apiVersion: apps/v1
+    apiVersion: agent.octopus.com/v1beta1
     kind: ScriptPodTemplate
     metadata:
       labels:
@@ -142,7 +142,7 @@ should render a deployment when crdDisabled is true:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3244
         helm.sh/chart: kubernetes-agent-2.27.0
-      name: octopus-agent-pod-=template
+      name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
       replicas: 0
