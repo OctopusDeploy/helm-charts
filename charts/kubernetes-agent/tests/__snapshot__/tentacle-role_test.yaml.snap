@@ -17,6 +17,14 @@ should match snapshot:
         verbs:
           - '*'
       - apiGroups:
+          - apps
+        resources:
+          - deployments
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - agent.octopus.com
         resources:
           - '*'
