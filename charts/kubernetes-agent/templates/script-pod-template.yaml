@@ -19,7 +19,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-pod-=template" (include "kubernetes-agent.name" .)}}
+  name: {{ printf "%s-pod-template" (include "kubernetes-agent.name" .)}}
   namespace: {{ .Release.Namespace | quote }}
   labels:
     agent.octopus.com/podTemplate: "true"
