@@ -1,6 +1,6 @@
 {
   "name": "kubernetes-agent",
-  "version": "2.27.0",
+  "version": "2.28.0",
   "private": true,
   "description": "The Octopus Kubernetes Agent",
   "author": "Octopus Deploy Ptd Ltd",
