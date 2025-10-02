@@ -28,8 +28,8 @@ tests:
           path: metadata.name
           value: script-pod-disruption-budget
       - equal:
-          path: spec.maxUnavailable
-          value: 0
+          path: spec.minAvailable
+          value: 8888
       - equal:
           path: spec.selector.matchExpressions[0].key
           value: octopus.com/scriptTicketId

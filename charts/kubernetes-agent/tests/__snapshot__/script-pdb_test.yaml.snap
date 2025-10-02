@@ -6,7 +6,7 @@ should match snapshot:
       name: script-pod-disruption-budget
       namespace: NAMESPACE
     spec:
-      maxUnavailable: 0
+      minAvailable: 8888
       selector:
         matchExpressions:
           - key: octopus.com/scriptTicketId
