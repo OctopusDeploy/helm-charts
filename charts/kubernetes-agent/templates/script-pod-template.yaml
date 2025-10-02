@@ -1,5 +1,5 @@
-{{- if .Values.scriptPods.podTemplate.enabled -}}
-apiVersion: agent.octopus.com/v1beta1
+{{- if and (and .Values.scriptPods.podTemplate.enabled (not .Values.scriptPods.podTemplate.crdDisabled)) -}}
+apiVersion: apps/v1
 kind: ScriptPodTemplate
 metadata:
   name: {{ include "kubernetes-agent.name" . }}
@@ -15,4 +15,39 @@ spec:
     {{ toYaml .Values.scriptPods.podTemplate.scriptContainerSpec | nindent 4 }}
   watchdogContainerSpec:
     {{ toYaml .Values.scriptPods.podTemplate.watchdogContainerSpec | nindent 4 }}
+{{ else if and (and .Values.scriptPods.podTemplate.enabled .Values.scriptPods.podTemplate.crdDisabled) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-pod-=template" (include "kubernetes-agent.name" .)}}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    agent.octopus.com/podTemplate: "true"
+    {{- include "kubernetes-agent.labels" . | nindent 4 }}
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      agent.octopus.com/podTemplate: "true"
+  template:
+    metadata:
+    {{- $_ := set .Values.scriptPods.podTemplate.podMetadata.labels "agent.octopus.com/podTemplate" "true" -}}
+    {{- with .Values.scriptPods.podTemplate.podMetadata -}}
+    {{ toYaml . | nindent 6 }}
+    {{- end }}
+    spec:
+      {{- with (unset .Values.scriptPods.podTemplate.podSpec "containers") -}}
+      {{ toYaml . | nindent 6 }}
+      {{- end }}
+      containers:
+        - name: script-template
+          image: "registry.k8s.io/pause"
+          {{- with (unset .Values.scriptPods.podTemplate.scriptContainerSpec "image") -}}
+          {{ toYaml . | nindent 10 }}
+          {{- end }}
+        - name: watchdog-template
+          image: "registry.k8s.io/pause"
+          {{- with (unset .Values.scriptPods.podTemplate.watchdogContainerSpec "image") -}}
+          {{ toYaml . | nindent 10 }}
+          {{- end }}
 {{- end  -}}

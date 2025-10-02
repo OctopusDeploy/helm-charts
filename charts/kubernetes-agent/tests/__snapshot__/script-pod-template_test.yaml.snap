@@ -1,6 +1,48 @@
+Should render all options when crdDisabled is true:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        agent.octopus.com/podTemplate: "true"
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 8.3.3244
+        helm.sh/chart: kubernetes-agent-2.27.0
+      name: octopus-agent-pod-=template
+      namespace: NAMESPACE
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          agent.octopus.com/podTemplate: "true"
+      template:
+        metadata:
+          annotations:
+            custom-annotation: custom-value
+          labels:
+            agent.octopus.com/podTemplate: "true"
+            custom-label: custom-value
+        spec:
+          containers:
+            - image: registry.k8s.io/pause
+              name: script-template
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+            - image: registry.k8s.io/pause
+              name: watchdog-template
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+          nodeSelector:
+            disktype: ssd
 should match snapshot:
   1: |
-    apiVersion: agent.octopus.com/v1beta1
+    apiVersion: apps/v1
     kind: ScriptPodTemplate
     metadata:
       labels:
@@ -28,9 +70,45 @@ should match snapshot:
           limits:
             cpu: 500m
             memory: 256Mi
+should never have the containers key in the podSpec when crdDisabled is true:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        agent.octopus.com/podTemplate: "true"
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 8.3.3244
+        helm.sh/chart: kubernetes-agent-2.27.0
+      name: octopus-agent-pod-=template
+      namespace: NAMESPACE
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          agent.octopus.com/podTemplate: "true"
+      template:
+        metadata:
+          annotations: {}
+          labels:
+            agent.octopus.com/podTemplate: "true"
+        spec:
+          containers:
+            - image: registry.k8s.io/pause
+              name: script-template
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+            - image: registry.k8s.io/pause
+              name: watchdog-template
+          nodeSelector:
+            disktype: ssd
 should partially render successfully:
   1: |
-    apiVersion: agent.octopus.com/v1beta1
+    apiVersion: apps/v1
     kind: ScriptPodTemplate
     metadata:
       labels:
@@ -52,3 +130,37 @@ should partially render successfully:
             cpu: 500m
             memory: 256Mi
       watchdogContainerSpec: {}
+should render a deployment when crdDisabled is true:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        agent.octopus.com/podTemplate: "true"
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 8.3.3244
+        helm.sh/chart: kubernetes-agent-2.27.0
+      name: octopus-agent-pod-=template
+      namespace: NAMESPACE
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          agent.octopus.com/podTemplate: "true"
+      template:
+        metadata:
+          annotations: {}
+          labels:
+            agent.octopus.com/podTemplate: "true"
+        spec:
+          containers:
+            - image: registry.k8s.io/pause
+              name: script-template
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+            - image: registry.k8s.io/pause
+              name: watchdog-template
