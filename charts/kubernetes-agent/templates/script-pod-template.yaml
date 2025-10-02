@@ -1,4 +1,4 @@
-{{- if and (and .Values.scriptPods.podTemplate.enabled (not .Values.scriptPods.podTemplate.crdDisabled)) -}}
+{{- if (and .Values.scriptPods.podTemplate.enabled (not .Values.scriptPods.podTemplate.crdDisabled)) -}}
 apiVersion: apps/v1
 kind: ScriptPodTemplate
 metadata:
@@ -15,7 +15,7 @@ spec:
     {{ toYaml .Values.scriptPods.podTemplate.scriptContainerSpec | nindent 4 }}
   watchdogContainerSpec:
     {{ toYaml .Values.scriptPods.podTemplate.watchdogContainerSpec | nindent 4 }}
-{{ else if and (and .Values.scriptPods.podTemplate.enabled .Values.scriptPods.podTemplate.crdDisabled) -}}
+{{ else if (and .Values.scriptPods.podTemplate.enabled .Values.scriptPods.podTemplate.crdDisabled) -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
