@@ -15,6 +15,6 @@ dependencies:
     condition: kubernetesMonitor.enabled
     alias: kubernetesMonitor
 type: application
-version: "2.27.0"
+version: "2.28.0"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
 appVersion: "8.3.3244"
