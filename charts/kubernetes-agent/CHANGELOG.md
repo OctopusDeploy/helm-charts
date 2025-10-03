@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.28.1
+
+### Patch Changes
+
+- 9d80f54: Update versioning
+
 ## 2.28.0
 
 ### Minor Changes
