@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.28.0
+
+### Minor Changes
+
+- 2532879: Add support for non-crd usage of pod template
+
+### Patch Changes
+
+- 2f75973: Fix issues with pod disruption budget
+
 ## 2.27.0
 
 ### Minor Changes
