@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.29.0
+
+### Minor Changes
+
+- 52287e3: Update kubernetes monitor chart to v0.20.0
+
 ## 2.28.1
 
 ### Patch Changes
