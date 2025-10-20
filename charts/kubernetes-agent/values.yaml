@@ -10,442 +10,442 @@ imagePullSecrets: []
 #   - name: "registry-secret-name"
 
 agent:
-  # -- The name of the agent
-  # @section -- Agent values
-  name: ""
-  # -- Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal)
-  # @section -- Agent values
-  acceptEula: "N"
-  # -- The URL of the target Octopus Server to register this agent with
-  # @section -- Agent values
-  serverUrl: ""
-  # -- The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information.
-  # @section -- Agent values
-  serverCertificate: ""
-  # -- The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. Value must be set in `data.octopus-server-certificate.pem` in secret.
-  # @section -- Agent values
-  serverCertificateSecretName: ""
-  # -- The polling communication URL of the target Octopus Server
-  # @section -- Agent values
-  serverCommsAddress: ""
-  # -- The polling communication URLs of the target Octopus Servers when running in High Availability (HA)
-  # @section -- Agent values
-  serverCommsAddresses: []
-  # -- The subscription ID that is used to by the agent to identify itself with Octopus Server
-  # @section -- Agent values
-  serverSubscriptionId: ""
-  # -- A JWT bearer token used to authenticate with the target Octopus Server
-  # @section -- Agent values
-  bearerToken: ""
-  # -- The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in `data.bearer-token` in secret.
-  # @section -- Agent values
-  bearerTokenSecretName: ""
-  # -- An Octopus Server API key used to authenticate with the target Octopus Server
-  # @section -- Agent values
-  serverApiKey: ""
-  # -- The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret.
-  # @section -- Agent values
-  serverApiKeySecretName: ""
-  # -- The username of the user used to authenticate with the target Octopus Server
-  # @section -- Agent values
-  username: ""
-  # -- The password of the user used to authenticate with the target Octopus Server
-  # @section -- Agent values
-  password: ""
-  # -- The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret.
-  # @section -- Agent values
-  usernamePasswordSecretName: ""
-  # -- The Space to register the agent in
-  # @section -- Agent values
-  space: "Default"
-  # -- A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server
-  # @section -- Agent values
-  certificate: ""
-  # -- The machine policy to register the agent with
-  # @section -- Agent values
-  machinePolicyName: ""
-  # -- The log level of the agent. Logs are written to the pod logs as well as to file
-  # @section -- Agent values
-  logLevel: "Info"
-  # -- The number of polling TCP connections to open with the target Octopus Server
-  # @section -- Agent values
-  pollingConnectionCount: 5
-  # -- True if events should be scraped and added to the metrics config map
-  # @section -- Agent values
-  enableMetricsCapture: true
-
-  deploymentTarget:
-    # -- Set to register the agent as a Deployment Target using the provided initial values
-    # @section -- Agent as Deployment Target values
-    enabled: false
-    initial:
-      # -- The deployment target environments to register the agent with
-      # @section -- Agent as Deployment Target initial values
-      environments: []
-      # -- The deployment target tags to register the agent with
-      # @section -- Agent as Deployment Target initial values
-      tags: []
-      # -- Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`.
-      # @section -- Agent as Deployment Target initial values
-      tenantedDeploymentParticipation: "Untenanted"
-      # -- The deployment target tenants to register the agent with
-      # @section -- Agent as Deployment Target initial values
-      tenants: []
-      # -- The deployment target tenant tags to register the agent with
-      # @section -- Agent as Deployment Target initial values
-      tenantTags: []
-      # -- The default Kubernetes namespace for deployments
-      # @section -- Agent as Deployment Target initial values
-      defaultNamespace: ""
-
-  worker:
-    # -- Set to register the agent as a Worker using the provided initial values
-    # @section -- Agent as Worker values
-    enabled: false
-    initial:
-      # -- The worker pools to associate with the worker
-      # @section -- Agent as Worker initial values
-      workerPools: []
-
-  # -- The host, port, username and password of the proxy server to use for polling connections
-  # @section -- Agent values
-  pollingProxy:
-    host: ""
-    port: 80
-    username: ""
-    password: ""
-
-  # -- The repository, pullPolicy, tag & tagSuffix to use for the agent image
-  # @section -- Agent values
-  image:
-    repository: octopusdeploy/kubernetes-agent-tentacle
-    pullPolicy: IfNotPresent
-    tag: "8.3.3325"
-    tagSuffix: ""
-
-  # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
-  # @section -- Agent values
-  upgrade:
-    dockerAuth:
-      username: ""
-      password: ""
-      registry: ""
-
-  serviceAccount:
-    # -- The name of the service account for the agent pod
+    # -- The name of the agent
     # @section -- Agent values
-    # @default -- Generates a name based on `agent.name`
     name: ""
-    # -- Annotations to add to the autogenerated service account
+    # -- Setting to Y accepts the [Customer Agreement](https://octopus.com/company/legal)
     # @section -- Agent values
-    annotations: {}
+    acceptEula: "N"
+    # -- The URL of the target Octopus Server to register this agent with
+    # @section -- Agent values
+    serverUrl: ""
+    # -- The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information.
+    # @section -- Agent values
+    serverCertificate: ""
+    # -- The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. Value must be set in `data.octopus-server-certificate.pem` in secret.
+    # @section -- Agent values
+    serverCertificateSecretName: ""
+    # -- The polling communication URL of the target Octopus Server
+    # @section -- Agent values
+    serverCommsAddress: ""
+    # -- The polling communication URLs of the target Octopus Servers when running in High Availability (HA)
+    # @section -- Agent values
+    serverCommsAddresses: []
+    # -- The subscription ID that is used to by the agent to identify itself with Octopus Server
+    # @section -- Agent values
+    serverSubscriptionId: ""
+    # -- A JWT bearer token used to authenticate with the target Octopus Server
+    # @section -- Agent values
+    bearerToken: ""
+    # -- The name of an existing Secret that contains a base64-encoded Octopus Server JWT bearer token. Value must be set in `data.bearer-token` in secret.
+    # @section -- Agent values
+    bearerTokenSecretName: ""
+    # -- An Octopus Server API key used to authenticate with the target Octopus Server
+    # @section -- Agent values
+    serverApiKey: ""
+    # -- The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret.
+    # @section -- Agent values
+    serverApiKeySecretName: ""
+    # -- The username of the user used to authenticate with the target Octopus Server
+    # @section -- Agent values
+    username: ""
+    # -- The password of the user used to authenticate with the target Octopus Server
+    # @section -- Agent values
+    password: ""
+    # -- The name of an existing Secret that contains a base64-encoded username and password for an Octopus Server user. Values must be set in `data.username` and `data.password` in secret.
+    # @section -- Agent values
+    usernamePasswordSecretName: ""
+    # -- The Space to register the agent in
+    # @section -- Agent values
+    space: "Default"
+    # -- A base64-encoded x509 certificate used to setup a trust between the agent and target Octopus Server
+    # @section -- Agent values
+    certificate: ""
+    # -- The machine policy to register the agent with
+    # @section -- Agent values
+    machinePolicyName: ""
+    # -- The log level of the agent. Logs are written to the pod logs as well as to file
+    # @section -- Agent values
+    logLevel: "Info"
+    # -- The number of polling TCP connections to open with the target Octopus Server
+    # @section -- Agent values
+    pollingConnectionCount: 5
+    # -- True if events should be scraped and added to the metrics config map
+    # @section -- Agent values
+    enableMetricsCapture: true
 
-  # -- Additional metadata to add to the agent pod & container
-  # @section -- Agent values
-  metadata:
-    annotations: {}
-    labels: {}
+    deploymentTarget:
+        # -- Set to register the agent as a Deployment Target using the provided initial values
+        # @section -- Agent as Deployment Target values
+        enabled: false
+        initial:
+            # -- The deployment target environments to register the agent with
+            # @section -- Agent as Deployment Target initial values
+            environments: []
+            # -- The deployment target tags to register the agent with
+            # @section -- Agent as Deployment Target initial values
+            tags: []
+            # -- Can be `Untenanted`, `TenantedOrUntenanted` or `Tenanted`.
+            # @section -- Agent as Deployment Target initial values
+            tenantedDeploymentParticipation: "Untenanted"
+            # -- The deployment target tenants to register the agent with
+            # @section -- Agent as Deployment Target initial values
+            tenants: []
+            # -- The deployment target tenant tags to register the agent with
+            # @section -- Agent as Deployment Target initial values
+            tenantTags: []
+            # -- The default Kubernetes namespace for deployments
+            # @section -- Agent as Deployment Target initial values
+            defaultNamespace: ""
 
-  # -- The resource limits and requests assigned to the agent container
-  # @section -- Agent values
-  resources:
-    requests:
-      memory: "150Mi"
-      cpu: "100m"
+    worker:
+        # -- Set to register the agent as a Worker using the provided initial values
+        # @section -- Agent as Worker values
+        enabled: false
+        initial:
+            # -- The worker pools to associate with the worker
+            # @section -- Agent as Worker initial values
+            workerPools: []
 
-  # -- The tolerations to apply to the agent pod
-  # @section -- Agent values
-  tolerations: []
+    # -- The host, port, username and password of the proxy server to use for polling connections
+    # @section -- Agent values
+    pollingProxy:
+        host: ""
+        port: 80
+        username: ""
+        password: ""
 
-  # -- The affinities to apply to the agent pod
-  # @section -- Agent values
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/os
-                operator: In
-                values:
-                  - linux
-              - key: kubernetes.io/arch
-                operator: In
-                values:
-                  - arm64
-                  - amd64
+    # -- The repository, pullPolicy, tag & tagSuffix to use for the agent image
+    # @section -- Agent values
+    image:
+        repository: octopusdeploy/kubernetes-agent-tentacle
+        pullPolicy: IfNotPresent
+        tag: "8.3.3359"
+        tagSuffix: ""
 
-  preinstall:
+    # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
+    # @section -- Agent values
+    upgrade:
+        dockerAuth:
+            username: ""
+            password: ""
+            registry: ""
+
     serviceAccount:
-      # -- The name of the service account for the agent pre-install registration pod
-      # @section -- Agent values
-      # @default -- Generates a name based on `agent.serviceAccount.name`, appending `-pre`
-      name: ""
-      # -- Annotations to add to the autogenerated pre-install registration service account
-      # @section -- Agent values
-      annotations: {}
+        # -- The name of the service account for the agent pod
+        # @section -- Agent values
+        # @default -- Generates a name based on `agent.name`
+        name: ""
+        # -- Annotations to add to the autogenerated service account
+        # @section -- Agent values
+        annotations: {}
 
-  # -- The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0`
-  # @section -- Agent values
-  securityContext: {}
-
-  debug:
-    # -- Disables automatic pod cleanup
+    # -- Additional metadata to add to the agent pod & container
     # @section -- Agent values
-    disableAutoPodCleanup: false
+    metadata:
+        annotations: {}
+        labels: {}
+
+    # -- The resource limits and requests assigned to the agent container
+    # @section -- Agent values
+    resources:
+        requests:
+            memory: "150Mi"
+            cpu: "100m"
+
+    # -- The tolerations to apply to the agent pod
+    # @section -- Agent values
+    tolerations: []
+
+    # -- The affinities to apply to the agent pod
+    # @section -- Agent values
+    affinity:
+        nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                    - matchExpressions:
+                          - key: kubernetes.io/os
+                            operator: In
+                            values:
+                                - linux
+                          - key: kubernetes.io/arch
+                            operator: In
+                            values:
+                                - arm64
+                                - amd64
+
+    preinstall:
+        serviceAccount:
+            # -- The name of the service account for the agent pre-install registration pod
+            # @section -- Agent values
+            # @default -- Generates a name based on `agent.serviceAccount.name`, appending `-pre`
+            name: ""
+            # -- Annotations to add to the autogenerated pre-install registration service account
+            # @section -- Agent values
+            annotations: {}
+
+    # -- The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0`
+    # @section -- Agent values
+    securityContext: {}
+
+    debug:
+        # -- Disables automatic pod cleanup
+        # @section -- Agent values
+        disableAutoPodCleanup: false
 
 # @section -- Script pod values
 scriptPods:
-  # -- If true, the script pods will be created with a disruption budget to prevent them from being evicted
-  # @section -- Script pod values
-  disruptionBudgetEnabled: true
+    # -- If true, the script pods will be created with a disruption budget to prevent them from being evicted
+    # @section -- Script pod values
+    disruptionBudgetEnabled: true
 
-  # -- Additional metadata to add to script pods
-  # @section -- Script pod values
-  metadata:
-    annotations: {}
-    labels: {}
+    # -- Additional metadata to add to script pods
+    # @section -- Script pod values
+    metadata:
+        annotations: {}
+        labels: {}
 
-  # -- The resource limits and requests assigned to script pod containers
-  # @section -- Script pod values
-  resources:
-    requests:
-      memory: "100Mi"
-      cpu: "25m"
+    # -- The resource limits and requests assigned to script pod containers
+    # @section -- Script pod values
+    resources:
+        requests:
+            memory: "100Mi"
+            cpu: "25m"
 
-  serviceAccount:
-    # -- The name of the service account used for executing script pods
-    # @section -- Script pod values
-    name: ""
-    # -- Annotations to add to the service account
-    # @section -- Script pod values
-    annotations: {}
+    serviceAccount:
+        # -- The name of the service account used for executing script pods
+        # @section -- Script pod values
+        name: ""
+        # -- Annotations to add to the service account
+        # @section -- Script pod values
+        annotations: {}
 
-    # -- Use namespace-scoped Roles instead of ClusterRoles
-    # @section -- Script pod values
-    useNamespacedRoles: false
+        # -- Use namespace-scoped Roles instead of ClusterRoles
+        # @section -- Script pod values
+        useNamespacedRoles: false
 
-    # -- Specifies that the pod service account should be constrained to target namespaces
-    # @section -- Script pod values
-    # @default -- Uses a ClusterRoleBinding to allow the service account to run in any namespace
-    targetNamespaces: []
+        # -- Specifies that the pod service account should be constrained to target namespaces
+        # @section -- Script pod values
+        # @default -- Uses a ClusterRoleBinding to allow the service account to run in any namespace
+        targetNamespaces: []
 
-    # -- if defined, overrides the default ClusterRole rules
-    # @section -- Script pod values
-    # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
-    clusterRole:
-      rules: []
+        # -- if defined, overrides the default ClusterRole rules
+        # @section -- Script pod values
+        # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
+        clusterRole:
+            rules: []
 
-    # -- if defined, overrides the default Role rules when using namespace-scoped roles
-    # @section -- Script pod values
-    # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
-    roleRules: []
+        # -- if defined, overrides the default Role rules when using namespace-scoped roles
+        # @section -- Script pod values
+        # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+        roleRules: []
 
-  # -- The tolerations to apply to script pods
-  # @section -- Script pod values
-  tolerations: []
+    # -- The tolerations to apply to script pods
+    # @section -- Script pod values
+    tolerations: []
 
-  # -- The affinities to apply to script pods
-  # @section -- Script pod values
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/os
-                operator: In
-                values:
-                  - linux
-              - key: kubernetes.io/arch
-                operator: In
-                values:
-                  - arm64
-                  - amd64
+    # -- The affinities to apply to script pods
+    # @section -- Script pod values
+    affinity:
+        nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                    - matchExpressions:
+                          - key: kubernetes.io/os
+                            operator: In
+                            values:
+                                - linux
+                          - key: kubernetes.io/arch
+                            operator: In
+                            values:
+                                - arm64
+                                - amd64
 
-  # -- The security context to apply to the script pods
-  # @section -- Script pod values
-  securityContext: {}
+    # -- The security context to apply to the script pods
+    # @section -- Script pod values
+    securityContext: {}
 
-  deploymentTarget:
-    # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target
-    # @section -- Script pod values
-    image:
-      repository: ""
-      pullPolicy: ""
-      tag: ""
+    deploymentTarget:
+        # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target
+        # @section -- Script pod values
+        image:
+            repository: ""
+            pullPolicy: ""
+            tag: ""
 
-  worker:
-    # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a worker
-    # @section -- Script pod values
-    image:
-      repository: octopusdeploy/worker-tools
-      pullPolicy: IfNotPresent
-      tag: "ubuntu.22.04"
+    worker:
+        # -- The repository, pullPolicy & tag to use for the script pod image when the agent is a worker
+        # @section -- Script pod values
+        image:
+            repository: octopusdeploy/worker-tools
+            pullPolicy: IfNotPresent
+            tag: "ubuntu.22.04"
 
-  logging:
-    # -- Disables script pod events being written to Octopus Server task log
-    # @section -- Script pod values
-    disablePodEventsInTaskLog: false
+    logging:
+        # -- Disables script pod events being written to Octopus Server task log
+        # @section -- Script pod values
+        disablePodEventsInTaskLog: false
 
-  proxies:
-    # -- The URI of the HTTP proxy server to be used during script operations
-    # @section -- Script pod values
-    http_proxy: ""
-    # -- The URI of the HTTPS proxy server to be used during script operations
-    # @section -- Script pod values
-    https_proxy: ""
-    # -- A comma-separated list of host names or IP addresses that should not go through any proxy
-    # @section -- Script pod values
-    no_proxy: ""
+    proxies:
+        # -- The URI of the HTTP proxy server to be used during script operations
+        # @section -- Script pod values
+        http_proxy: ""
+        # -- The URI of the HTTPS proxy server to be used during script operations
+        # @section -- Script pod values
+        https_proxy: ""
+        # -- A comma-separated list of host names or IP addresses that should not go through any proxy
+        # @section -- Script pod values
+        no_proxy: ""
 
-  podTemplate:
-    # -- If enabled, creates a `ScriptPodTemplate` custom resource to define the template used for script pods
-    # -- overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster
-    # @section -- Script pod values
-    enabled: false
-    # -- Pod spec for the `ScriptPodTemplate`
-    # @section -- Script pod values
-    podSpec: {}
-    # -- Pod metadata for the `ScriptPodTemplate`
-    # @section -- Script pod values
-    podMetadata:
-      annotations: {}
-      labels: {}
-    # -- Script container spec for the `ScriptPodTemplate`
-    # @section -- Script pod values
-    scriptContainerSpec: {}
-    # -- Watchdog container spec for the `ScriptPodTemplate`
-    # @section -- Script pod values
-    watchdogContainerSpec: {}
+    podTemplate:
+        # -- If enabled, creates a `ScriptPodTemplate` custom resource to define the template used for script pods
+        # -- overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster
+        # @section -- Script pod values
+        enabled: false
+        # -- Pod spec for the `ScriptPodTemplate`
+        # @section -- Script pod values
+        podSpec: {}
+        # -- Pod metadata for the `ScriptPodTemplate`
+        # @section -- Script pod values
+        podMetadata:
+            annotations: {}
+            labels: {}
+        # -- Script container spec for the `ScriptPodTemplate`
+        # @section -- Script pod values
+        scriptContainerSpec: {}
+        # -- Watchdog container spec for the `ScriptPodTemplate`
+        # @section -- Script pod values
+        watchdogContainerSpec: {}
 
 # @section -- Persistence
 persistence:
-  # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class
-  # @section -- Persistence
-  storageClassName: ""
-
-  # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
-  # @section -- Persistence
-  volumeName: ""
-
-  # -- The size of the volume to create
-  # @section -- Persistence
-  size: 10Gi
-
-  # -- The NFS server PV reclaim policy
-  # @section -- Persistence
-  persistentVolumeReclaimPolicy: Retain
-
-  nfs:
-    # -- The repository, pullPolicy & tag to use for the NFS server
+    # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class
     # @section -- Persistence
-    image:
-      repository: octopusdeploy/nfs-server
-      pullPolicy: IfNotPresent
-      tag: "1.1.0"
+    storageClassName: ""
 
-    backingVolume:
-      # -- The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used
-      # @section -- Persistence
-      storageClassName: ""
-
-      # -- The access modes to use for the NFS Server's backing storage
-      # @section -- Persistence
-      accessModes: ["ReadWriteOnce"]
-
-    # -- Additional metadata to add to the NFS pod & container
+    # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
     # @section -- Persistence
-    metadata:
-      annotations: {}
-      labels: {}
+    volumeName: ""
 
-    # -- The tolerations to apply to the NFS pod
+    # -- The size of the volume to create
     # @section -- Persistence
-    tolerations: []
+    size: 10Gi
 
-    # -- The affinities to apply to the NFS pod
+    # -- The NFS server PV reclaim policy
     # @section -- Persistence
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/os
-                  operator: In
-                  values:
-                    - linux
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64
-                    - amd64
+    persistentVolumeReclaimPolicy: Retain
 
-    watchdog:
-      # -- If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive
-      # @section -- Persistence
-      enabled: true
-      # -- The frequency in seconds to check the NFS server
-      # @section -- Persistence
-      # @default 5
-      loop_seconds: ""
-      # -- The initial backoff time in seconds to retry failed NFS checks
-      # @section -- Persistence
-      # @default 0.5
-      initial_backoff_seconds: ""
-      # -- The total time to retry failed NFS checks before giving up and deleting the pod
-      # @section -- Persistence
-      # @default 10
-      timeout_seconds: ""
-      # -- The repository, pullPolicy & tag to use for the NFS watchdog
-      # @section -- Persistence
-      image:
-        repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-        pullPolicy: IfNotPresent
-        tag: "0.2.0"
+    nfs:
+        # -- The repository, pullPolicy & tag to use for the NFS server
+        # @section -- Persistence
+        image:
+            repository: octopusdeploy/nfs-server
+            pullPolicy: IfNotPresent
+            tag: "1.1.0"
 
-  # DO NOT USE THIS, it is not a supported configuration for customers and is only to be used by Octopus Developers
-  # @ignored
-  accessModes: ["ReadWriteMany"]
+        backingVolume:
+            # -- The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used
+            # @section -- Persistence
+            storageClassName: ""
+
+            # -- The access modes to use for the NFS Server's backing storage
+            # @section -- Persistence
+            accessModes: ["ReadWriteOnce"]
+
+        # -- Additional metadata to add to the NFS pod & container
+        # @section -- Persistence
+        metadata:
+            annotations: {}
+            labels: {}
+
+        # -- The tolerations to apply to the NFS pod
+        # @section -- Persistence
+        tolerations: []
+
+        # -- The affinities to apply to the NFS pod
+        # @section -- Persistence
+        affinity:
+            nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                    nodeSelectorTerms:
+                        - matchExpressions:
+                              - key: kubernetes.io/os
+                                operator: In
+                                values:
+                                    - linux
+                              - key: kubernetes.io/arch
+                                operator: In
+                                values:
+                                    - arm64
+                                    - amd64
+
+        watchdog:
+            # -- If enabled, the NFS watchdog will monitor NFS availability and restart Tentacle and Script Pods if the NFS server is unresponsive
+            # @section -- Persistence
+            enabled: true
+            # -- The frequency in seconds to check the NFS server
+            # @section -- Persistence
+            # @default 5
+            loop_seconds: ""
+            # -- The initial backoff time in seconds to retry failed NFS checks
+            # @section -- Persistence
+            # @default 0.5
+            initial_backoff_seconds: ""
+            # -- The total time to retry failed NFS checks before giving up and deleting the pod
+            # @section -- Persistence
+            # @default 10
+            timeout_seconds: ""
+            # -- The repository, pullPolicy & tag to use for the NFS watchdog
+            # @section -- Persistence
+            image:
+                repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+                pullPolicy: IfNotPresent
+                tag: "0.2.0"
+
+    # DO NOT USE THIS, it is not a supported configuration for customers and is only to be used by Octopus Developers
+    # @ignored
+    accessModes: ["ReadWriteMany"]
 
 # @section -- Auto-upgrader configuration
 autoUpgrader:
-  # -- Rules for managing the agent in its own namespace when using namespace-scoped roles
-  # @section -- Auto-upgrader configuration
-  selfNamespaceRoleRules:
-    - apiGroups: ["*"]
-      resources: ["*"]
-      verbs: ["*"]
-  # -- Rules for managing script pod roles in target namespaces when using namespace-scoped roles
-  # @section -- Auto-upgrader configuration
-  targetNamespaceRoleRules:
-    - apiGroups: ["rbac.authorization.k8s.io"]
-      resources: ["roles", "rolebindings"]
-      verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
-    - apiGroups: ["rbac.authorization.k8s.io"]
-      resources: ["roles"]
-      verbs: ["escalate"]
+    # -- Rules for managing the agent in its own namespace when using namespace-scoped roles
+    # @section -- Auto-upgrader configuration
+    selfNamespaceRoleRules:
+        - apiGroups: ["*"]
+          resources: ["*"]
+          verbs: ["*"]
+    # -- Rules for managing script pod roles in target namespaces when using namespace-scoped roles
+    # @section -- Auto-upgrader configuration
+    targetNamespaceRoleRules:
+        - apiGroups: ["rbac.authorization.k8s.io"]
+          resources: ["roles", "rolebindings"]
+          verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
+        - apiGroups: ["rbac.authorization.k8s.io"]
+          resources: ["roles"]
+          verbs: ["escalate"]
 
 # Used to enable the Kubernetes Monitor
 # @ignored
 kubernetesMonitor:
-  enabled: false
+    enabled: false
 
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored
 testing:
-  tentacle:
-    configMap:
-      data: {}
+    tentacle:
+        configMap:
+            data: {}
 
 global:
-  # -- The URL of the target Octopus Server to register this agent with
-  # -- This is overridden by agent.serverUrl if both are set
-  # @section -- Globals
-  serverApiUrl: ""
-  # -- The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information.
-  # -- This is overridden by agent.serverCertificate if both are set
-  # @section -- Globals
-  serverCertificate: ""
-  # -- The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. Value must be set in `data.octopus-server-certificate.pem` in secret.
-  # -- This is overridden by agent.serverCertificateSecretName if both are set
-  # @section -- Globals
-  serverCertificateSecretName: ""
+    # -- The URL of the target Octopus Server to register this agent with
+    # -- This is overridden by agent.serverUrl if both are set
+    # @section -- Globals
+    serverApiUrl: ""
+    # -- The base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. See [documentation](https://octopus.com/docs/kubernetes/targets/kubernetes-agent#trusting-custominternal-octopus-server-certificates) for more information.
+    # -- This is overridden by agent.serverCertificate if both are set
+    # @section -- Globals
+    serverCertificate: ""
+    # -- The name of a secret containing the base64-encoded public key of the self-signed x509 certificate or root CA certificate used by the target Octopus Server. Must be in the PEM/CER format. Value must be set in `data.octopus-server-certificate.pem` in secret.
+    # -- This is overridden by agent.serverCertificateSecretName if both are set
+    # @section -- Globals
+    serverCertificateSecretName: ""

@@ -3,18 +3,18 @@ name: kubernetes-agent
 description: A Helm chart for the Octopus Kubernetes Agent
 home: "https://octopus.com"
 sources:
-  - "https://github.com/OctopusDeploy/helm-charts"
+    - "https://github.com/OctopusDeploy/helm-charts"
 maintainers:
-  - name: "Octopus Deploy"
-    email: "support@octopus.com"
-    url: "https://octopus.com"
+    - name: "Octopus Deploy"
+      email: "support@octopus.com"
+      url: "https://octopus.com"
 dependencies:
-  - name: kubernetes-monitor-chart
-    version: "0.20.0"
-    repository: "oci://docker.io/octopusdeploy"
-    condition: kubernetesMonitor.enabled
-    alias: kubernetesMonitor
+    - name: kubernetes-monitor-chart
+      version: "0.20.0"
+      repository: "oci://docker.io/octopusdeploy"
+      condition: kubernetesMonitor.enabled
+      alias: kubernetesMonitor
 type: application
 version: "2.29.0"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
-appVersion: "8.3.3325"
+appVersion: "8.3.3359"
