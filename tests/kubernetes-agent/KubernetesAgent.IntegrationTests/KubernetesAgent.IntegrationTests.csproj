@@ -11,10 +11,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="Octopus.Client" Version="14.3.1463" />
-        <PackageReference Include="Octopus.Tentacle.Client" Version="8.1.1819" />
+        <PackageReference Include="Octopus.Client" Version="17.15.2394" />
+        <PackageReference Include="Octopus.Tentacle.Client" Version="8.3.3359" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
         <PackageReference Include="xunit" Version="2.5.3"/>
