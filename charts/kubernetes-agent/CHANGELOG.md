@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.30.0
+
+### Minor Changes
+
+- 610c30e: Add support for blocking upgrades of Kubernetes Agent versions in Machine Policy
+
 ## 2.29.0
 
 ### Minor Changes
