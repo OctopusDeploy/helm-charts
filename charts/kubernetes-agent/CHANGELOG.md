@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 2.31.0
+
+### Minor Changes
+
+- a4f8661: Update kubernetes monitor chart to v0.21.0
+  - Improve startup logs
+
 ## 2.30.0
 
 ### Minor Changes
