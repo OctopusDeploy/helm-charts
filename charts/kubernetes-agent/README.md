@@ -123,7 +123,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 | global.serverApiUrl | string | `""` | This is overridden by agent.serverUrl if both are set |
 | global.serverCertificate | string | `""` | This is overridden by agent.serverCertificate if both are set |
 | global.serverCertificateSecretName | string | `""` | This is overridden by agent.serverCertificateSecretName if both are set |
-| global.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
+| global.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | This is overridden by scriptPods.serviceAccount.targetNamespaces if both are set |
 
 ### Persistence
 
