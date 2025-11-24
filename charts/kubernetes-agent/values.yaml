@@ -233,6 +233,7 @@ scriptPods:
     # @section -- Script pod values
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
     clusterRole:
+      enabled: true
       rules: []
 
     # -- if defined, overrides the default Role rules when using namespace-scoped roles
