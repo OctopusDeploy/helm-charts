@@ -16,10 +16,7 @@ rules:
 {{- $podServiceAccountName := include "kubernetes-agent.scriptPodServiceAccountName" . -}}
 {{- $podServiceAccountFullName := include "kubernetes-agent.scriptPodServiceAccountFullName" . -}}
 {{- $podRoleName := include "kubernetes-agent.scriptPodRoleName" . -}}
-{{- $targetNamespaces := .Values.scriptPods.serviceAccount.targetNamespaces -}}
-{{- if not $targetNamespaces }}
-{{- $targetNamespaces = .Values.global.targetNamespaces -}}
-{{- end }}
+{{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . -}}
 
 {{- if and .Values.scriptPods.serviceAccount.useNamespacedRoles $targetNamespaces }}
 {{- range $targetNamespace := $targetNamespaces }}

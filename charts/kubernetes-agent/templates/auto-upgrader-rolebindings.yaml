@@ -2,10 +2,7 @@
 {{- $autoUpgraderServiceAccountName := include "kubernetes-agent.autoUpgraderServiceAccountName" . -}}
 {{- $autoUpgraderSelfRoleName := include "kubernetes-agent.autoUpgraderSelfRoleName" . -}}
 {{- $autoUpgraderTargetRoleName := include "kubernetes-agent.autoUpgraderTargetRoleName" . -}}
-{{- $targetNamespaces := .Values.scriptPods.serviceAccount.targetNamespaces -}}
-{{- if not $targetNamespaces }}
-{{- $targetNamespaces = .Values.global.targetNamespaces -}}
-{{- end }}
+{{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . -}}
 
 # RoleBinding for managing the agent in its own namespace
 ---

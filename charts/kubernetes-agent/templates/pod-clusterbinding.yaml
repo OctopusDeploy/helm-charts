@@ -1,4 +1,4 @@
-{{- if  and (empty .Values.scriptPods.serviceAccount.targetNamespaces) (not .Values.agent.worker.enabled) (not .Values.scriptPods.serviceAccount.useNamespacedRoles) }}
+{{- if  and (empty (include "kubernetes-agent.targetNamespaces" .)) (not .Values.agent.worker.enabled) (not .Values.scriptPods.serviceAccount.useNamespacedRoles) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

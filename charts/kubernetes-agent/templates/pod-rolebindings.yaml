@@ -3,10 +3,7 @@
 {{- $podClusterRoleName := include "kubernetes-agent.scriptPodClusterRoleName" . -}}
 {{- $podRoleName := include "kubernetes-agent.scriptPodRoleName" . -}}
 {{- $podDeleterClusterRoleName := include "kubernetes-agent.scriptPodDeleterClusterRoleName" . -}}
-{{- $targetNamespaces := .Values.scriptPods.serviceAccount.targetNamespaces -}}
-{{- if not $targetNamespaces }}
-{{- $targetNamespaces = .Values.global.targetNamespaces -}}
-{{- end }}
+{{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . -}}
 
 {{- if .Values.agent.deploymentTarget.enabled }}
 {{- range $targetNamespace := $targetNamespaces }}
