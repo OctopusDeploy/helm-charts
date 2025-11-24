@@ -21,6 +21,7 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | global.serverApiUrl | string | `""` | This is overridden by registration.serverApiUrl if both are set |
 | global.serverCertificate | string | `""` | This is overridden by registration.serverCertificate if both are set |
 | global.serverCertificateSecretName | string | `""` | This is overridden by registration.serverCertificateSecretName if both are set |
+| global.targetNamespaces | list | `[]` | A list of namespaces that the monitor should monitor. If empty, all namespaces are monitored. |
 
 ### Monitor
 
