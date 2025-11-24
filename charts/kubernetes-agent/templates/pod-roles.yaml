@@ -18,7 +18,7 @@ rules:
 {{- $podRoleName := include "kubernetes-agent.scriptPodRoleName" . -}}
 {{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . | fromJsonArray -}}
 
-{{- if and .Values.scriptPods.serviceAccount.useNamespacedRoles (not empty $targetNamespaces) }}
+{{- if and .Values.scriptPods.serviceAccount.useNamespacedRoles (not (empty $targetNamespaces)) }}
 {{- range $targetNamespace := $targetNamespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
