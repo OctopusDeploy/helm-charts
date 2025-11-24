@@ -1,7 +1,7 @@
 {{- if .Values.scriptPods.serviceAccount.useNamespacedRoles }}
 {{- $autoUpgraderSelfRoleName := include "kubernetes-agent.autoUpgraderSelfRoleName" . -}}
 {{- $autoUpgraderTargetRoleName := include "kubernetes-agent.autoUpgraderTargetRoleName" . -}}
-{{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . -}}
+{{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . | fromJsonArray -}}
 
 # Role for managing the agent in its own namespace
 ---
@@ -19,7 +19,7 @@ rules:
   verbs: ["*"]
 {{- end }}
 
-{{- if $targetNamespaces }}
+{{- if not (empty $targetNamespaces) }}
 # Roles for managing script pod roles/rolebindings in target namespaces
 {{- range $targetNamespace := $targetNamespaces }}
 ---
