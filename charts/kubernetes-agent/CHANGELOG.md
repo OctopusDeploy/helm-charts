@@ -1,5 +1,16 @@
 # kubernetes-agent
 
+## 2.32.0
+
+### Minor Changes
+
+- ab7765d: Add explicit cluster role enabled value
+- de26b67: Add globals for targetNamespaces
+
+### Patch Changes
+
+- 9111403: Update kubernetes monitor chart to v0.22.0
+
 ## 2.31.0
 
 ### Minor Changes
