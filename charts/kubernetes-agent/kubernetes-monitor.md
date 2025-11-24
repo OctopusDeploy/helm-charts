@@ -2,6 +2,8 @@
 
 The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-monitor), where you can pull it using Helm.
 
+The source code for the chart can be found at [here](./charts/kubernetes-monitor).
+
 ## Versions
 
 The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.org/). Generally, version updates can be interpreted as follows:
@@ -9,6 +11,12 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 - *major* - Breaking changes to the chart. This may include adding or removing of resources, breaking changes in the Kubernetes monitor application image or breaking changes to the structure of the `values.yaml`.
 - *minor* - New non-breaking features. New features or improvements to the Kubernetes monitor application or helm chart itself.
 - *patch* - Minor non-breaking bug fixes or changes that do not introduce new features.
+
+The `main` branch will reflect the current development version of the chart. This may be the latest released version or if a new version is in development, may be a pre-release version.
+
+| Version   | Branch                                                                                                                               | Readme                                                                                                                  | values.yaml                                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 0         | [main](https://github.com/OctopusDeploy/lobster-watcher/tree/main/charts/kubernetes-monitor)                                            | This file                                                                                                               | [here](./values.yaml)                                                                                                     |
 
 ----------------------------------------------
 
@@ -21,6 +29,7 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | global.serverApiUrl | string | `""` | This is overridden by registration.serverApiUrl if both are set |
 | global.serverCertificate | string | `""` | This is overridden by registration.serverCertificate if both are set |
 | global.serverCertificateSecretName | string | `""` | This is overridden by registration.serverCertificateSecretName if both are set |
+| global.targetNamespaces | list | `[]` | A list of namespaces that the monitor should monitor. If empty, all namespaces are monitored. |
 
 ### Monitor
 
