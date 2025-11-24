@@ -2,10 +2,11 @@
 {{- $podServiceAccountFullName := include "kubernetes-agent.scriptPodServiceAccountFullName" . -}}
 {{- $podClusterRoleName := include "kubernetes-agent.scriptPodClusterRoleName" . -}}
 {{- $podRoleName := include "kubernetes-agent.scriptPodRoleName" . -}}
-{{- $podDeleterClusterRoleName := include "kubernetes-agent.scriptPodDeleterClusterRoleName" . -}}  
+{{- $podDeleterClusterRoleName := include "kubernetes-agent.scriptPodDeleterClusterRoleName" . -}}
+{{- $targetNamespaces := include "kubernetes-agent.targetNamespaces" . | fromJsonArray -}}
 
 {{- if .Values.agent.deploymentTarget.enabled }}
-{{- range $targetNamespace := $.Values.scriptPods.serviceAccount.targetNamespaces }}
+{{- range $targetNamespace := $targetNamespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -25,7 +26,7 @@ roleRef:
   name: {{ $podClusterRoleName }}
   {{- end }}
   apiGroup: rbac.authorization.k8s.io
-{{- end -}}
+{{- end }}
 {{- end -}}
 {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
 ---
