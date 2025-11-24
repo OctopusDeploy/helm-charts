@@ -1,6 +1,10 @@
 {{- if .Values.scriptPods.serviceAccount.useNamespacedRoles }}
 {{- $autoUpgraderSelfRoleName := include "kubernetes-agent.autoUpgraderSelfRoleName" . -}}
 {{- $autoUpgraderTargetRoleName := include "kubernetes-agent.autoUpgraderTargetRoleName" . -}}
+{{- $targetNamespaces := .Values.scriptPods.serviceAccount.targetNamespaces -}}
+{{- if not $targetNamespaces }}
+{{- $targetNamespaces = .Values.global.targetNamespaces -}}
+{{- end }}
 
 # Role for managing the agent in its own namespace
 ---
@@ -18,9 +22,9 @@ rules:
   verbs: ["*"]
 {{- end }}
 
-{{- if .Values.scriptPods.serviceAccount.targetNamespaces }}
+{{- if $targetNamespaces }}
 # Roles for managing script pod roles/rolebindings in target namespaces
-{{- range $targetNamespace := $.Values.scriptPods.serviceAccount.targetNamespaces }}
+{{- range $targetNamespace := $targetNamespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role

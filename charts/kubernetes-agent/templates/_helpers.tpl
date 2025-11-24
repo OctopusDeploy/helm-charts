@@ -305,3 +305,27 @@ The server API url - the global is used unless overridden by the value in values
 {{- .Values.global.serverApiUrl }}
 {{- end }}
 {{- end }}
+
+{{/*
+Check if target namespaces are configured (either local or global)
+Returns "true" if configured, empty string otherwise
+*/}}
+{{- define "kubernetes-agent.hasTargetNamespaces" -}}
+{{- if gt (len .Values.scriptPods.serviceAccount.targetNamespaces) 0 }}
+true
+{{- else if gt (len .Values.global.targetNamespaces) 0 }}
+true
+{{- end }}
+{{- end }}
+
+{{/*
+The target namespaces - the global is used unless overridden by the value in values.yaml
+Returns the actual list (not as string)
+*/}}
+{{- define "kubernetes-agent.targetNamespaces" -}}
+{{- if gt (len .Values.scriptPods.serviceAccount.targetNamespaces) 0 }}
+{{- .Values.scriptPods.serviceAccount.targetNamespaces }}
+{{- else }}
+{{- .Values.global.targetNamespaces }}
+{{- end }}
+{{- end }}

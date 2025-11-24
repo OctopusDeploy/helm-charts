@@ -1,0 +1,162 @@
+suite: "global targetNamespaces"
+templates:
+- templates/pod-rolebindings.yaml
+- templates/pod-roles.yaml
+- templates/auto-upgrader-rolebindings.yaml
+- templates/auto-upgrader-roles.yaml
+tests:
+- it: "uses global targetNamespaces when local is not set"
+  set:
+    global:
+      targetNamespaces: ["global-ns-1", "global-ns-2"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
+    agent.deploymentTarget.enabled: true
+    persistence.nfs.watchdog.enabled: false
+  template: templates/pod-rolebindings.yaml
+  asserts:
+  - hasDocuments:
+      count: 2
+  - equal:
+      path: metadata.namespace
+      value: global-ns-1
+    documentIndex: 0
+  - equal:
+      path: metadata.namespace
+      value: global-ns-2
+    documentIndex: 1
+
+- it: "local targetNamespaces override global"
+  set:
+    global:
+      targetNamespaces: ["global-ns-1", "global-ns-2"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: ["local-ns-1", "local-ns-2", "local-ns-3"]
+    agent.deploymentTarget.enabled: true
+    persistence.nfs.watchdog.enabled: false
+  template: templates/pod-rolebindings.yaml
+  asserts:
+  - hasDocuments:
+      count: 3
+  - equal:
+      path: metadata.namespace
+      value: local-ns-1
+    documentIndex: 0
+  - equal:
+      path: metadata.namespace
+      value: local-ns-2
+    documentIndex: 1
+  - equal:
+      path: metadata.namespace
+      value: local-ns-3
+    documentIndex: 2
+
+- it: "creates no rolebindings when both global and local are empty"
+  set:
+    global:
+      targetNamespaces: []
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
+    agent.deploymentTarget.enabled: true
+  template: templates/pod-rolebindings.yaml
+  asserts:
+  - hasDocuments:
+      count: 1
+
+- it: "global targetNamespaces work with namespace-scoped roles"
+  set:
+    global:
+      targetNamespaces: ["global-ns-1", "global-ns-2"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
+        useNamespacedRoles: true
+  template: templates/pod-roles.yaml
+  asserts:
+  - hasDocuments:
+      count: 2
+  - equal:
+      path: kind
+      value: Role
+    documentIndex: 0
+  - equal:
+      path: metadata.namespace
+      value: global-ns-1
+    documentIndex: 0
+  - equal:
+      path: metadata.namespace
+      value: global-ns-2
+    documentIndex: 1
+
+- it: "global targetNamespaces work with auto-upgrader rolebindings"
+  set:
+    global:
+      targetNamespaces: ["global-ns-1", "global-ns-2"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
+        useNamespacedRoles: true
+  template: templates/auto-upgrader-rolebindings.yaml
+  asserts:
+  - hasDocuments:
+      count: 3
+  - equal:
+      path: kind
+      value: RoleBinding
+    documentIndex: 0
+  - matchRegex:
+      path: metadata.name
+      pattern: self-binding$
+    documentIndex: 0
+  - equal:
+      path: metadata.namespace
+      value: global-ns-1
+    documentIndex: 1
+  - equal:
+      path: metadata.namespace
+      value: global-ns-2
+    documentIndex: 2
+
+- it: "global targetNamespaces work with auto-upgrader roles"
+  set:
+    global:
+      targetNamespaces: ["global-ns-1", "global-ns-2"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
+        useNamespacedRoles: true
+  template: templates/auto-upgrader-roles.yaml
+  asserts:
+  - hasDocuments:
+      count: 3
+  - equal:
+      path: kind
+      value: Role
+    documentIndex: 0
+  - matchRegex:
+      path: metadata.name
+      pattern: self-role$
+    documentIndex: 0
+  - equal:
+      path: metadata.namespace
+      value: global-ns-1
+    documentIndex: 1
+  - equal:
+      path: metadata.namespace
+      value: global-ns-2
+    documentIndex: 2
+
+- it: "matches snapshot with global targetNamespaces"
+  set:
+    global:
+      targetNamespaces: ["global-ns-1"]
+    scriptPods:
+      serviceAccount:
+        targetNamespaces: []
+    agent.deploymentTarget.enabled: true
+  template: templates/pod-rolebindings.yaml
+  asserts:
+  - matchSnapshot: {}
