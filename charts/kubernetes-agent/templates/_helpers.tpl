@@ -305,3 +305,15 @@ The server API url - the global is used unless overridden by the value in values
 {{- .Values.global.serverApiUrl }}
 {{- end }}
 {{- end }}
+
+{{/*
+The target namespaces - the global is used unless overridden by the value in values.yaml
+Returns the list as JSON array (use fromJsonArray to deserialize)
+*/}}
+{{- define "kubernetes-agent.targetNamespaces" -}}
+{{- if gt (len .Values.scriptPods.serviceAccount.targetNamespaces) 0 }}
+{{- .Values.scriptPods.serviceAccount.targetNamespaces | toJson }}
+{{- else }}
+{{- .Values.global.targetNamespaces | toJson }}
+{{- end }}
+{{- end }}

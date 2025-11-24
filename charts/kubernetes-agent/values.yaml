@@ -449,3 +449,8 @@ global:
   # -- This is overridden by agent.serverCertificateSecretName if both are set
   # @section -- Globals
   serverCertificateSecretName: ""
+  # -- Specifies that the pod service account should be constrained to target namespaces
+  # -- This is overridden by scriptPods.serviceAccount.targetNamespaces if both are set
+  # @section -- Globals
+  # @default -- Uses a ClusterRoleBinding to allow the service account to run in any namespace
+  targetNamespaces: []
