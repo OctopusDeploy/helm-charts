@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.33.0
+
+### Minor Changes
+
+- 9460148: Fix PVM Agent Enablement Version
+
 ## 2.32.0
 
 ### Minor Changes
