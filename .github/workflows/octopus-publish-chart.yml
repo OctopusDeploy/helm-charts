@@ -35,7 +35,7 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4.3.0
         with:
-          version: 'v3.15.3'
+          version: ${{ vars.HELM_VERSION }} 
 
       - name: Run Helm unit tests
         run: |
