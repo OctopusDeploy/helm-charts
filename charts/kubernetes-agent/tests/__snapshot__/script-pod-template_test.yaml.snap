@@ -9,7 +9,7 @@ Should render all options when crdDisabled is true:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.32.0
+        helm.sh/chart: kubernetes-agent-2.33.0
       name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
@@ -50,7 +50,7 @@ should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.32.0
+        helm.sh/chart: kubernetes-agent-2.33.0
       name: octopus-agent
       namespace: NAMESPACE
     spec:
@@ -81,7 +81,7 @@ should never have the containers key in the podSpec when crdDisabled is true:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.32.0
+        helm.sh/chart: kubernetes-agent-2.33.0
       name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
@@ -116,7 +116,7 @@ should partially render successfully:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.32.0
+        helm.sh/chart: kubernetes-agent-2.33.0
       name: octopus-agent
       namespace: NAMESPACE
     spec:
@@ -141,7 +141,7 @@ should render a deployment when crdDisabled is true:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.32.0
+        helm.sh/chart: kubernetes-agent-2.33.0
       name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
