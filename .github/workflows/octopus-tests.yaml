@@ -18,7 +18,7 @@ jobs:
     - name: Set up Helm
       uses: azure/setup-helm@v4.3.0
       with:
-        version: ${{ vars.HELM_VERSION }}
+        version: v3.19.4
     - name: Run Helm unit tests
       run: |
         helm plugin install https://github.com/helm-unittest/helm-unittest

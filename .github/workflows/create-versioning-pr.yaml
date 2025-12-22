@@ -32,7 +32,7 @@ jobs:
     - name: setup-helm
       uses: azure/setup-helm@v4.3.0
       with:
-        version: ${{ vars.HELM_VERSION }}
+        version: v3.19.4
 
     - name: Cache .pnpm-store
       uses: actions/cache@v4

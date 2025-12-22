@@ -36,7 +36,7 @@ jobs:
     - name: Install Helm
       uses: azure/setup-helm@v4.3.0
       with:
-        version: ${{ vars.HELM_VERSION }}
+        version: v3.19.4
 
     - name: Run Helm unit tests
       run: |
@@ -72,7 +72,7 @@ jobs:
     - name: Install Helm
       uses: azure/setup-helm@v4.3.0
       with:
-        version: ${{ vars.HELM_VERSION }}
+        version: v3.19.4
 
     - name: Parse Chart config
       uses: pietrobolcato/action-read-yaml@1.1.0
