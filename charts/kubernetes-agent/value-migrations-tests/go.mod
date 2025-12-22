@@ -1,6 +1,6 @@
 module value_migrations_tests
 
-go 1.23.1
+go 1.25.5
 
 require (
 	github.com/octopusdeploylabs/helm-migrate-values v0.0.0-20240923005656-92a06f70bc69
