@@ -98,7 +98,7 @@ jobs:
 
     - name: 'Update version in Kubernetes Agent test snapshots'
       run: |
-        helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 0.8.2
+        helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 1.0.3
         helm unittest -u charts/kubernetes-agent
         git add charts/kubernetes-agent/tests/__snapshot__/*
         git commit -m "Update chart version in Kubernetes agent test snapshots"
