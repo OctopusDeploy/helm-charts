@@ -20,7 +20,7 @@ jobs:
     # For all pushes that aren't creating a versioning commit
     if: ${{ !startsWith(github.event.commits[0].message, 'Version Charts') }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
     
@@ -30,7 +30,7 @@ jobs:
         node-version: 20
 
     - name: setup-helm
-      uses: azure/setup-helm@v3
+      uses: azure/setup-helm@v4.3.0
       with:
         version: v3.13.2
 
