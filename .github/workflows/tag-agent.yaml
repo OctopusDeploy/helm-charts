@@ -15,7 +15,7 @@ jobs:
     # When a changesets generated Versioning PR is merged, we want to publish the version as a tag
     if: ${{ startsWith(github.event.commits[0].message, 'Version Charts') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
 

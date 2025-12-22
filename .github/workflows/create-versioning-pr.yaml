@@ -20,7 +20,7 @@ jobs:
     # For all pushes that aren't creating a versioning commit
     if: ${{ !startsWith(github.event.commits[0].message, 'Version Charts') }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
     
@@ -30,9 +30,9 @@ jobs:
         node-version: 20
 
     - name: setup-helm
-      uses: azure/setup-helm@v3
+      uses: azure/setup-helm@v4.3.0
       with:
-        version: v3.13.2
+        version: ${{ vars.HELM_VERSION }}
 
     - name: Cache .pnpm-store
       uses: actions/cache@v4
@@ -98,7 +98,7 @@ jobs:
 
     - name: 'Update version in Kubernetes Agent test snapshots'
       run: |
-        helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 0.8.2
+        helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 1.0.3
         helm unittest -u charts/kubernetes-agent
         git add charts/kubernetes-agent/tests/__snapshot__/*
         git commit -m "Update chart version in Kubernetes agent test snapshots"
