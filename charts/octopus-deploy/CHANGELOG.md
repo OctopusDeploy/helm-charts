@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.8.1
+
+### Patch Changes
+
+- 5d7a73f: Update appVersion to 2025.4
+
 ## 1.8.0
 
 ### Minor Changes

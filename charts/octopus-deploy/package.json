@@ -1,6 +1,6 @@
 {
   "name": "octopus-deploy",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "private": true,
   "description": "Helm chart to install Octopus Deploy",
   "author": "Octopus Deploy"
