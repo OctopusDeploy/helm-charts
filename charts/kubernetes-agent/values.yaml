@@ -353,6 +353,10 @@ persistence:
       # @section -- Persistence
       accessModes: ["ReadWriteOnce"]
 
+    # -- If true, the NFS server pod will use the host network. This can help bypass network policies that block NFS traffic from the CSI driver.
+    # @section -- Persistence
+    hostNetwork: false
+
     # -- Additional metadata to add to the NFS pod & container
     # @section -- Persistence
     metadata:
