@@ -147,9 +147,13 @@ Templates out the database connection string to be used if the mssql subchart is
 
 {{/*
 Templates out extra environment variables to be used
+Supports both deprecated extraEnv and new containers.octopus.env
 */}}
 {{- define "octopus.extraEnv" -}}
 {{- if .Values.octopus.extraEnv -}}
-{{- toYaml .Values.octopus.extraEnv -}}
+{{- toYaml .Values.octopus.extraEnv }}
+{{- end -}}
+{{- with .Values.octopus.containers.octopus.env -}}
+{{- toYaml . -}}
 {{- end -}}
 {{- end -}}

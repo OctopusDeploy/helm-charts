@@ -22,12 +22,18 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- with .Values.persistence.nfs.spec }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ include "nfs.name" .}}
+          {{- with .Values.persistence.nfs.containers.nfs.spec }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           image: "{{ .Values.persistence.nfs.image.repository }}:{{ .Values.persistence.nfs.image.tag }}"
           imagePullPolicy: {{ .Values.persistence.nfs.image.pullPolicy }}
           securityContext:
@@ -41,6 +47,9 @@ spec:
             value: "/octopus"
           - name: "SYNC"
             value: "true"
+          {{- with .Values.persistence.nfs.containers.nfs.env }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           ports:
           - containerPort: 2049
           volumeMounts:

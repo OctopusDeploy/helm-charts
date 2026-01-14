@@ -22,6 +22,9 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- with .Values.agent.spec }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -33,6 +36,9 @@ spec:
       {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
+          {{- with .Values.agent.containers.tentacle.spec }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           image: {{ include "kubernetes-agent.fullImage" . | quote }}
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           startupProbe:
@@ -199,6 +205,9 @@ spec:
                   key: polling-proxy-password
             {{- end }}            
             {{- end }}
+            {{- with .Values.agent.containers.tentacle.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- with .Values.agent.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -230,6 +239,9 @@ spec:
             {{- end }}
         {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
         - name: nfs-watchdog
+          {{- with .Values.agent.containers.watchdog.spec }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
           imagePullPolicy: {{ .Values.persistence.nfs.watchdog.image.pullPolicy }}
           env:
@@ -247,6 +259,9 @@ spec:
             - name: "watchdog_timeout_seconds"
               value: "{{ .Values.persistence.nfs.watchdog.timeout_seconds }}"
             {{ end }}
+            {{- with .Values.agent.containers.watchdog.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home

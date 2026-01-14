@@ -27,3 +27,49 @@ tests:
         equal:
           path: spec.volumes[?(@.name=='octopus-server-certificate-secret')].secret.secretName
           value: "my-existing-secret"
+
+  - it: "sets custom pod spec properly"
+    set:
+      agent:
+        preinstall:
+          spec:
+            priorityClassName: "custom-priority-class"
+    asserts:
+      - template: pre-install-tentacle-pod.yaml
+        equal:
+          path: spec.priorityClassName
+          value: "custom-priority-class"
+
+  - it: "sets custom container spec properly"
+    set:
+      agent:
+        preinstall:
+          containers:
+            tentacle:
+              spec:
+                lifecycle:
+                  preStop:
+                    exec:
+                      command: ["/bin/sh", "-c", "echo stopping"]
+    asserts:
+      - template: pre-install-tentacle-pod.yaml
+        equal:
+          path: spec.containers[0].lifecycle.preStop.exec.command
+          value: ["/bin/sh", "-c", "echo stopping"]
+
+  - it: "sets custom container env properly"
+    set:
+      agent:
+        preinstall:
+          containers:
+            tentacle:
+              env:
+                - name: "CUSTOM_VAR"
+                  value: "custom-value"
+    asserts:
+      - template: pre-install-tentacle-pod.yaml
+        contains:
+          path: spec.containers[0].env
+          content:
+            name: "CUSTOM_VAR"
+            value: "custom-value"

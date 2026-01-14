@@ -13,6 +13,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  {{- with .Values.agent.preinstall.spec }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
   {{- with .Values.imagePullSecrets }}
   imagePullSecrets:
     {{- toYaml . | nindent 4 }}
@@ -25,6 +28,9 @@ spec:
   restartPolicy: OnFailure
   containers:
     - name: {{printf "%s-tentacle-pre" (include "kubernetes-agent.name" .) }}
+      {{- with .Values.agent.preinstall.containers.tentacle.spec }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       image: {{ include "kubernetes-agent.fullImage" . | quote }}
       command:
         - "/scripts/register.sh"
@@ -146,6 +152,9 @@ spec:
               name: {{ include "kubernetes-agent.preinstall.secrets.serverAuth" . }}
               key: polling-proxy-password
         {{- end }}
+        {{- end }}
+        {{- with .Values.agent.preinstall.containers.tentacle.env }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.agent.resources }}
       resources:
