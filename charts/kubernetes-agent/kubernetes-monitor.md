@@ -28,16 +28,21 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | monitor.authenticationToken | string | `""` | If setting up the agent without automatic registration, this is the authentication token. If you provide this, you must also provide the installation ID. If you provide this, the monitor will not attempt to register with the server. |
+| monitor.containers.monitor.env | list | `[]` | Additional env to apply to the monitor container - does not override any other configuration |
+| monitor.containers.monitor.spec | object | `{}` | Additional container spec to apply to the monitor container - does not override any other configuration |
 | monitor.customCaCertificate | string | `""` | A base64 encoded string of the custom CA certificate to use to verify the Octopus Deploy server |
 | monitor.installationId | string | `""` | If setting up the agent without automatic registration, this is the installation id. If you provide this, you must also provide the authentication token. If you provide this, the monitor will not attempt to register with the server. |
 | monitor.serverGrpcUrl | string | `""` | The gRPC url (including the port) of the Octopus Deploy server to communicate with |
 | monitor.serverThumbprint | string | `""` | The thumbprint of the Octopus Deploy server the monitor is communicating with. This should only be used if you wish to pin the certificate. |
+| monitor.spec | object | `{}` | Additional pod spec to apply to the monitor pod - does not override any other configuration |
 
 ### Registration
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | registration.configurationStoreType | string | `"kubernetes"` | Can be "kubernetes" or "file" |
+| registration.containers.registration.env | list | `[]` | Additional env to apply to the registration container - does not override any other configuration |
+| registration.containers.registration.spec | object | `{}` | Additional container spec to apply to the registration container - does not override any other configuration |
 | registration.machineName | string | `""` | The machine name of the agent this monitor is responsible for |
 | registration.register | bool | `true` | Automatically register the monitor with the Octopus Deploy server |
 | registration.serverAccessToken | string | `""` | The access token to authenticate to Octopus Deploy to register with. Can be a bearer token or an API token. |
@@ -52,6 +57,7 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | registration.serviceAccount.name | string | `""` | Custom service account name |
 | registration.serviceAccount.projectedVolumeDefaultMode | int | `292` | Default file mode for projected volume (only used when automountServiceAccountToken is false) Uses octal notation. Default: 0444 |
 | registration.spaceId | string | `""` | The space id that the monitor is registering with |
+| registration.spec | object | `{}` | Additional pod spec to apply to the registration pod - does not override any other configuration |
 
 ### Other Values
 
