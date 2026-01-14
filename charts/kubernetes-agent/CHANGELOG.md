@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.34.0
+
+### Minor Changes
+
+- c552b96: Add custom settings for specs and envs of deployed resources
+
 ## 2.33.0
 
 ### Minor Changes
