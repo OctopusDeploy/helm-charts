@@ -75,3 +75,46 @@ tests:
         value:
           - ReadWriteMany
           - ReadWriteOnce
+
+- it: sets custom pod spec properly
+  set:
+    persistence:
+      nfs:
+        spec:
+          priorityClassName: "custom-priority-class"
+  asserts:
+    - equal:
+        path: spec.template.spec.priorityClassName
+        value: "custom-priority-class"
+
+- it: sets custom container spec properly
+  set:
+    persistence:
+      nfs:
+        containers:
+          nfs:
+            spec:
+              lifecycle:
+                preStop:
+                  exec:
+                    command: ["/bin/sh", "-c", "echo stopping"]
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].lifecycle.preStop.exec.command
+        value: ["/bin/sh", "-c", "echo stopping"]
+
+- it: sets custom container env properly
+  set:
+    persistence:
+      nfs:
+        containers:
+          nfs:
+            env:
+              - name: "CUSTOM_VAR"
+                value: "custom-value"
+  asserts:
+    - contains:
+        path: spec.template.spec.containers[0].env
+        content:
+          name: "CUSTOM_VAR"
+          value: "custom-value"

@@ -259,7 +259,7 @@ spec:
             - name: "watchdog_timeout_seconds"
               value: "{{ .Values.persistence.nfs.watchdog.timeout_seconds }}"
             {{ end }}
-            {{- with .Values.agent.containers.tentacle.env }}
+            {{- with .Values.agent.containers.watchdog.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
           volumeMounts:

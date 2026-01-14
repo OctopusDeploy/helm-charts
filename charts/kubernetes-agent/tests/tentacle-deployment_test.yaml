@@ -306,3 +306,79 @@ tests:
         - equal:
             path: spec.template.spec.priorityClassName
             value: "custom-priority-class"
+
+    - it: "sets custom tentacle container spec properly"
+      set:
+        agent:
+          containers:
+            tentacle:
+              spec:
+                lifecycle:
+                  preStop:
+                    exec:
+                      command: ["/bin/sh", "-c", "echo stopping"]
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[0].lifecycle.preStop.exec.command
+            value: ["/bin/sh", "-c", "echo stopping"]
+
+    - it: "sets custom tentacle container env properly"
+      set:
+        agent:
+          containers:
+            tentacle:
+              env:
+                - name: "CUSTOM_VAR"
+                  value: "custom-value"
+      asserts:
+        - contains:
+            path: spec.template.spec.containers[0].env
+            content:
+              name: "CUSTOM_VAR"
+              value: "custom-value"
+
+    - it: "sets custom watchdog container spec properly"
+      set:
+        persistence:
+          storageClassName: ""
+          nfs:
+            watchdog:
+              enabled: true
+              image:
+                repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+                tag: "0.0.1"
+        agent:
+          containers:
+            watchdog:
+              spec:
+                lifecycle:
+                  preStop:
+                    exec:
+                      command: ["/bin/sh", "-c", "echo watchdog stopping"]
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[1].lifecycle.preStop.exec.command
+            value: ["/bin/sh", "-c", "echo watchdog stopping"]
+
+    - it: "sets custom watchdog container env properly"
+      set:
+        persistence:
+          storageClassName: ""
+          nfs:
+            watchdog:
+              enabled: true
+              image:
+                repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+                tag: "0.0.1"
+        agent:
+          containers:
+            watchdog:
+              env:
+                - name: "WATCHDOG_CUSTOM_VAR"
+                  value: "watchdog-custom-value"
+      asserts:
+        - contains:
+            path: spec.template.spec.containers[1].env
+            content:
+              name: "WATCHDOG_CUSTOM_VAR"
+              value: "watchdog-custom-value"
