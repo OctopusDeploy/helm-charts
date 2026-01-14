@@ -296,3 +296,13 @@ tests:
           - equal:
                 path: spec.template.spec.containers[0].image
                 value: "octopusdeploy/kubernetes-agent-tentacle:8.3.3359-bullseye-slim"
+
+    - it: "sets custom spec properly"
+      set:
+        agent:
+          spec:
+            priorityClassName: "custom-priority-class"
+      asserts:
+        - equal:
+            path: spec.template.spec.priorityClassName
+            value: "custom-priority-class"

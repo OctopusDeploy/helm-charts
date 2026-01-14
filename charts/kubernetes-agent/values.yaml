@@ -188,6 +188,17 @@ agent:
   # @section -- Agent values
   securityContext: {}
 
+  # -- Additional pod spec to apply to the agent pod - does not override any other agent configuration
+  # @section -- Agent values
+  spec: {}
+  containers:
+    tentacle:
+      spec: {}
+      env: {}
+    watchdog:
+      spec: {}
+      env: {}
+
   debug:
     # -- Disables automatic pod cleanup
     # @section -- Agent values
