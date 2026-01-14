@@ -70,6 +70,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.persistence.nfs.hostNetwork }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
   {{- if .Values.persistence.nfs.backingVolume.storageClassName }}
   volumeClaimTemplates:
     - metadata:

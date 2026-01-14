@@ -139,6 +139,7 @@ The Kubernetes agent is optionally installed alongside the Kubernetes agent, [re
 |-----|------|---------|-------------|
 | persistence.nfs.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the NFS pod |
 | persistence.nfs.backingVolume.accessModes | list | `["ReadWriteOnce"]` | The access modes to use for the NFS Server's backing storage |
+| persistence.nfs.hostNetwork | bool | `false` | If true, the NFS server pod will use the host network. This can help bypass network policies that block NFS traffic from the CSI driver. |
 | persistence.nfs.backingVolume.storageClassName | string | `""` | The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used |
 | persistence.nfs.containers.nfs.env | list | `[]` | Additional env to apply to the NFS container - does not override any other configuration |
 | persistence.nfs.containers.nfs.spec | object | `{}` | Additional container spec to apply to the NFS container - does not override any other configuration |
