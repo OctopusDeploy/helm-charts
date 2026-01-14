@@ -339,14 +339,6 @@ tests:
 
     - it: "sets custom watchdog container spec properly"
       set:
-        persistence:
-          storageClassName: ""
-          nfs:
-            watchdog:
-              enabled: true
-              image:
-                repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-                tag: "0.0.1"
         agent:
           containers:
             watchdog:
@@ -362,14 +354,6 @@ tests:
 
     - it: "sets custom watchdog container env properly"
       set:
-        persistence:
-          storageClassName: ""
-          nfs:
-            watchdog:
-              enabled: true
-              image:
-                repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-                tag: "0.0.1"
         agent:
           containers:
             watchdog:
