@@ -188,7 +188,11 @@ agent:
     spec: {}
     containers:
       tentacle:
+        # -- Additional container spec to apply to the pre-install tentacle container - does not override any other configuration
+        # @section -- Agent values
         spec: {}
+        # -- Additional env to apply to the pre-install tentacle container - does not override any other configuration
+        # @section -- Agent values
         env: []
 
   # -- The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0`
@@ -200,10 +204,18 @@ agent:
   spec: {}
   containers:
     tentacle:
+      # -- Additional container spec to apply to the tentacle container - does not override any other configuration
+      # @section -- Agent values
       spec: {}
+      # -- Additional env to apply to the tentacle container - does not override any other configuration
+      # @section -- Agent values
       env: []
     watchdog:
+      # -- Additional container spec to apply to the watchdog container - does not override any other configuration
+      # @section -- Agent values
       spec: {}
+      # -- Additional env to apply to the watchdog container - does not override any other configuration
+      # @section -- Agent values
       env: []
 
   debug:
@@ -403,7 +415,11 @@ persistence:
     spec: {}
     containers:
       nfs:
+        # -- Additional container spec to apply to the NFS container - does not override any other configuration
+        # @section -- Persistence
         spec: {}
+        # -- Additional env to apply to the NFS container - does not override any other configuration
+        # @section -- Persistence
         env: []
 
     watchdog:
