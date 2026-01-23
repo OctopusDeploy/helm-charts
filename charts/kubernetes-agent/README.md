@@ -32,7 +32,8 @@ This is documented [here](./migrations.md).
 
 ## Sub-charts
 
-The Kubernetes agent is optionally installed alongside the Kubernetes agent, [read more here](./kubernetes-monitor.md).
+The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [read more here](./kubernetes-monitor.md).
+
 ## Maintainers
 
 | Name | Email | Url |
