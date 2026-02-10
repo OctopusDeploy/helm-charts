@@ -1,5 +1,6 @@
 .idea
 myvalues.yaml
+dry-run.yaml
 license.xml
 octopus*.tgz
 index.yaml
