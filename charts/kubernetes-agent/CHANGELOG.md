@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.35.0
+
+### Minor Changes
+
+- 359e463: Update Tentancle to 8.3.3577
+
 ## 2.34.0
 
 ### Minor Changes
