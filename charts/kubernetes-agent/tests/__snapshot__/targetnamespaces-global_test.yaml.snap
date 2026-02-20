@@ -1,0 +1,29 @@
+matches snapshot with global targetNamespaces:
+  1: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: octopus-agent-scripts-RELEASE-NAME-binding
+      namespace: global-ns-1
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: octopus-agent-scripts-RELEASE-NAME-role
+    subjects:
+      - kind: ServiceAccount
+        name: octopus-agent-scripts
+        namespace: NAMESPACE
+  2: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: octopus-agent-scripts-RELEASE-NAME-deleter-binding
+      namespace: NAMESPACE
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: octopus-agent-scripts-RELEASE-NAME-delete-role
+    subjects:
+      - kind: ServiceAccount
+        name: octopus-agent-scripts
+        namespace: NAMESPACE

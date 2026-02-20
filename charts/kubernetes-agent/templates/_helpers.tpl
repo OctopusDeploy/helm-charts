@@ -272,3 +272,48 @@ Create the name of the service account to use for Tentacle Preinstallation
 {{- define "kubernetes-agent.preinstall.serviceAccountName" -}}
 {{- .Values.agent.preinstall.serviceAccount.name | default (printf "%s-pre" (include "kubernetes-agent.serviceAccountName" .)) }}
 {{- end }}
+
+{{/*
+The server CA certificate - the global is used unless overridden by the value in values.yaml
+*/}}
+{{- define "kubernetes-agent.serverCertificate.certificate" -}}
+{{- if .Values.agent.serverCertificate }}
+{{- .Values.agent.serverCertificate }}
+{{- else if .Values.global.serverCertificate }}
+{{- .Values.global.serverCertificate }}
+{{- end }}
+{{- end }}
+
+{{/*
+The name of the secret to store the certificate data of the Octopus Server API
+*/}}
+{{- define "kubernetes-agent.serverCertificate.secretName" -}}
+{{- if .Values.agent.serverCertificateSecretName }}
+{{- .Values.agent.serverCertificateSecretName }}
+{{- else if .Values.global.serverCertificateSecretName }}
+{{- .Values.global.serverCertificateSecretName }}
+{{- end }}
+{{- end }}
+
+{{/*
+The server API url - the global is used unless overridden by the value in values.yaml
+*/}}
+{{- define "kubernetes-agent.serverApiUrl" -}}
+{{- if .Values.agent.serverUrl }}
+{{- .Values.agent.serverUrl }}
+{{- else if .Values.global.serverApiUrl }}
+{{- .Values.global.serverApiUrl }}
+{{- end }}
+{{- end }}
+
+{{/*
+The target namespaces - the global is used unless overridden by the value in values.yaml
+Returns the list as JSON array (use fromJsonArray to deserialize)
+*/}}
+{{- define "kubernetes-agent.targetNamespaces" -}}
+{{- if gt (len .Values.scriptPods.serviceAccount.targetNamespaces) 0 }}
+{{- .Values.scriptPods.serviceAccount.targetNamespaces | toJson }}
+{{- else }}
+{{- .Values.global.targetNamespaces | toJson }}
+{{- end }}
+{{- end }}

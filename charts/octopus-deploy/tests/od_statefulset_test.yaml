@@ -252,3 +252,47 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[?(@.name == 'ANOTHER_ENV_VAR')].valueFrom.secretKeyRef.key
           value: example-key
+
+  - it: sets custom pod spec properly
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        spec:
+          priorityClassName: "custom-priority-class"
+    asserts:
+      - equal:
+          path: spec.template.spec.priorityClassName
+          value: "custom-priority-class"
+
+  - it: sets custom container spec properly
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        containers:
+          octopus:
+            spec:
+              lifecycle:
+                preStop:
+                  exec:
+                    command: ["/bin/sh", "-c", "echo stopping"]
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].lifecycle.preStop.exec.command
+          value: ["/bin/sh", "-c", "echo stopping"]
+
+  - it: sets custom container env properly (new path)
+    values:
+      - ./values/required.yaml
+    set:
+      octopus:
+        containers:
+          octopus:
+            env:
+              - name: NEW_ENV_VAR
+                value: new_value
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[?(@.name == 'NEW_ENV_VAR')].value
+          value: new_value

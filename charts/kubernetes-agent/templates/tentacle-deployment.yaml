@@ -22,6 +22,9 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- with .Values.agent.spec }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -33,6 +36,9 @@ spec:
       {{- end }}
       containers:
         - name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
+          {{- with .Values.agent.containers.tentacle.spec }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           image: {{ include "kubernetes-agent.fullImage" . | quote }}
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           startupProbe:
@@ -53,7 +59,7 @@ spec:
             - name: "ServerCommsAddress"
               value: {{ .Values.agent.serverCommsAddress | quote }}
             - name: "ServerUrl"
-              value: {{ .Values.agent.serverUrl | quote }}
+              value: {{ (include "kubernetes-agent.serverApiUrl" .) | quote }}
             - name: "Space"
               value: {{ .Values.agent.space | quote }}
             - name: "DeploymentTargetEnabled"
@@ -114,7 +120,7 @@ spec:
             - name: "TentaclePollingConnectionCount"
               value: {{ .Values.agent.pollingConnectionCount | quote }}
             - name: "OCTOPUS__K8STENTACLE__ENABLEMETRICSCAPTURE"
-              value: {{ .Values.agent.enableMetricsCapture| quote }}
+              value: {{ .Values.agent.enableMetricsCapture | quote }}
             {{- if .Values.imagePullSecrets }}
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
               value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}
@@ -199,6 +205,9 @@ spec:
                   key: polling-proxy-password
             {{- end }}            
             {{- end }}
+            {{- with .Values.agent.containers.tentacle.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- with .Values.agent.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -206,11 +215,15 @@ spec:
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home
-            {{- if .Values.agent.serverCertificate }}
+            {{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
             - name: octopus-server-certificate-configmap
               mountPath: /etc/ssl/certs/octopus-server-certificate.pem
               subPath: octopus-server-certificate.pem
               readOnly: false
+            {{- else if (include "kubernetes-agent.serverCertificate.secretName" .) }}
+            - name: octopus-server-certificate-secret
+              mountPath: /etc/ssl/certs/octopus-server-certificate.pem
+              subPath: octopus-server-certificate.pem
             {{- end }}
             {{- if .Values.agent.securityContext.readOnlyRootFilesystem }}
             - mountPath: /Octopus
@@ -226,6 +239,9 @@ spec:
             {{- end }}
         {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
         - name: nfs-watchdog
+          {{- with .Values.agent.containers.watchdog.spec }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
           imagePullPolicy: {{ .Values.persistence.nfs.watchdog.image.pullPolicy }}
           env:
@@ -243,6 +259,9 @@ spec:
             - name: "watchdog_timeout_seconds"
               value: "{{ .Values.persistence.nfs.watchdog.timeout_seconds }}"
             {{ end }}
+            {{- with .Values.agent.containers.watchdog.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - mountPath: /octopus
               name: tentacle-home
@@ -251,11 +270,18 @@ spec:
         - name: tentacle-home
           persistentVolumeClaim:
             claimName: {{ include "kubernetes-agent.pvcName" .}}
-        {{- if .Values.agent.serverCertificate }}
+        {{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
         - name: octopus-server-certificate-configmap
           configMap:
             name: "octopus-server-certificate"
-        {{- end }}
+        {{- else if (include "kubernetes-agent.serverCertificate.secretName" .) }}
+        - name: octopus-server-certificate-secret
+          secret:
+            secretName: {{ include "kubernetes-agent.serverCertificate.secretName" . }}
+            items:
+              - key: octopus-server-certificate.pem
+                path: octopus-server-certificate.pem
+        {{- end}}
         {{- if .Values.agent.securityContext.readOnlyRootFilesystem  }}
         - name: temp-dir
           emptyDir: {}

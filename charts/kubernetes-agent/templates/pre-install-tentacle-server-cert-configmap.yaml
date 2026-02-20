@@ -1,4 +1,4 @@
-{{- if .Values.agent.serverCertificate }}
+{{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,5 +7,5 @@ metadata:
   annotations:
     {{- include "kubernetes-agent.hookAnnotationsWithSuccessDelete" . | nindent 4 }}
 data:
-  octopus-server-certificate.pem: {{ .Values.agent.serverCertificate | b64dec | quote }}
+  octopus-server-certificate.pem: {{ (include "kubernetes-agent.serverCertificate.certificate" .) | b64dec | quote }}
 {{- end }}

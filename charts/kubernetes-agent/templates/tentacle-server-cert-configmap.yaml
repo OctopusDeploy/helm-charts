@@ -1,9 +1,9 @@
-{{- if .Values.agent.serverCertificate }}
+{{- if (include "kubernetes-agent.serverCertificate.certificate" .) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: octopus-server-certificate
   namespace: {{ .Release.Namespace | quote }}
 data:
-  octopus-server-certificate.pem: {{ .Values.agent.serverCertificate | b64dec | quote }}
+  octopus-server-certificate.pem: {{ (include "kubernetes-agent.serverCertificate.certificate" .) | b64dec | quote }}
 {{- end }}

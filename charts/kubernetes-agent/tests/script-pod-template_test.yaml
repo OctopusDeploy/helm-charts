@@ -44,3 +44,64 @@ tests:
                 cpu: "500m"
     asserts:
       - matchSnapshot: {}
+
+  - it: "should render a deployment when crdDisabled is true"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          crdDisabled: true
+          scriptContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+    asserts:
+      - matchSnapshot: {}
+
+  - it: "should never have the containers key in the podSpec when crdDisabled is true"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          crdDisabled: true
+          podSpec:
+            nodeSelector:
+              disktype: ssd
+            containers:
+              - name: should-not-exist
+                image: alpine:latest
+          scriptContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+    asserts:
+      - matchSnapshot: {}
+
+  - it: "Should render all options when crdDisabled is true"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          crdDisabled: true
+          podMetadata:
+            labels:
+              custom-label: custom-value
+            annotations:
+              custom-annotation: custom-value
+          podSpec:
+            nodeSelector:
+              disktype: ssd
+          scriptContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+          watchdogContainerSpec:
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
+    asserts:
+      - matchSnapshot: {}

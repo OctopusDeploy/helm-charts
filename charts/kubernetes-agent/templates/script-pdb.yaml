@@ -5,7 +5,7 @@ metadata:
   name: script-pod-disruption-budget
   namespace: {{ .Release.Namespace }}
 spec:
-  maxUnavailable: 0
+  minAvailable: 8888
   selector:
     matchExpressions:
     - { key: octopus.com/scriptTicketId, operator: Exists }

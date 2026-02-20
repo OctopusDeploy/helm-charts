@@ -1,5 +1,77 @@
 # kubernetes-agent
 
+## 2.35.0
+
+### Minor Changes
+
+- 359e463: Update Tentancle to 8.3.3577
+
+## 2.34.0
+
+### Minor Changes
+
+- c552b96: Add custom settings for specs and envs of deployed resources
+
+## 2.33.0
+
+### Minor Changes
+
+- 9460148: Fix PVM Agent Enablement Version
+
+## 2.32.0
+
+### Minor Changes
+
+- ab7765d: Add explicit cluster role enabled value
+- de26b67: Add globals for targetNamespaces
+
+### Patch Changes
+
+- 9111403: Update kubernetes monitor chart to v0.22.0
+
+## 2.31.0
+
+### Minor Changes
+
+- a4f8661: Update kubernetes monitor chart to v0.21.0
+  - Improve startup logs
+
+## 2.30.0
+
+### Minor Changes
+
+- 610c30e: Add support for blocking upgrades of Kubernetes Agent versions in Machine Policy
+
+## 2.29.0
+
+### Minor Changes
+
+- 52287e3: Update kubernetes monitor chart to v0.20.0
+
+## 2.28.1
+
+### Patch Changes
+
+- 9d80f54: Update versioning
+
+## 2.28.0
+
+### Minor Changes
+
+- 2532879: Add support for non-crd usage of pod template
+
+### Patch Changes
+
+- 2f75973: Fix issues with pod disruption budget
+
+## 2.27.0
+
+### Minor Changes
+
+- fac96a4: Update Kubernetes monitor to 0.19.1 and allow reading Octopus server certificates from an existing secret
+  - Adds explicit namespaces to Kubernetes monitor resources
+  - Allows using custom CA certificates to register Kubernetes monitors with Octopus Server
+
 ## 2.26.0
 
 ### Minor Changes

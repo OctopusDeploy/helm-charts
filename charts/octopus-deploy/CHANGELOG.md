@@ -1,5 +1,17 @@
 # octopus-deploy
 
+## 1.9.0
+
+### Minor Changes
+
+- c552b96: Add custom settings for specs and envs of deployed resources
+
+## 1.8.1
+
+### Patch Changes
+
+- 5d7a73f: Update appVersion to 2025.4
+
 ## 1.8.0
 
 ### Minor Changes

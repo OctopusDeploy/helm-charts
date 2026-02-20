@@ -30,6 +30,9 @@ spec:
       {{- toYaml .Values.octopus.pods.annotations | nindent 8 }}
       {{- end }}
     spec:
+      {{- with .Values.octopus.spec }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       {{- with .Values.octopus.podSecurityContext }}
       securityContext:
       {{- toYaml . | nindent 8 }}
@@ -53,6 +56,9 @@ spec:
       {{- end }}
       containers:
       - name: octopus
+        {{- with .Values.octopus.containers.octopus.spec }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         image: "{{ .Values.octopus.image.repository }}:{{ default .Chart.AppVersion .Values.octopus.image.tag }}"
         securityContext:
           {{- with .Values.octopus.containerSecurityContext }}
