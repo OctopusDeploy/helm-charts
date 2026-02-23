@@ -219,7 +219,7 @@ spec:
           {{- end }}
         {{- else if eq $volume.type "persistentVolumeClaim" }}
           persistentVolumeClaim:
-          claimName: {{ include "octopus-deploy.fullname" $ }}-{{ $name }}-pvc
+            claimName: {{ include "octopus.fullname" $ }}-{{ $name }}-pvc
         {{- end }}
       {{- end }}
       {{- if .Values.dockerHub.login }}

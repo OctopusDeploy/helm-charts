@@ -1,6 +1,6 @@
 octopus:
   acceptEula: Y
-  licenseKeyBase64: YOUR_LICENSE_HERE
+  licenseKeyBase64: ""
   masterKey: MASTER_KEY_HERE
   username: USERNAME_HERE
   password: PASSWORD_HERE
@@ -28,39 +28,43 @@ octopus:
       value: ""
     - name: DOTNET_STARTUP_HOOKS
       value: ""
+
   extraVolumes:
     tmp:
-      type: "emptyDir"
-      mountPath: "/tmp"
-      sizeLimit: "10Gi"
-      medium: ""
-    serverdata:
-      type: "emptyDir"
-      mountPath: "/home/octopus/.octopus/OctopusServer/Server"
-      sizeLimit: "50Mi"
-      medium: ""
-    homeoctopuslocal:
-      type: "emptyDir"
-      mountPath: "/home/octopus/.local"
+      type: emptyDir
+      mountPath: /tmp
       sizeLimit: "1Gi"
       medium: ""
+    homeoctopus:
+      type: emptyDir
+      mountPath: /home/octopus
+      sizeLimit: "100Mi"
+      medium: ""
     etcoctopus:
-      type: "emptyDir"
-      mountPath: "/etc/octopus"
-      sizeLimit: "50Mi"
+      type: emptyDir
+      mountPath: /etc/octopus
+      sizeLimit: "10Mi"
       medium: ""
     octopuslogs:
       type: emptyDir
       mountPath: /Octopus/Octopus/Logs
+      sizeLimit: "500Mi"
+    octopusdiagnostics:
+      type: emptyDir
+      mountPath: /Octopus/.diagnostics
       sizeLimit: "100Mi"
+
   podSecurityContext:
     fsGroup: 999
     fsGroupChangePolicy: OnRootMismatch
+
   containerSecurityContext:
     runAsNonRoot: true
     runAsGroup: 999
     runAsUser: 999
     readOnlyRootFilesystem: true
+
+  serverConfigurationDirectory: /home/octopus/.local
 
 mssql:
   enabled: true
