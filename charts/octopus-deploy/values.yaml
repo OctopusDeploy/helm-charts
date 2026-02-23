@@ -60,13 +60,15 @@ octopus:
     storageClassName: ""
 
   # Extra volumes. Use this for arbitrary volume mounts when using readOnlyRootFilesystem. You will want mounts for:
-  # /tmp, /home/octopus/.octopus/OctopusServer/Server, /home/octopus/.local, /etc/octopus, and /Octopus/Octopus/Logs
+  # /tmp, /home/octopus, /etc/octopus, /Octopus/Octopus/Logs, and /Octopus/.diagnostics
+  # See values-rorfsexample.yaml for a full example.
+  # Supported volume types: emptyDir, persistentVolumeClaim
   extraVolumes:
     # /tmp/
     #tmp:
-    #  type: "emptyDir"
-    #  mountPath: "/tmp/"
-    #  sizeLimit: "10Gi"
+    #  type: emptyDir
+    #  mountPath: /tmp
+    #  sizeLimit: "1Gi"
     #  medium: ""
 
   # The package repository, artifact, and task log volumes below are all shared across Octopus nodes.
