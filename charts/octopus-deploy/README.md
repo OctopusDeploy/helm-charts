@@ -113,6 +113,61 @@ octopus:
     storageAccessMode: ReadWriteMany
 ```
 
+### Read-Only Root Filesystem
+
+If your security policy requires a read-only root filesystem (`readOnlyRootFilesystem: true`), you must provide writable `emptyDir` mounts for the directories Octopus writes to at runtime.
+
+Use the `extraVolumes` key to define these mounts. Each entry requires a `type`, `mountPath`, and optionally `sizeLimit` and `medium`.
+
+Supported types:
+- `emptyDir` — an ephemeral in-memory or disk-backed volume
+- `persistentVolumeClaim` — a PVC provisioned automatically by the chart (requires `accessModes` and `size`)
+
+A minimal set of writable paths for a read-only root filesystem is:
+
+```yaml
+octopus:
+  containerSecurityContext:
+    runAsNonRoot: true
+    runAsGroup: 999
+    runAsUser: 999
+    readOnlyRootFilesystem: true
+  podSecurityContext:
+    fsGroup: 999
+    fsGroupChangePolicy: OnRootMismatch
+
+  serverConfigurationDirectory: /home/octopus/.local
+
+  extraVolumes:
+    tmp:
+      type: emptyDir
+      mountPath: /tmp
+      sizeLimit: "1Gi"
+      medium: ""
+    homeoctopus:
+      type: emptyDir
+      mountPath: /home/octopus
+      sizeLimit: "100Mi"
+      medium: ""
+    etcoctopus:
+      type: emptyDir
+      mountPath: /etc/octopus
+      sizeLimit: "10Mi"
+      medium: ""
+    octopuslogs:
+      type: emptyDir
+      mountPath: /Octopus/Octopus/Logs
+      sizeLimit: "500Mi"
+    octopusdiagnostics:
+      type: emptyDir
+      mountPath: /Octopus/.diagnostics
+      sizeLimit: "100Mi"
+```
+
+A complete working example including environment variable overrides for .NET tooling can be found in [values-rorfsexample.yaml](values-rorfsexample.yaml).
+
+Note: `enableDockerInDocker` must be set to `false` when using a read-only root filesystem, as Docker-in-Docker requires a privileged, writable container.
+
 ### Ingress
 You'll likely want to allow external traffic to your Octopus instance, and this generally means configuring [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). 
 

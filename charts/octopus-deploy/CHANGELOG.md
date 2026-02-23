@@ -1,5 +1,17 @@
 # octopus-deploy
 
+## 1.10.0
+
+### Minor Changes
+
+- Add `extraVolumes` support to mount additional volumes (emptyDir or PersistentVolumeClaim) into the Octopus container, enabling use of `readOnlyRootFilesystem`
+- Add `extraPvcs.yaml` template to provision PVCs for `persistentVolumeClaim`-type extra volumes
+- Add `values-rorfsexample.yaml` as a reference values file for running Octopus with a read-only root filesystem
+
+### Patch Changes
+
+- Fix template helper name for `persistentVolumeClaim` extra volume claimName in statefulset
+
 ## 1.9.0
 
 ### Minor Changes
