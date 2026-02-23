@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.10.1
+
+### Patch Changes
+
+- 149cd89: Add support for RORFS/extra volume mounts
+
 ## 1.10.0
 
 ### Minor Changes
