@@ -22,20 +22,20 @@ octopus:
   # The task cap to set for the new node. If blank the default of 5 is used.
   taskCap:
 
-  # The Octopus server image. 
+  # The Octopus server image.
   # Visit https://hub.docker.com/r/octopusdeploy/octopusdeploy for the available versions.
   image:
     # The repository defaults to DockerHub
     repository: octopusdeploy/octopusdeploy
     # The tag will default to using the chart appVersion
-    tag: 
+    tag:
   # The port the website is exposed on
-  webPort: 80 
-  # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles 
-  tentaclePort: 10943 
+  webPort: 80
+  # The port polling tentacles will connect via https://www.octopus.com/docs/infrastructure/deployment-targets/windows-targets/tentacle-communication#polling-tentacles
+  tentaclePort: 10943
   # The port for gRPC communication
   grpcPort: 8443
-  # The number of server nodes to maintain  
+  # The number of server nodes to maintain
   replicaCount: 1
 
   # Resource requests and limits can be set
@@ -56,7 +56,7 @@ octopus:
   # Volume used for Octopus server logs: https://octopus.com/docs/support/log-files
   # Each Octopus node mounts its own server log volume (this volume is not shared across nodes)
   serverLogVolume:
-    size: 200Mi 
+    size: 200Mi
     storageClassName: ""
 
   # Extra volumes. Use this for arbitrary volume mounts when using readOnlyRootFilesystem. You will want mounts for:
@@ -82,17 +82,17 @@ octopus:
 
   # The volume used for persisting packages pushed to the Octopus built-in package repository: https://octopus.com/docs/packaging-applications/package-repositories/built-in-repository
   packageRepositoryVolume:
-    size: 1Gi 
+    size: 1Gi
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
   # The volume used for persisting deployment artifacts: https://octopus.com/docs/projects/deployment-process/artifacts
   artifactVolume:
-    size: 1Gi 
+    size: 1Gi
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
  # Volume used for task logs: https://octopus.com/docs/support/get-the-raw-output-from-a-task
-  taskLogVolume: 
-    size: 1Gi 
+  taskLogVolume:
+    size: 1Gi
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
   # Volume used for archived audit logs: https://octopus.com/docs/security/users-and-teams/auditing#archived-audit-events
@@ -102,8 +102,8 @@ octopus:
     storageAccessMode: ReadWriteOnce
 
   service:
-    type: NodePort 
-  
+    type: NodePort
+
   ingress:
     enabled: false
     annotations: {}
@@ -141,9 +141,9 @@ octopus:
     all:
     # an array of hostnames that should be excluded from proxying
     excludedHostnames: []
-  
-  # For minimum resource indications see https://octopus.com/docs/administration/managing-infrastructure/performance#minimum-requirements 
-  resources: {} 
+
+  # For minimum resource indications see https://octopus.com/docs/administration/managing-infrastructure/performance#minimum-requirements
+  resources: {}
   #  requests:
   #    memory: "400M"
   #    cpu: "100m"
@@ -151,7 +151,7 @@ octopus:
   #    memory: "4G"
   #    cpu: "1"
 
-  tolerations: [] 
+  tolerations: []
   topologySpreadConstraints: []
 
   serviceAccount:
@@ -211,15 +211,18 @@ octopus:
 dockerHub:
   # Set to true to create a secret containing the docker registry password
   login: false
-  # The base 64 encoded Docker config JSON. This value can be created with the command: 
+  # The base 64 encoded Docker config JSON. This value can be created with the command:
   # kubectl create secret docker-registry regcred --docker-username=myusername --docker-password=mypassword --dry-run=client -o="jsonpath={.data.\.dockerconfigjson}"
   # See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   creds:
 
-mssql: 
+mssql:
   enabled: false
   ACCEPT_EULA: "Y"
   SA_PASSWORD: ""
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 global:
   # Set the default storageClass to be used for all persistent volume claims
