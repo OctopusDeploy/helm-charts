@@ -8,8 +8,8 @@ Should render all options when crdDisabled is true:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.34.0
+        app.kubernetes.io/version: 8.3.3577
+        helm.sh/chart: kubernetes-agent-2.35.0
       name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
@@ -49,8 +49,8 @@ should match snapshot:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.34.0
+        app.kubernetes.io/version: 8.3.3577
+        helm.sh/chart: kubernetes-agent-2.35.0
       name: octopus-agent
       namespace: NAMESPACE
     spec:
@@ -80,8 +80,8 @@ should never have the containers key in the podSpec when crdDisabled is true:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.34.0
+        app.kubernetes.io/version: 8.3.3577
+        helm.sh/chart: kubernetes-agent-2.35.0
       name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:
@@ -115,8 +115,8 @@ should partially render successfully:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.34.0
+        app.kubernetes.io/version: 8.3.3577
+        helm.sh/chart: kubernetes-agent-2.35.0
       name: octopus-agent
       namespace: NAMESPACE
     spec:
@@ -140,8 +140,8 @@ should render a deployment when crdDisabled is true:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3359
-        helm.sh/chart: kubernetes-agent-2.34.0
+        app.kubernetes.io/version: 8.3.3577
+        helm.sh/chart: kubernetes-agent-2.35.0
       name: octopus-agent-pod-template
       namespace: NAMESPACE
     spec:

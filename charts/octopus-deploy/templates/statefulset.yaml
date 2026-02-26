@@ -148,6 +148,10 @@ spec:
           - containerPort: {{.Values.octopus.grpcPort}}
             name: grpc
         volumeMounts:
+          {{- range $name, $volume := .Values.octopus.extraVolumes }}
+          - name: {{ $name }}-volume
+            mountPath: {{ $volume.mountPath }}
+          {{- end }}
           - name: package-repository-volume
             mountPath: /repository
           - name: artifacts-volume
@@ -203,6 +207,21 @@ spec:
         - name: audit-log-volume
           persistentVolumeClaim:
             claimName: audit-log-claim
+        {{- range $name, $volume := .Values.octopus.extraVolumes }}
+        - name: {{ $name }}-volume
+        {{- if eq $volume.type "emptyDir" }}
+          emptyDir:
+          {{- if $volume.sizeLimit }}
+            sizeLimit: {{ $volume.sizeLimit }}
+          {{- end }}
+          {{- if $volume.medium }}
+            medium: {{ $volume.medium }}
+          {{- end }}
+        {{- else if eq $volume.type "persistentVolumeClaim" }}
+          persistentVolumeClaim:
+            claimName: {{ include "octopus.fullname" $ }}-{{ $name }}-pvc
+        {{- end }}
+      {{- end }}
       {{- if .Values.dockerHub.login }}
       imagePullSecrets:
         - name: dockerhubcreds

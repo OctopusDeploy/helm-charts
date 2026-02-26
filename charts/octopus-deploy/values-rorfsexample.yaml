@@ -1,0 +1,70 @@
+octopus:
+  acceptEula: Y
+  licenseKeyBase64: ""
+  masterKey: MASTER_KEY_HERE
+  username: USERNAME_HERE
+  password: PASSWORD_HERE
+  enableDockerInDocker: false
+  extraEnv:
+    - name: OTEL_DOTNET_AUTO_LOG_DIRECTORY
+      value: /tmp/otel/logs
+    - name: OTEL_DOTNET_AUTO_HOME
+      value: /tmp/otel
+    - name: DOTNET_BUNDLE_EXTRACT_BASE_DIR
+      value: /tmp/dotnet-bundle
+    - name: TMPDIR
+      value: /tmp
+    - name: XDG_CACHE_HOME
+      value: /home/octopus/.local/cache
+    - name: XDG_DATA_HOME
+      value: /home/octopus/.local/share
+    - name: OTEL_DOTNET_AUTO_ENABLED
+      value: "false"
+    - name: CORECLR_ENABLE_PROFILING
+      value: "0"
+    - name: CORECLR_PROFILER
+      value: ""
+    - name: CORECLR_PROFILER_PATH
+      value: ""
+    - name: DOTNET_STARTUP_HOOKS
+      value: ""
+
+  extraVolumes:
+    tmp:
+      type: emptyDir
+      mountPath: /tmp
+      sizeLimit: "1Gi"
+      medium: ""
+    homeoctopus:
+      type: emptyDir
+      mountPath: /home/octopus
+      sizeLimit: "100Mi"
+      medium: ""
+    etcoctopus:
+      type: emptyDir
+      mountPath: /etc/octopus
+      sizeLimit: "10Mi"
+      medium: ""
+    octopuslogs:
+      type: emptyDir
+      mountPath: /Octopus/Octopus/Logs
+      sizeLimit: "500Mi"
+    octopusdiagnostics:
+      type: emptyDir
+      mountPath: /Octopus/.diagnostics
+      sizeLimit: "100Mi"
+
+  podSecurityContext:
+    fsGroup: 999
+    fsGroupChangePolicy: OnRootMismatch
+
+  containerSecurityContext:
+    runAsNonRoot: true
+    runAsGroup: 999
+    runAsUser: 999
+    readOnlyRootFilesystem: true
+
+  serverConfigurationDirectory: /home/octopus/.local
+
+mssql:
+  enabled: true
