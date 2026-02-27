@@ -86,16 +86,20 @@ spec:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
                 key: secret
+          {{- if .Values.octopus.username }}
           - name: ADMIN_USERNAME
             valueFrom:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "adminusername"}}
                 key: secret
+          {{- end }}
+          {{- if .Values.octopus.password }}
           - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "adminpassword"}}
                 key: secret
+          {{- end }}
           - name: ADMIN_EMAIL
             value: {{.Values.octopus.email}}
           - name: TASK_CAP
