@@ -156,7 +156,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
 | persistence.persistentVolumeReclaimPolicy | string | `"Retain"` | The NFS server PV reclaim policy |
 | persistence.size | string | `"10Gi"` | The size of the volume to create |
-| persistence.volumeName | string | `""` | if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume |
+| persistence.volumeName | string | `""` | When NFS is disabled, will set the provided storageClassName in the PVC. |
 
 ### Script pod values
 

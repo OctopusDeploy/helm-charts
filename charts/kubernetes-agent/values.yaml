@@ -355,12 +355,12 @@ persistence:
   # @section -- Persistence
   accessModes: ["ReadWriteOnce"]
 
-  # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class.
+  # -- When NFS is disabled, will set the provided storageClassName in the PVC.
   # -- Set to "-", results in storageClassName: "" being set in the PVC.
   # @section -- Persistence
   #storageClassName: ""
 
-  # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
+  # -- When NFS is disabled, will set the provided storageClassName in the PVC.
   # @section -- Persistence
   volumeName: ""
 
