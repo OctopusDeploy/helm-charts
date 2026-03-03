@@ -1,0 +1,5 @@
+persistence:
+  storageClassName: ""
+  volumeName: ""
+  nfs:
+    enable: true

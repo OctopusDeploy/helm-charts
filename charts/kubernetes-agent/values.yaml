@@ -350,9 +350,15 @@ scriptPods:
 
 # @section -- Persistence
 persistence:
-  # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class
+  # -- Sets the requested PVC access modes for both the agent pod and script pods.
+  # -- If set to 'ReadWriteOnce' (default), the agent will set a pod affinity on script pods to co-locate them on the same node as the agent pod.
   # @section -- Persistence
-  storageClassName: ""
+  accessModes: ["ReadWriteOnce"]
+
+  # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class.
+  # -- Set to "-", results in storageClassName: "" being set in the PVC.
+  # @section -- Persistence
+  #storageClassName: ""
 
   # -- if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume
   # @section -- Persistence
@@ -367,6 +373,9 @@ persistence:
   persistentVolumeReclaimPolicy: Retain
 
   nfs:
+    # -- If enabled, runs an in-cluster NFS server pod to support scaled, multi-node script pod execution.
+    # @section -- Persistence
+    enabled: false
     # -- The repository, pullPolicy & tag to use for the NFS server
     # @section -- Persistence
     image:
@@ -444,10 +453,6 @@ persistence:
         repository: octopusdeploy/kubernetes-agent-nfs-watchdog
         pullPolicy: IfNotPresent
         tag: "0.2.0"
-
-  # DO NOT USE THIS, it is not a supported configuration for customers and is only to be used by Octopus Developers
-  # @ignored
-  accessModes: ["ReadWriteMany"]
 
 # @section -- Auto-upgrader configuration
 autoUpgrader:

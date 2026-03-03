@@ -1,0 +1,7 @@
+persistence:
+  nfs:
+    {{- if or .Values.persistence.storageClassName .Values.persistence.volumeName }}
+    enabled: false
+    {{- else }}
+    enabled: true
+    {{- end }}

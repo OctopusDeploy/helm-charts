@@ -6,27 +6,33 @@ tests:
   asserts:
   - matchSnapshot: {}
 
-- it: "is not created when storageClassName has a value"
+- it: "is not created when storageClassName has a value and nfs is disabled"
   set:
     persistence:
       storageClassName: "value"
+      nfs:
+        enabled: false
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is not created when volumeName has a value"
+- it: "is not created when volumeName has a value and nfs is disabled"
   set:
     persistence:
       volumeName: "value"
+      nfs:
+        enabled: false
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is created when storageClassName and volumeName are empty"
+- it: "is created when storageClassName and volumeName are empty and nfs is enabled"
   set:
     persistence:
       storageClassName: ""
       volumeName: ""
+      nfs:
+        enabled: true
   asserts:
   - hasDocuments:
       count: 1

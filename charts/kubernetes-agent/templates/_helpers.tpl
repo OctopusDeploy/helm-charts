@@ -156,7 +156,7 @@ The name of the secret to store the agent's base64 certificate
 A value indicating if a custom PVC is being used (and thus the default storage should be disabled)
 */}}
 {{- define "kubernetes-agent.useCustomPvc" -}}
-{{- if or .Values.persistence.storageClassName .Values.persistence.volumeName }}
+{{- if not .Values.persistence.nfs.enabled }}
 {{- "true" }}
 {{- else }}
 {{- "" }}

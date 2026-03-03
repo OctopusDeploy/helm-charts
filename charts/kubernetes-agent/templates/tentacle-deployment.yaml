@@ -4,6 +4,7 @@ metadata:
   name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
+    agent.octopus.com/component: "tentacle"
     {{- include "kubernetes-agent.labels" . | nindent 4 }}
 spec:
   replicas: 1
@@ -17,6 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        agent.octopus.com/component: "tentacle"
         {{- include "kubernetes-agent.labels" . | nindent 8 }}
 	      {{- with .Values.agent.metadata.labels }}
         {{- toYaml . | nindent 8 }}
