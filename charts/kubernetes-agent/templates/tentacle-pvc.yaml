@@ -1,4 +1,4 @@
-{{- if (include "kubernetes-agent.useCustomPvc" .) }}
+{{- if not .Values.persistence.nfs.enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
