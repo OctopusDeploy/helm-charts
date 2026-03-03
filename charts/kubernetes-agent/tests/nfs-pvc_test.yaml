@@ -3,29 +3,26 @@ templates:
 - templates/nfs-pvc.yaml
 tests:
 - it: "should match snapshot"
+  set:
+    persistence:
+      nfs:
+        enabled: true
   asserts:
   - matchSnapshot: {}
-- it: "is not created when storageClassName has a value"
+- it: "is not created when nfs is disabled"
   set:
     persistence:
-      storageClassName: "value"
+      nfs:
+        enabled: false
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is not created when volumeName has a value"
+- it: "is created when nfs is enabled"
   set:
     persistence:
-      volumeName: "value"
-  asserts:
-  - hasDocuments:
-      count: 0
-
-- it: "is created when storageClassName and volumeName are empty"
-  set:
-    persistence:
-      storageClassName: ""
-      volumeName: ""
+      nfs:
+        enabled: true
   asserts:
   - hasDocuments:
       count: 1

@@ -8,13 +8,13 @@ tests:
     - it: "includes the watchdog when NFS and Watchdog are both enabled"
       set:
           persistence:
-              storageClassName: ""
               nfs:
-                  watchdog:
-                      enabled: true
-                      image:
-                          repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-                          tag: "0.0.1"
+                enabled: true
+                watchdog:
+                    enabled: true
+                    image:
+                        repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+                        tag: "0.0.1"
       asserts:
           - hasDocuments:
                 count: 1
@@ -38,16 +38,16 @@ tests:
                 path: spec.template.spec.containers[1].image
                 value: "octopusdeploy/kubernetes-agent-nfs-watchdog:0.0.1"
 
-    - it: "Doesn't include the watchdog when only the Watchdog is enabled and storageClassName is set"
+    - it: "Doesn't include the watchdog when only the Watchdog is enabled and nfs is disabled"
       set:
           persistence:
-              storageClassName: "my-thing"
               nfs:
-                  watchdog:
-                      enabled: true
-                      image:
-                          repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-                          tag: "0.0.1"
+                enabled: false
+                watchdog:
+                    enabled: true
+                    image:
+                        repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+                        tag: "0.0.1"
       asserts:
           - hasDocuments:
                 count: 1
@@ -67,45 +67,16 @@ tests:
                 content:
                     name: "nfs-watchdog"
 
-    - it: "Doesn't include the watchdog when only the Watchdog is enabled and volumeName is set"
+    - it: "Doesn't include the watchdog when watchdog is disabled and nfs is enabled"
       set:
           persistence:
-              volumeName: "my-thing"
               nfs:
-                  watchdog:
-                      enabled: true
-                      image:
-                          repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-                          tag: "0.0.1"
-      asserts:
-          - hasDocuments:
-                count: 1
-          - isKind:
-                of: Deployment
-          - isAPIVersion:
-                of: apps/v1
-          - equal:
-                path: spec.template.spec.containers[0].name
-                value: octopus-agent-tentacle
-          - notContains:
-                path: spec.template.spec.containers[0].env
-                content:
-                    name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
-          - notContains:
-                path: spec.template.spec.containers
-                content:
-                    name: "nfs-watchdog"
-
-    - it: "Doesn't include the watchdog when watchdog is disabled"
-      set:
-          persistence:
-              storageClassName: ""
-              nfs:
-                  watchdog:
-                      enabled: false
-                      image:
-                          repository: octopusdeploy/kubernetes-agent-nfs-watchdog
-                          tag: "0.0.1"
+                enabled: true
+                watchdog:
+                    enabled: false
+                    image:
+                        repository: octopusdeploy/kubernetes-agent-nfs-watchdog
+                        tag: "0.0.1"
       asserts:
           - hasDocuments:
                 count: 1
@@ -347,6 +318,9 @@ tests:
                   preStop:
                     exec:
                       command: ["/bin/sh", "-c", "echo watchdog stopping"]
+        persistence:
+          nfs:
+            enabled: true
       asserts:
         - equal:
             path: spec.template.spec.containers[1].lifecycle.preStop.exec.command
@@ -360,6 +334,9 @@ tests:
               env:
                 - name: "WATCHDOG_CUSTOM_VAR"
                   value: "watchdog-custom-value"
+        persistence:
+          nfs:
+            enabled: true
       asserts:
         - contains:
             path: spec.template.spec.containers[1].env

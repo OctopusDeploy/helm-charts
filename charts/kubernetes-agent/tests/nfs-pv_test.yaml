@@ -3,34 +3,25 @@ templates:
 - templates/nfs-pv.yaml
 tests:
 - it: "should match snapshot"
+  set:
+    persistence:
+      nfs:
+        enabled: true
   asserts:
   - matchSnapshot: {}
 
-- it: "is not created when storageClassName has a value and nfs is disabled"
+- it: "is not created when  nfs is disabled"
   set:
     persistence:
-      storageClassName: "value"
       nfs:
         enabled: false
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is not created when volumeName has a value and nfs is disabled"
+- it: "is created when nfs is enabled"
   set:
     persistence:
-      volumeName: "value"
-      nfs:
-        enabled: false
-  asserts:
-  - hasDocuments:
-      count: 0
-
-- it: "is created when storageClassName and volumeName are empty and nfs is enabled"
-  set:
-    persistence:
-      storageClassName: ""
-      volumeName: ""
       nfs:
         enabled: true
   asserts:
@@ -40,7 +31,8 @@ tests:
 - it: "has Helm Release name in name"
   set:
     persistence:
-      storageClassName: ""
+      nfs:
+        enabled: true
   asserts:
   - matchRegex:
       path: metadata.name
@@ -48,9 +40,10 @@ tests:
 
 - it: "set storage capacity to be persistence size"
   set:
-    persistence:
+    persistence:      
+      nfs:
+        enabled: true
       size: 100Gi
-      storageClassName: ""
   asserts:
   - equal:
       path: spec.capacity.storage
@@ -59,7 +52,8 @@ tests:
 - it: "uses NFS service DNS as server address"
   set:
     persistence:
-      storageClassName: ""
+      nfs:
+        enabled: true
   asserts:
   - equal:
       path: spec.csi.volumeAttributes.server

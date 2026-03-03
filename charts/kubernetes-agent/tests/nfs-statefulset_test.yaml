@@ -2,29 +2,28 @@ suite: "persistence"
 templates:
 - templates/nfs-statefulset.yaml
 tests:
-- it: "is not created when storageClassName has a value"
+- it: "is not created when nfs is disabled"
   set:
     persistence:
-      storageClassName: "value"
-  asserts:
-  - hasDocuments:
-      count: 0
-
-- it: "is not created when volumeName has a value"
-  set:
-    persistence:
-      volumeName: "value"
+      nfs:
+        enabled: false
   asserts:
   - hasDocuments:
       count: 0
 
 - it: "should match snapshot"
+  set:
+    persistence:
+      nfs:
+        enabled: true
   asserts:
   - matchSnapshot: {}
 
 - it: sets the emptyDir size to be the value in values
   set:
     persistence:
+      nfs:
+        enabled: true
       size: 100Gi
   asserts:
   - equal:
@@ -34,9 +33,10 @@ tests:
 - it: uses a backing volume when storageClassName is set
   set:
     persistence:
-        nfs:
-          backingVolume:
-            storageClassName: "my-storage-class"
+      nfs:
+        enabled: true
+        backingVolume:
+          storageClassName: "my-storage-class"
   asserts:
     - equal:
         path: spec.volumeClaimTemplates[0].spec.storageClassName
@@ -45,6 +45,10 @@ tests:
         path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir
 
 - it: does not use a backing volume when storageClassName is unset
+  set:
+    persistence:
+      nfs:
+        enabled: true
   asserts:
     - notExists:
         path: spec.volumeClaimTemplates
@@ -55,6 +59,7 @@ tests:
   set:
     persistence:
       nfs:
+        enabled: true
         backingVolume:
           storageClassName: "my-storage-class"
   asserts:
@@ -66,6 +71,7 @@ tests:
   set:
     persistence:
       nfs:
+        enabled: true
         backingVolume:
           storageClassName: "my-storage-class"
           accessModes: ["ReadWriteMany", "ReadWriteOnce"]
@@ -80,6 +86,7 @@ tests:
   set:
     persistence:
       nfs:
+        enabled: true
         spec:
           priorityClassName: "custom-priority-class"
   asserts:
@@ -91,6 +98,7 @@ tests:
   set:
     persistence:
       nfs:
+        enabled: true
         containers:
           nfs:
             spec:
@@ -107,6 +115,7 @@ tests:
   set:
     persistence:
       nfs:
+        enabled: true
         containers:
           nfs:
             env:
