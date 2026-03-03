@@ -4,10 +4,10 @@ persistence:
   accessModes: ["ReadWriteMany"]
   {{- end}}
   {{- if .persistence.storageClassName }}
-  storageClassName: {{ .persistence.storageClassName}}
+  storageClassName: "{{ .persistence.storageClassName }}"
   {{- end}}  
   {{- if .persistence.volumeName }}
-  volumeName: {{ .persistence.volumeName}}
+  volumeName: "{{ .persistence.volumeName }}"
   {{- end}}
   nfs:
     enabled: {{ $isNfsEnabled}}

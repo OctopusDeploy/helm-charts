@@ -3,5 +3,17 @@ templates:
 - templates/nfs-service.yaml
 tests:
 - it: "should match snapshot"
+  set:
+    persistence:
+      nfs:
+        enabled: true
   asserts:
   - matchSnapshot: {}
+- it: "is not created when nfs is disabled"
+  set:
+    persistence:
+      nfs:
+        enabled: false
+  asserts:
+  - hasDocuments:
+      count: 0
