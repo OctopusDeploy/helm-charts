@@ -1,5 +1,3 @@
 persistence:
-  storageClassName: ""
-  volumeName: ""
   nfs:
-    enable: true
+    enabled: true
