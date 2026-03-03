@@ -10,7 +10,7 @@ tests:
   asserts:
   - matchSnapshot: {}
 
-- it: "is not created when  nfs is disabled"
+- it: "is not created when nfs is disabled"
   set:
     persistence:
       nfs:
