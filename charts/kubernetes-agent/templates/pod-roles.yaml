@@ -5,12 +5,19 @@ metadata:
   name: {{ include "kubernetes-agent.scriptPodWorkerRoleName" . }}
   namespace: {{ $.Release.Namespace | quote }}
 rules:
+{{- if .Values.scriptPods.workerRoleRules }}
+{{- if not (kindIs "slice" .Values.scriptPods.workerRoleRules) }}
+{{- fail "scriptPods.workerRoleRules must be a list of RBAC rule objects" }}
+{{- end }}
+{{ .Values.scriptPods.workerRoleRules | toYaml | nindent 2 }}
+{{- else }}
   - apiGroups:
       - '*'
     resources:
       - '*'
     verbs:
       - '*'
+{{- end }}
 {{- end -}}
 
 {{- $podServiceAccountName := include "kubernetes-agent.scriptPodServiceAccountName" . -}}

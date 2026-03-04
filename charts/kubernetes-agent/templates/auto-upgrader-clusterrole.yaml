@@ -4,7 +4,14 @@ kind: ClusterRole
 metadata:
   name: {{ include "kubernetes-agent.autoUpgraderClusterRoleName" . }}
 rules:
+{{- if .Values.autoUpgrader.clusterRoleRules }}
+{{- if not (kindIs "slice" .Values.autoUpgrader.clusterRoleRules) }}
+{{- fail "autoUpgrader.clusterRoleRules must be a list of RBAC rule objects" }}
+{{- end }}
+{{ .Values.autoUpgrader.clusterRoleRules | toYaml | nindent 2 }}
+{{- else }}
   - apiGroups: ["*"]
     resources: ["*"]
     verbs: ["*"]
+{{- end }}
 {{- end }}

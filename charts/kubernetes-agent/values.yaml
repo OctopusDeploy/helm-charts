@@ -174,7 +174,16 @@ agent:
                   - arm64
                   - amd64
 
+  # -- if set to a non-empty list, completely replaces the default Role rules for the tentacle role. CRD rules for `agent.octopus.com/scriptpodtemplates` are always appended when `scriptPods.podTemplate.enabled=true`.
+  # @section -- Agent values
+  # @default -- `[{"apiGroups":[""],"resources":["pods","pods/log","configmaps","secrets","events"],"verbs":["get","list","watch","create","update","patch","delete"]},{"apiGroups":["apps"],"resources":["deployments"],"verbs":["get","list","watch"]}]` (plus `agent.octopus.com/scriptpodtemplates` when `scriptPods.podTemplate.enabled=true`)
+  roleRules: []
+
   preinstall:
+    # -- if set to a non-empty list, completely replaces the default Role rules for the pre-install registration role
+    # @section -- Agent values
+    # @default -- `[{"apiGroups":[""],"resources":["configmaps","secrets"],"verbs":["get","list","watch","create","update","patch","delete"]}]`
+    roleRules: []
     serviceAccount:
       # -- The name of the service account for the agent pre-install registration pod
       # @section -- Agent values
@@ -270,6 +279,11 @@ scriptPods:
     # @section -- Script pod values
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
     roleRules: []
+
+  # -- if set to a non-empty list, completely replaces the default worker Role rules
+  # @section -- Script pod values
+  # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+  workerRoleRules: []
 
   # -- The tolerations to apply to script pods
   # @section -- Script pod values
@@ -456,6 +470,15 @@ persistence:
 
 # @section -- Auto-upgrader configuration
 autoUpgrader:
+  serviceAccount:
+    # -- The name of the auto-upgrader service account
+    # @section -- Auto-upgrader configuration
+    # @default -- `<nameOverride|"octopus-agent">-auto-upgrader`
+    name: ""
+  # -- if set to a non-empty list, completely replaces the default ClusterRole rules for the auto-upgrader (when not using namespaced roles)
+  # @section -- Auto-upgrader configuration
+  # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+  clusterRoleRules: []
   # -- Rules for managing the agent in its own namespace when using namespace-scoped roles
   # @section -- Auto-upgrader configuration
   selfNamespaceRoleRules:

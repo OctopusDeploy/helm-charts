@@ -80,3 +80,31 @@ tests:
   - equal:
       path: rules[0].verbs[0]
       value: get
+
+- it: "uses custom workerRoleRules when provided"
+  set:
+    agent:
+      worker:
+        enabled: true
+    scriptPods:
+      workerRoleRules:
+        - apiGroups: [""]
+          resources: ["pods", "configmaps"]
+          verbs: ["get", "list", "create"]
+  asserts:
+  - equal:
+      path: rules[0].apiGroups[0]
+      value: ""
+      documentIndex: 0
+  - equal:
+      path: rules[0].resources[0]
+      value: pods
+      documentIndex: 0
+  - equal:
+      path: rules[0].verbs[0]
+      value: get
+      documentIndex: 0
+  - lengthEqual:
+      path: rules
+      count: 1
+      documentIndex: 0

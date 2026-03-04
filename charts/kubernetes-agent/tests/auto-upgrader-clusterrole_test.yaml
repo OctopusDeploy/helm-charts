@@ -14,3 +14,33 @@ tests:
   asserts:
   - hasDocuments:
       count: 0
+
+- it: "should use wildcard default rules when no override is provided"
+  asserts:
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["*"]
+        resources: ["*"]
+        verbs: ["*"]
+
+- it: "should use custom rules when autoUpgrader.clusterRoleRules is set"
+  set:
+    autoUpgrader:
+      clusterRoleRules:
+        - apiGroups: ["apps"]
+          resources: ["deployments"]
+          verbs: ["get", "list", "update"]
+  asserts:
+  - equal:
+      path: rules[0].apiGroups[0]
+      value: apps
+  - equal:
+      path: rules[0].resources[0]
+      value: deployments
+  - equal:
+      path: rules[0].verbs[0]
+      value: get
+  - lengthEqual:
+      path: rules
+      count: 1
