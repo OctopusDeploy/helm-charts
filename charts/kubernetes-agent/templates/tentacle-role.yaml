@@ -4,12 +4,21 @@ metadata:
   name: {{ printf "%s-role" (include "kubernetes-agent.serviceAccountName" .) }}
   namespace: {{ .Release.Namespace | quote }}
 rules:
-- apiGroups: ["*"]
-  resources: ["pods", "pods/log", "configmaps", "secrets", "events"]
-  verbs: ["*"]
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: ["agent.octopus.com"]
-  resources: ["*"]
-  verbs: ["*"]
+{{- if .Values.agent.roleRules }}
+{{- if not (kindIs "slice" .Values.agent.roleRules) }}
+{{- fail "agent.roleRules must be a list of RBAC rule objects" }}
+{{- end }}
+{{ .Values.agent.roleRules | toYaml | nindent 2 }}
+{{- else }}
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "configmaps", "secrets", "events"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]
+{{- end }}
+{{- if and .Values.scriptPods.podTemplate.enabled (not .Values.scriptPods.podTemplate.crdDisabled) }}
+  - apiGroups: ["agent.octopus.com"]
+    resources: ["scriptpodtemplates"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+{{- end }}

@@ -62,7 +62,7 @@ Used for the pod cluster role & clusterrole binding as they are not namespaced.
 Create the name of the service account used by Octopus Server to perform automatic upgrades
 */}}
 {{- define "kubernetes-agent.autoUpgraderServiceAccountName" -}}
-{{- print "octopus-agent-auto-upgrader" }}
+{{- .Values.autoUpgrader.serviceAccount.name | default (printf "%s-auto-upgrader" (include "kubernetes-agent.name" .)) }}
 {{- end }}
 
 {{/*

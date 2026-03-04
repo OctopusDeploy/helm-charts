@@ -1,0 +1,34 @@
+suite: "pre-install tentacle role"
+templates:
+  - templates/pre-install-tentacle-role.yaml
+tests:
+  - it: "should use default rules without wildcards"
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["configmaps", "secrets"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  - it: "should use custom rules when agent.preinstall.roleRules is set"
+    set:
+      agent:
+        preinstall:
+          roleRules:
+            - apiGroups: [""]
+              resources: ["secrets"]
+              verbs: ["get"]
+    asserts:
+      - equal:
+          path: rules[0].apiGroups[0]
+          value: ""
+      - equal:
+          path: rules[0].resources[0]
+          value: secrets
+      - equal:
+          path: rules[0].verbs[0]
+          value: get
+      - lengthEqual:
+          path: rules
+          count: 1

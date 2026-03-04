@@ -5,3 +5,108 @@ tests:
   - it: "should match snapshot"
     asserts:
       - matchSnapshot: {}
+
+  - it: "should use default rules without wildcards"
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["pods", "pods/log", "configmaps", "secrets", "events"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      - contains:
+          path: rules
+          content:
+            apiGroups: ["apps"]
+            resources: ["deployments"]
+            verbs: ["get", "list", "watch"]
+
+  - it: "should include CRD rules when podTemplate is enabled and CRD is not disabled"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          crdDisabled: false
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: ["agent.octopus.com"]
+            resources: ["scriptpodtemplates"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  - it: "should not include CRD rules when podTemplate is disabled"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: false
+    asserts:
+      - notContains:
+          path: rules
+          content:
+            apiGroups: ["agent.octopus.com"]
+            resources: ["scriptpodtemplates"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  - it: "should use custom rules when agent.roleRules is set"
+    set:
+      agent:
+        roleRules:
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
+    asserts:
+      - equal:
+          path: rules[0].apiGroups[0]
+          value: ""
+      - equal:
+          path: rules[0].resources[0]
+          value: pods
+      - equal:
+          path: rules[0].verbs[0]
+          value: get
+      - lengthEqual:
+          path: rules
+          count: 1
+
+  - it: "should not include CRD rules when crdDisabled is true even if podTemplate is enabled"
+    set:
+      scriptPods:
+        podTemplate:
+          enabled: true
+          crdDisabled: true
+    asserts:
+      - notContains:
+          path: rules
+          content:
+            apiGroups: ["agent.octopus.com"]
+            resources: ["scriptpodtemplates"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  - it: "should append CRD rules to custom roleRules when podTemplate is enabled"
+    set:
+      agent:
+        roleRules:
+          - apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
+      scriptPods:
+        podTemplate:
+          enabled: true
+          crdDisabled: false
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
+      - contains:
+          path: rules
+          content:
+            apiGroups: ["agent.octopus.com"]
+            resources: ["scriptpodtemplates"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      - lengthEqual:
+          path: rules
+          count: 2
