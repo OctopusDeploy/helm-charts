@@ -11,6 +11,7 @@ rules:
 {{- end }}
 {{ .Values.scriptPods.workerRoleRules | toYaml | nindent 2 }}
 {{- else }}
+  # Wildcards are retained because worker pods execute arbitrary user scripts and the required permissions are not predictable
   - apiGroups:
       - '*'
     resources:
@@ -35,8 +36,12 @@ metadata:
   namespace: {{ $targetNamespace | quote }}
 rules:
 {{- if $.Values.scriptPods.serviceAccount.roleRules }}
+{{- if not (kindIs "slice" $.Values.scriptPods.serviceAccount.roleRules) }}
+{{- fail "scriptPods.serviceAccount.roleRules must be a list of RBAC rule objects" }}
+{{- end }}
 {{ $.Values.scriptPods.serviceAccount.roleRules | toYaml | nindent 2 }}
 {{- else }}
+# Wildcards are retained because script pods execute arbitrary user scripts and the required permissions are not predictable
 - apiGroups:
   - '*'
   resources:

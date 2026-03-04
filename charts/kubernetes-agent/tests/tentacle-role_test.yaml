@@ -20,6 +20,18 @@ tests:
             apiGroups: ["apps"]
             resources: ["deployments"]
             verbs: ["get", "list", "watch"]
+      - notContains:
+          path: rules
+          content:
+            apiGroups: ["*"]
+            resources: ["*"]
+            verbs: ["*"]
+      - notContains:
+          path: rules
+          content:
+            apiGroups: ["agent.octopus.com"]
+            resources: ["scriptpodtemplates"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 
   - it: "should include CRD rules when podTemplate is enabled and CRD is not disabled"
     set:
@@ -110,3 +122,11 @@ tests:
       - lengthEqual:
           path: rules
           count: 2
+
+  - it: "should fail when agent.roleRules is not a list"
+    set:
+      agent:
+        roleRules: "not-a-list"
+    asserts:
+      - failedTemplate:
+          errorMessage: "agent.roleRules must be a list of RBAC rule objects"

@@ -85,6 +85,29 @@ tests:
       value: Role
       documentIndex: 0
   - equal:
-      path: kind  
+      path: kind
       value: Role
       documentIndex: 1
+
+- it: "should fail when autoUpgrader.selfNamespaceRoleRules is not a list"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+    autoUpgrader:
+      selfNamespaceRoleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "autoUpgrader.selfNamespaceRoleRules must be a list of RBAC rule objects"
+
+- it: "should fail when autoUpgrader.targetNamespaceRoleRules is not a list"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+    autoUpgrader:
+      targetNamespaceRoleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "autoUpgrader.targetNamespaceRoleRules must be a list of RBAC rule objects"

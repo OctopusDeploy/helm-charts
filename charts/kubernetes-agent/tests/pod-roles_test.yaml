@@ -108,3 +108,25 @@ tests:
       path: rules
       count: 1
       documentIndex: 0
+
+- it: "should fail when scriptPods.workerRoleRules is not a list"
+  set:
+    agent:
+      worker:
+        enabled: true
+    scriptPods:
+      workerRoleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "scriptPods.workerRoleRules must be a list of RBAC rule objects"
+
+- it: "should fail when scriptPods.serviceAccount.roleRules is not a list"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+        roleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "scriptPods.serviceAccount.roleRules must be a list of RBAC rule objects"

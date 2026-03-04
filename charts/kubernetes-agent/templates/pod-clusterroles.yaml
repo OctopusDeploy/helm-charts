@@ -4,8 +4,11 @@ kind: ClusterRole
 metadata:
   name: {{ include "kubernetes-agent.scriptPodClusterRoleName" . }}
 rules:
-{{- if .Values.scriptPods.serviceAccount.clusterRole.rules}}
-{{ .Values.scriptPods.serviceAccount.clusterRole.rules | toYaml| nindent 2 }}
+{{- if .Values.scriptPods.serviceAccount.clusterRole.rules }}
+{{- if not (kindIs "slice" .Values.scriptPods.serviceAccount.clusterRole.rules) }}
+{{- fail "scriptPods.serviceAccount.clusterRole.rules must be a list of RBAC rule objects" }}
+{{- end }}
+{{ .Values.scriptPods.serviceAccount.clusterRole.rules | toYaml | nindent 2 }}
 {{- else }}
 - apiGroups:
   - '*'
