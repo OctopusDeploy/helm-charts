@@ -36,3 +36,13 @@ tests:
       - equal:
           path: spec.selector.matchExpressions[0].operator
           value: Exists
+
+  - it: "PDB name should derive from nameOverride"
+    set:
+      nameOverride: "my-agent"
+      scriptPods:
+        disruptionBudgetEnabled: true
+    asserts:
+      - equal:
+          path: metadata.name
+          value: my-agent-RELEASE-NAME-script-pdb

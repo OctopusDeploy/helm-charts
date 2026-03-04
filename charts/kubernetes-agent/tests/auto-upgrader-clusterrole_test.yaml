@@ -44,3 +44,11 @@ tests:
   - lengthEqual:
       path: rules
       count: 1
+
+- it: "should fail when autoUpgrader.clusterRoleRules is not a list"
+  set:
+    autoUpgrader:
+      clusterRoleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "autoUpgrader.clusterRoleRules must be a list of RBAC rule objects"

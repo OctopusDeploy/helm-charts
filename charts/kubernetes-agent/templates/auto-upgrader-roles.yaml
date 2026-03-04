@@ -12,6 +12,9 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 rules:
 {{- if .Values.autoUpgrader.selfNamespaceRoleRules }}
+{{- if not (kindIs "slice" .Values.autoUpgrader.selfNamespaceRoleRules) }}
+{{- fail "autoUpgrader.selfNamespaceRoleRules must be a list of RBAC rule objects" }}
+{{- end }}
 {{ .Values.autoUpgrader.selfNamespaceRoleRules | toYaml | nindent 2 }}
 {{- else }}
 - apiGroups: ["*"]
@@ -30,6 +33,9 @@ metadata:
   namespace: {{ $targetNamespace | quote }}
 rules:
 {{- if $.Values.autoUpgrader.targetNamespaceRoleRules }}
+{{- if not (kindIs "slice" $.Values.autoUpgrader.targetNamespaceRoleRules) }}
+{{- fail "autoUpgrader.targetNamespaceRoleRules must be a list of RBAC rule objects" }}
+{{- end }}
 {{ $.Values.autoUpgrader.targetNamespaceRoleRules | toYaml | nindent 2 }}
 {{- else }}
 - apiGroups: ["rbac.authorization.k8s.io"]

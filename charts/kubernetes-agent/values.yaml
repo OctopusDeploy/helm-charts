@@ -174,13 +174,13 @@ agent:
                   - arm64
                   - amd64
 
-  # -- if set to a non-empty list, completely replaces the default Role rules for the tentacle role. CRD rules for `agent.octopus.com/scriptpodtemplates` are always appended when `scriptPods.podTemplate.enabled=true`.
+  # -- If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not set.
   # @section -- Agent values
-  # @default -- `[{"apiGroups":[""],"resources":["pods","pods/log","configmaps","secrets","events"],"verbs":["get","list","watch","create","update","patch","delete"]},{"apiGroups":["apps"],"resources":["deployments"],"verbs":["get","list","watch"]}]` (plus `agent.octopus.com/scriptpodtemplates` when `scriptPods.podTemplate.enabled=true`)
+  # @default -- Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments. CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not set.
   roleRules: []
 
   preinstall:
-    # -- if set to a non-empty list, completely replaces the default Role rules for the pre-install registration role
+    # -- If set to a non-empty list, completely replaces the default Role rules for the pre-install registration role. Note: `[]` (empty list) means "use defaults", not "no rules".
     # @section -- Agent values
     # @default -- `[{"apiGroups":[""],"resources":["configmaps","secrets"],"verbs":["get","list","watch","create","update","patch","delete"]}]`
     roleRules: []
@@ -280,7 +280,7 @@ scriptPods:
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
     roleRules: []
 
-  # -- if set to a non-empty list, completely replaces the default worker Role rules
+  # -- If set to a non-empty list, completely replaces the default Role rules for the script pod worker role (only created when `agent.worker.enabled=true`). Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Script pod values
   # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
   workerRoleRules: []
@@ -473,9 +473,9 @@ autoUpgrader:
   serviceAccount:
     # -- The name of the auto-upgrader service account
     # @section -- Auto-upgrader configuration
-    # @default -- `<nameOverride|"octopus-agent">-auto-upgrader`
+    # @default -- Derived from `nameOverride` (or `"octopus-agent"` if not set) with `-auto-upgrader` suffix
     name: ""
-  # -- if set to a non-empty list, completely replaces the default ClusterRole rules for the auto-upgrader (when not using namespaced roles)
+  # -- If set to a non-empty list, completely replaces the default ClusterRole rules for the auto-upgrader. This ClusterRole is only created when `scriptPods.serviceAccount.useNamespacedRoles` is false. Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Auto-upgrader configuration
   # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
   clusterRoleRules: []
