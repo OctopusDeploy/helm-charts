@@ -1,5 +1,15 @@
 # octopus-deploy
 
+## 1.11.0
+
+### Minor Changes
+
+- ceeda72: Make username and password optional
+
+### Patch Changes
+
+- 80757b2: Add mssql pod constraints (nodeSelector/tolerations/affinity)
+
 ## 1.10.1
 
 ### Patch Changes
