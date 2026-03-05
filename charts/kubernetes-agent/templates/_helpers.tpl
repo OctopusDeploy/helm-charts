@@ -9,7 +9,7 @@ Returns the rendered YAML if rules is a non-empty list, or empty string if rules
 {{- if not (kindIs "slice" .rules) -}}
 {{- fail (printf "%s must be a list of RBAC rule objects" .name) -}}
 {{- end -}}
-{{ .rules | toYaml }}
+{{- .rules | toYaml }}
 {{- end -}}
 {{- end -}}
 

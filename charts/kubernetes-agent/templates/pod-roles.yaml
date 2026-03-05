@@ -37,13 +37,13 @@ rules:
 {{- if $overrideRules }}
 {{ $overrideRules | nindent 2 }}
 {{- else }}
-# Wildcards are retained because script pods execute arbitrary user scripts and the required permissions are not predictable
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - '*'
+  # Wildcards are retained because script pods execute arbitrary user scripts and the required permissions are not predictable
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
 {{- end }}
 {{- end }}
 {{- end }}

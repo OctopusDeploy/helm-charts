@@ -32,18 +32,23 @@ tests:
           resources: ["deployments"]
           verbs: ["get", "list", "update"]
   asserts:
-  - equal:
-      path: rules[0].apiGroups[0]
-      value: apps
-  - equal:
-      path: rules[0].resources[0]
-      value: deployments
-  - equal:
-      path: rules[0].verbs[0]
-      value: get
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["apps"]
+        resources: ["deployments"]
+        verbs: ["get", "list", "update"]
   - lengthEqual:
       path: rules
       count: 1
+
+- it: "should truncate derived full name in clusterrole name when nameOverride is long"
+  set:
+    nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
+  asserts:
+  - matchRegex:
+      path: metadata.name
+      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-role$"
 
 - it: "should fail when autoUpgrader.clusterRoleRules is not a list"
   set:

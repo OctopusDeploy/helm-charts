@@ -30,15 +30,12 @@ tests:
               resources: ["secrets"]
               verbs: ["get"]
     asserts:
-      - equal:
-          path: rules[0].apiGroups[0]
-          value: ""
-      - equal:
-          path: rules[0].resources[0]
-          value: secrets
-      - equal:
-          path: rules[0].verbs[0]
-          value: get
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["secrets"]
+            verbs: ["get"]
       - lengthEqual:
           path: rules
           count: 1

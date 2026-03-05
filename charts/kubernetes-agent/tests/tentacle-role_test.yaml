@@ -68,15 +68,12 @@ tests:
             resources: ["pods"]
             verbs: ["get", "list"]
     asserts:
-      - equal:
-          path: rules[0].apiGroups[0]
-          value: ""
-      - equal:
-          path: rules[0].resources[0]
-          value: pods
-      - equal:
-          path: rules[0].verbs[0]
-          value: get
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["pods"]
+            verbs: ["get", "list"]
       - lengthEqual:
           path: rules
           count: 1
