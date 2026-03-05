@@ -44,6 +44,28 @@ tests:
   - hasDocuments:
       count: 3  # 1 self-namespace + 2 target namespaces
 
+- it: "should use default target-namespace rules with escalate verb when no override is provided"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+  asserts:
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["rbac.authorization.k8s.io"]
+        resources: ["roles", "rolebindings"]
+        verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
+    documentIndex: 1
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["rbac.authorization.k8s.io"]
+        resources: ["roles"]
+        verbs: ["escalate"]
+    documentIndex: 1
+
 - it: "uses custom selfNamespaceRoleRules when provided"
   set:
     scriptPods:
@@ -58,12 +80,15 @@ tests:
   asserts:
   - hasDocuments:
       count: 1
-  - equal:
-      path: rules[0].resources[0]
-      value: deployments
-  - equal:
-      path: rules[0].verbs[0]
-      value: get
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["apps"]
+        resources: ["deployments"]
+        verbs: ["get", "update"]
+  - lengthEqual:
+      path: rules
+      count: 1
 
 - it: "uses custom targetNamespaceRoleRules when provided"
   set:
@@ -79,15 +104,34 @@ tests:
   asserts:
   - hasDocuments:
       count: 2  # 1 self-namespace + 1 target namespace
-  # Check that both are Roles
-  - equal:
-      path: kind
-      value: Role
-      documentIndex: 0
-  - equal:
-      path: kind
-      value: Role
-      documentIndex: 1
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["rbac.authorization.k8s.io"]
+        resources: ["roles"]
+        verbs: ["create", "update"]
+    documentIndex: 1
+  - lengthEqual:
+      path: rules
+      count: 1
+    documentIndex: 1
+
+- it: "should truncate derived full name in role names when nameOverride is long"
+  set:
+    nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+  asserts:
+  - matchRegex:
+      path: metadata.name
+      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-self-role$"
+    documentIndex: 0
+  - matchRegex:
+      path: metadata.name
+      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-target-role$"
+    documentIndex: 1
 
 - it: "should fail when autoUpgrader.selfNamespaceRoleRules is not a list"
   set:

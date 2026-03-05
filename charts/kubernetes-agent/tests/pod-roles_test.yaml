@@ -13,7 +13,7 @@ tests:
             - '*'
           resources: [ "*" ]
           verbs: [ "*" ]
-        documentIndex: 1
+        documentIndex: 0
 
 - it: "worker role is not created if worker is disabled"
   set:
@@ -74,12 +74,15 @@ tests:
   asserts:
   - hasDocuments:
       count: 1
-  - equal:
-      path: rules[0].resources[0]
-      value: pods
-  - equal:
-      path: rules[0].verbs[0]
-      value: get
+  - contains:
+      path: rules
+      content:
+        apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["get", "list"]
+  - lengthEqual:
+      path: rules
+      count: 1
 
 - it: "uses custom workerRoleRules when provided"
   set:
@@ -92,17 +95,12 @@ tests:
           resources: ["pods", "configmaps"]
           verbs: ["get", "list", "create"]
   asserts:
-  - equal:
-      path: rules[0].apiGroups[0]
-      value: ""
-      documentIndex: 0
-  - equal:
-      path: rules[0].resources[0]
-      value: pods
-      documentIndex: 0
-  - equal:
-      path: rules[0].verbs[0]
-      value: get
+  - contains:
+      path: rules
+      content:
+        apiGroups: [""]
+        resources: ["pods", "configmaps"]
+        verbs: ["get", "list", "create"]
       documentIndex: 0
   - lengthEqual:
       path: rules
