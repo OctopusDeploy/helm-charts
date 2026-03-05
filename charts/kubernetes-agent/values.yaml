@@ -268,14 +268,14 @@ scriptPods:
     # @default -- Uses a ClusterRoleBinding to allow the service account to run in any namespace
     targetNamespaces: []
 
-    # -- if defined, overrides the default ClusterRole rules
+    # -- If set to a non-empty list, completely replaces the default ClusterRole rules. Note: `[]` (empty list) means "use defaults", not "no rules".
     # @section -- Script pod values
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
     clusterRole:
       enabled: true
       rules: []
 
-    # -- if defined, overrides the default Role rules when using namespace-scoped roles
+    # -- If set to a non-empty list, completely replaces the default Role rules when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules".
     # @section -- Script pod values
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
     roleRules: []
@@ -477,21 +477,14 @@ autoUpgrader:
   # @section -- Auto-upgrader configuration
   # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
   clusterRoleRules: []
-  # -- Rules for managing the agent in its own namespace when using namespace-scoped roles
+  # -- If set to a non-empty list, completely replaces the default Role rules for managing the agent in its own namespace when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Auto-upgrader configuration
-  selfNamespaceRoleRules:
-    - apiGroups: ["*"]
-      resources: ["*"]
-      verbs: ["*"]
-  # -- Rules for managing script pod roles in target namespaces when using namespace-scoped roles
+  # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+  selfNamespaceRoleRules: []
+  # -- If set to a non-empty list, completely replaces the default Role rules for managing script pod roles in target namespaces when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Auto-upgrader configuration
-  targetNamespaceRoleRules:
-    - apiGroups: ["rbac.authorization.k8s.io"]
-      resources: ["roles", "rolebindings"]
-      verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
-    - apiGroups: ["rbac.authorization.k8s.io"]
-      resources: ["roles"]
-      verbs: ["escalate"]
+  # @default -- `[{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles","rolebindings"],"verbs":["create","update","patch","get","list","watch","delete"]},{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles"],"verbs":["escalate"]}]`
+  targetNamespaceRoleRules: []
 
 # Used to enable the Kubernetes Monitor
 # @ignored
