@@ -1,0 +1,50 @@
+suite: "pre-install tentacle role"
+templates:
+  - templates/pre-install-tentacle-role.yaml
+tests:
+  - it: "should match snapshot"
+    asserts:
+      - matchSnapshot: {}
+
+  - it: "should use default rules without wildcards"
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["configmaps", "secrets"]
+            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      - notContains:
+          path: rules
+          content:
+            apiGroups: ["*"]
+            resources: ["configmaps", "secrets"]
+            verbs: ["*"]
+
+  - it: "should use custom rules when agent.preinstall.roleRules is set"
+    set:
+      agent:
+        preinstall:
+          roleRules:
+            - apiGroups: [""]
+              resources: ["secrets"]
+              verbs: ["get"]
+    asserts:
+      - contains:
+          path: rules
+          content:
+            apiGroups: [""]
+            resources: ["secrets"]
+            verbs: ["get"]
+      - lengthEqual:
+          path: rules
+          count: 1
+
+  - it: "should fail when agent.preinstall.roleRules is not a list"
+    set:
+      agent:
+        preinstall:
+          roleRules: "not-a-list"
+    asserts:
+      - failedTemplate:
+          errorMessage: "agent.preinstall.roleRules must be a list of RBAC rule objects"

@@ -1,4 +1,4 @@
-suite: "pod permissions"
+suite: "auto-upgrader clusterrole permissions"
 templates:
 - templates/auto-upgrader-clusterrole.yaml
 tests:
@@ -14,3 +14,46 @@ tests:
   asserts:
   - hasDocuments:
       count: 0
+
+- it: "should use wildcard default rules when no override is provided"
+  asserts:
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["*"]
+        resources: ["*"]
+        verbs: ["*"]
+
+- it: "should use custom rules when autoUpgrader.clusterRoleRules is set"
+  set:
+    autoUpgrader:
+      clusterRoleRules:
+        - apiGroups: ["apps"]
+          resources: ["deployments"]
+          verbs: ["get", "list", "update"]
+  asserts:
+  - contains:
+      path: rules
+      content:
+        apiGroups: ["apps"]
+        resources: ["deployments"]
+        verbs: ["get", "list", "update"]
+  - lengthEqual:
+      path: rules
+      count: 1
+
+- it: "should truncate derived full name in clusterrole name when nameOverride is long"
+  set:
+    nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
+  asserts:
+  - matchRegex:
+      path: metadata.name
+      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-role$"
+
+- it: "should fail when autoUpgrader.clusterRoleRules is not a list"
+  set:
+    autoUpgrader:
+      clusterRoleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "autoUpgrader.clusterRoleRules must be a list of RBAC rule objects"

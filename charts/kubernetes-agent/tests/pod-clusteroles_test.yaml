@@ -9,7 +9,7 @@ tests:
         clusterRole:
           rules:
           - apiGroups:
-            - '*'
+            - ''
             resources: ["pods"]
             verbs: ["get", "watch", "list"]
   asserts:
@@ -17,15 +17,15 @@ tests:
         path: rules
         content:
           apiGroups:
-          - '*'
+          - ''
           resources: ["pods"]
           verbs: ["get", "watch", "list"]
       documentIndex: 0
-    - contains: 
+    - contains:
         path: rules
         content:
           apiGroups:
-          - '*'
+          - ''
           resources: ["pods"]
           verbs: ["delete", "list"]
       documentIndex: 1
@@ -42,3 +42,13 @@ tests:
   asserts:
   - hasDocuments:
       count: 0
+
+- it: "should fail when scriptPods.serviceAccount.clusterRole.rules is not a list"
+  set:
+    scriptPods:
+      serviceAccount:
+        clusterRole:
+          rules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "scriptPods.serviceAccount.clusterRole.rules must be a list of RBAC rule objects"
