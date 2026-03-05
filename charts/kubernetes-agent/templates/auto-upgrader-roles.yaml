@@ -22,6 +22,7 @@ rules:
 
 {{- if not (empty $targetNamespaces) }}
 # Roles for managing script pod roles/rolebindings in target namespaces
+{{- $targetOverrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" $.Values.autoUpgrader.targetNamespaceRoleRules "name" "autoUpgrader.targetNamespaceRoleRules") }}
 {{- range $targetNamespace := $targetNamespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -30,9 +31,8 @@ metadata:
   name: {{ $autoUpgraderTargetRoleName }}
   namespace: {{ $targetNamespace | quote }}
 rules:
-{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" $.Values.autoUpgrader.targetNamespaceRoleRules "name" "autoUpgrader.targetNamespaceRoleRules") }}
-{{- if $overrideRules }}
-{{ $overrideRules | nindent 2 }}
+{{- if $targetOverrideRules }}
+{{ $targetOverrideRules | nindent 2 }}
 {{- else }}
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["roles", "rolebindings"]
