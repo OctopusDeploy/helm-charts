@@ -28,6 +28,7 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | monitor.authenticationToken | string | `""` | If setting up the agent without automatic registration, this is the authentication token. If you provide this, you must also provide the installation ID. If you provide this, the monitor will not attempt to register with the server. |
+| monitor.clusterScopedResources | bool | `false` | Include cluster-scoped resources (Nodes, Namespaces, PVs, etc.) in monitoring. Only effective when global.targetNamespaces is set. When false (default), the monitor only watches namespace-scoped resources. When true, the chart auto-creates a ClusterRole and ClusterRoleBinding granting read access to all resources, replacing the per-namespace Roles. |
 | monitor.containers.monitor.env | list | `[]` | Additional env to apply to the monitor container - does not override any other configuration |
 | monitor.containers.monitor.spec | object | `{}` | Additional container spec to apply to the monitor container - does not override any other configuration |
 | monitor.customCaCertificate | string | `""` | A base64 encoded string of the custom CA certificate to use to verify the Octopus Deploy server |
