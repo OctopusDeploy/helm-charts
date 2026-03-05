@@ -2,7 +2,7 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ printf "%s-script-pdb" (include "kubernetes-agent.fullName" .) }}
+  name: {{ printf "%s-script-pdb" (include "kubernetes-agent.fullName" .) | trunc 63 | trimSuffix "-" }}
   namespace: {{ .Release.Namespace }}
 spec:
   minAvailable: 8888

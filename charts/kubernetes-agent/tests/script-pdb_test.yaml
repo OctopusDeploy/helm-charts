@@ -46,3 +46,13 @@ tests:
       - equal:
           path: metadata.name
           value: my-agent-RELEASE-NAME-script-pdb
+
+  - it: "truncates PDB name after suffix composition when nameOverride is long"
+    set:
+      nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
+      scriptPods:
+        disruptionBudgetEnabled: true
+    asserts:
+      - equal:
+          path: metadata.name
+          value: thisisaverylongstring34087236548972364802367y408923604872341234
