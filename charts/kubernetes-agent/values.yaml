@@ -471,8 +471,6 @@ autoUpgrader:
 # @ignored
 kubernetesMonitor:
   enabled: false
-  monitor:
-    clusterScopedResources: false
 
 # Used for integration testing to avoid registering with a real Octopus Server
 # @ignored
