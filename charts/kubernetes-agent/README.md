@@ -72,7 +72,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.preinstall.serviceAccount.name | string | Generates a name based on `agent.serviceAccount.name`, appending `-pre` | The name of the service account for the agent pre-install registration pod |
 | agent.preinstall.spec | object | `{}` | Additional pod spec to apply to the pre-install pod - does not override any other agent configuration |
 | agent.resources | object | `{"requests":{"cpu":"100m","memory":"150Mi"}}` | The resource limits and requests assigned to the agent container |
-| agent.roleRules | list | Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments. CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not set. | If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not set. |
+| agent.roleRules | list | Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments. | If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not `true`. |
 | agent.securityContext | object | `{}` | The security context to apply to the agent pod. runAsGroup and fsGroup should be blank or set to `0` |
 | agent.serverApiKey | string | `""` | An Octopus Server API key used to authenticate with the target Octopus Server |
 | agent.serverApiKeySecretName | string | `""` | The name of an existing Secret that contains a base64-encoded Octopus Server API Key.  Value must be set in `data.api-key` in secret. |
@@ -171,6 +171,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |
 | scriptPods.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to script pods |
 | scriptPods.pendingPodsTimeoutMinutes | int | `60` | The number of minutes a script pod remains pending before it is deleted @default 60 |
+| scriptPods.podTemplate.crdDisabled | bool | `false` | If true, disables the CRD RBAC rules for scriptpodtemplates in the tentacle role even when podTemplate is enabled |
 | scriptPods.podTemplate.enabled | bool | `false` | overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster |
 | scriptPods.podTemplate.podMetadata | object | `{"annotations":{},"labels":{}}` | Pod metadata for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.podSpec | object | `{}` | Pod spec for the `ScriptPodTemplate` |

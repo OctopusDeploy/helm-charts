@@ -5,11 +5,9 @@ metadata:
   name: {{ include "kubernetes-agent.scriptPodWorkerRoleName" . }}
   namespace: {{ $.Release.Namespace | quote }}
 rules:
-{{- if .Values.scriptPods.workerRoleRules }}
-{{- if not (kindIs "slice" .Values.scriptPods.workerRoleRules) }}
-{{- fail "scriptPods.workerRoleRules must be a list of RBAC rule objects" }}
-{{- end }}
-{{ .Values.scriptPods.workerRoleRules | toYaml | nindent 2 }}
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" .Values.scriptPods.workerRoleRules "name" "scriptPods.workerRoleRules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
 {{- else }}
   # Wildcards are retained because worker pods execute arbitrary user scripts and the required permissions are not predictable
   - apiGroups:
@@ -35,11 +33,9 @@ metadata:
   name: {{ $podRoleName }}
   namespace: {{ $targetNamespace | quote }}
 rules:
-{{- if $.Values.scriptPods.serviceAccount.roleRules }}
-{{- if not (kindIs "slice" $.Values.scriptPods.serviceAccount.roleRules) }}
-{{- fail "scriptPods.serviceAccount.roleRules must be a list of RBAC rule objects" }}
-{{- end }}
-{{ $.Values.scriptPods.serviceAccount.roleRules | toYaml | nindent 2 }}
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" $.Values.scriptPods.serviceAccount.roleRules "name" "scriptPods.serviceAccount.roleRules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
 {{- else }}
 # Wildcards are retained because script pods execute arbitrary user scripts and the required permissions are not predictable
 - apiGroups:

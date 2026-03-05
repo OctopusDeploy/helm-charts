@@ -11,11 +11,9 @@ metadata:
   name: {{ $autoUpgraderSelfRoleName }}
   namespace: {{ .Release.Namespace | quote }}
 rules:
-{{- if .Values.autoUpgrader.selfNamespaceRoleRules }}
-{{- if not (kindIs "slice" .Values.autoUpgrader.selfNamespaceRoleRules) }}
-{{- fail "autoUpgrader.selfNamespaceRoleRules must be a list of RBAC rule objects" }}
-{{- end }}
-{{ .Values.autoUpgrader.selfNamespaceRoleRules | toYaml | nindent 2 }}
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" .Values.autoUpgrader.selfNamespaceRoleRules "name" "autoUpgrader.selfNamespaceRoleRules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
 {{- else }}
 - apiGroups: ["*"]
   resources: ["*"]
@@ -32,18 +30,16 @@ metadata:
   name: {{ $autoUpgraderTargetRoleName }}
   namespace: {{ $targetNamespace | quote }}
 rules:
-{{- if $.Values.autoUpgrader.targetNamespaceRoleRules }}
-{{- if not (kindIs "slice" $.Values.autoUpgrader.targetNamespaceRoleRules) }}
-{{- fail "autoUpgrader.targetNamespaceRoleRules must be a list of RBAC rule objects" }}
-{{- end }}
-{{ $.Values.autoUpgrader.targetNamespaceRoleRules | toYaml | nindent 2 }}
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" $.Values.autoUpgrader.targetNamespaceRoleRules "name" "autoUpgrader.targetNamespaceRoleRules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
 {{- else }}
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["roles", "rolebindings"]
   verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["roles"]
-  {{/* escalate verb allows us to create roles/rolebindings in this namespace with correct permissions */}}
+  {{/* escalate verb allows granting permissions in Roles beyond what the auto-upgrader itself holds */}}
   verbs: ["escalate"]
 {{- end }}
 {{- end }}
