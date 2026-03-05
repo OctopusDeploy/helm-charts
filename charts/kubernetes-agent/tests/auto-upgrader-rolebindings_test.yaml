@@ -84,3 +84,20 @@ tests:
       path: subjects[0].name
       value: "my-custom-sa"
       documentIndex: 1
+
+- it: "should truncate derived service account name in rolebindings when nameOverride is long"
+  set:
+    nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+  asserts:
+  - equal:
+      path: subjects[0].name
+      value: "thisisaverylongstring34087236548972364802367y408923604872341234"
+      documentIndex: 0
+  - equal:
+      path: subjects[0].name
+      value: "thisisaverylongstring34087236548972364802367y408923604872341234"
+      documentIndex: 1
