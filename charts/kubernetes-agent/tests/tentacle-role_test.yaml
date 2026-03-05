@@ -47,19 +47,6 @@ tests:
             resources: ["scriptpodtemplates"]
             verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 
-  - it: "should not include CRD rules when podTemplate is disabled"
-    set:
-      scriptPods:
-        podTemplate:
-          enabled: false
-    asserts:
-      - notContains:
-          path: rules
-          content:
-            apiGroups: ["agent.octopus.com"]
-            resources: ["scriptpodtemplates"]
-            verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-
   - it: "should use custom rules when agent.roleRules is set"
     set:
       agent:

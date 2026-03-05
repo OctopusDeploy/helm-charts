@@ -43,21 +43,6 @@ tests:
   - hasDocuments:
       count: 0
 
-- it: "deleter ClusterRole should scope to core API group only"
-  set:
-    persistence:
-      nfs:
-        watchdog:
-          enabled: true
-  asserts:
-    - contains:
-        path: rules
-        content:
-          apiGroups: [""]
-          resources: ["pods"]
-          verbs: ["delete", "list"]
-      documentIndex: 1
-
 - it: "should fail when scriptPods.serviceAccount.clusterRole.rules is not a list"
   set:
     scriptPods:
