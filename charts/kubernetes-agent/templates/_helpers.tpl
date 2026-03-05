@@ -3,6 +3,7 @@ Validate and render RBAC rule overrides. Accepts a dict with:
   - "rules": the value to check (list or empty)
   - "name": the values.yaml path name for the error message
 Returns the rendered YAML if rules is a non-empty list, or empty string if rules is empty/nil.
+Fails with an error if rules is non-nil/non-empty but not a list.
 */}}
 {{- define "kubernetes-agent.renderRbacRules" -}}
 {{- if .rules -}}
