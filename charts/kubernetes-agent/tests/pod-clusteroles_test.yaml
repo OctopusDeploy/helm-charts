@@ -25,6 +25,7 @@ tests:
 - it: "has watchdog rules when nfs and watchdog are enabled"
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
         enabled: true
         watchdog:

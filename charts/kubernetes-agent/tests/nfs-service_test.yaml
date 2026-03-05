@@ -5,15 +5,12 @@ tests:
 - it: "should match snapshot"
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
         enabled: true
   asserts:
   - matchSnapshot: {}
-- it: "is not created when nfs is disabled"
-  set:
-    persistence:
-      nfs:
-        enabled: false
+- it: "is not created when nfs is disabled (default)"
   asserts:
   - hasDocuments:
       count: 0

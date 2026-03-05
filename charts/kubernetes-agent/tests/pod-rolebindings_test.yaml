@@ -24,6 +24,7 @@ tests:
 - it: "only creates the default rolebinding when target namespaces is empty and nfs and watchdog is enabled"
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
         enabled: true
         watchdog:
@@ -43,6 +44,7 @@ tests:
   set:
     agent.deploymentTarget.enabled: true
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
         enabled: true
         watchdog:
@@ -54,11 +56,8 @@ tests:
       path: metadata.namespace
       value: NAMESPACE
 
-- it: "is not created when nfs is disabled"
+- it: "is not created when nfs is disabled (default)"
   set:
-    persistence:
-      nfs:
-        enabled: false
     agent.deploymentTarget.enabled: true
   asserts:
     - hasDocuments:
@@ -67,6 +66,7 @@ tests:
 - it: "is not created when watchdog is disabled"
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
         enabled: true
         watchdog:
@@ -81,6 +81,7 @@ tests:
     agent.deploymentTarget.enabled: false
     scriptPods.serviceAccount.targetNamespaces: ["ns-1", "ns-2", "ns-3"]
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
         enabled: true
         watchdog:

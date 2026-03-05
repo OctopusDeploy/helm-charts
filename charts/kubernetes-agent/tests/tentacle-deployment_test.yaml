@@ -8,6 +8,7 @@ tests:
     - it: "includes the watchdog when NFS and Watchdog are both enabled"
       set:
           persistence:
+              accessModes: ["ReadWriteMany"]
               nfs:
                 enabled: true
                 watchdog:
@@ -70,6 +71,7 @@ tests:
     - it: "Doesn't include the watchdog when watchdog is disabled and nfs is enabled"
       set:
           persistence:
+              accessModes: ["ReadWriteMany"]
               nfs:
                 enabled: true
                 watchdog:
@@ -319,6 +321,7 @@ tests:
                     exec:
                       command: ["/bin/sh", "-c", "echo watchdog stopping"]
         persistence:
+          accessModes: ["ReadWriteMany"]
           nfs:
             enabled: true
       asserts:
@@ -335,6 +338,7 @@ tests:
                 - name: "WATCHDOG_CUSTOM_VAR"
                   value: "watchdog-custom-value"
         persistence:
+          accessModes: ["ReadWriteMany"]
           nfs:
             enabled: true
       asserts:

@@ -156,7 +156,7 @@ The name of the secret to store the agent's base64 certificate
 The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
-{{- if not .Values.persistence.nfs.enabled }}
+{{- if not (include "nfs.enabled" .) }}
 {{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
 {{- else }}
 {{- include "nfs.pvcName" . }}

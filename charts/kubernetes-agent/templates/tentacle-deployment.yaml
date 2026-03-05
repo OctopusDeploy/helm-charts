@@ -107,7 +107,7 @@ spec:
               value: {{ .Values.agent.debug.disableAutoPodCleanup | quote }}
             - name: "OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG"
               value: {{ .Values.scriptPods.logging.disablePodEventsInTaskLog | quote }}
-            {{- if and .Values.persistence.nfs.enabled .Values.persistence.nfs.watchdog.enabled }}
+            {{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
             - name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
               value: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
             {{- end }}
@@ -241,7 +241,7 @@ spec:
             - mountPath: /root
               name: temp-dir
             {{- end }}
-        {{- if and .Values.persistence.nfs.enabled .Values.persistence.nfs.watchdog.enabled }}
+        {{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
         - name: nfs-watchdog
           {{- with .Values.agent.containers.watchdog.spec }}
           {{- toYaml . | nindent 10 }}

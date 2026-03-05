@@ -18,7 +18,7 @@ rules:
   verbs:
   - '*'
 {{- end }}
-{{- if and .Values.persistence.nfs.enabled .Values.persistence.nfs.watchdog.enabled }}
+{{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

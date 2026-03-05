@@ -1,4 +1,4 @@
-should match snapshot when storageClassName is not set and nfs is disabled:
+should match snapshot when storageClassName is not set and nfs is disabled (default):
   1: |
     apiVersion: v1
     kind: PersistentVolumeClaim
