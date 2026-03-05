@@ -174,9 +174,9 @@ agent:
                   - arm64
                   - amd64
 
-  # -- If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not set.
+  # -- If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not `true`.
   # @section -- Agent values
-  # @default -- Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments. CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not set.
+  # @default -- Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments.
   roleRules: []
 
   preinstall:
@@ -361,6 +361,9 @@ scriptPods:
     # -- Watchdog container spec for the `ScriptPodTemplate`
     # @section -- Script pod values
     watchdogContainerSpec: {}
+    # -- If true, disables the CRD RBAC rules for scriptpodtemplates in the tentacle role even when podTemplate is enabled
+    # @section -- Script pod values
+    crdDisabled: false
 
 # @section -- Persistence
 persistence:

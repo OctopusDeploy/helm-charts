@@ -1,4 +1,19 @@
 {{/*
+Validate and render RBAC rule overrides. Accepts a dict with:
+  - "rules": the value to check (list or empty)
+  - "name": the values.yaml path name for the error message
+Returns the rendered YAML if rules is a non-empty list, or empty string if rules is empty/nil.
+*/}}
+{{- define "kubernetes-agent.renderRbacRules" -}}
+{{- if .rules -}}
+{{- if not (kindIs "slice" .rules) -}}
+{{- fail (printf "%s must be a list of RBAC rule objects" .name) -}}
+{{- end -}}
+{{ .rules | toYaml }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 The name for the agent
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

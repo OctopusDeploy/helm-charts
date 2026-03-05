@@ -6,11 +6,9 @@ metadata:
   annotations:
     {{- include "kubernetes-agent.hookAnnotationsWithSuccessDelete" . | nindent 4 }}
 rules:
-{{- if .Values.agent.preinstall.roleRules }}
-{{- if not (kindIs "slice" .Values.agent.preinstall.roleRules) }}
-{{- fail "agent.preinstall.roleRules must be a list of RBAC rule objects" }}
-{{- end }}
-{{ .Values.agent.preinstall.roleRules | toYaml | nindent 2 }}
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" .Values.agent.preinstall.roleRules "name" "agent.preinstall.roleRules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
 {{- else }}
   - apiGroups: [""]
     resources: ["configmaps", "secrets"]
