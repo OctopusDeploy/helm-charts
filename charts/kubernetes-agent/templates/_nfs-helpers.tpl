@@ -38,7 +38,7 @@ Validate that when the NFS is enabled, that the access modes has ReadWriteMany a
 {{- fail "`.persistence.storageClassName` must not be set when `.persistence.nfs.enabled` is `true`" -}}
 {{- end -}}
 {{- if .Values.persistence.volumeName }}
-{{- fail "`.persistence.storageClassName` must not be set when `.persistence.nfs.enabled` is `true`" -}}
+{{- fail "`.persistence.volumeName` must not be set when `.persistence.nfs.enabled` is `true`" -}}
 {{- end -}}
 {{- "true" }}
 {{- else -}}

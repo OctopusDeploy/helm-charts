@@ -61,9 +61,6 @@ tests:
       serviceAccount:
         targetNamespaces: []
     agent.deploymentTarget.enabled: true
-    persistence:
-      nfs:
-        enabled: false
   template: templates/pod-rolebindings.yaml
   asserts:
   - hasDocuments:

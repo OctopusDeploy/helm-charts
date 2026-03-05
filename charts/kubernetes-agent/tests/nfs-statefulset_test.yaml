@@ -16,7 +16,7 @@ tests:
   asserts:
   - matchSnapshot: {}
 
-- it: "does a thing when nfs is enabled, but accessModes does not have ReadWriteMany"
+- it: "fails to template when nfs is enabled, but accessModes does not have ReadWriteMany"
   set:
     persistence:
       accessModes: ["ReadOnlyMany"]
@@ -25,6 +25,28 @@ tests:
   asserts:
   - failedTemplate:
       errorMessage: "`.persistence.accessModes` must contain `ReadWriteMany` when `.persistence.nfs.enabled` is `true`"
+
+- it: "fails to template when nfs is enabled, but storageClassName has a value"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      storageClassName: "hi"
+      nfs:
+        enabled: true
+  asserts:
+  - failedTemplate:
+      errorMessage: "`.persistence.storageClassName` must not be set when `.persistence.nfs.enabled` is `true`"
+
+- it: "fails to template when nfs is enabled, but volumeName has a value"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      volumeName: "hi"
+      nfs:
+        enabled: true
+  asserts:
+  - failedTemplate:
+      errorMessage: "`.persistence.volumeName` must not be set when `.persistence.nfs.enabled` is `true`"
 
 - it: sets the emptyDir size to be the value in values
   set:
