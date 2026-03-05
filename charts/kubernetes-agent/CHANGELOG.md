@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.35.1
+
+### Patch Changes
+
+- 8fa4ed7: chore: update Kubernetes Monitor subchart to 0.25.0
+
 ## 2.35.0
 
 ### Minor Changes
