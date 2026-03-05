@@ -9,7 +9,7 @@ rules:
 {{- if $overrideRules }}
 {{ $overrideRules | nindent 2 }}
 {{- else }}
-  # Wildcards are retained because worker pods execute arbitrary user scripts and the required permissions are not predictable
+  # Wildcards grant broad namespace-level access; consider scoping to specific resources if worker pods have well-defined permission requirements
   - apiGroups:
       - '*'
     resources:
