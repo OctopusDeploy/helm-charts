@@ -4,10 +4,11 @@ should match snapshot:
     kind: Deployment
     metadata:
       labels:
+        agent.octopus.com/component: tentacle
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3577
+        app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
       name: octopus-agent-tentacle
       namespace: NAMESPACE
@@ -20,10 +21,11 @@ should match snapshot:
       template:
         metadata:
           labels:
+            agent.octopus.com/component: tentacle
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: octopus-agent
-            app.kubernetes.io/version: 8.3.3577
+            app.kubernetes.io/version: 9.1.3672
             helm.sh/chart: kubernetes-agent-2.35.0
         spec:
           affinity:
@@ -75,7 +77,7 @@ should match snapshot:
                 - name: OCTOPUS__K8STENTACLE__PODSERVICEACCOUNTNAME
                   value: octopus-agent-scripts
                 - name: OCTOPUS__K8STENTACLE__PODVOLUMECLAIMNAME
-                  value: octopus-agent-nfs-release-name-pvc-10gi
+                  value: octopus-agent-release-name-pvc
                 - name: OCTOPUS__K8STENTACLE__HELMRELEASENAME
                   value: RELEASE-NAME
                 - name: OCTOPUS__K8STENTACLE__HELMCHARTVERSION
@@ -84,8 +86,8 @@ should match snapshot:
                   value: "false"
                 - name: OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG
                   value: "false"
-                - name: OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE
-                  value: octopusdeploy/kubernetes-agent-nfs-watchdog:0.2.0
+                - name: OCTOPUS__K8STENTACLE__ACCESSMODESJSON
+                  value: '["ReadWriteOnce"]'
                 - name: OCTOPUS__TENTACLE__LOGLEVEL
                   value: Info
                 - name: OCTOPUS__K8STENTACLE__KUBERNETESMONITORENABLED
@@ -104,7 +106,7 @@ should match snapshot:
                   value: '{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}'
                 - name: OCTOPUS__K8STENTACLE__PERSISTENTVOLUMESIZE
                   value: 10Gi
-              image: octopusdeploy/kubernetes-agent-tentacle:8.3.3577
+              image: octopusdeploy/kubernetes-agent-tentacle:9.1.3672
               imagePullPolicy: IfNotPresent
               name: octopus-agent-tentacle
               resources:
@@ -122,17 +124,8 @@ should match snapshot:
               volumeMounts:
                 - mountPath: /octopus
                   name: tentacle-home
-            - env:
-                - name: watchdog_directory
-                  value: /octopus
-              image: octopusdeploy/kubernetes-agent-nfs-watchdog:0.2.0
-              imagePullPolicy: IfNotPresent
-              name: nfs-watchdog
-              volumeMounts:
-                - mountPath: /octopus
-                  name: tentacle-home
           serviceAccountName: octopus-agent-tentacle
           volumes:
             - name: tentacle-home
               persistentVolumeClaim:
-                claimName: octopus-agent-nfs-release-name-pvc-10gi
+                claimName: octopus-agent-release-name-pvc

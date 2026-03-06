@@ -1,6 +1,6 @@
 ## Kubernetes agent
 
-![Version: 2.35.0](https://img.shields.io/badge/Version-2.35.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.3.3577](https://img.shields.io/badge/AppVersion-8.3.3577-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 2.35.0](https://img.shields.io/badge/Version-2.35.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.1.3672](https://img.shields.io/badge/AppVersion-9.1.3672-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using [Octopus Deploy](https://octopus.com).
 
@@ -57,7 +57,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.containers.watchdog.spec | object | `{}` | Additional container spec to apply to the watchdog container - does not override any other configuration |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"8.3.3577","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.1.3672","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
@@ -138,11 +138,13 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| persistence.accessModes | list | `["ReadWriteOnce"]` | If set to 'ReadWriteOnce' (default), the agent will set a pod affinity on script pods to co-locate them on the same node as the agent pod. |
 | persistence.nfs.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to the NFS pod |
 | persistence.nfs.backingVolume.accessModes | list | `["ReadWriteOnce"]` | The access modes to use for the NFS Server's backing storage |
 | persistence.nfs.backingVolume.storageClassName | string | `""` | The storage class name to use for the NFS Server's backing storage - if left as an empty string, an emptyDir will be used |
 | persistence.nfs.containers.nfs.env | list | `[]` | Additional env to apply to the NFS container - does not override any other configuration |
 | persistence.nfs.containers.nfs.spec | object | `{}` | Additional container spec to apply to the NFS container - does not override any other configuration |
+| persistence.nfs.enabled | bool | `false` | If enabled, runs an in-cluster NFS server pod to support scaled, multi-node script pod execution. |
 | persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.1.0"}` | The repository, pullPolicy & tag to use for the NFS server |
 | persistence.nfs.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the NFS pod & container |
 | persistence.nfs.spec | object | `{}` | Additional pod spec to apply to the NFS pod - does not override any other NFS configuration |
@@ -154,8 +156,8 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | persistence.nfs.watchdog.timeout_seconds | string | `""` | The total time to retry failed NFS checks before giving up and deleting the pod @default 10 |
 | persistence.persistentVolumeReclaimPolicy | string | `"Retain"` | The NFS server PV reclaim policy |
 | persistence.size | string | `"10Gi"` | The size of the volume to create |
-| persistence.storageClassName | string | `""` | if provided, will disable the default persistence configuration and create a PVC with the provided storage class |
-| persistence.volumeName | string | `""` | if provided, will disable the default persistence configuration and create a PVC that is bound directly to the named PersistentVolume |
+| persistence.storageClassName | string | `""` | When set to "-", results in storageClassName: "" being set in the PVC. |
+| persistence.volumeName | string | `""` | When NFS is disabled, will set the provided volumeName in the PVC. |
 
 ### Script pod values
 

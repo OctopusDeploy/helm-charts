@@ -1,11 +1,12 @@
 package value_migrations_tests
 
 import (
+	"os"
+	"testing"
+
 	"github.com/octopusdeploylabs/helm-migrate-values/pkg"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v2"
-	"os"
-	"testing"
 )
 
 var migrationTestCases = []struct {
@@ -28,6 +29,27 @@ var migrationTestCases = []struct {
 		2,
 		"v1-requiredValuesOnly-initial.yaml",
 		"to-v2-requiredValuesOnly-expected.yaml",
+	},
+	{
+		"migration from v2 to v3 with storageClassName set",
+		2,
+		3,
+		"v2-storageClassNameSet-initial.yaml",
+		"to-v3-storageClassNameSet-expected.yaml",
+	},
+	{
+		"migration from v2 to v3 with volumeName set",
+		2,
+		3,
+		"v2-volumeNameSet-initial.yaml",
+		"to-v3-volumeNameSet-expected.yaml",
+	},
+	{
+		"migration from v2 to v3 without storageClassName or volumeName set",
+		2,
+		3,
+		"v2-noStorageClassOrVolumeNames-initial.yaml",
+		"to-v3-noStorageClassOrVolumeNames-expected.yaml",
 	},
 }
 

@@ -1,4 +1,4 @@
-should match snapshot when storageClassName is set:
+should match snapshot when storageClassName is not set and nfs is disabled (default):
   1: |
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -7,17 +7,35 @@ should match snapshot when storageClassName is set:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3577
+        app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
-      name: octopus-agent-RELEASE-NAME-pvc
+      name: octopus-agent-release-name-pvc
     spec:
       accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+should match snapshot when storageClassName is set and nfs is disabled:
+  1: |
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 9.1.3672
+        helm.sh/chart: kubernetes-agent-2.35.0
+      name: octopus-agent-release-name-pvc
+    spec:
+      accessModes:
+        - ReadWriteOnce
       resources:
         requests:
           storage: 10Gi
       storageClassName: my-storage-class
-should match snapshot when volumeName is set:
+should match snapshot when storageClassName is set to "-" and nfs is disabled:
   1: |
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -26,12 +44,32 @@ should match snapshot when volumeName is set:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 8.3.3577
+        app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
-      name: octopus-agent-RELEASE-NAME-pvc
+      name: octopus-agent-release-name-pvc
     spec:
       accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: ""
+      volumeName: my-volume
+should match snapshot when volumeName is set and nfs is disabled:
+  1: |
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: octopus-agent
+        app.kubernetes.io/version: 9.1.3672
+        helm.sh/chart: kubernetes-agent-2.35.0
+      name: octopus-agent-release-name-pvc
+    spec:
+      accessModes:
+        - ReadWriteOnce
       resources:
         requests:
           storage: 10Gi

@@ -4,6 +4,7 @@ metadata:
   name: {{printf "%s-tentacle" (include "kubernetes-agent.name" .) }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
+    agent.octopus.com/component: "tentacle"
     {{- include "kubernetes-agent.labels" . | nindent 4 }}
 spec:
   replicas: 1
@@ -17,6 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        agent.octopus.com/component: "tentacle"
         {{- include "kubernetes-agent.labels" . | nindent 8 }}
 	      {{- with .Values.agent.metadata.labels }}
         {{- toYaml . | nindent 8 }}
@@ -105,10 +107,12 @@ spec:
               value: {{ .Values.agent.debug.disableAutoPodCleanup | quote }}
             - name: "OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG"
               value: {{ .Values.scriptPods.logging.disablePodEventsInTaskLog | quote }}
-            {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
+            {{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
             - name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
               value: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
             {{- end }}
+            - name: "OCTOPUS__K8STENTACLE__ACCESSMODESJSON"
+              value: {{ .Values.persistence.accessModes | toJson | quote }}
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
               value: {{ .Values.agent.logLevel }}
             - name: "OCTOPUS__K8STENTACLE__KUBERNETESMONITORENABLED"
@@ -237,7 +241,7 @@ spec:
             - mountPath: /root
               name: temp-dir
             {{- end }}
-        {{- if and .Values.persistence.nfs.watchdog.enabled (not (include "kubernetes-agent.useCustomPvc" .)) }}
+        {{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
         - name: nfs-watchdog
           {{- with .Values.agent.containers.watchdog.spec }}
           {{- toYaml . | nindent 10 }}
