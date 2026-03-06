@@ -349,6 +349,7 @@ scriptPods:
     watchdogContainerSpec: {}
 
   # -- The number of minutes a script pod remains pending before it is deleted
+  # @default 60
   # @section -- Script pod values
   pendingPodsTimeoutMinutes: 60
 

@@ -166,7 +166,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |
 | scriptPods.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to script pods |
-| scriptPods.pendingPodsTimeoutMinutes | int | `60` | The number of minutes a script pod remains pending before it is deleted |
+| scriptPods.pendingPodsTimeoutMinutes | int | `60` | The number of minutes a script pod remains pending before it is deleted @default 60 |
 | scriptPods.podTemplate.enabled | bool | `false` | overrides any other script pod customisation options and requires the `ScriptPodTemplate` CRD to be installed in the cluster |
 | scriptPods.podTemplate.podMetadata | object | `{"annotations":{},"labels":{}}` | Pod metadata for the `ScriptPodTemplate` |
 | scriptPods.podTemplate.podSpec | object | `{}` | Pod spec for the `ScriptPodTemplate` |
