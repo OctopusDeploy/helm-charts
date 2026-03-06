@@ -157,7 +157,7 @@ The name of the PersistentVolumeClaim to configure
 */}}
 {{- define "kubernetes-agent.pvcName" -}}
 {{- if not (include "nfs.enabled" .) }}
-{{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) }}
+{{- printf "%s-pvc" (include "kubernetes-agent.fullName" .) | lower }}
 {{- else }}
 {{- include "nfs.pvcName" . }}
 {{- end }}

@@ -9,7 +9,7 @@ should match snapshot when storageClassName is not set and nfs is disabled (defa
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
-      name: octopus-agent-RELEASE-NAME-pvc
+      name: octopus-agent-release-name-pvc
     spec:
       accessModes:
         - ReadWriteOnce
@@ -27,7 +27,7 @@ should match snapshot when storageClassName is set and nfs is disabled:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
-      name: octopus-agent-RELEASE-NAME-pvc
+      name: octopus-agent-release-name-pvc
     spec:
       accessModes:
         - ReadWriteOnce
@@ -46,7 +46,7 @@ should match snapshot when storageClassName is set to "-" and nfs is disabled:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
-      name: octopus-agent-RELEASE-NAME-pvc
+      name: octopus-agent-release-name-pvc
     spec:
       accessModes:
         - ReadWriteOnce
@@ -66,7 +66,7 @@ should match snapshot when volumeName is set and nfs is disabled:
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 9.1.3672
         helm.sh/chart: kubernetes-agent-2.35.0
-      name: octopus-agent-RELEASE-NAME-pvc
+      name: octopus-agent-release-name-pvc
     spec:
       accessModes:
         - ReadWriteOnce
