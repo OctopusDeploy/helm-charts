@@ -348,6 +348,10 @@ scriptPods:
     # @section -- Script pod values
     watchdogContainerSpec: {}
 
+  # -- The number of minutes a script pod remains pending before it is deleted
+  # @section -- Script pod values
+  pendingPodsTimeoutMinutes: 60
+
 # @section -- Persistence
 persistence:
   # -- if provided, will disable the default persistence configuration and create a PVC with the provided storage class
