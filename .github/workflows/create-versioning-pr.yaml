@@ -7,6 +7,7 @@ on:
     - release/kubernetes-agent/v*
     - release/octopus-deploy/v*
     - octopus-v1
+    - vnext/v*
     paths:
     - charts/kubernetes-agent/**
     - charts/octopus-deploy/**
