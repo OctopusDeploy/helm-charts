@@ -356,11 +356,11 @@ persistence:
   accessModes: ["ReadWriteOnce"]
 
   # -- When NFS is disabled, will set the provided storageClassName in the PVC.
-  # -- Set to "-", results in storageClassName: "" being set in the PVC.
+  # -- When set to "-", results in storageClassName: "" being set in the PVC.
   # @section -- Persistence
-  #storageClassName: ""
+  storageClassName: ""
 
-  # -- When NFS is disabled, will set the provided storageClassName in the PVC.
+  # -- When NFS is disabled, will set the provided volumeName in the PVC.
   # @section -- Persistence
   volumeName: ""
 
