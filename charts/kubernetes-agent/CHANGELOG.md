@@ -16,9 +16,16 @@
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.36.0
+
+### Minor Changes
+
+- d07fbf4: Add stuck pending script pod monitoring background process. If a script pod has been in the pending state for more than the defined number of minutes (default: 60 minutes), the script pod is terminated.
+
 ### Patch Changes
 
 - 8fa4ed7: chore: update Kubernetes Monitor subchart to 0.25.0
+- f897c59: Upgrade kubernetes-agent-tentacle to 9.1.3703. This adds extra retry logic when performing filesystem operations.
 
 ## 2.35.0
 
