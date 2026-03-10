@@ -295,7 +295,7 @@ tests:
       asserts:
           - equal:
                 path: spec.template.spec.containers[0].image
-                value: "octopusdeploy/kubernetes-agent-tentacle:8.3.3577-bullseye-slim"
+                value: "octopusdeploy/kubernetes-agent-tentacle:9.1.3702-bullseye-slim"
 
     - it: "sets custom spec properly"
       set:

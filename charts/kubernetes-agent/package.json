@@ -6,7 +6,7 @@
   "author": "Octopus Deploy Ptd Ltd",
   "scripts": {
     "test": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:3.19.0-1.0.3 .",
-    "update-test-snapshots": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/3.19.0-1.0.3 . -u",
+    "update-test-snapshots": "cross-env-shell docker run -ti --rm -v $INIT_CWD:/apps helmunittest/helm-unittest:3.19.0-1.0.3 . -u",
     "generate-agent-docs": "docker run --rm --volume \".:/helm-docs\" jnorwood/helm-docs:latest"
   },
   "dependencies": {
