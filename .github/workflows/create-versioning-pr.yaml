@@ -115,7 +115,9 @@ jobs:
 
     - name: 'Push changes'
       run: |
-        git push --set-upstream origin "${{ github.ref }}"
+        baseRef="${{ github.base_ref }}"
+        baseRef=${baseRef#"refs/heads/"}
+        git push --set-upstream origin "changeset-release/$baseRef"
       if: steps.changesets.outputs.hasChangesets == 'true'
 
 
