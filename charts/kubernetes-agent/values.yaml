@@ -120,7 +120,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "9.1.3672"
+    tag: "9.1.3703"
     tagSuffix: ""
 
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
@@ -347,6 +347,11 @@ scriptPods:
     # -- Watchdog container spec for the `ScriptPodTemplate`
     # @section -- Script pod values
     watchdogContainerSpec: {}
+
+  # -- The number of minutes a script pod remains pending before it is deleted
+  # @default 60
+  # @section -- Script pod values
+  pendingPodsTimeoutMinutes: 60
 
 # @section -- Persistence
 persistence:
