@@ -1,5 +1,16 @@
 # kubernetes-agent
 
+## 2.36.0
+
+### Minor Changes
+
+- d07fbf4: Add stuck pending script pod monitoring background process. If a script pod has been in the pending state for more than the defined number of minutes (default: 60 minutes), the script pod is terminated.
+
+### Patch Changes
+
+- 8fa4ed7: chore: update Kubernetes Monitor subchart to 0.25.0
+- f897c59: Upgrade kubernetes-agent-tentacle to 9.1.3703. This adds extra retry logic when performing filesystem operations.
+
 ## 2.35.0
 
 ### Minor Changes
