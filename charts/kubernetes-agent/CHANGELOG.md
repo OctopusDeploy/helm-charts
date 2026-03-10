@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.0.0-v3.1
+
+### Patch Changes
+
+- 7be3c17: Fix pre-release versioning
+
 ## 3.0.0-v3.0
 
 ### Major Changes
