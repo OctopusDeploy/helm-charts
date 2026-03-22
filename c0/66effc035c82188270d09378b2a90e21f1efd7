@@ -1,0 +1,25 @@
+charts/kubernetes-agent/templates/_helpers.tpl
+  6874a6f048bf5df8 80
+charts/kubernetes-agent/tests/auto-upgrader-serviceaccount_test.yaml
+  6874a6f048bf5df8 1,9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.17",
+  "base_commit_sha": "c066effc035c82188270d09378b2a90e21f1efd7",
+  "prompts": {
+    "6874a6f048bf5df8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c488d34d-57c4-4093-b618-81c6f7bb6295",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Daniel Maizel <dani98000k@gmail.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 103,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
