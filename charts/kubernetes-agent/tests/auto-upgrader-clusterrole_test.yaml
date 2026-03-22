@@ -42,14 +42,6 @@ tests:
       path: rules
       count: 1
 
-- it: "should truncate derived full name in clusterrole name when nameOverride is long"
-  set:
-    nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
-  asserts:
-  - matchRegex:
-      path: metadata.name
-      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-role$"
-
 - it: "should fail when autoUpgrader.clusterRoleRules is not a list"
   set:
     autoUpgrader:

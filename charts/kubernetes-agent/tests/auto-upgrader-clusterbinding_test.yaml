@@ -6,16 +6,6 @@ tests:
   asserts:
   - matchSnapshot: {}
 
-- it: "should reference the custom service account name in the binding"
-  set:
-    autoUpgrader:
-      serviceAccount:
-        name: "my-custom-sa"
-  asserts:
-  - equal:
-      path: subjects[0].name
-      value: "my-custom-sa"
-
 - it: "is not created when useNamespacedRoles is true"
   set:
     scriptPods:

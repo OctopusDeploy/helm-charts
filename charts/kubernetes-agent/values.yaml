@@ -473,11 +473,6 @@ persistence:
 
 # @section -- Auto-upgrader configuration
 autoUpgrader:
-  serviceAccount:
-    # -- The name of the auto-upgrader service account
-    # @section -- Auto-upgrader configuration
-    # @default -- Derived from `nameOverride` (or `"octopus-agent"` if not set) with `-auto-upgrader` suffix
-    name: ""
   # -- If set to a non-empty list, completely replaces the default ClusterRole rules for the auto-upgrader. This ClusterRole is only created when `scriptPods.serviceAccount.useNamespacedRoles` is false. Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Auto-upgrader configuration
   # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`

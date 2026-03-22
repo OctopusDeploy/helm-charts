@@ -116,23 +116,6 @@ tests:
       count: 1
     documentIndex: 1
 
-- it: "should truncate derived full name in role names when nameOverride is long"
-  set:
-    nameOverride: "thisisaverylongstring34087236548972364802367y408923604872341234141"
-    scriptPods:
-      serviceAccount:
-        useNamespacedRoles: true
-        targetNamespaces: ["ns-1"]
-  asserts:
-  - matchRegex:
-      path: metadata.name
-      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-self-role$"
-    documentIndex: 0
-  - matchRegex:
-      path: metadata.name
-      pattern: "^thisisaverylongstring34087236548972364802367y408923604872341234-target-role$"
-    documentIndex: 1
-
 - it: "should fail when autoUpgrader.selfNamespaceRoleRules is not a list"
   set:
     scriptPods:

@@ -126,7 +126,6 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 |-----|------|---------|-------------|
 | autoUpgrader.clusterRoleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | If set to a non-empty list, completely replaces the default ClusterRole rules for the auto-upgrader. This ClusterRole is only created when `scriptPods.serviceAccount.useNamespacedRoles` is false. Note: `[]` (empty list) means "use defaults", not "no rules". |
 | autoUpgrader.selfNamespaceRoleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | If set to a non-empty list, completely replaces the default Role rules for managing the agent in its own namespace when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules". |
-| autoUpgrader.serviceAccount.name | string | Derived from `nameOverride` (or `"octopus-agent"` if not set) with `-auto-upgrader` suffix | The name of the auto-upgrader service account |
 | autoUpgrader.targetNamespaceRoleRules | list | `[{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles","rolebindings"],"verbs":["create","update","patch","get","list","watch","delete"]},{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles"],"verbs":["escalate"]}]` | If set to a non-empty list, completely replaces the default Role rules for managing script pod roles in target namespaces when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules". |
 
 ### Globals
