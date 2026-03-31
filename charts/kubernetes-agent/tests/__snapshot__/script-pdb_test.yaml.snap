@@ -3,7 +3,7 @@ should match snapshot:
     apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
-      name: script-pod-disruption-budget
+      name: octopus-agent-RELEASE-NAME-script-pdb
       namespace: NAMESPACE
     spec:
       minAvailable: 8888

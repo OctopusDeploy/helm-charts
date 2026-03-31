@@ -4,7 +4,12 @@ kind: ClusterRole
 metadata:
   name: {{ include "kubernetes-agent.autoUpgraderClusterRoleName" . }}
 rules:
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" .Values.autoUpgrader.clusterRoleRules "name" "autoUpgrader.clusterRoleRules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
+{{- else }}
   - apiGroups: ["*"]
     resources: ["*"]
     verbs: ["*"]
+{{- end }}
 {{- end }}
