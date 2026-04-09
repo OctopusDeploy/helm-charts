@@ -35,6 +35,10 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - /bin/bash
             - -c
