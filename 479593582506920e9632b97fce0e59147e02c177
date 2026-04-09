@@ -1,0 +1,23 @@
+charts/octopus-deploy/charts/mssql/templates/statefulset.yaml
+  9a660593f234096a 38-41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "479593582506920e9632b97fce0e59147e02c177",
+  "prompts": {
+    "9a660593f234096a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "41688ed9-7860-4d7c-97d6-0e311f59369a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Noam Gal",
+      "messages": [],
+      "total_additions": 13,
+      "total_deletions": 5,
+      "accepted_lines": 8,
+      "overriden_lines": 1
+    }
+  }
+}
