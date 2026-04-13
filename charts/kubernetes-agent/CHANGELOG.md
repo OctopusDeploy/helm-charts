@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.37.0
+
+### Minor Changes
+
+- b6477d8: Replace RBAC wildcards with explicit rules and add override mechanism for all role types
+
 ## 2.36.0
 
 ### Minor Changes
