@@ -15,7 +15,7 @@ tests:
       - contains:
           path: spec.ports
           content:
-            name: grpc
+            name: grpcs
             port: 8443
             targetPort: 8443
             protocol: TCP
@@ -32,7 +32,7 @@ tests:
           path: spec.template.spec.containers[0].ports
           content:
             containerPort: 8443
-            name: grpc
+            name: grpcs
 
   - it: should create gRPC ingress when enabled
     template: ingress.yaml
@@ -50,7 +50,7 @@ tests:
             hostPrefix: "grpc"
     asserts:
       - hasDocuments:
-          count: 2  # Main ingress + gRPC ingress
+          count: 2 # Main ingress + gRPC ingress
       - isKind:
           of: Ingress
         documentIndex: 1
@@ -84,7 +84,7 @@ tests:
             hostPrefix: "grpc"
     asserts:
       - hasDocuments:
-          count: 2  # Main ingress + single gRPC ingress (load balances across all replicas)
+          count: 2 # Main ingress + single gRPC ingress (load balances across all replicas)
       - isKind:
           of: Ingress
         documentIndex: 1
