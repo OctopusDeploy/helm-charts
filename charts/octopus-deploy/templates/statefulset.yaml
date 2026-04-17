@@ -150,7 +150,7 @@ spec:
           - containerPort: 10943
             name: tentacle
           - containerPort: {{.Values.octopus.grpcPort}}
-            name: grpc
+            name: grpcs
         volumeMounts:
           {{- range $name, $volume := .Values.octopus.extraVolumes }}
           - name: {{ $name }}-volume

@@ -1,5 +1,17 @@
 # octopus-deploy
 
+## 1.12.0
+
+### Minor Changes
+
+- 81c605a: Update AppVersion to 2026.1
+
+## 1.11.1
+
+### Patch Changes
+
+- 25b4132: Update grpc port name to stop istio interception
+
 ## 1.11.0
 
 ### Minor Changes

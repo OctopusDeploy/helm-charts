@@ -22,6 +22,12 @@
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.37.0
+
+### Minor Changes
+
+- b6477d8: Replace RBAC wildcards with explicit rules and add override mechanism for all role types
+
 ## 2.36.0
 
 ### Minor Changes
