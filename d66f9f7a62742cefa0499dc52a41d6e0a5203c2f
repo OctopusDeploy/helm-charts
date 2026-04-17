@@ -1,0 +1,14 @@
+charts/octopus-deploy/templates/pre-upgrade-hook.yaml
+  h_70837b2d68bfaa 25-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "d66f9f7a62742cefa0499dc52a41d6e0a5203c2f",
+  "prompts": {},
+  "humans": {
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}
