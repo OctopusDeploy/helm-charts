@@ -114,9 +114,9 @@ octopus:
 ```
 
 #### Git resources
-Octopus supports interacting with Git resources for various purposes, such as [Config As Code](https://octopus.com/docs/projects/version-control) or as a source for deployment dependencies. When this occurs, Octopus must clone the repository to the local filesystem. 
+Octopus supports interacting with git resources for various purposes, such as [Config As Code](https://octopus.com/docs/projects/version-control) or as a source for deployment dependencies. When this occurs, Octopus must clone the repository to the local filesystem. 
 
-Due to the nature of git, it is important that these files _not_ be shared across multiple Octopus Server nodes when running your Octopus Server in [High Availability](https://octopus.com/docs/best-practices/self-hosted-octopus/high-availability) mode as Git repositories on the filesystem inhernetly do not support concurrent access by multiple processes. It is important that each Octopus Server node has its own copy of this repository (which will be cloned on-demand) and not be mounted by to same volumes for other persistent volumes.
+Due to the nature of git, it is important that these files _not_ be shared across multiple Octopus Server nodes when running your Octopus Server in [High Availability](https://octopus.com/docs/best-practices/self-hosted-octopus/high-availability) mode as git repositories on the filesystem inhernetly do not support concurrent access by multiple processes. It is important that each Octopus Server node has its own copy of this repository (which will be cloned on-demand) and not be mounted by to same volumes for other persistent volumes.
 
 In addition, since git repositories can be made up of many small files, there are likely to be storage issues if this directory is backed by a remote file share such as Azure, AKS or GKE file storage. 
 
