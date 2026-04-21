@@ -4,8 +4,9 @@ kind: ClusterRole
 metadata:
   name: {{ include "kubernetes-agent.scriptPodClusterRoleName" . }}
 rules:
-{{- if .Values.scriptPods.serviceAccount.clusterRole.rules}}
-{{ .Values.scriptPods.serviceAccount.clusterRole.rules | toYaml| nindent 2 }}
+{{- $overrideRules := include "kubernetes-agent.renderRbacRules" (dict "rules" .Values.scriptPods.serviceAccount.clusterRole.rules "name" "scriptPods.serviceAccount.clusterRole.rules") }}
+{{- if $overrideRules }}
+{{ $overrideRules | nindent 2 }}
 {{- else }}
 - apiGroups:
   - '*'
@@ -26,7 +27,7 @@ metadata:
   name: {{ include "kubernetes-agent.scriptPodDeleterClusterRoleName" . }}
 rules:
   - apiGroups:
-      - '*'
+      - ''
     resources:
       - 'pods'
     verbs:

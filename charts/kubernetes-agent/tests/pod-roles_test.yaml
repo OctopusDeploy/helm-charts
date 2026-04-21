@@ -13,7 +13,7 @@ tests:
             - '*'
           resources: [ "*" ]
           verbs: [ "*" ]
-        documentIndex: 1
+        documentIndex: 0
 
 - it: "worker role is not created if worker is disabled"
   set:
@@ -74,9 +74,57 @@ tests:
   asserts:
   - hasDocuments:
       count: 1
-  - equal:
-      path: rules[0].resources[0]
-      value: pods
-  - equal:
-      path: rules[0].verbs[0]
-      value: get
+  - contains:
+      path: rules
+      content:
+        apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["get", "list"]
+  - lengthEqual:
+      path: rules
+      count: 1
+
+- it: "uses custom workerRoleRules when provided"
+  set:
+    agent:
+      worker:
+        enabled: true
+    scriptPods:
+      workerRoleRules:
+        - apiGroups: [""]
+          resources: ["pods", "configmaps"]
+          verbs: ["get", "list", "create"]
+  asserts:
+  - contains:
+      path: rules
+      content:
+        apiGroups: [""]
+        resources: ["pods", "configmaps"]
+        verbs: ["get", "list", "create"]
+      documentIndex: 0
+  - lengthEqual:
+      path: rules
+      count: 1
+      documentIndex: 0
+
+- it: "should fail when scriptPods.workerRoleRules is not a list"
+  set:
+    agent:
+      worker:
+        enabled: true
+    scriptPods:
+      workerRoleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "scriptPods.workerRoleRules must be a list of RBAC rule objects"
+
+- it: "should fail when scriptPods.serviceAccount.roleRules is not a list"
+  set:
+    scriptPods:
+      serviceAccount:
+        useNamespacedRoles: true
+        targetNamespaces: ["ns-1"]
+        roleRules: "not-a-list"
+  asserts:
+    - failedTemplate:
+        errorMessage: "scriptPods.serviceAccount.roleRules must be a list of RBAC rule objects"
