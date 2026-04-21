@@ -13,7 +13,7 @@ spec:
       port: {{.Values.octopus.webPort}}
       targetPort: 8080
       protocol: TCP
-    - name: grpc
+    - name: grpcs
       port: {{.Values.octopus.grpcPort}}
       targetPort: {{.Values.octopus.grpcPort}}
       protocol: TCP
@@ -39,7 +39,7 @@ spec:
       port: {{$.Values.octopus.webPort}}
       targetPort: 8080
       protocol: TCP
-    - name: grpc
+    - name: grpcs
       port: {{$.Values.octopus.grpcPort}}
       targetPort: {{$.Values.octopus.grpcPort}}
       protocol: TCP
