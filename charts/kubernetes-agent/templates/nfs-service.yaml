@@ -1,4 +1,4 @@
-{{- if (include "nfs.enabled" .) }}
+{{- if not (include "kubernetes-agent.useCustomPvc" .) }}
 apiVersion: v1
 kind: Service
 metadata:

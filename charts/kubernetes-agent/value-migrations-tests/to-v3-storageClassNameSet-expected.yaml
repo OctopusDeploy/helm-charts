@@ -1,4 +1,0 @@
-persistence:
-  storageClassName: "abc"
-  nfs:
-    enabled: false

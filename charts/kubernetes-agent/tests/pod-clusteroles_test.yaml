@@ -21,17 +21,7 @@ tests:
           resources: ["pods"]
           verbs: ["get", "watch", "list"]
       documentIndex: 0
-
-- it: "has watchdog rules when nfs and watchdog are enabled"
-  set:
-    persistence:
-      accessModes: ["ReadWriteMany"]
-      nfs:
-        enabled: true
-        watchdog:
-          enabled: true
-  asserts:
-    - contains: 
+    - contains:
         path: rules
         content:
           apiGroups:

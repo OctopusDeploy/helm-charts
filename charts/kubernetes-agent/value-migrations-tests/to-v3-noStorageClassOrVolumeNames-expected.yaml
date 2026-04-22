@@ -1,4 +1,0 @@
-persistence:
-  accessModes: ["ReadWriteMany"]
-  nfs:
-    enabled: true
