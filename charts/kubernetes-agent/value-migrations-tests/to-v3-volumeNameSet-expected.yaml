@@ -1,4 +1,3 @@
 persistence:
-  volumeName: "abc"
   nfs:
     enabled: false
