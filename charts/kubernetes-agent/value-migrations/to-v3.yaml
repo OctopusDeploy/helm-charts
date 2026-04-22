@@ -1,8 +1,6 @@
 {{- $isNfsEnabled := (not (or .persistence.storageClassName .persistence.volumeName)) -}}
 persistence:
-  {{/* This isn't strictly necessary, but we want to make it clear for NFS this is set */}}
-  {{- if $isNfsEnabled }}
+  {{/* To keep current behaviour, set the accessModes to ReadWriteMany */}}
   accessModes: ["ReadWriteMany"]
-  {{- end}}
   nfs:
     enabled: {{ $isNfsEnabled}}
