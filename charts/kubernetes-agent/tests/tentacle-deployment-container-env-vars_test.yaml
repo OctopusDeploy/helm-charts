@@ -532,12 +532,3 @@ tests:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__PODLABELSJSON')].value
         value: '{"azure.workload.identity/use":"true","octopus.com/value-2":"also-true"}'
-
-- it: Sets the env var to the json persistence access modes
-  set:
-    persistence:
-      accessModes: ["ReadWriteMany", "ReadWriteOnce"]
-  asserts:
-    - equal:
-        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__ACCESSMODESJSON')].value
-        value: '["ReadWriteMany","ReadWriteOnce"]'

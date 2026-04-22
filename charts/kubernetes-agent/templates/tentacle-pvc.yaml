@@ -1,4 +1,4 @@
-{{- if not (include "nfs.enabled" .) }}
+{{- if (include "kubernetes-agent.useCustomPvc" .) }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -8,13 +8,9 @@ metadata:
 spec:
   accessModes:
     {{- .Values.persistence.accessModes | toYaml | nindent 4 }}
-  {{- if .Values.persistence.storageClassName }}
-  {{- if (eq "-" .Values.persistence.storageClassName) }}
-  storageClassName: ""
-  {{- else }}
-  storageClassName: {{ .Values.persistence.storageClassName | quote }}
-  {{- end }}
-  {{- end }}
+  {{- with .Values.persistence.storageClassName }}
+  storageClassName: {{ . | quote }}
+  {{- end }}  
   {{- with .Values.persistence.volumeName }}
   volumeName: {{ . | quote }}
   {{- end }}

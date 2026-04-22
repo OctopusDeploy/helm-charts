@@ -1,4 +1,4 @@
-{{- if (include "nfs.enabled" .) }}
+{{- if not (include "kubernetes-agent.useCustomPvc" .) }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -24,4 +24,5 @@ spec:
     volumeAttributes:
       server: {{ include "nfs.serverAddress" . }}
       share: /
+
 {{- end }}
