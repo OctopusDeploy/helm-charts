@@ -22,6 +22,19 @@
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.38.0
+
+### Minor Changes
+
+- 39791ce: Updates the `kubernetes-agent-tentacle` image to `9.1.3831`
+
+  Includes 4 relevant changes:
+
+  - Reduce Tentacle memory consumption
+  - Update to support 1.35 SDK
+  - Enable multi-architecture support between Tentacle & script pods
+  - Support 1.36 `kubernetes-agent-tools-base` image
+
 ## 2.37.0
 
 ### Minor Changes
