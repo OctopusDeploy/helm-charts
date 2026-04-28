@@ -22,6 +22,12 @@
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.38.1
+
+### Patch Changes
+
+- 8b914bd: Fixed an issue where script pods were being assigned a node affinity of x64, not amd64
+
 ## 2.38.0
 
 ### Minor Changes
