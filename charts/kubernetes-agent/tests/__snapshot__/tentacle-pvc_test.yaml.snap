@@ -7,7 +7,7 @@ should match snapshot when storageClassName is not set and nfs is disabled (defa
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 9.1.3831
+        app.kubernetes.io/version: 9.1.3835
         helm.sh/chart: kubernetes-agent-3.0.0-v3.1
       name: octopus-agent-release-name-pvc
     spec:
@@ -44,7 +44,7 @@ should match snapshot when storageClassName is set to "-" and nfs is disabled:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-        app.kubernetes.io/version: 9.1.3831
+        app.kubernetes.io/version: 9.1.3835
         helm.sh/chart: kubernetes-agent-3.0.0-v3.1
       name: octopus-agent-release-name-pvc
     spec:
