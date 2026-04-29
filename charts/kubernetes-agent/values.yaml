@@ -393,7 +393,7 @@ persistence:
   # -- The NFS server PV reclaim policy
   # @section -- Persistence
   persistentVolumeReclaimPolicy: Retain
-
+  
   nfs:
     # -- If enabled, runs an in-cluster NFS server pod to support scaled, multi-node script pod execution.
     # @section -- Persistence

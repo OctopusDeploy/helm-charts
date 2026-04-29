@@ -1,0 +1,16 @@
+suite: "notes"
+templates:
+- templates/NOTES.txt
+tests:
+- it: "should match snapshot when NFS is enabled"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
+  asserts:
+  - matchSnapshot: {}
+
+- it: "should match snapshot when NFS is disabled"
+  asserts:
+  - matchSnapshot: {}
