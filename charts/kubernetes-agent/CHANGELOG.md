@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-- 2cd1b49: Changes the default storage from NFS to default single node `ReadWriteOnce`. This is being done as we have had increasing reports of the NFS server's stability, performance, and security concerns.
+- 2cd1b49: Kubernetes Agent v3: Changes the default storage from NFS to default single node `ReadWriteOnce`. This is being done as we have had increasing reports of the NFS server's stability, performance, and security concerns.
 
   The primary changes to the default values file are:
 
@@ -15,10 +15,6 @@
   The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
-
-### Patch Changes
-
-- 2cd1b49: Fix pre-release versioning
 
 ## 3.0.0-v3.1
 
