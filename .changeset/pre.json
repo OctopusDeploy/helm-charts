@@ -1,5 +1,5 @@
 {
-  "mode": "pre",
+  "mode": "exit",
   "tag": "v3",
   "initialVersions": {
     "kubernetes-agent": "2.35.0",
