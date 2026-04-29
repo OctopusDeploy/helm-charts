@@ -1,11 +1,11 @@
 This is the official Helm chart for the Octopus Deploy Kubernetes Agent.
 
 You can read more on how to use this at https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent
+{{ if .Values.persistence.nfs.enabled }}
 
-{{- if (include "nfs.enabled" .) }}
 ---
 Deprecation Notice
 ---
 The built-in NFS server is deprecated and will be removed in a future major release.
 See https://github.com/OctopusDeploy/helm-charts/issues/554
-{{- end }}
+{{ end }}
