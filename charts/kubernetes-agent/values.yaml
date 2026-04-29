@@ -394,6 +394,7 @@ persistence:
   # @section -- Persistence
   persistentVolumeReclaimPolicy: Retain
 
+  # -- DEPRECATED: The in-cluster NFS server has been deprecated and will be removed in a future major release. See https://github.com/OctopusDeploy/helm-charts/issues/554
   nfs:
     # -- If enabled, runs an in-cluster NFS server pod to support scaled, multi-node script pod execution.
     # @section -- Persistence
