@@ -2,6 +2,10 @@
 
 ## 3.0.0
 
+### ⚠️ Breaking Changes
+
+Version 3 has breaking changes and upgrading from Version 2 requires manual migration of some `values.yaml` values. See the [migration notes](./migrations.md) for more information.
+
 ### Major Changes
 
 - 2cd1b49: Kubernetes Agent v3: Changes the default storage from NFS to default single node `ReadWriteOnce`. This is being done as we have had increasing reports of the NFS server's stability, performance, and security concerns.
