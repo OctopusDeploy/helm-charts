@@ -1,5 +1,45 @@
 # octopus-deploy
 
+## 1.12.0
+
+### Minor Changes
+
+- 81c605a: Update AppVersion to 2026.1
+
+## 1.11.1
+
+### Patch Changes
+
+- 25b4132: Update grpc port name to stop istio interception
+
+## 1.11.0
+
+### Minor Changes
+
+- ceeda72: Make username and password optional
+
+### Patch Changes
+
+- 80757b2: Add mssql pod constraints (nodeSelector/tolerations/affinity)
+
+## 1.10.1
+
+### Patch Changes
+
+- 149cd89: Add support for RORFS/extra volume mounts
+
+## 1.10.0
+
+### Minor Changes
+
+- Add `extraVolumes` support to mount additional volumes (emptyDir or PersistentVolumeClaim) into the Octopus container, enabling use of `readOnlyRootFilesystem`
+- Add `extraPvcs.yaml` template to provision PVCs for `persistentVolumeClaim`-type extra volumes
+- Add `values-rorfsexample.yaml` as a reference values file for running Octopus with a read-only root filesystem
+
+### Patch Changes
+
+- Fix template helper name for `persistentVolumeClaim` extra volume claimName in statefulset
+
 ## 1.9.0
 
 ### Minor Changes

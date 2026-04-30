@@ -1,5 +1,53 @@
 # kubernetes-agent
 
+## 2.38.2
+
+### Patch Changes
+
+- 668909b: chore: update Kubernetes Monitor subchart to 0.27.0
+
+## 2.38.1
+
+### Patch Changes
+
+- 8b914bd: Fixed an issue where script pods were being assigned a node affinity of x64, not amd64
+
+## 2.38.0
+
+### Minor Changes
+
+- 39791ce: Updates the `kubernetes-agent-tentacle` image to `9.1.3831`
+
+  Includes 4 relevant changes:
+
+  - Reduce Tentacle memory consumption
+  - Update to support 1.35 SDK
+  - Enable multi-architecture support between Tentacle & script pods
+  - Support 1.36 `kubernetes-agent-tools-base` image
+
+## 2.37.0
+
+### Minor Changes
+
+- b6477d8: Replace RBAC wildcards with explicit rules and add override mechanism for all role types
+
+## 2.36.0
+
+### Minor Changes
+
+- d07fbf4: Add stuck pending script pod monitoring background process. If a script pod has been in the pending state for more than the defined number of minutes (default: 60 minutes), the script pod is terminated.
+
+### Patch Changes
+
+- 8fa4ed7: chore: update Kubernetes Monitor subchart to 0.25.0
+- f897c59: Upgrade kubernetes-agent-tentacle to 9.1.3703. This adds extra retry logic when performing filesystem operations.
+
+## 2.35.0
+
+### Minor Changes
+
+- 359e463: Update Tentancle to 8.3.3577
+
 ## 2.34.0
 
 ### Minor Changes

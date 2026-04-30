@@ -3,17 +3,18 @@ should match snapshot:
     apiVersion: rbac.authorization.k8s.io/v1
     kind: Role
     metadata:
-      name: octopus-agent-tentacle-role
+      annotations:
+        helm.sh/hook: pre-install
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        helm.sh/hook-weight: "-10"
+      name: octopus-agent-tentacle-pre-role
       namespace: NAMESPACE
     rules:
       - apiGroups:
           - ""
         resources:
-          - pods
-          - pods/log
           - configmaps
           - secrets
-          - events
         verbs:
           - get
           - list
@@ -22,11 +23,3 @@ should match snapshot:
           - update
           - patch
           - delete
-      - apiGroups:
-          - apps
-        resources:
-          - deployments
-        verbs:
-          - get
-          - list
-          - watch

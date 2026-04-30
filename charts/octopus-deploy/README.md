@@ -113,6 +113,80 @@ octopus:
     storageAccessMode: ReadWriteMany
 ```
 
+#### Git resources
+Octopus supports interacting with git resources for various purposes, such as [Config As Code](https://octopus.com/docs/projects/version-control) or as a source for deployment dependencies. When this occurs, Octopus must clone the repository to the local filesystem. 
+
+Due to the nature of git, it is important that these files _not_ be shared across multiple Octopus Server nodes when running your Octopus Server in [High Availability](https://octopus.com/docs/best-practices/self-hosted-octopus/high-availability) mode as git repositories on the filesystem inhernetly do not support concurrent access by multiple processes. It is important that each Octopus Server node has its own copy of this repository (which will be cloned on-demand) and not be mounted by to same volumes for other persistent volumes.
+
+In addition, since git repositories can be made up of many small files, there are likely to be storage issues if this directory is backed by a remote file share such as Azure, AKS or GKE file storage. 
+
+Due to the ephemeral nature of these files we reccomend backing the git directory to an empty directory that will be made available for each node.
+
+```yaml
+octopus:
+  extraVolumes:
+    git:
+      type: emptyDir
+      mountPath: /root/.octopus/OctopusServer/Server/Git/
+      sizeLimit: 10Gi # Set to some upper bound limit to protect from unbound usage
+```
+
+
+### Read-Only Root Filesystem
+
+If your security policy requires a read-only root filesystem (`readOnlyRootFilesystem: true`), you must provide writable `emptyDir` mounts for the directories Octopus writes to at runtime.
+
+Use the `extraVolumes` key to define these mounts. Each entry requires a `type`, `mountPath`, and optionally `sizeLimit` and `medium`.
+
+Supported types:
+- `emptyDir` — an ephemeral in-memory or disk-backed volume
+- `persistentVolumeClaim` — a PVC provisioned automatically by the chart (requires `accessModes` and `size`)
+
+A minimal set of writable paths for a read-only root filesystem is:
+
+```yaml
+octopus:
+  containerSecurityContext:
+    runAsNonRoot: true
+    runAsGroup: 999
+    runAsUser: 999
+    readOnlyRootFilesystem: true
+  podSecurityContext:
+    fsGroup: 999
+    fsGroupChangePolicy: OnRootMismatch
+
+  serverConfigurationDirectory: /home/octopus/.local
+
+  extraVolumes:
+    tmp:
+      type: emptyDir
+      mountPath: /tmp
+      sizeLimit: "1Gi"
+      medium: ""
+    homeoctopus:
+      type: emptyDir
+      mountPath: /home/octopus
+      sizeLimit: "100Mi"
+      medium: ""
+    etcoctopus:
+      type: emptyDir
+      mountPath: /etc/octopus
+      sizeLimit: "10Mi"
+      medium: ""
+    octopuslogs:
+      type: emptyDir
+      mountPath: /Octopus/Octopus/Logs
+      sizeLimit: "500Mi"
+    octopusdiagnostics:
+      type: emptyDir
+      mountPath: /Octopus/.diagnostics
+      sizeLimit: "100Mi"
+```
+
+A complete working example including environment variable overrides for .NET tooling can be found in [values-rorfsexample.yaml](values-rorfsexample.yaml).
+
+Note: `enableDockerInDocker` must be set to `false` when using a read-only root filesystem, as Docker-in-Docker requires a privileged, writable container.
+
 ### Ingress
 You'll likely want to allow external traffic to your Octopus instance, and this generally means configuring [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). 
 

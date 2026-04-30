@@ -120,7 +120,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "8.3.3359"
+    tag: "9.1.3835"
     tagSuffix: ""
 
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
@@ -174,7 +174,16 @@ agent:
                   - arm64
                   - amd64
 
+  # -- If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not `true`.
+  # @section -- Agent values
+  # @default -- Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments.
+  roleRules: []
+
   preinstall:
+    # -- If set to a non-empty list, completely replaces the default Role rules for the pre-install registration role. Note: `[]` (empty list) means "use defaults", not "no rules".
+    # @section -- Agent values
+    # @default -- `[{"apiGroups":[""],"resources":["configmaps","secrets"],"verbs":["get","list","watch","create","update","patch","delete"]}]`
+    roleRules: []
     serviceAccount:
       # -- The name of the service account for the agent pre-install registration pod
       # @section -- Agent values
@@ -259,17 +268,22 @@ scriptPods:
     # @default -- Uses a ClusterRoleBinding to allow the service account to run in any namespace
     targetNamespaces: []
 
-    # -- if defined, overrides the default ClusterRole rules
+    # -- If set to a non-empty list, completely replaces the default ClusterRole rules. Note: `[]` (empty list) means "use defaults", not "no rules".
     # @section -- Script pod values
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]`
     clusterRole:
       enabled: true
       rules: []
 
-    # -- if defined, overrides the default Role rules when using namespace-scoped roles
+    # -- If set to a non-empty list, completely replaces the default Role rules when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules".
     # @section -- Script pod values
     # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
     roleRules: []
+
+  # -- If set to a non-empty list, completely replaces the default Role rules for the script pod worker role (only created when `agent.worker.enabled=true`). Note: `[]` (empty list) means "use defaults", not "no rules".
+  # @section -- Script pod values
+  # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+  workerRoleRules: []
 
   # -- The tolerations to apply to script pods
   # @section -- Script pod values
@@ -347,6 +361,14 @@ scriptPods:
     # -- Watchdog container spec for the `ScriptPodTemplate`
     # @section -- Script pod values
     watchdogContainerSpec: {}
+    # -- If true, disables the CRD RBAC rules for scriptpodtemplates in the tentacle role even when podTemplate is enabled
+    # @section -- Script pod values
+    crdDisabled: false
+
+  # -- The number of minutes a script pod remains pending before it is deleted
+  # @default 60
+  # @section -- Script pod values
+  pendingPodsTimeoutMinutes: 60
 
 # @section -- Persistence
 persistence:
@@ -451,21 +473,18 @@ persistence:
 
 # @section -- Auto-upgrader configuration
 autoUpgrader:
-  # -- Rules for managing the agent in its own namespace when using namespace-scoped roles
+  # -- If set to a non-empty list, completely replaces the default ClusterRole rules for the auto-upgrader. This ClusterRole is only created when `scriptPods.serviceAccount.useNamespacedRoles` is false. Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Auto-upgrader configuration
-  selfNamespaceRoleRules:
-    - apiGroups: ["*"]
-      resources: ["*"]
-      verbs: ["*"]
-  # -- Rules for managing script pod roles in target namespaces when using namespace-scoped roles
+  # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+  clusterRoleRules: []
+  # -- If set to a non-empty list, completely replaces the default Role rules for managing the agent in its own namespace when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules".
   # @section -- Auto-upgrader configuration
-  targetNamespaceRoleRules:
-    - apiGroups: ["rbac.authorization.k8s.io"]
-      resources: ["roles", "rolebindings"]
-      verbs: ["create", "update", "patch", "get", "list", "watch", "delete"]
-    - apiGroups: ["rbac.authorization.k8s.io"]
-      resources: ["roles"]
-      verbs: ["escalate"]
+  # @default -- `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]`
+  selfNamespaceRoleRules: []
+  # -- If set to a non-empty list, completely replaces the default Role rules for managing script pod roles in target namespaces when using namespace-scoped roles. Note: `[]` (empty list) means "use defaults", not "no rules".
+  # @section -- Auto-upgrader configuration
+  # @default -- `[{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles","rolebindings"],"verbs":["create","update","patch","get","list","watch","delete"]},{"apiGroups":["rbac.authorization.k8s.io"],"resources":["roles"],"verbs":["escalate"]}]`
+  targetNamespaceRoleRules: []
 
 # Used to enable the Kubernetes Monitor
 # @ignored

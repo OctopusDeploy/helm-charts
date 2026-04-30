@@ -86,16 +86,20 @@ spec:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
                 key: secret
+          {{- if .Values.octopus.username }}
           - name: ADMIN_USERNAME
             valueFrom:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "adminusername"}}
                 key: secret
+          {{- end }}
+          {{- if .Values.octopus.password }}
           - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "adminpassword"}}
                 key: secret
+          {{- end }}
           - name: ADMIN_EMAIL
             value: {{.Values.octopus.email}}
           - name: TASK_CAP
@@ -146,8 +150,12 @@ spec:
           - containerPort: 10943
             name: tentacle
           - containerPort: {{.Values.octopus.grpcPort}}
-            name: grpc
+            name: grpcs
         volumeMounts:
+          {{- range $name, $volume := .Values.octopus.extraVolumes }}
+          - name: {{ $name }}-volume
+            mountPath: {{ $volume.mountPath }}
+          {{- end }}
           - name: package-repository-volume
             mountPath: /repository
           - name: artifacts-volume
@@ -203,6 +211,21 @@ spec:
         - name: audit-log-volume
           persistentVolumeClaim:
             claimName: audit-log-claim
+        {{- range $name, $volume := .Values.octopus.extraVolumes }}
+        - name: {{ $name }}-volume
+        {{- if eq $volume.type "emptyDir" }}
+          emptyDir:
+          {{- if $volume.sizeLimit }}
+            sizeLimit: {{ $volume.sizeLimit }}
+          {{- end }}
+          {{- if $volume.medium }}
+            medium: {{ $volume.medium }}
+          {{- end }}
+        {{- else if eq $volume.type "persistentVolumeClaim" }}
+          persistentVolumeClaim:
+            claimName: {{ include "octopus.fullname" $ }}-{{ $name }}-pvc
+        {{- end }}
+      {{- end }}
       {{- if .Values.dockerHub.login }}
       imagePullSecrets:
         - name: dockerhubcreds
