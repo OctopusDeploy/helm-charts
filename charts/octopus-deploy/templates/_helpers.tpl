@@ -32,7 +32,7 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Common Labels 
+Common Labels
 */}}
 {{- define "labels" -}}
 app.kubernetes.io/name: {{ include "octopus.name" . }}
@@ -43,7 +43,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{/* Selector Labels for octopus */}}
 {{- define "octopus.selectorLabels" -}}
-{{include "labels" . }}
+app.kubernetes.io/name: {{ include "octopus.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: octopus-server
+{{- end -}}
+
+{{/* Pod Labels for octopus */}}
+{{- define "octopus.podLabels" -}}
+{{ include "labels" . }}
 app.kubernetes.io/component: octopus-server
 {{- end -}}
 

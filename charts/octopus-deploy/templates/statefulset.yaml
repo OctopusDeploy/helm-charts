@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-      {{- include "octopus.selectorLabels" . | nindent 8 }}
+      {{- include "octopus.podLabels" . | nindent 8 }}
       {{- if .Values.octopus.pods.labels }}
       {{- toYaml .Values.octopus.pods.labels | nindent 8 }}
       {{- end }}
