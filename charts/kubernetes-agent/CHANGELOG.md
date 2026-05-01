@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.0.1
+
+### Patch Changes
+
+- 668909b: chore: update Kubernetes Monitor subchart to 0.27.0
+
 ## 3.0.0
 
 ### ⚠️ Breaking Changes
