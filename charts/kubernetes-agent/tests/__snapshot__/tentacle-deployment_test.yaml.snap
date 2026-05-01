@@ -9,7 +9,7 @@ should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
         app.kubernetes.io/version: 9.1.3835
-        helm.sh/chart: kubernetes-agent-3.0.0
+        helm.sh/chart: kubernetes-agent-3.0.1
       name: octopus-agent-tentacle
       namespace: NAMESPACE
     spec:
@@ -26,7 +26,7 @@ should match snapshot:
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: octopus-agent
             app.kubernetes.io/version: 9.1.3835
-            helm.sh/chart: kubernetes-agent-3.0.0
+            helm.sh/chart: kubernetes-agent-3.0.1
         spec:
           affinity:
             nodeAffinity:
@@ -81,7 +81,7 @@ should match snapshot:
                 - name: OCTOPUS__K8STENTACLE__HELMRELEASENAME
                   value: RELEASE-NAME
                 - name: OCTOPUS__K8STENTACLE__HELMCHARTVERSION
-                  value: 3.0.0
+                  value: 3.0.1
                 - name: OCTOPUS__K8STENTACLE__DISABLEAUTOPODCLEANUP
                   value: "false"
                 - name: OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG
