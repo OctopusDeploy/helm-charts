@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.38.3
+
+### Patch Changes
+
+- 1af01cc: Upgrade kubernetes-agent-tentacle to 9.1.3852
+
+  Includes:
+
+  - [Tone down the logging when failing to retrieve scriptpodtemplates](https://github.com/OctopusDeploy/OctopusTentacle/pull/1216)
+
 ## 2.38.2
 
 ### Patch Changes
