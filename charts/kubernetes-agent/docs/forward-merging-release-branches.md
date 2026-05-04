@@ -1,13 +1,13 @@
 # Forward merge release branches
 
 When a new major version of the `kubernetes-agent` chart is released (e.g. `v3`), we create a release branch for the previous major release in the format `release/kubernetes-agent/v(N-1)` (e.g. `release/kubernetes-agent/v2`).
-This is because we have still have versions of Octopus Server that install the previous major version by default and we need to continue to support that "release stream".
+This is because we still have versions of Octopus Server that install the previous major version by default and we need to continue to support that "release stream".
 
 When we want to release changes to the previous version, those changes need to be made against the release branch for that release stream.
 
 Once those changes are merged into the release branch and "Version Charts" PR is merged, it will release a new version in that release stream.
 
-However, if we also want to apply the same change (such as update to the `kubernets-agent-tentacle` container) to the current release (e.g. `main`), we want to perform a _forward merge_ of the release branch into `main`, not a cherry pick or separate commit.
+However, if we also want to apply the same change (such as update to the `kubernetes-agent-tentacle` container) to the current release (e.g. `main`), we want to perform a _forward merge_ of the release branch into `main`, not a cherry pick or separate commit.
 
 We do this so changes to the chart don't diverge too much (except when expected) and also to keep a continuous history & changelog in the `main` of all changes for all versions.
 
@@ -63,7 +63,7 @@ Example PR: [#XXX](https://github.com/OctopusDeploy/helm-charts/pull/XXX)
 > This pull request MUST be merged as a normal merge commit, NOT a **Squash** commit.
 > This is so that the original commit SHA in the release branch is maintained through to `main`.
 
-## Step 4 - RElease the v3 changes
+## Step 4 - Release the v3 changes
 
 When the merge forward PR is merged and if it had a changeset, the changeset bot will create a PR to release the changes for `v3`.
 
