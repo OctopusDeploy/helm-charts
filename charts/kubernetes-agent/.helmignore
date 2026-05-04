@@ -32,3 +32,4 @@ value-migrations-tests/
 # Docs templating
 README.md.gotmpl
 crd-gen/
+docs/
