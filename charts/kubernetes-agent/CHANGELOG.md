@@ -1,5 +1,6 @@
 # kubernetes-agent
 
+
 ## 3.0.1
 
 ### Patch Changes
@@ -47,6 +48,22 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
   The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
+## 2.38.3
+
+### Patch Changes
+
+- 1af01cc: Upgrade kubernetes-agent-tentacle to 9.1.3852
+
+  Includes:
+
+  - [Tone down the logging when failing to retrieve scriptpodtemplates](https://github.com/OctopusDeploy/OctopusTentacle/pull/1216)
+
+## 2.38.2
+
+### Patch Changes
+
+- 668909b: chore: update Kubernetes Monitor subchart to 0.27.0
+
 
 ## 2.38.1
 
