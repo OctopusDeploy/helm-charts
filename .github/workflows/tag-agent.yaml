@@ -13,7 +13,8 @@ jobs:
   tag:
     runs-on: ubuntu-latest
     # When a changesets generated Versioning PR is merged, we want to publish the version as a tag
-    if: ${{ startsWith(github.event.commits[0].message, 'Version Charts') }}
+    # The versioning PR will have the modern deployments bot as the author
+    if: github.event.commits[0].message == 'Version Charts' && github.event.commits[0].author.name == 'team-modern-deployments-bot'
     steps:
       - uses: actions/checkout@v6
         with:

@@ -85,5 +85,5 @@ jobs:
 
       # Only push the chart for real if it's a branch build OR it's the versioning PR
       - name: Push Chart
-        if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+        if: github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && github.event.commits[0].message == 'Version Charts' && github.event.commits[0].author.name == 'team-modern-deployments-bot')
         run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://ghcr.io/octopusdeploy

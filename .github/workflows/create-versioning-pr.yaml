@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # For all pushes that aren't creating a versioning commit
-    if: ${{ !startsWith(github.event.commits[0].message, 'Version Charts') }}
+    if: github.event.commits[0].message != 'Version Charts' && github.event.commits[0].author.name != 'team-modern-deployments-bot'
     steps:
     - uses: actions/checkout@v6
       with:
