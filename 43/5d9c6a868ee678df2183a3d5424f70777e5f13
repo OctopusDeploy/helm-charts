@@ -1,0 +1,14 @@
+charts/octopus-deploy/charts/mssql/values.yaml
+  h_70837b2d68bfaa 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "435d9c6a868ee678df2183a3d5424f70777e5f13",
+  "prompts": {},
+  "humans": {
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}
