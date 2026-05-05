@@ -1,5 +1,94 @@
 # kubernetes-agent
 
+## 3.0.2
+
+### Patch Changes
+
+- ec19f53: Forward merge changes from [2.38.3](#2383)
+
+## 3.0.1
+
+### Patch Changes
+
+- 668909b: chore: update Kubernetes Monitor subchart to 0.27.0
+
+## 3.0.0
+
+### ⚠️ Breaking Changes
+
+Version 3 has breaking changes and upgrading from Version 2 requires manual migration of some `values.yaml` values. See the [migration notes](./migrations.md) for more information.
+
+### Major Changes
+
+- 2cd1b49: Kubernetes Agent v3: Changes the default storage from NFS to default single node `ReadWriteOnce`. This is being done as we have had increasing reports of the NFS server's stability, performance, and security concerns.
+
+  The primary changes to the default values file are:
+
+  - A new field: `persistence.nfs.enabled`, which is set to `false`
+  - Changed values: `persistence.accessModes` which is now set to `["ReadWriteOnce"]`
+
+  Existing v2 agents that use NFS and upgrade via Octopus Server (with the values file migration) will not change to this new storage, however new installations will do this.
+  The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
+
+  To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
+
+## 3.0.0-v3.1
+
+### Patch Changes
+
+- 7be3c17: Fix pre-release versioning
+
+## 3.0.0-v3.0
+
+### Major Changes
+
+- 96896c2: Changes the default storage from NFS to default single node `ReadWriteOnce`. This is being done as we have had increasing reports of the NFS server's stability, performance, and security concerns.
+
+  The primary changes to the default values file are:
+
+  - A new field: `persistence.nfs.enabled`, which is set to `false`
+  - Changed values: `persistence.accessModes` which is now set to `["ReadWriteOnce"]`
+
+  Existing v2 agents that use NFS and upgrade via Octopus Server (with the values file migration) will not change to this new storage, however new installations will do this.
+  The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
+
+  To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
+
+## 2.38.3
+
+### Patch Changes
+
+- 1af01cc: Upgrade kubernetes-agent-tentacle to 9.1.3852
+
+  Includes:
+
+  - [Tone down the logging when failing to retrieve scriptpodtemplates](https://github.com/OctopusDeploy/OctopusTentacle/pull/1216)
+
+## 2.38.2
+
+### Patch Changes
+
+- 668909b: chore: update Kubernetes Monitor subchart to 0.27.0
+
+## 2.38.1
+
+### Patch Changes
+
+- 8b914bd: Fixed an issue where script pods were being assigned a node affinity of x64, not amd64
+
+## 2.38.0
+
+### Minor Changes
+
+- 39791ce: Updates the `kubernetes-agent-tentacle` image to `9.1.3831`
+
+  Includes 4 relevant changes:
+
+  - Reduce Tentacle memory consumption
+  - Update to support 1.35 SDK
+  - Enable multi-architecture support between Tentacle & script pods
+  - Support 1.36 `kubernetes-agent-tools-base` image
+
 ## 2.37.0
 
 ### Minor Changes

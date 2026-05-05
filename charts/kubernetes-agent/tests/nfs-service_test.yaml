@@ -3,5 +3,14 @@ templates:
 - templates/nfs-service.yaml
 tests:
 - it: "should match snapshot"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
   asserts:
   - matchSnapshot: {}
+- it: "is not created when nfs is disabled (default)"
+  asserts:
+  - hasDocuments:
+      count: 0

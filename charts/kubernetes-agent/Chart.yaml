@@ -10,11 +10,11 @@ maintainers:
     url: "https://octopus.com"
 dependencies:
   - name: kubernetes-monitor-chart
-    version: "0.25.0"
+    version: "0.27.0"
     repository: "oci://docker.io/octopusdeploy"
     condition: kubernetesMonitor.enabled
     alias: kubernetesMonitor
 type: application
-version: "2.37.0"
+version: "3.0.2"
 # This version number should be the same as the agent.image.tag value as this is the primary application version
-appVersion: "9.1.3703"
+appVersion: "9.1.3852"
