@@ -57,7 +57,7 @@ Once manually resolved and merged, you should _just_ have your changes, adjusted
 
 If the original PR had a changeset, then a changeset will need to be added to this forward merge PR. This is so target version also gets the version bump.
 
-Example PR: [#XXX](https://github.com/OctopusDeploy/helm-charts/pull/XXX)
+Example PR: [#577](https://github.com/OctopusDeploy/helm-charts/pull/577)
 
 > [!WARNING]
 > This pull request MUST be merged as a normal merge commit, NOT a **Squash** commit.
