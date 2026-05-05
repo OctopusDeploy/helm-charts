@@ -1,0 +1,14 @@
+.changeset/better-paths-grow.md
+  h_85f895d38af546 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "8d493b410db2fe293d0b96ffc4c427c3909441d6",
+  "prompts": {},
+  "humans": {
+    "h_85f895d38af546": {
+      "author": "Denys Melnyk"
+    }
+  }
+}

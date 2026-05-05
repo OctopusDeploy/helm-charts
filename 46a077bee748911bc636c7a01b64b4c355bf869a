@@ -1,0 +1,16 @@
+.github/workflows/kubernetes-agent-publish-chart.yaml
+  h_85f895d38af546 8
+.github/workflows/create-versioning-pr.yaml
+  h_85f895d38af546 10,118-120
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "46a077bee748911bc636c7a01b64b4c355bf869a",
+  "prompts": {},
+  "humans": {
+    "h_85f895d38af546": {
+      "author": "Denys Melnyk"
+    }
+  }
+}
