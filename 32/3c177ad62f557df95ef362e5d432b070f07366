@@ -1,0 +1,26 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "323c177ad62f557df95ef362e5d432b070f07366",
+  "prompts": {
+    "9a0eadb35898b2e2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "116b4dc3-1b75-4921-81ba-b2890e72a29e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "oleksandr-codefresh",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}
