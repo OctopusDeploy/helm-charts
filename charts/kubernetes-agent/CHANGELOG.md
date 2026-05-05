@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- ec19f53: Forward merge changes from [2.38.3](#2.38.3)
+- ec19f53: Forward merge changes from [2.38.3](#2383)
 
 ## 3.0.1
 
