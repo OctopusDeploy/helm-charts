@@ -178,11 +178,18 @@ octopus:
             - watch
             - list
   # Pod security context settings
-  podSecurityContext: {}
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
   # Container security context settings
   # IMPORTANT: When enableDockerInDocker is true (default), the container must run as privileged.
   # If setting security contexts that conflict with privileged mode, set enableDockerInDocker to false.
-  containerSecurityContext: {}
+  containerSecurityContext: 
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
   # Custom directory for Octopus server configuration when using non-root security contexts
   serverConfigurationDirectory:
 
