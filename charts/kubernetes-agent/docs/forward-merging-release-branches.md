@@ -67,7 +67,7 @@ Example PR: [#577](https://github.com/OctopusDeploy/helm-charts/pull/577)
 
 When the merge forward PR is merged and if it had a changeset, the changeset bot will create a PR to release the changes for `v3`.
 
-Example PR: [#XXX](https://github.com/OctopusDeploy/helm-charts/pull/XXX)
+Example PR: [#580](https://github.com/OctopusDeploy/helm-charts/pull/580)
 
 > [!IMPORTANT]
 > This pull request should be merged as a **Squash** commit
