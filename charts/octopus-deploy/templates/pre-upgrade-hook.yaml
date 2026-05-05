@@ -61,9 +61,17 @@ spec:
     spec:
       serviceAccountName: {{ template "octopus.fullname" . }}-pre-upgrade
       restartPolicy: Never
+      {{- with .Values.octopus.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: pre-upgrade
           image: bitnami/kubectl:latest
+          {{- with .Values.octopus.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - /bin/sh
             - -c
