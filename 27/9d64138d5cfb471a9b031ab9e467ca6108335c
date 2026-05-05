@@ -1,0 +1,53 @@
+charts/octopus-deploy/charts/mssql/templates/serviceaccount.yaml
+  h_70837b2d68bfaa 1-16
+charts/octopus-deploy/charts/mssql/values.yaml
+  h_70837b2d68bfaa 17-26,30-35
+charts/octopus-deploy/charts/mssql/templates/statefulset.yaml
+  h_70837b2d68bfaa 22,45-48
+charts/octopus-deploy/README.md
+  h_70837b2d68bfaa 185,190-208,211
+  cc8cf8082ea0e2fc 187,210
+charts/octopus-deploy/charts/mssql/templates/_helpers.tpl
+  h_70837b2d68bfaa 54
+  9a0eadb35898b2e2 56
+charts/octopus-deploy/values.yaml
+  h_70837b2d68bfaa 182-184,189-192
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "279d64138d5cfb471a9b031ab9e467ca6108335c",
+  "prompts": {
+    "9a0eadb35898b2e2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "116b4dc3-1b75-4921-81ba-b2890e72a29e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "oleksandr-codefresh",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "cc8cf8082ea0e2fc": {
+      "agent_id": {
+        "tool": "github-copilot-jetbrains",
+        "id": "1777961343721",
+        "model": "unknown"
+      },
+      "human_author": "oleksandr-codefresh",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 5,
+      "accepted_lines": 2,
+      "overriden_lines": 2
+    }
+  },
+  "humans": {
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}
