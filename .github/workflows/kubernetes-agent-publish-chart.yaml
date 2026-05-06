@@ -92,7 +92,7 @@ jobs:
         chart_version="${{ steps.read_chart_yaml.outputs.version }}"
         pre_release=""
 
-        if [[ "${{steps.branch_names.outputs.branch_name}}" != "main" ]]
+        if [ "${{steps.branch_names.outputs.branch_name}}" != "main" ] && [ "${{steps.branch_names.outputs.branch_name}}" != "release/kubernetes-agent/v*" ]
         then
             # underscores in branches make for illegal version-string, replace with "-"
             cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
@@ -118,8 +118,8 @@ jobs:
 
   publish_to_octopus:
     runs-on: ubuntu-latest
-    # We publish to Artifactory if this is not a main commit, or if it is, that it's a versioning commit
-    if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+    # We publish to Artifactory if this is not a main, vnext or release branch commit, or if it is, that it's a versioning commit on main, vnext or release branch
+    if: ${{ (github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/vnext/v')  && !startsWith(github.ref, 'refs/heads/release/kubernetes-agent/v')) || ((github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/vnext/v') || startsWith(github.ref, 'refs/heads/release/kubernetes-agent/v')) && startsWith(github.event.commits[0].message, 'Version Charts')) }}
     needs: version_and_package
     permissions:
       # You might need to add other permissions here like `contents: read` depending on what else your job needs to do
