@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.13.0
+
+### Minor Changes
+
+- e035d19: Fix unstable selector labels in mssql and octopus statefulsets
+
 ## 1.12.0
 
 ### Minor Changes
