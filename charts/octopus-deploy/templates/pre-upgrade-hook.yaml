@@ -1,3 +1,4 @@
+{{- if .Values.hooks.enableSelectorLabelsFix }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -81,3 +82,4 @@ spec:
                 kubectl delete statefulset "$sts" --namespace={{ .Release.Namespace }} --cascade=orphan
               done
   backoffLimit: 1
+{{- end }}
