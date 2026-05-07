@@ -224,6 +224,12 @@ mssql:
   tolerations: []
   affinity: {}
 
+hooks:
+  # Enables a pre-upgrade hook that deletes (with --cascade=orphan) any StatefulSet
+  # whose selector matchLabels still contain the legacy `helm.sh/chart` key, so that
+  # the StatefulSet can be re-created with the corrected selector.
+  enableSelectorLabelsFix: true
+
 global:
   # Set the default storageClass to be used for all persistent volume claims
   # this is overridden by the storageClassName in the individual volume claims if specified

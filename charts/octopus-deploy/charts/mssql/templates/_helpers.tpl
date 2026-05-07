@@ -28,7 +28,14 @@ If release name contains chart name it will be used as a full name.
 
 {{/* Selector Labels for mssql */}}
 {{- define "mssql.selectorLabels" -}}
-{{include "labels" . }}
+app.kubernetes.io/name: {{ include "octopus.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/component: mssql
+{{- end -}}
+
+{{/* Pod Labels for mssql */}}
+{{- define "mssql.podLabels" -}}
+{{ include "labels" . }}
 app.kubernetes.io/component: mssql
 {{- end -}}
 
