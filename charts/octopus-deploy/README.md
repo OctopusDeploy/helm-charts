@@ -147,13 +147,7 @@ A minimal set of writable paths for a read-only root filesystem is:
 ```yaml
 octopus:
   containerSecurityContext:
-    runAsNonRoot: true
-    runAsGroup: 999
-    runAsUser: 999
     readOnlyRootFilesystem: true
-  podSecurityContext:
-    fsGroup: 999
-    fsGroupChangePolicy: OnRootMismatch
 
   serverConfigurationDirectory: /home/octopus/.local
 
@@ -186,6 +180,35 @@ octopus:
 A complete working example including environment variable overrides for .NET tooling can be found in [values-rorfsexample.yaml](values-rorfsexample.yaml).
 
 Note: `enableDockerInDocker` must be set to `false` when using a read-only root filesystem, as Docker-in-Docker requires a privileged, writable container.
+
+### Openshift
+If you are using build in mssql chart on Openshift with values:
+```
+mssql:
+  enabled: true
+```
+
+Our mssql has such default security contexts for mssql.
+
+```
+podSecurityContext:
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext: 
+  runAsUser: 10001
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+    add: 
+      - NET_BIND_SERVICE
+```
+
+As we're usign hardcoded UID and fsGroup in our `securityContext` you need to assign `nonroot-v2` SCC to allow the SQL Server SA to run:
+
+```oc adm policy add-scc-to-user nonroot-v2 -z octopus-deploy-mssql -n octopus-deploy```
+
 
 ### Ingress
 You'll likely want to allow external traffic to your Octopus instance, and this generally means configuring [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). 

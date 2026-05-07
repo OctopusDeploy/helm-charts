@@ -54,16 +54,6 @@ octopus:
       mountPath: /Octopus/.diagnostics
       sizeLimit: "100Mi"
 
-  podSecurityContext:
-    fsGroup: 999
-    fsGroupChangePolicy: OnRootMismatch
-
-  containerSecurityContext:
-    runAsNonRoot: true
-    runAsGroup: 999
-    runAsUser: 999
-    readOnlyRootFilesystem: true
-
   serverConfigurationDirectory: /home/octopus/.local
 
 mssql:

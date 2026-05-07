@@ -13,7 +13,24 @@ containers:
 podAnnotations: {}
 
 podSecurityContext:
+  runAsNonRoot: true
   fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext: 
+  runAsUser: 10001
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+    add: 
+      - NET_BIND_SERVICE
 
 service:
   port: 1433
+
+serviceAccount:
+  create: true
+  automountServiceAccountToken: false
+  annotations: {}
+  labels: {}
