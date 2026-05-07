@@ -1,0 +1,33 @@
+charts/octopus-deploy/values.yaml
+  s_9a0eadb35898b2::t_1315e2f4d102bc 227-232
+charts/octopus-deploy/tests/pre_upgrade_hook_test.yaml
+  s_9a0eadb35898b2::t_d9e7f814d2ee0c 1-37,39-45
+  h_1903a5d928fbe4 38
+charts/octopus-deploy/templates/pre-upgrade-hook.yaml
+  s_9a0eadb35898b2::t_7f5f354a90cbbf 1
+  s_9a0eadb35898b2::t_f273a5598dca83 85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "d9cadf913d5bfadbf5082769b3effee6cc6fc1e3",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    },
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  },
+  "sessions": {
+    "s_9a0eadb35898b2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "116b4dc3-1b75-4921-81ba-b2890e72a29e",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
