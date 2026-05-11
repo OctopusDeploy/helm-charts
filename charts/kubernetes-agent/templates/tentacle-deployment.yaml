@@ -165,28 +165,28 @@ spec:
             {{- if or .Values.agent.bearerToken .Values.agent.bearerTokenSecretName  }}
             - name: "BearerToken"
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ .Values.agent.bearerTokenSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: bearer-token
             {{- end }}
-            {{- if or .Values.agent.username .Values.agent.usernamePasswordSecretName }}
+            {{- if or .Values.global.username .Values.agent.username .Values.agent.usernamePasswordSecretName }}
             - name: "ServerUsername"
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: username
             {{- end }}
-            {{- if or .Values.agent.password .Values.agent.usernamePasswordSecretName }}
+            {{- if or .Values.global.password .Values.agent.password .Values.agent.usernamePasswordSecretName }}
             - name: "ServerPassword"
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.secrets.serverAuth" .) }}
                   key: password
             {{- end }}
             {{- if .Values.agent.certificate }}
             - name: "TentacleCertificateBase64"
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ include "kubernetes-agent.secrets.certificate" . }}
                   key: certificate
             {{- end}}
@@ -202,14 +202,14 @@ spec:
             - name: "TentaclePollingProxyPort"
               value: {{ .Values.agent.pollingProxy.port | quote }}
             - name: "TentaclePollingProxyUsername"
-              value: {{ .Values.agent.pollingProxy.username | quote }}              
+              value: {{ .Values.agent.pollingProxy.username | quote }}
             {{- if .Values.agent.pollingProxy.password }}
             - name: "TentaclePollingProxyPassword"
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ include "kubernetes-agent.secrets.serverAuth" . }}
                   key: polling-proxy-password
-            {{- end }}            
+            {{- end }}
             {{- end }}
             {{- with .Values.agent.containers.tentacle.env }}
             {{- toYaml . | nindent 12 }}

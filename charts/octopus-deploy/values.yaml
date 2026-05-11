@@ -1,3 +1,11 @@
+global:
+  # Set the default storageClass to be used for all persistent volume claims
+  # this is overridden by the storageClassName in the individual volume claims if specified
+  storageClass: ""
+
+  username: ""
+  password: ""
+
 octopus:
   # Must be set to "Y" or true to accept the EULA at https://octopus.com/legal/customer-agreement
   acceptEula: "N"
@@ -229,8 +237,3 @@ hooks:
   # whose selector matchLabels still contain the legacy `helm.sh/chart` key, so that
   # the StatefulSet can be re-created with the corrected selector.
   enableSelectorLabelsFix: true
-
-global:
-  # Set the default storageClass to be used for all persistent volume claims
-  # this is overridden by the storageClassName in the individual volume claims if specified
-  storageClass: ""
