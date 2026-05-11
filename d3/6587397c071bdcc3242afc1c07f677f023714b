@@ -1,0 +1,24 @@
+charts/kubernetes-agent/templates/pre-install-tentacle-pod.yaml
+  h_bdc637847e5b6a 116,123
+charts/kubernetes-agent/templates/pre-install-tentacle-server-auth-secret.yaml
+  h_bdc637847e5b6a 17,20
+charts/kubernetes-agent/templates/tentacle-deployment.yaml
+  h_bdc637847e5b6a 172,179
+charts/octopus-deploy/values.yaml
+  h_bdc637847e5b6a 1,5-8
+charts/kubernetes-agent/templates/tentacle-server-auth-secret.yaml
+  h_bdc637847e5b6a 15,18
+charts/octopus-deploy/Chart.yaml
+  h_bdc637847e5b6a 18-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "d36587397c071bdcc3242afc1c07f677f023714b",
+  "prompts": {},
+  "humans": {
+    "h_bdc637847e5b6a": {
+      "author": "Mikhail Klimko <mikhail.klimko@octopus.com>"
+    }
+  }
+}
