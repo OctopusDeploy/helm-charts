@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.1.0
+
+### Minor Changes
+
+- 7cb6b9c: Forward merge changes from [2.39.0](#2390)
+
 ## 3.0.2
 
 ### Patch Changes
