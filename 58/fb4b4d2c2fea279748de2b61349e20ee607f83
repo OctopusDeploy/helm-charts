@@ -1,0 +1,16 @@
+charts/kubernetes-agent/values.yaml
+  h_746f14cfe007b2 160-163,400
+charts/kubernetes-agent/templates/tentacle-deployment.yaml
+  h_746f14cfe007b2 295-298
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "58fb4b4d2c2fea279748de2b61349e20ee607f83",
+  "prompts": {},
+  "humans": {
+    "h_746f14cfe007b2": {
+      "author": "shirtabachii <shir.tabachi@codefresh.io>"
+    }
+  }
+}
