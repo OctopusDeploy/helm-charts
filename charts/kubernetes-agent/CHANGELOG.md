@@ -1,5 +1,15 @@
 # kubernetes-agent
 
+## 2.39.0
+
+### Minor Changes
+
+- fa547c9: Merge imagePullSecrets from script pod template
+
+  Includes:
+
+  - [Merge script pod template ImagePullSecrets](https://github.com/OctopusDeploy/OctopusTentacle/pull/1217)
+
 ## 2.38.3
 
 ### Patch Changes
