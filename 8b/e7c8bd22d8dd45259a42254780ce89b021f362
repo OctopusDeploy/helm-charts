@@ -1,0 +1,17 @@
+charts/octopus-deploy/README.md
+  h_1903a5d928fbe4 69,90,100,134,136-154,156-159,173,188-190,192-194,228-230,232,234-237,239-244,246-252,269,282,298,320,349,361,380,396,417
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "8be7c8bd22d8dd45259a42254780ce89b021f362",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    },
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}
