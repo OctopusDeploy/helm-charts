@@ -12,7 +12,7 @@ If you are creating a long-lived, production Octopus instance we recommend you r
 
 Once you have your [license key](#license-key), you can run the command below to install Octopus Deploy:
 
-```
+```bash
 helm upgrade octopus-deploy \
 --install \
 --namespace octopus-deploy \
@@ -43,7 +43,7 @@ The Quick Start installs SQL Server as a sub-chart.
 
 If you want to host SQL Server independently, you must supply the connection string: 
 
-```
+```yaml
 octopus:
   databaseConnectionString: <Your connection string>
 ```
