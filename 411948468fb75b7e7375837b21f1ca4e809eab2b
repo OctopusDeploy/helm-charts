@@ -1,0 +1,32 @@
+charts/kubernetes-agent/test-pod.yaml
+  h_1903a5d928fbe4 1-265
+charts/kubernetes-agent/templates/tentacle-deployment.yaml
+  h_1903a5d928fbe4 234-235
+charts/octopus-deploy/custom-values.yaml
+  h_1903a5d928fbe4 9-10,16
+  h_70837b2d68bfaa 1-8,11-15,17-64
+charts/kubernetes-agent/val-os-agent.yaml
+  h_1903a5d928fbe4 1-70
+charts/octopus-deploy/README.md
+  h_1903a5d928fbe4 185,191
+charts/octopus-deploy/charts/mssql/templates/_helpers.tpl
+  h_1903a5d928fbe4 58
+charts/kubernetes-agent/val-os-worker.yaml
+  h_1903a5d928fbe4 1-35
+charts/octopus-deploy/values.yaml
+  h_70837b2d68bfaa 182-183,195-196
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "411948468fb75b7e7375837b21f1ca4e809eab2b",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    },
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+charts/octopus-deploy/charts/mssql/templates/_helpers.tpl
+  s_be3665bf67f407::t_8f9f30f6d92392 58
+charts/octopus-deploy/tests/mssql_serviceaccountname_test.yaml
+  h_1903a5d928fbe4 9,21,34,47,53
+  s_be3665bf67f407::t_e07d3670df640d 1-8,10-20,22-33,35-46,48-52
+charts/octopus-deploy/tests/mssql_serviceaccount_test.yaml
+  s_be3665bf67f407::t_2021fb367764df 1-8,10-18,21-30,32-42,44-55,57-65,67-77,79-95,97-109
+  h_1903a5d928fbe4 9,19-20,31,43,56,66,78,96
+charts/octopus-deploy/tests/values/mssql.yaml
+  h_1903a5d928fbe4 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "f82ed56d3ed7092b715c91f33a3a5c5ee1ed0226",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    },
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  },
+  "sessions": {
+    "s_be3665bf67f407": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1eb7572e-0b74-4331-8bed-0a70ec510107",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}

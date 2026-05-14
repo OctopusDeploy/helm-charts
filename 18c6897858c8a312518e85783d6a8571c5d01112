@@ -1,0 +1,19 @@
+charts/octopus-deploy/values.yaml
+  h_1903a5d928fbe4 181,185
+charts/octopus-deploy/values-rorfsexample.yaml
+  h_1903a5d928fbe4 57-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "18c6897858c8a312518e85783d6a8571c5d01112",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    },
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  }
+}
