@@ -36,7 +36,7 @@ Common Labels
 */}}
 {{- define "labels" -}}
 app.kubernetes.io/name: {{ include "octopus.name" . }}
-# helm.sh/chart: {{ include "octopus.chart" . }}
+helm.sh/chart: {{ include "octopus.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
