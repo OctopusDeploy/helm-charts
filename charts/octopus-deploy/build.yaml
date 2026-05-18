@@ -1,0 +1,467 @@
+---
+# Source: octopusdeploy-helm/charts/mssql/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mssql
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: mssql-0.0.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  sa_password : "VlNzZ2xkUzN5anZnbWdZRnhLemQwNXc1NjVVVUdScjc="
+---
+# Source: octopusdeploy-helm/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+type: opaque
+metadata:
+  name: octopus-deploy-adminpassword
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  secret: UGFzc3dvcmQwMSE=
+---
+# Source: octopusdeploy-helm/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+type: opaque
+metadata:
+  name: octopus-deploy-adminusername
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  secret: YWRtaW4=
+---
+# Source: octopusdeploy-helm/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+type: opaque
+metadata:
+  name: octopus-deploy-connectionstring
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  secret: U2VydmVyPW1zc3FsLTAub2N0b3B1cy1kZXBsb3ktbXNzcWw7SW5pdGlhbCBDYXRhbG9nPU9jdG9wdXNEZXBsb3k7UGVyc2lzdCBTZWN1cml0eSBJbmZvPUZhbHNlO1VzZXIgSUQ9U0E7UGFzc3dvcmQ9VlNzZ2xkUzN5anZnbWdZRnhLemQwNXc1NjVVVUdScjc7RW5jcnlwdD1UcnVlO0Nvbm5lY3Rpb24gVGltZW91dD0zMDs=
+---
+# Source: octopusdeploy-helm/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+type: opaque
+metadata:
+  name: octopus-deploy-licensekey
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  secret: UEV4cFkyVnVjMlVnVTJsbmJtRjBkWEpsUFNKTGQwRnhRVVphTkZwS1Z6WnRjMEZSZUdKdlNHaHBkVXRuVDA1Nk5HbHJXVGRMYzBGcFNsaHlNVlpaVkRGUFMybFZjeXROWmk5dFFVcG5LMnAwU0ZjelYxTXpOVmhPUzNCMWVGWnhkM0pYVUV0emVFeGFaejA5SWo0S0lDQThUR2xqWlc1elpVdGxlVDR4TWpVME5TMDFNalUwT1MwME5UUXlNeTAyTWpVM05Ud3ZUR2xqWlc1elpVdGxlVDRLSUNBOFZtVnljMmx2Ymo0eUxqQThJUzB0SUV4cFkyVnVjMlVnVTJOb1pXMWhJRlpsY25OcGIyNGdMUzArUEM5V1pYSnphVzl1UGdvZ0lEeFdZV3hwWkVaeWIyMCtNakF5TlMwd09DMHhORHd2Vm1Gc2FXUkdjbTl0UGdvZ0lEeFdZV3hwWkZSdlBqSXdNekF0TURFdE1ESThMMVpoYkdsa1ZHOCtDaUFnUEV0cGJtUStVM1ZpYzJOeWFYQjBhVzl1UEM5TGFXNWtQZ29nSUR4TllXTm9hVzVsVEdsdGFYUWdWSGx3WlhNOUlsUmxiblJoWTJ4bFVHRnpjMmwyWlN4VVpXNTBZV05zWlVGamRHbDJaU3hUYzJnaVBsVnViR2x0YVhSbFpEd3ZUV0ZqYUdsdVpVeHBiV2wwUGdvZ0lEeE9iMlJsVEdsdGFYUStWVzVzYVcxcGRHVmtQQzlPYjJSbFRHbHRhWFErQ2lBZ1BGQnliMnBsWTNSTWFXMXBkRDVWYm14cGJXbDBaV1E4TDFCeWIycGxZM1JNYVcxcGRENEtJQ0E4VkdWdVlXNTBUR2x0YVhRK1ZXNXNhVzFwZEdWa1BDOVVaVzVoYm5STWFXMXBkRDRLSUNBOFUzQmhZMlZNYVcxcGRENVZibXhwYldsMFpXUThMMU53WVdObFRHbHRhWFErQ2lBZ1BGVnpaWEpNYVcxcGRENVZibXhwYldsMFpXUThMMVZ6WlhKTWFXMXBkRDRLSUNBOFYyOXlhMlZ5VEdsdGFYUStWVzVzYVcxcGRHVmtQQzlYYjNKclpYSk1hVzFwZEQ0S0lDQThSbVZoZEhWeVpYTStDaUFnSUNBOFFYVmthWFJNYjJkR1pXVmtjejRLSUNBZ0lDQWdQRlpoYkdsa1ZHOCtNakF5T1MweE1pMHpNVHd2Vm1Gc2FXUlViejRLSUNBZ0lEd3ZRWFZrYVhSTWIyZEdaV1ZrY3o0S0lDQWdJRHhLYVhKaFUyVnlkbWxqWlUxaGJtRm5aVzFsYm5SSmJuUmxaM0poZEdsdmJqNEtJQ0FnSUNBZ1BGWmhiR2xrVkc4K01qQXlPUzB4TWkwek1Ud3ZWbUZzYVdSVWJ6NEtJQ0FnSUR3dlNtbHlZVk5sY25acFkyVk5ZVzVoWjJWdFpXNTBTVzUwWldkeVlYUnBiMjQrQ2lBZ0lDQThVMlZ5ZG1salpVNXZkMGx1ZEdWbmNtRjBhVzl1UGdvZ0lDQWdJQ0E4Vm1Gc2FXUlViejR5TURJNUxURXlMVE14UEM5V1lXeHBaRlJ2UGdvZ0lDQWdQQzlUWlhKMmFXTmxUbTkzU1c1MFpXZHlZWFJwYjI0K0NpQWdJQ0E4U1c1emFXZG9kSE0rQ2lBZ0lDQWdJRHhXWVd4cFpGUnZQakl3TWprdE1USXRNekU4TDFaaGJHbGtWRzgrQ2lBZ0lDQThMMGx1YzJsbmFIUnpQZ29nSUNBZ1BGQnlhVzl5YVhSNVZHRnphejRLSUNBZ0lDQWdQRlpoYkdsa1ZHOCtNakF5T1MweE1pMHpNVHd2Vm1Gc2FXUlViejRLSUNBZ0lEd3ZVSEpwYjNKcGRIbFVZWE5yUGdvZ0lDQWdQRWRzYjJKaGJFUmxjR3h2ZVcxbGJuUkdjbVZsZW1VK0NpQWdJQ0FnSUR4V1lXeHBaRlJ2UGpJd01qa3RNVEl0TXpFOEwxWmhiR2xrVkc4K0NpQWdJQ0E4TDBkc2IySmhiRVJsY0d4dmVXMWxiblJHY21WbGVtVStDaUFnSUNBOFVISnZZMlZ6YzFSbGJYQnNZWFJsY3o0S0lDQWdJQ0FnUEZaaGJHbGtWRzgrTWpBeU9TMHhNaTB6TVR3dlZtRnNhV1JVYno0S0lDQWdJRHd2VUhKdlkyVnpjMVJsYlhCc1lYUmxjejRLSUNBZ0lEeFFiMnhwWTJsbGN6NEtJQ0FnSUNBZ1BGWmhiR2xrVkc4K01qQXlPUzB4TWkwek1Ed3ZWbUZzYVdSVWJ6NEtJQ0FnSUR3dlVHOXNhV05wWlhNK0NpQWdJQ0E4VUhKdmFtVmpkRlJsYlhCc1lYUmxjejRLSUNBZ0lDQWdQRlpoYkdsa1ZHOCtNakF5T1MweE1pMHpNRHd2Vm1Gc2FXUlViejRLSUNBZ0lEd3ZVSEp2YW1WamRGUmxiWEJzWVhSbGN6NEtJQ0E4TDBabFlYUjFjbVZ6UGdvOEwweHBZMlZ1YzJVK0NnPT0=
+---
+# Source: octopusdeploy-helm/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+type: opaque
+metadata:
+  name: octopus-deploy-masterkey
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  secret: U3lWemZHTXhablFuY0hCaGFqZ3lVdz09
+---
+# Source: octopusdeploy-helm/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+type: opaque
+metadata:
+  name: octopus-deploy-sapassword
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  secret: VlNzZ2xkUzN5anZnbWdZRnhLemQwNXc1NjVVVUdScjc=
+---
+# Source: octopusdeploy-helm/charts/mssql/templates/mssqlconfig.yaml
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: mssql
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: mssql-0.0.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+data:
+  mssql.conf: |
+    [EULA]
+    accepteula = Y
+    accepteulaml = Y
+    
+    [coredump]
+    captureminiandfull = true
+    coredumptype = full
+    
+    [hadr]
+    hadrenabled = 1
+    
+    [language]
+    lcid = 1033
+---
+# Source: octopusdeploy-helm/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: package-repository-claim
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: octopusdeploy-helm/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: artifacts-claim
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: octopusdeploy-helm/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: task-log-claim
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: octopusdeploy-helm/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: audit-log-claim
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: octopusdeploy-helm/charts/mssql/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: octopus-deploy-mssql
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: mssql-0.0.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  clusterIP: None
+  ports:
+    - port: 1433
+      targetPort: 1433
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: mssql-0.0.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: mssql
+---
+# Source: octopusdeploy-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: octopus-deploy
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: octopus-server
+  ports:
+    - name: web
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: grpcs
+      port: 8443
+      targetPort: 8443
+      protocol: TCP # If there is only one node, expose the tentacle along with the web port
+    - name: tentacle
+      port: 10943
+      targetPort: 10943
+      protocol: TCP
+---
+# Source: octopusdeploy-helm/charts/mssql/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mssql
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: mssql-0.0.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: octopus-deploy-mssql
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: octopus-deploy
+      helm.sh/chart: mssql-0.0.1
+      app.kubernetes.io/instance: octopus-deploy
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/component: mssql
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: octopus-deploy
+        helm.sh/chart: mssql-0.0.1
+        app.kubernetes.io/instance: octopus-deploy
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: mssql
+    spec:
+      securityContext:
+        fsGroup: 10001
+      containers:
+        - name: mssql
+          command:
+            - /bin/bash
+            - -c
+            - cp /var/opt/config/mssql.conf /var/opt/mssql/mssql.conf && /opt/mssql/bin/sqlservr
+          image: "mcr.microsoft.com/mssql/server:2022-latest"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1433
+          env:
+            - name: MSSQL_PID
+              value: "Developer"
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_AGENT_ENABLED
+              value: "false"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql
+                  key: sa_password
+          volumeMounts:
+            - name: mssql
+              mountPath: "/var/opt/mssql"
+            - name: mssql-config-volume
+              mountPath: /var/opt/config
+      volumes:
+      - name: mssql-config-volume
+        configMap:
+          name: mssql
+  volumeClaimTemplates:
+    - metadata:
+        name: mssql
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+---
+# Source: octopusdeploy-helm/templates/statefulset.yaml
+# Octopus Deploy server nodes are modeled as StatefulSet, as terminating a node while deployments or runbooks are executing will cause these tasks to be terminated
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: octopus-deploy
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: octopus-deploy
+      helm.sh/chart: octopusdeploy-helm-1.11.1
+      app.kubernetes.io/instance: octopus-deploy
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/component: octopus-server
+  serviceName: octopus-deploy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: octopus-deploy
+        helm.sh/chart: octopusdeploy-helm-1.11.1
+        app.kubernetes.io/instance: octopus-deploy
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: octopus-server
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: octopus
+        image: "docker.packages.octopushq.com/octopusdeploy/octopusdeploy:2026.2.4992-noamgal-yos-32-investigate-octopus-deploy-helm-chart-compatibility-with-linux"
+        securityContext:
+        env:
+          
+          - name: ACCEPT_EULA
+            value: "Y"
+          - name: OCTOPUS_SERVER_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: DB_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-connectionstring
+                key: secret
+          - name: ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-adminusername
+                key: secret
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-adminpassword
+                key: secret
+          - name: ADMIN_EMAIL
+            value: 
+          - name: TASK_CAP
+            value: !!str 
+          - name: OCTOPUS_SERVER_BASE64_LICENSE
+            # Your license key goes here. When using more than one node, a HA license is required.
+            # Without a HA license, the stateful set can have a replica count of 1.
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-licensekey
+                key: secret
+          - name: MASTER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-masterkey
+                key: secret
+          - name: DISABLE_DIND
+            value: !!str "Y"
+          - name: OCTOPUS_INSTALLED_VIA_HELM
+            value: "true"
+          - name: OCTOPUS_GRPC_SERVICES_PORT
+            value: "8443"
+        ports:
+          - containerPort: 8080
+            name: web
+          - containerPort: 10943
+            name: tentacle
+          - containerPort: 8443
+            name: grpcs
+        volumeMounts:
+          - name: package-repository-volume
+            mountPath: /repository
+          - name: artifacts-volume
+            mountPath: /artifacts
+          - name: task-log-volume
+            mountPath: /taskLogs
+          - name: server-log-volume
+            mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
+          - name: audit-log-volume
+            mountPath: /eventExports
+        readinessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/serverstatus/hosted/internal --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 60
+        livenessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 10
+        startupProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
+          failureThreshold: 30
+          periodSeconds: 60
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: package-repository-volume
+          persistentVolumeClaim:
+            claimName: package-repository-claim
+        - name: artifacts-volume
+          persistentVolumeClaim:
+            claimName: artifacts-claim
+        - name: task-log-volume
+          persistentVolumeClaim:
+            claimName: task-log-claim
+        - name: audit-log-volume
+          persistentVolumeClaim:
+            claimName: audit-log-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: server-log-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 200Mi
