@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: octopus-deploy
+  labels:
+    app.kubernetes.io/name: octopus-deploy
+    helm.sh/chart: octopusdeploy-helm-1.11.1
+    app.kubernetes.io/instance: octopus-deploy
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: octopus-deploy
+      helm.sh/chart: octopusdeploy-helm-1.11.1
+      app.kubernetes.io/instance: octopus-deploy
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/component: octopus-server
+  serviceName: octopus-deploy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: octopus-deploy
+        helm.sh/chart: octopusdeploy-helm-1.11.1
+        app.kubernetes.io/instance: octopus-deploy
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: octopus-server
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: octopus
+        image: "docker.packages.octopushq.com/octopusdeploy/octopusdeploy:2026.2.4992-noamgal-yos-32-investigate-octopus-deploy-helm-chart-compatibility-with-linux"
+        securityContext:
+        env:
+          
+          - name: ACCEPT_EULA
+            value: "Y"
+          - name: OCTOPUS_SERVER_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: DB_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-connectionstring
+                key: secret
+          - name: ADMIN_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-adminusername
+                key: secret
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-adminpassword
+                key: secret
+          - name: ADMIN_EMAIL
+            value: 
+          - name: TASK_CAP
+            value: !!str 
+          - name: OCTOPUS_SERVER_BASE64_LICENSE
+            # Your license key goes here. When using more than one node, a HA license is required.
+            # Without a HA license, the stateful set can have a replica count of 1.
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-licensekey
+                key: secret
+          - name: MASTER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: octopus-deploy-masterkey
+                key: secret
+          - name: DISABLE_DIND
+            value: !!str "Y"
+          - name: OCTOPUS_INSTALLED_VIA_HELM
+            value: "true"
+          - name: OCTOPUS_GRPC_SERVICES_PORT
+            value: "8443"
+        ports:
+          - containerPort: 8080
+            name: web
+          - containerPort: 10943
+            name: tentacle
+          - containerPort: 8443
+            name: grpcs
+        volumeMounts:
+          - name: package-repository-volume
+            mountPath: /repository
+          - name: artifacts-volume
+            mountPath: /artifacts
+          - name: task-log-volume
+            mountPath: /taskLogs
+          - name: server-log-volume
+            mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
+          - name: audit-log-volume
+            mountPath: /eventExports
+        readinessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/serverstatus/hosted/internal --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 60
+        livenessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 10
+        startupProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
+          failureThreshold: 30
+          periodSeconds: 60
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: package-repository-volume
+          persistentVolumeClaim:
+            claimName: package-repository-claim
+        - name: artifacts-volume
+          persistentVolumeClaim:
+            claimName: artifacts-claim
+        - name: task-log-volume
+          persistentVolumeClaim:
+            claimName: task-log-claim
+        - name: audit-log-volume
+          persistentVolumeClaim:
+            claimName: audit-log-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: server-log-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 200Mi
