@@ -131,7 +131,7 @@ octopus:
       sizeLimit: 10Gi # Set to some upper bound limit to protect from unbound usage
 ```
 
-## <a name="strict-security-context"></a>Strict Security Context / Non-root setup
+### <a name="strict-security-context"></a>Strict Security Context / Non-root setup
 
 #### Octopus Deploy Server
 To run Server in non-root mode you need to use values:
@@ -225,7 +225,7 @@ A complete working example including environment variable overrides for .NET too
 
 Note: `enableDockerInDocker` must be set to `false` when using a read-only root filesystem, as Docker-in-Docker requires a privileged, writable container.
 
-## Openshift
+### Openshift
 
 [Hardcoded UID and fsGroup](#strict-security-context) in our `securityContext` requires assigning `nonroot-v2` SCC to service accounts. 
 
