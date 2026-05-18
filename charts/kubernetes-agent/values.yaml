@@ -157,6 +157,10 @@ agent:
   # @section -- Agent values
   tolerations: []
 
+  # -- The node selectors to apply to the agent pod
+  # @section -- Agent values
+  nodeSelector: {}
+
   # -- The affinities to apply to the agent pod
   # @section -- Agent values
   affinity:
