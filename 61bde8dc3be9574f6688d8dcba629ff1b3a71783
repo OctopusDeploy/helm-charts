@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "61bde8dc3be9574f6688d8dcba629ff1b3a71783",
+  "prompts": {},
+  "humans": {
+    "h_746f14cfe007b2": {
+      "author": "shirtabachii <shir.tabachi@codefresh.io>"
+    }
+  }
+}
