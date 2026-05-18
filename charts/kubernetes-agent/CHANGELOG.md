@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.1.0
+
+### Minor Changes
+
+- 7cb6b9c: Forward merge changes from [2.39.0](#2390)
+
 ## 3.0.2
 
 ### Patch Changes
@@ -53,6 +59,16 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
   The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
+
+## 2.39.0
+
+### Minor Changes
+
+- fa547c9: Merge imagePullSecrets from script pod template
+
+  Includes:
+
+  - [Merge script pod template ImagePullSecrets](https://github.com/OctopusDeploy/OctopusTentacle/pull/1217)
 
 ## 2.38.3
 
