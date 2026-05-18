@@ -1,0 +1,41 @@
+charts/kubernetes-agent/templates/auto-upgrader-clusterbinding.yaml
+  s_be3665bf67f407::t_cce27c7e99c6bc 1
+charts/kubernetes-agent/templates/auto-upgrader-clusterrole.yaml
+  s_be3665bf67f407::t_332482448d7821 1
+charts/kubernetes-agent/values.yaml
+  h_1903a5d928fbe4 481-483
+charts/kubernetes-agent/templates/auto-upgrader-rolebindings.yaml
+  s_be3665bf67f407::t_00b59787fe5f73 1
+charts/kubernetes-agent/templates/auto-upgrader-roles.yaml
+  s_be3665bf67f407::t_41dd826c22b5ae 1
+charts/kubernetes-agent/tests/values/auto-upgrader.yaml
+  h_1903a5d928fbe4 1-2
+charts/octopus-deploy/custom-values.yaml
+  h_1903a5d928fbe4 1-76
+charts/kubernetes-agent/templates/auto-upgrader-serviceaccount.yaml
+  s_be3665bf67f407::t_f18307215afc5f 1,9-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "b4bfe4f5a995cfe09dd55395c669b728a6359893",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    },
+    "h_70837b2d68bfaa": {
+      "author": "oleksandr-codefresh"
+    }
+  },
+  "sessions": {
+    "s_be3665bf67f407": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1eb7572e-0b74-4331-8bed-0a70ec510107",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
