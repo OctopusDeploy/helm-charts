@@ -1,0 +1,14 @@
+charts/octopus-deploy/README.md
+  h_1903a5d928fbe4 134,228
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "c1bd80734a09be27f3c29e8160402d06a9f1a2f8",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
