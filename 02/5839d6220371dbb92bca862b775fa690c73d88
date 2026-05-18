@@ -1,0 +1,14 @@
+charts/kubernetes-agent/Chart.yaml
+  h_1903a5d928fbe4 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "025839d6220371dbb92bca862b775fa690c73d88",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
