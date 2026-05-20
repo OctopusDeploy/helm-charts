@@ -1,0 +1,16 @@
+.changeset/honest-brooms-slide.md
+  h_1903a5d928fbe4 1-9
+charts/kubernetes-agent/Chart.yaml
+  h_1903a5d928fbe4 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "8752c8648184eaacc3ce366f16172a8f84b84ec1",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
