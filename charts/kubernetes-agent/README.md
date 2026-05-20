@@ -62,6 +62,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
 | agent.name | string | `""` | The name of the agent |
+| agent.nodeSelector | object | `{}` | The node selectors to apply to the agent pod |
 | agent.password | string | `""` | The password of the user used to authenticate with the target Octopus Server |
 | agent.pollingConnectionCount | int | `5` | The number of polling TCP connections to open with the target Octopus Server |
 | agent.pollingProxy | object | `{"host":"","password":"","port":80,"username":""}` | The host, port, username and password of the proxy server to use for polling connections |
