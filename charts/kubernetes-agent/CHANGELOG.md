@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.2.0
+
+### Minor Changes
+
+- 523c148: Adding the ability to set nodeSelector for kubernetes-agent
+
 ## 3.1.0
 
 ### Minor Changes
