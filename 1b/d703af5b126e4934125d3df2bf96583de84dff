@@ -1,0 +1,14 @@
+.changeset/chubby-windows-feel.md
+  h_1903a5d928fbe4 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "1bd703af5b126e4934125d3df2bf96583de84dff",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
