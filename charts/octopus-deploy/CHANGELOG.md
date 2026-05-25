@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.14.0
+
+### Minor Changes
+
+- 6207a77: added openshift 'nonroot-v2' SCC support
+
 ## 1.13.0
 
 ### Minor Changes
