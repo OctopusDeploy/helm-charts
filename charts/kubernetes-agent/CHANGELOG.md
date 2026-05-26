@@ -1,5 +1,16 @@
 # kubernetes-agent
 
+## 2.41.0
+
+### Minor Changes
+
+- 14838d8: Upgrade kubernetes-agent dependency 'monitor-chart' to 0.28.0
+
+  Includes:
+
+  - Docker image with non-root user by default
+  - Strict security context by default
+
 ## 2.40.0
 
 ### Minor Changes
