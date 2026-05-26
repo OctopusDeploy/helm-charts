@@ -1,0 +1,16 @@
+charts/kubernetes-agent/CHANGELOG.md
+  h_1903a5d928fbe4 69-85
+charts/kubernetes-agent/Chart.yaml
+  h_1903a5d928fbe4 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "8a5574a4fa320a35621614e53c3a1cccc563354d",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
