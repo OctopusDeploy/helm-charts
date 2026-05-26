@@ -66,6 +66,23 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.41.0
+
+### Minor Changes
+
+- 14838d8: Upgrade kubernetes-agent dependency 'monitor-chart' to 0.28.0
+
+  Includes:
+
+  - Docker image with non-root user by default
+  - Strict security context by default
+
+## 2.40.0
+
+### Minor Changes
+
+- 33f8b05: Adding the ability to set nodeSelector for kubernetes-agent
+
 ## 2.39.0
 
 ### Minor Changes
