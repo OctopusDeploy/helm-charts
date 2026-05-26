@@ -1,0 +1,25 @@
+.changeset/five-dingos-press.md
+  s_0954dc3670895c::t_33f461c7828f97 5
+  h_1903a5d928fbe4 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "86db42675379552cba9882252a47bbc337b30036",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  },
+  "sessions": {
+    "s_0954dc3670895c": {
+      "agent_id": {
+        "tool": "github-copilot-jetbrains",
+        "id": "1779790617983",
+        "model": "unknown"
+      },
+      "human_author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
