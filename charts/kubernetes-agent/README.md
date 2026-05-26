@@ -58,6 +58,12 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
 | agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.1.3876","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":30,"maxAgeSeconds":60,"periodSeconds":30,"timeoutSeconds":5}` | Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent. Only takes effect when `agent.serverCommsAddress` or `agent.serverCommsAddresses` is set (polling mode). Requires Tentacle >= 9.2.3963 (the version that ships `tentacle livez`). |
+| agent.livenessProbe.failureThreshold | int | `3` | Number of consecutive probe failures before Kubernetes restarts the pod. |
+| agent.livenessProbe.initialDelaySeconds | int | `30` | Seconds after the container starts before the first probe runs. |
+| agent.livenessProbe.maxAgeSeconds | int | `60` | Seconds the heartbeat file can be stale before the probe fails. The heartbeat is written every 10s, so 60s = 6 missed writes. |
+| agent.livenessProbe.periodSeconds | int | `30` | How often (in seconds) to perform the probe. |
+| agent.livenessProbe.timeoutSeconds | int | `5` | Seconds after which the probe times out. |
 | agent.logLevel | string | `"Info"` | The log level of the agent. Logs are written to the pod logs as well as to file |
 | agent.machinePolicyName | string | `""` | The machine policy to register the agent with |
 | agent.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the agent pod & container |
