@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.14.1
+
+### Patch Changes
+
+- 2dc7e30: Fix username and password environment variables when using external secrets
+
 ## 1.14.0
 
 ### Minor Changes
