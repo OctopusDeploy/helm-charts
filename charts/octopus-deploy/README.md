@@ -240,18 +240,22 @@ oc new-project $NS_NAME --description="Octopus Deploy resources" --display-name=
 - Server
 ```bash
 NS_NAME="octopus-deploy"
-SERVER_SERVICE_ACCOUNT="default"
+SERVER_SERVICE_ACCOUNT="default" #or custom value from .octopus.serviceAccount.name
+oc adm policy add-scc-to-user nonroot-v2 -z $SERVER_SERVICE_ACCOUNT -n $NS_NAME
+```
+- Pre-upgrade hook
+```bash
+NS_NAME="octopus-deploy"
+SERVER_SERVICE_ACCOUNT="octopus-deploy-pre-upgrade"
 oc adm policy add-scc-to-user nonroot-v2 -z $SERVER_SERVICE_ACCOUNT -n $NS_NAME
 ```
 - Built-in mssql (if applicable)
 ```bash
 NS_NAME="octopus-deploy"
-MSSQL_SERVICE_ACCOUNT="octopus-deploy-mssql"
+MSSQL_SERVICE_ACCOUNT="octopus-deploy-mssql" #or custom value from .mssql.serviceAccount.name
 oc adm policy add-scc-to-user nonroot-v2 -z $MSSQL_SERVICE_ACCOUNT -n $NS_NAME
 ```
 3. run `helm install` command with extra values from [Strict Security Context](#strict-security-context) section.
-
-
 
 
 ### Ingress
