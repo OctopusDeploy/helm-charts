@@ -3,9 +3,9 @@ name: Publish Kubernetes Agent chart
 on:
   push:
     branches:
-    - main
-    - release/kubernetes-agent/v*
-    - vnext/v*
+      - main
+      - release/kubernetes-agent/v*
+      - vnext/v*
 
   pull_request:
 
@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.filter.outputs.kubernetes-agent }}
-    
+
     steps:
       - uses: actions/checkout@v6
-      
+
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -32,17 +32,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-    - name: Install Helm
-      uses: azure/setup-helm@v4.3.0
-      with:
-        version: v3.19.4
+      - name: Install Helm
+        uses: azure/setup-helm@v4.3.0
+        with:
+          version: v3.19.4
 
-    - name: Run Helm unit tests
-      run: |
-        helm plugin install https://github.com/helm-unittest/helm-unittest.git
-        helm unittest charts/kubernetes-agent
+      - name: Run Helm unit tests
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+          helm unittest charts/kubernetes-agent
 
   check-readme:
     needs: paths_filter
@@ -68,53 +68,53 @@ jobs:
       PACKAGE_NAME: ${{ steps.version.outputs.PACKAGE_NAME }}
 
     steps:
-    - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-    - name: Install Helm
-      uses: azure/setup-helm@v4.3.0
-      with:
-        version: v3.19.4
+      - name: Install Helm
+        uses: azure/setup-helm@v4.3.0
+        with:
+          version: v3.19.4
 
-    - name: Parse Chart config
-      uses: pietrobolcato/action-read-yaml@1.1.0
-      id: read_chart_yaml
-      with:
-        config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
+      - name: Parse Chart config
+        uses: pietrobolcato/action-read-yaml@1.1.0
+        id: read_chart_yaml
+        with:
+          config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
 
-    - name: Get branch names
-      id: branch_names
-      uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
+      - name: Get branch names
+        id: branch_names
+        uses: OctopusDeploy/util-actions/current-branch-name@current-branch-name.0.1.0
 
-    - name: Generate chart version
-      id: version
-      shell: bash
-      run: |
-        chart_version="${{ steps.read_chart_yaml.outputs.version }}"
-        pre_release=""
+      - name: Generate chart version
+        id: version
+        shell: bash
+        run: |
+          chart_version="${{ steps.read_chart_yaml.outputs.version }}"
+          pre_release=""
 
-        if [ "${{steps.branch_names.outputs.branch_name}}" != "main" ] && [ "${{steps.branch_names.outputs.branch_name}}" != "release/kubernetes-agent/v*" ]
-        then
-            # underscores in branches make for illegal version-string, replace with "-"
-            cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
-            pre_release="-${cleansed_branch}-$(date +'%Y%m%d%H%M%S')"
-        fi
+          if [ "${{steps.branch_names.outputs.branch_name}}" != "main" ] && [[ "${{steps.branch_names.outputs.branch_name}}" != "release/kubernetes-agent/v"* ]]
+          then
+              # underscores in branches make for illegal version-string, replace with "-"
+              cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
+              pre_release="-${cleansed_branch}-$(date +'%Y%m%d%H%M%S')"
+          fi
 
-        full_version="$chart_version$pre_release"
+          full_version="$chart_version$pre_release"
 
-        echo "CHART_VERSION=$full_version" >> $GITHUB_OUTPUT
-        echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
+          echo "CHART_VERSION=$full_version" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=kubernetes-agent-$full_version.tgz" >> $GITHUB_OUTPUT
 
-    - name: Download Helm dependencies
-      run: helm dependency build './charts/kubernetes-agent'
+      - name: Download Helm dependencies
+        run: helm dependency build './charts/kubernetes-agent'
 
-    - name: Package Chart
-      run: helm package './charts/kubernetes-agent' --version '${{ steps.version.outputs.CHART_VERSION }}'
+      - name: Package Chart
+        run: helm package './charts/kubernetes-agent' --version '${{ steps.version.outputs.CHART_VERSION }}'
 
-    - uses: actions/upload-artifact@v4
-      name: Upload packaged chart
-      with:
-        name: '${{ steps.version.outputs.PACKAGE_NAME }}'
-        path: '${{ github.workspace }}/kubernetes-agent-${{ steps.version.outputs.CHART_VERSION }}.tgz'
+      - uses: actions/upload-artifact@v4
+        name: Upload packaged chart
+        with:
+          name: "${{ steps.version.outputs.PACKAGE_NAME }}"
+          path: "${{ github.workspace }}/kubernetes-agent-${{ steps.version.outputs.CHART_VERSION }}.tgz"
 
   publish_to_octopus:
     runs-on: ubuntu-latest
@@ -125,29 +125,29 @@ jobs:
       # You might need to add other permissions here like `contents: read` depending on what else your job needs to do
       id-token: write # This is required to obtain an ID token from GitHub Actions for the job
     steps:
-    - name: Download packaged chart
-      uses: actions/download-artifact@v4
-      with:
-        name: '${{ needs.version_and_package.outputs.PACKAGE_NAME }}'
+      - name: Download packaged chart
+        uses: actions/download-artifact@v4
+        with:
+          name: "${{ needs.version_and_package.outputs.PACKAGE_NAME }}"
 
-    - name: Login to Octopus
-      uses: OctopusDeploy/login@v1
-      with:
-        server: ${{ vars.OCTOPUS_SERVER }}
-        service_account_id: ${{ secrets.OCTOPUS_SERVICE_ACCOUNT }}
+      - name: Login to Octopus
+        uses: OctopusDeploy/login@v1
+        with:
+          server: ${{ vars.OCTOPUS_SERVER }}
+          service_account_id: ${{ secrets.OCTOPUS_SERVICE_ACCOUNT }}
 
-    - name: Push helm chart to Octopus Deploy 🐙
-      uses: OctopusDeploy/push-package-action@v3
-      with:
-        space: 'Modern Deployments'
-        packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
-        overwrite_mode: IgnoreIfExists
+      - name: Push helm chart to Octopus Deploy 🐙
+        uses: OctopusDeploy/push-package-action@v3
+        with:
+          space: "Modern Deployments"
+          packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
+          overwrite_mode: IgnoreIfExists
 
-    - name: Create a release in Octopus Deploy 🐙
-      uses: OctopusDeploy/create-release-action@v3
-      with:
-        space: 'Modern Deployments'
-        project: 'Octopus Kubernetes Agent'
-        release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
-        package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
-        ignore_existing: true
+      - name: Create a release in Octopus Deploy 🐙
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          space: "Modern Deployments"
+          project: "Octopus Kubernetes Agent"
+          release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
+          package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
+          ignore_existing: true
