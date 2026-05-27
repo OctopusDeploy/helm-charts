@@ -1,0 +1,27 @@
+charts/kubernetes-agent/templates/tentacle-deployment.yaml
+  s_72c6b1e58d2a2f::t_70bfb533cd1889 52-67
+charts/kubernetes-agent/values.yaml
+  s_72c6b1e58d2a2f::t_f8bce7da255b69 239-257
+.changeset/yos-338-polling-tentacle-liveness-probe.md
+  s_72c6b1e58d2a2f::t_4577f91cad1ead 1-5
+charts/kubernetes-agent/tests/tentacle-deployment_test.yaml
+  s_72c6b1e58d2a2f::t_96f4cf6834f6b8 368-447
+charts/kubernetes-agent/README.md
+  s_72c6b1e58d2a2f::t_5e084438f23e09 61-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "57be2f5fc3e204f553e065e2e66b16432a1da18b",
+  "prompts": {},
+  "sessions": {
+    "s_72c6b1e58d2a2f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2194dc82-6a73-4ab9-a04f-87d7488f5177",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Noam Gal <noam.gal@octopus.com>"
+    }
+  }
+}
