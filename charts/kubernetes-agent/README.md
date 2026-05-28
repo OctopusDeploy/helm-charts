@@ -57,7 +57,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.containers.watchdog.spec | object | `{}` | Additional container spec to apply to the watchdog container - does not override any other configuration |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.1.3876","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.2.4000","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":30,"maxAgeSeconds":60,"periodSeconds":30,"timeoutSeconds":5}` | Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent. Only takes effect when `agent.serverCommsAddress` or `agent.serverCommsAddresses` is set (polling mode). Requires Tentacle >= 9.2.3963 (the version that ships `tentacle livez`). |
 | agent.livenessProbe.failureThreshold | int | `3` | Number of consecutive probe failures before Kubernetes restarts the pod. |
 | agent.livenessProbe.initialDelaySeconds | int | `30` | Seconds after the container starts before the first probe runs. |
