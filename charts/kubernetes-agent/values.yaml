@@ -236,7 +236,7 @@ agent:
     # @section -- Agent values
     disableAutoPodCleanup: false
 
-  # -- Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent. Only takes effect when `agent.serverCommsAddress` or `agent.serverCommsAddresses` is set (polling mode). Requires Tentacle >= 9.2.3963 (the version that ships `tentacle livez`).
+  # -- Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent.
   # @section -- Agent values
   livenessProbe:
     # -- Seconds the heartbeat file can be stale before the probe fails. The heartbeat is written every 10s, so 60s = 6 missed writes.
