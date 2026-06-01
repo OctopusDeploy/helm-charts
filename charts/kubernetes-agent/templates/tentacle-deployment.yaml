@@ -49,7 +49,6 @@ spec:
             initialDelaySeconds: 2
             periodSeconds: 2
             failureThreshold: 100
-          {{- if or .Values.agent.serverCommsAddress .Values.agent.serverCommsAddresses }}
           livenessProbe:
             exec:
               command:
@@ -64,7 +63,6 @@ spec:
             periodSeconds: {{ .Values.agent.livenessProbe.periodSeconds | default 30 }}
             timeoutSeconds: {{ .Values.agent.livenessProbe.timeoutSeconds | default 5 }}
             failureThreshold: {{ .Values.agent.livenessProbe.failureThreshold | default 3 }}
-          {{- end }}
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}

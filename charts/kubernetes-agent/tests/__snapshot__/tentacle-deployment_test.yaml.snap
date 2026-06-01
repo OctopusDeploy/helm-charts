@@ -108,6 +108,18 @@ should match snapshot:
                   value: 10Gi
               image: octopusdeploy/kubernetes-agent-tentacle:9.2.4000
               imagePullPolicy: IfNotPresent
+              livenessProbe:
+                exec:
+                  command:
+                    - tentacle
+                    - livez
+                    - --instance
+                    - Tentacle
+                    - --max-age=60
+                failureThreshold: 3
+                initialDelaySeconds: 30
+                periodSeconds: 30
+                timeoutSeconds: 5
               name: octopus-agent-tentacle
               resources:
                 requests:

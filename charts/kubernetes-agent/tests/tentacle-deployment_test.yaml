@@ -400,11 +400,6 @@ tests:
             path: spec.template.spec.containers[0].livenessProbe.exec.command
             content: livez
 
-    - it: "does not render livenessProbe when no polling addresses are configured (listening)"
-      asserts:
-        - notExists:
-            path: spec.template.spec.containers[0].livenessProbe
-
     - it: "respects custom livenessProbe values"
       set:
         agent:
