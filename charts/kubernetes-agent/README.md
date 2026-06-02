@@ -176,6 +176,8 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | scriptPods.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to script pods |
+| scriptPods.calamariImageVolume.enabled | bool | `false` | Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer. |
+| scriptPods.calamariImageVolume.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy"}` | The repository and pullPolicy to use for the Calamari image volume. The repository should _not_ include the calamari image path, as this is dynamically set depending on the type of Calamari tooling required. |
 | scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |
