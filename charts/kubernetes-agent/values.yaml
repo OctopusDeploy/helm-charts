@@ -376,7 +376,7 @@ scriptPods:
 
   calamariImageVolume:
     # -- If enabled, loads the [Calamari](https://github.com/OctopusDeploy/Calamari) tooling as a read-only image volume, rather than being pushed from Octopus Server.
-    # -- Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer.
+    # -- Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer. This also requires Octopus Server 2026.3.XXXX.
     # @section -- Script pod values
     enabled: false
 
