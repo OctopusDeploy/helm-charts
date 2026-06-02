@@ -51,6 +51,20 @@ spec:
             initialDelaySeconds: 2
             periodSeconds: 2
             failureThreshold: 100
+          livenessProbe:
+            exec:
+              command:
+                - tentacle
+                - livez
+                - --instance
+                - Tentacle
+                {{- if .Values.agent.livenessProbe.maxAgeSeconds }}
+                - --max-age={{ .Values.agent.livenessProbe.maxAgeSeconds }}
+                {{- end }}
+            initialDelaySeconds: {{ .Values.agent.livenessProbe.initialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.agent.livenessProbe.periodSeconds | default 30 }}
+            timeoutSeconds: {{ .Values.agent.livenessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.agent.livenessProbe.failureThreshold | default 3 }}
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}
