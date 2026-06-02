@@ -268,7 +268,7 @@ tests:
       asserts:
           - equal:
                 path: spec.template.spec.containers[0].image
-                value: "octopusdeploy/kubernetes-agent-tentacle:9.1.3876-bullseye-slim"
+                value: "octopusdeploy/kubernetes-agent-tentacle:9.2.4000-bullseye-slim"
 
     - it: "sets custom spec properly"
       set:
@@ -347,3 +347,77 @@ tests:
             content:
               name: "WATCHDOG_CUSTOM_VAR"
               value: "watchdog-custom-value"
+
+    - it: "renders livenessProbe with defaults when serverCommsAddress is set (polling)"
+      set:
+        agent:
+          serverCommsAddress: "https://server.example.com:10943"
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[0].livenessProbe
+            value:
+              exec:
+                command:
+                  - tentacle
+                  - livez
+                  - --instance
+                  - Tentacle
+                  - --max-age=60
+              initialDelaySeconds: 30
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 3
+
+    - it: "renders livenessProbe when HA serverCommsAddresses is set (polling)"
+      set:
+        agent:
+          serverCommsAddresses:
+            - "https://a.example.com:10943"
+            - "https://b.example.com:10943"
+      asserts:
+        - exists:
+            path: spec.template.spec.containers[0].livenessProbe
+        - contains:
+            path: spec.template.spec.containers[0].livenessProbe.exec.command
+            content: livez
+
+    - it: "respects custom livenessProbe values"
+      set:
+        agent:
+          serverCommsAddress: "https://server.example.com:10943"
+          livenessProbe:
+            maxAgeSeconds: 120
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 5
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[0].livenessProbe
+            value:
+              exec:
+                command:
+                  - tentacle
+                  - livez
+                  - --instance
+                  - Tentacle
+                  - --max-age=120
+              initialDelaySeconds: 60
+              periodSeconds: 15
+              timeoutSeconds: 10
+              failureThreshold: 5
+
+    - it: "omits --max-age flag when maxAgeSeconds is 0"
+      set:
+        agent:
+          serverCommsAddress: "https://server.example.com:10943"
+          livenessProbe:
+            maxAgeSeconds: 0
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[0].livenessProbe.exec.command
+            value:
+              - tentacle
+              - livez
+              - --instance
+              - Tentacle
