@@ -120,7 +120,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "9.1.3876"
+    tag: "9.2.4000"
     tagSuffix: ""
 
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
@@ -235,6 +235,25 @@ agent:
     # -- Disables automatic pod cleanup
     # @section -- Agent values
     disableAutoPodCleanup: false
+
+  # -- Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent.
+  # @section -- Agent values
+  livenessProbe:
+    # -- Seconds the heartbeat file can be stale before the probe fails. The heartbeat is written every 10s, so 60s = 6 missed writes.
+    # @section -- Agent values
+    maxAgeSeconds: 60
+    # -- Seconds after the container starts before the first probe runs.
+    # @section -- Agent values
+    initialDelaySeconds: 30
+    # -- How often (in seconds) to perform the probe.
+    # @section -- Agent values
+    periodSeconds: 30
+    # -- Seconds after which the probe times out.
+    # @section -- Agent values
+    timeoutSeconds: 5
+    # -- Number of consecutive probe failures before Kubernetes restarts the pod.
+    # @section -- Agent values
+    failureThreshold: 3
 
 # @section -- Script pod values
 scriptPods:
