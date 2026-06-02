@@ -541,3 +541,28 @@ tests:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__ACCESSMODESJSON')].value
         value: '["ReadWriteMany","ReadWriteOnce"]'
+
+- it: Does not set the calamari image volume items when not enabled
+  set:
+    scriptPods:
+      calamariImageVolume:
+        enabled: false
+  asserts:
+    - notExists:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEREPOSITORY')].value
+
+- it: Sets the calamari image volume items when enabled
+  set:
+    scriptPods:
+      calamariImageVolume:
+        enabled: true
+        image:
+          repository: "index.docker.io/octopusdeploy"
+          pullPolicy: "Always"
+  asserts:
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEREPOSITORY')].value
+        value: 'index.docker.io/octopusdeploy'
+    - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEPULLPOLICY')].value
+        value: 'Always'
