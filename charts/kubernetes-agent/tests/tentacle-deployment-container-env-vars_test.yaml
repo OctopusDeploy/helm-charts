@@ -561,6 +561,9 @@ tests:
           pullPolicy: "Always"
   asserts:
     - equal:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEENABLED')].value
+        value: 'true'
+    - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEREPOSITORY')].value
         value: 'index.docker.io/octopusdeploy'
     - equal:
