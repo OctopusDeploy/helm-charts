@@ -1,0 +1,19 @@
+.github/workflows/octopus-publish-chart.yml
+  s_f309c7504961b4::t_880e8fd82e2f15 48-50,90,93-96
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "1ba418679d4f4ee10614b39701ca6f212829232a",
+  "prompts": {},
+  "sessions": {
+    "s_f309c7504961b4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ecad62be-eb61-4d47-a4cc-5f953f684216",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "shirtabachii <shir.tabachi@codefresh.io>"
+    }
+  }
+}
