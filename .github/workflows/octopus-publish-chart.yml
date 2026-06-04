@@ -45,6 +45,9 @@ jobs:
       - name: Login to GitHub container registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u  ${{github.actor}} --password-stdin
 
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
       - name: Parse Chart config
         uses: pietrobolcato/action-read-yaml@1.1.0
         id: read_chart_yaml
@@ -84,6 +87,10 @@ jobs:
           path: '${{ github.workspace }}/octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz'
 
       # Only push the chart for real if it's a branch build OR it's the versioning PR
-      - name: Push Chart
+      - name: Push Chart to GHCR
         if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
         run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://ghcr.io/octopusdeploy
+
+      - name: Push Chart to Docker Hub
+        if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+        run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://registry-1.docker.io/octopusdeploy
