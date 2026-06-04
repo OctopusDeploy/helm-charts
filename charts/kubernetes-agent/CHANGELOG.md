@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.4.0
+
+### Minor Changes
+
+- 360f9dd: Forward merge changes from [2.42.0](#2420)
+
 ## 3.3.0
 
 ### Minor Changes
@@ -71,6 +77,12 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
   The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
+
+## 2.42.0
+
+### Minor Changes
+
+- 57be2f5: Add a `livenessProbe` for polling Kubernetes Agents using the new `tentacle livez` exec command. Detects "pod Running but Tentacle process stuck" — deadlock, GC stall, frozen polling thread — by reading the freshness of a heartbeat file written by the agent. All four knobs are exposed under `agent.livenessProbe.*`.
 
 ## 2.41.0
 
