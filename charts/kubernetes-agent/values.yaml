@@ -120,7 +120,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "9.2.4046"
+    tag: "9.2.4059"
     tagSuffix: ""
 
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
@@ -400,6 +400,7 @@ scriptPods:
     enabled: false
 
     # -- The repository and pullPolicy to use for the Calamari image volume. The repository should _not_ include the calamari image path, as this is dynamically set depending on the type of Calamari tooling required.
+    # -- See the [documentation](https://octopus.com/docs) for more information about changing the repository.
     # @section -- Script pod values
     image:
       repository: "octopusdeploy" 
