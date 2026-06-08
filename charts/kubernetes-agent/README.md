@@ -182,7 +182,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | scriptPods.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to script pods |
-| scriptPods.calamariImageVolume.enabled | bool | `false` | Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer. This also requires Octopus Server 2026.3.XXXX. |
+| scriptPods.calamariImageVolume.enabled | bool | `false` | Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer. This also requires Octopus Server 2026.3.982. |
 | scriptPods.calamariImageVolume.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy"}` | See the [documentation](https://octopus.com/docs) for more information about changing the repository. |
 | scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
