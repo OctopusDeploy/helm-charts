@@ -549,7 +549,11 @@ tests:
         enabled: false
   asserts:
     - notExists:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEENABLED')].value
+    - notExists:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEREPOSITORY')].value
+    - notExists:
+        path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEPULLPOLICY')].value
 
 - it: Sets the calamari image volume items when enabled
   set:
