@@ -11,5 +11,5 @@ Add support for new Calamari image volume feature. By setting `scriptPods.calama
 
 There are two other configuration options for controlling the image being loaded:
 
-- `scriptPods.calamariImageVolume.image.repository` - Sets the repository where the Calamari image is loaded from. See the [documentation](https://octopus.com/docs) for more information about changing this.
+- `scriptPods.calamariImageVolume.image.repository` - Sets the repository where the Calamari image is loaded from. See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing this.
 - `scriptPods.calamariImageVolume.image.pullPolicy` - Defines the pull policy for the Calamari image

@@ -400,7 +400,7 @@ scriptPods:
     enabled: false
 
     # -- The repository and pullPolicy to use for the Calamari image volume. The repository should _not_ include the calamari image path, as this is dynamically set depending on the type of Calamari tooling required.
-    # -- See the [documentation](https://octopus.com/docs) for more information about changing the repository.
+    # -- See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing the repository.
     # @section -- Script pod values
     image:
       repository: "octopusdeploy" 
