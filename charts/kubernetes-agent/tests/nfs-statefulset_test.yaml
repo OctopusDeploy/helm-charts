@@ -2,29 +2,58 @@ suite: "persistence"
 templates:
 - templates/nfs-statefulset.yaml
 tests:
-- it: "is not created when storageClassName has a value"
-  set:
-    persistence:
-      storageClassName: "value"
-  asserts:
-  - hasDocuments:
-      count: 0
-
-- it: "is not created when volumeName has a value"
-  set:
-    persistence:
-      volumeName: "value"
+- it: "is not created when nfs is disabled (default)"
   asserts:
   - hasDocuments:
       count: 0
 
 - it: "should match snapshot"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
   asserts:
   - matchSnapshot: {}
+
+- it: "fails to template when nfs is enabled, but accessModes does not have ReadWriteMany"
+  set:
+    persistence:
+      accessModes: ["ReadOnlyMany"]
+      nfs:
+        enabled: true
+  asserts:
+  - failedTemplate:
+      errorMessage: "`.persistence.accessModes` must contain `ReadWriteMany` when `.persistence.nfs.enabled` is `true`"
+
+- it: "fails to template when nfs is enabled, but storageClassName has a value"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      storageClassName: "hi"
+      nfs:
+        enabled: true
+  asserts:
+  - failedTemplate:
+      errorMessage: "`.persistence.storageClassName` must not be set when `.persistence.nfs.enabled` is `true`"
+
+- it: "fails to template when nfs is enabled, but volumeName has a value"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      volumeName: "hi"
+      nfs:
+        enabled: true
+  asserts:
+  - failedTemplate:
+      errorMessage: "`.persistence.volumeName` must not be set when `.persistence.nfs.enabled` is `true`"
 
 - it: sets the emptyDir size to be the value in values
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
       size: 100Gi
   asserts:
   - equal:
@@ -34,9 +63,11 @@ tests:
 - it: uses a backing volume when storageClassName is set
   set:
     persistence:
-        nfs:
-          backingVolume:
-            storageClassName: "my-storage-class"
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
+        backingVolume:
+          storageClassName: "my-storage-class"
   asserts:
     - equal:
         path: spec.volumeClaimTemplates[0].spec.storageClassName
@@ -45,6 +76,11 @@ tests:
         path: spec.template.spec.volumes[?(@.name == 'octopus-volume')].emptyDir
 
 - it: does not use a backing volume when storageClassName is unset
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
   asserts:
     - notExists:
         path: spec.volumeClaimTemplates
@@ -54,7 +90,9 @@ tests:
 - it: uses readWriteOnce access mode for the backing volume when storageClassName is set and no accessModes are specified
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
+        enabled: true
         backingVolume:
           storageClassName: "my-storage-class"
   asserts:
@@ -65,7 +103,9 @@ tests:
 - it: uses the accessModes specified in values for the backing volume when storageClassName is set
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
+        enabled: true
         backingVolume:
           storageClassName: "my-storage-class"
           accessModes: ["ReadWriteMany", "ReadWriteOnce"]
@@ -79,7 +119,9 @@ tests:
 - it: sets custom pod spec properly
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
+        enabled: true
         spec:
           priorityClassName: "custom-priority-class"
   asserts:
@@ -90,7 +132,9 @@ tests:
 - it: sets custom container spec properly
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
+        enabled: true
         containers:
           nfs:
             spec:
@@ -106,7 +150,9 @@ tests:
 - it: sets custom container env properly
   set:
     persistence:
+      accessModes: ["ReadWriteMany"]
       nfs:
+        enabled: true
         containers:
           nfs:
             env:

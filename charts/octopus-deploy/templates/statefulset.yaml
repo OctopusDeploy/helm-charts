@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-      {{- include "octopus.selectorLabels" . | nindent 8 }}
+      {{- include "octopus.podLabels" . | nindent 8 }}
       {{- if .Values.octopus.pods.labels }}
       {{- toYaml .Values.octopus.pods.labels | nindent 8 }}
       {{- end }}
@@ -86,14 +86,14 @@ spec:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "connectionstring"}}
                 key: secret
-          {{- if .Values.octopus.username }}
+          {{- if or .Values.octopus.username (not .Values.octopus.createSecrets) }}
           - name: ADMIN_USERNAME
             valueFrom:
               secretKeyRef:
                 name: {{printf "%s-%s" $.Release.Name "adminusername"}}
                 key: secret
           {{- end }}
-          {{- if .Values.octopus.password }}
+          {{- if or .Values.octopus.password (not .Values.octopus.createSecrets) }}
           - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:

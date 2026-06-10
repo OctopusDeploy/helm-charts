@@ -2,46 +2,44 @@ suite: "persistence"
 templates:
 - templates/tentacle-pvc.yaml
 tests:
-- it: "should match snapshot when storageClassName is set"
+- it: "should match snapshot when storageClassName is not set and nfs is disabled (default)"
+  asserts:
+    - matchSnapshot: {}
+
+- it: "should match snapshot when storageClassName is set and nfs is disabled"
   set:
     persistence:
       storageClassName: "my-storage-class"
   asserts:
     - matchSnapshot: {}
 
-- it: "should match snapshot when volumeName is set"
+- it: "should match snapshot when volumeName is set and nfs is disabled"
   set:
     persistence:
       volumeName: "my-volume"
   asserts:
     - matchSnapshot: {}
 
-- it: "is not created when storageClassName is empty"
+    
+- it: "should match snapshot when storageClassName is set to \"-\" and nfs is disabled"
   set:
     persistence:
-      storageClassName: ""
+      storageClassName: "-"
+      volumeName: "my-volume"
+  asserts:
+    - matchSnapshot: {}
+
+- it: "is not created when nfs is enabled"
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
   asserts:
   - hasDocuments:
       count: 0
 
-- it: "is created when storageClassName has a value"
-  set:
-    persistence:
-      storageClassName: "my-storage-class"
-  asserts:
-  - hasDocuments:
-      count: 1
-
-- it: "is created when volumeName has a value"
-  set:
-    persistence:
-      volumeName: "my-storage-class"
-  asserts:
-  - hasDocuments:
-      count: 1
-
 - it: "can have the size changed"
-
   set:
     persistence:
       storageClassName: "my-storage-class"

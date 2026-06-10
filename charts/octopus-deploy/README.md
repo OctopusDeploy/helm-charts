@@ -12,7 +12,7 @@ If you are creating a long-lived, production Octopus instance we recommend you r
 
 Once you have your [license key](#license-key), you can run the command below to install Octopus Deploy:
 
-```
+```bash
 helm upgrade octopus-deploy \
 --install \
 --namespace octopus-deploy \
@@ -43,7 +43,7 @@ The Quick Start installs SQL Server as a sub-chart.
 
 If you want to host SQL Server independently, you must supply the connection string: 
 
-```
+```yaml
 octopus:
   databaseConnectionString: <Your connection string>
 ```
@@ -66,7 +66,7 @@ If you ever need to create a new Octopus instance and wish to use keep all your 
 
 By default, the master key is generated, stored in Kubernetes secret, and output when the Helm chart is installed.  If you need to supply an existing master key this can be done as follows 
 
-```
+```yaml
 octopus:
   masterKey: <Your master key>
 ```
@@ -87,7 +87,7 @@ This default can be overridden in two ways.
 
 You can configure the storage class to be used for all three of the persistent volumes above (and for the SQL Server sub-chart if enabled) via:
 
-```
+```yaml
 global:
   storageClass: "<your storage class name>"
 ```
@@ -97,7 +97,7 @@ ReadWriteOnce or ReadWriteMany can be used for single node clusters.
 
 Alternatively, each volume may be configured individually. An example is shown below.
 
-```
+```yaml
 octopus:
   packageRepositoryVolume:
     size: 20Gi 
@@ -131,8 +131,46 @@ octopus:
       sizeLimit: 10Gi # Set to some upper bound limit to protect from unbound usage
 ```
 
+### <a name="strict-security-context"></a>Strict Security Context / Non-root setup
 
-### Read-Only Root Filesystem
+#### Octopus Deploy Server
+To run Server in non-root mode you need to use values:
+```yaml
+octopus:
+  enableDockerInDocker: false # required - otherwise Server will be running in privileged mode
+  podSecurityContext:
+    fsGroup: 999
+    fsGroupChangePolicy: OnRootMismatch
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  containerSecurityContext: 
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsUser: 999
+    runAsGroup: 999
+```
+
+#### Built-in mssql
+The built-in mssql chart ships with default security context values:
+```yaml
+podSecurityContext:
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext: 
+  runAsUser: 10001
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+    add: 
+      - NET_BIND_SERVICE
+```
+
+#### Read-Only Root Filesystem
 
 If your security policy requires a read-only root filesystem (`readOnlyRootFilesystem: true`), you must provide writable `emptyDir` mounts for the directories Octopus writes to at runtime.
 
@@ -187,6 +225,39 @@ A complete working example including environment variable overrides for .NET too
 
 Note: `enableDockerInDocker` must be set to `false` when using a read-only root filesystem, as Docker-in-Docker requires a privileged, writable container.
 
+### Openshift
+
+[Hardcoded UID and fsGroup](#strict-security-context) in our `securityContext` requires assigning `nonroot-v2` SCC to service accounts. 
+
+Installation steps are following:
+
+1. create dedicated project (namespace)
+```bash
+NS_NAME="octopus-deploy"
+oc new-project $NS_NAME --description="Octopus Deploy resources" --display-name="Octopus Deploy"
+```
+2. Assign `nonroot-v2` SCC to SAs
+- Server
+```bash
+NS_NAME="octopus-deploy"
+SERVER_SERVICE_ACCOUNT="default" #or custom value from .octopus.serviceAccount.name
+oc adm policy add-scc-to-user nonroot-v2 -z $SERVER_SERVICE_ACCOUNT -n $NS_NAME
+```
+- Pre-upgrade hook
+```bash
+NS_NAME="octopus-deploy"
+SERVER_SERVICE_ACCOUNT="octopus-deploy-pre-upgrade"
+oc adm policy add-scc-to-user nonroot-v2 -z $SERVER_SERVICE_ACCOUNT -n $NS_NAME
+```
+- Built-in mssql (if applicable)
+```bash
+NS_NAME="octopus-deploy"
+MSSQL_SERVICE_ACCOUNT="octopus-deploy-mssql" #or custom value from .mssql.serviceAccount.name
+oc adm policy add-scc-to-user nonroot-v2 -z $MSSQL_SERVICE_ACCOUNT -n $NS_NAME
+```
+3. run `helm install` command with extra values from [Strict Security Context](#strict-security-context) section.
+
+
 ### Ingress
 You'll likely want to allow external traffic to your Octopus instance, and this generally means configuring [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). 
 
@@ -199,7 +270,7 @@ There are three types of traffic which you will typically want to configure ingr
 
 An example of a values file which configures ingress for HTTP traffic to the web portal and HTTP API using [NGINX](https://kubernetes.github.io/ingress-nginx/) is shown below:
 
-```
+```yaml
 octopus:
   ingress:
     enabled: true
@@ -212,7 +283,7 @@ octopus:
 To enable TLS in the ingress, you can create a certificate using cert-manager, and then reference it in the ingress configuration. An example is shown below:
 
 Certificate:
-```
+```yaml
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -228,7 +299,7 @@ spec:
 ```
 
 Values file:
-```
+```yaml
 octopus:
   ingress:
     enabled: true
@@ -250,7 +321,7 @@ If the chart is configured to create a single Octopus node (`replicaCount: 1`) t
 The following configuration will create an ingress endpoint for each Octopus node (replica). 
 
 
-```
+```yaml
 octopus:
   ingress:
     enabled: true
@@ -279,7 +350,7 @@ Octopus Server uses gRPC communication for the Kubernetes monitor. By default, O
 The Octopus Deploy service exposes this port for you by default. To allow external consumers of this service, you can either set this service to be a LoadBalancer, or use an ingress (or the Gateway API).
 
 Setting the service to be a Load Balancer can be done by setting the following in the values:
-```
+```yaml
 octopus:
   service:
     type: LoadBalancer
@@ -291,7 +362,7 @@ To pass through the default SSL certificate, you can use the `nginx.ingress.kube
 Note that to do this, you must [enable SSL passthrough in your nginx ingress controller](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#ssl-passthrough).  
 
 To enable passthrough, you can set the following in your values file:
-```
+```yaml
 octopus:
   ingress:
     enabled: true
@@ -310,7 +381,7 @@ octopus:
 ```
 
 If you wish to terminate SSL rather than use passthrough, you must ensure that your certificate is issued by a CA that is generally trusted. Using a certificate from LetsEncrypt is the recommended way to do this. An example certificate would be:
-```
+```yaml
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -326,7 +397,7 @@ spec:
 ```
 
 You can then set your ingress up as follows to enable the ingress:
-```
+```yaml
 octopus:
   ingress:
     enabled: true
@@ -347,7 +418,7 @@ octopus:
 ```
 
 The resulting ingress will be as follows:
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

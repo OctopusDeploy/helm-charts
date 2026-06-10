@@ -1,0 +1,6 @@
+{{- $isNfsEnabled := (not (or .persistence.storageClassName .persistence.volumeName)) -}}
+persistence:
+  {{/* To keep current behaviour, set the accessModes to ReadWriteMany */}}
+  accessModes: ["ReadWriteMany"]
+  nfs:
+    enabled: {{ $isNfsEnabled}}

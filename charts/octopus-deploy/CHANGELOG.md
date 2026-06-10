@@ -1,5 +1,23 @@
 # octopus-deploy
 
+## 1.14.1
+
+### Patch Changes
+
+- 2dc7e30: Fix username and password environment variables when using external secrets
+
+## 1.14.0
+
+### Minor Changes
+
+- 6207a77: added openshift 'nonroot-v2' SCC support
+
+## 1.13.0
+
+### Minor Changes
+
+- e035d19: Fix unstable selector labels in mssql and octopus statefulsets
+
 ## 1.12.0
 
 ### Minor Changes

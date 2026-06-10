@@ -53,7 +53,7 @@ tests:
       value: local-ns-3
     documentIndex: 2
 
-- it: "creates no rolebindings when both global and local are empty"
+- it: "creates no rolebindings when both global and local are empty and nfs is disabled"
   set:
     global:
       targetNamespaces: []
@@ -64,7 +64,7 @@ tests:
   template: templates/pod-rolebindings.yaml
   asserts:
   - hasDocuments:
-      count: 1
+      count: 0
 
 - it: "global targetNamespaces work with namespace-scoped roles"
   set:

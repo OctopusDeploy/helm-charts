@@ -1,0 +1,45 @@
+suite: pre-upgrade-hook
+templates:
+  - pre-upgrade-hook.yaml
+
+tests:
+  - it: pre-upgrade hook should render by default
+    values:
+      - ./values/required.yaml
+    asserts:
+      - hasDocuments:
+          count: 4
+
+  - it: pre-upgrade hook should not render when hooks.enableSelectorLabelsFix is false
+    values:
+      - ./values/required.yaml
+    set:
+      hooks.enableSelectorLabelsFix: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: pre-upgrade hook should render all four resources when hooks.enableSelectorLabelsFix is true
+    values:
+      - ./values/required.yaml
+    set:
+      hooks.enableSelectorLabelsFix: true
+    asserts:
+      - hasDocuments:
+          count: 4
+      - isKind:
+          of: ServiceAccount
+        documentIndex: 0
+      - isKind:
+          of: Role
+        documentIndex: 1
+      - isKind:
+          of: RoleBinding
+        documentIndex: 2
+      - isKind:
+          of: Job
+        documentIndex: 3
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: pre-upgrade
+        documentIndex: 3
