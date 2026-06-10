@@ -78,6 +78,15 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.43.0
+
+### Minor Changes
+
+- 82273d1: Upgrade kubernetes-agent-monitor to 0.29.0
+
+  Fix CVE-2026-33186 - gRPC-Go has an authorization bypass via missing leading slash in :path
+
+
 ## 2.42.0
 
 ### Minor Changes
