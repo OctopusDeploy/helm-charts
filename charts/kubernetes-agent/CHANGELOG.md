@@ -1,5 +1,13 @@
 # kubernetes-agent
 
+## 2.43.0
+
+### Minor Changes
+
+- 82273d1: Upgrade kubernetes-agent-monitor to 0.29.0
+
+  Fix CVE-2026-33186 - gRPC-Go has an authorization bypass via missing leading slash in :path
+
 ## 2.42.0
 
 ### Minor Changes
