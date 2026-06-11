@@ -1,6 +1,6 @@
 ## Kubernetes agent
 
-![Version: 3.4.0](https://img.shields.io/badge/Version-3.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.4000](https://img.shields.io/badge/AppVersion-9.2.4000-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 3.4.0](https://img.shields.io/badge/Version-3.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.4059](https://img.shields.io/badge/AppVersion-9.2.4059-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using [Octopus Deploy](https://octopus.com).
 
@@ -65,7 +65,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.containers.watchdog.spec | object | `{}` | Additional container spec to apply to the watchdog container - does not override any other configuration |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.2.4000","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.2.4059","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":30,"maxAgeSeconds":60,"periodSeconds":30,"timeoutSeconds":5}` | Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent. |
 | agent.livenessProbe.failureThreshold | int | `3` | Number of consecutive probe failures before Kubernetes restarts the pod. |
 | agent.livenessProbe.initialDelaySeconds | int | `30` | Seconds after the container starts before the first probe runs. |
@@ -182,6 +182,8 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | scriptPods.affinity | object | `{"nodeAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"In","values":["linux"]},{"key":"kubernetes.io/arch","operator":"In","values":["arm64","amd64"]}]}]}}}` | The affinities to apply to script pods |
+| scriptPods.calamariImageVolume.enabled | bool | `false` | Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer. This also requires Octopus Server 2026.3.982. |
+| scriptPods.calamariImageVolume.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy"}` | See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing the repository. |
 | scriptPods.deploymentTarget.image | object | `{"pullPolicy":"","repository":"","tag":""}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a deployment target |
 | scriptPods.disruptionBudgetEnabled | bool | `true` | If true, the script pods will be created with a disruption budget to prevent them from being evicted |
 | scriptPods.logging.disablePodEventsInTaskLog | bool | `false` | Disables script pod events being written to Octopus Server task log |

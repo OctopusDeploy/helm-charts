@@ -141,6 +141,14 @@ spec:
               value: {{ .Values.agent.enableMetricsCapture | quote }}
             - name: "OCTOPUS__K8STENTACLE__PENDINGPODSSTUCKAFTERMINUTES"
               value: {{ .Values.scriptPods.pendingPodsTimeoutMinutes | quote }}
+            {{- if .Values.scriptPods.calamariImageVolume.enabled }}
+            - name: "OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEENABLED"
+              value: "true"
+            - name: "OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEREPOSITORY"
+              value: {{ .Values.scriptPods.calamariImageVolume.image.repository | quote }}
+            - name: "OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEPULLPOLICY"
+              value: {{ .Values.scriptPods.calamariImageVolume.image.pullPolicy | quote }}
+            {{- end }}
             {{- if .Values.imagePullSecrets }}
             - name: "OCTOPUS__K8STENTACLE__PODIMAGEPULLSECRETNAMES"
               value: {{ include "kubernetes-agent.imagePullSecretsCsv" . | quote }}

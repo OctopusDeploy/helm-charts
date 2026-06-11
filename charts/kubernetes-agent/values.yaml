@@ -120,7 +120,7 @@ agent:
   image:
     repository: octopusdeploy/kubernetes-agent-tentacle
     pullPolicy: IfNotPresent
-    tag: "9.2.4000"
+    tag: "9.2.4059"
     tagSuffix: ""
 
   # -- Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures.
@@ -392,6 +392,19 @@ scriptPods:
   # @default 60
   # @section -- Script pod values
   pendingPodsTimeoutMinutes: 60
+
+  calamariImageVolume:
+    # -- If enabled, loads the [Calamari](https://github.com/OctopusDeploy/Calamari) tooling as a read-only image volume, rather than being pushed from Octopus Server.
+    # -- Requires the ImageVolume Kubernetes feature gate, which is enabled by default on 1.35 and newer. This also requires Octopus Server 2026.3.982.
+    # @section -- Script pod values
+    enabled: false
+
+    # -- The repository and pullPolicy to use for the Calamari image volume. The repository should _not_ include the calamari image path, as this is dynamically set depending on the type of Calamari tooling required.
+    # -- See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing the repository.
+    # @section -- Script pod values
+    image:
+      repository: "octopusdeploy" 
+      pullPolicy: IfNotPresent
 
 # @section -- Persistence
 persistence:
