@@ -1,5 +1,25 @@
 # kubernetes-agent
 
+## 3.5.0
+
+### Minor Changes
+
+- 11a264f: Add support for new Calamari image volume feature. By setting `scriptPods.calamariImageVolume.enabled` to `true`, the Calamari tooling is loaded into the script pod using the Kubernetes Image Volume as a read-only volume mount.
+
+  > [!IMPORTANT]
+  > This feature requires Kubernetes `1.35` or later as it requires the `ImageVolume` feature gate. If enabled on an older cluster, a warning will be written into the task log and the existing Octopus Server-distributed mechanism will be used.
+  >
+  > This feature also requires Octopus Server `2026.3.892` or later.
+
+  There are two other configuration options for controlling the image being loaded:
+
+  - `scriptPods.calamariImageVolume.image.repository` - Sets the repository where the Calamari image is loaded from. See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing this.
+  - `scriptPods.calamariImageVolume.image.pullPolicy` - Defines the pull policy for the Calamari image
+
+- 6876713: Upgrade kubernetes-agent-monitor to 0.29.0
+
+  Fix CVE-2026-33186 - gRPC-Go has an authorization bypass via missing leading slash in :path
+
 ## 3.4.0
 
 ### Minor Changes
@@ -85,7 +105,6 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 - 82273d1: Upgrade kubernetes-agent-monitor to 0.29.0
 
   Fix CVE-2026-33186 - gRPC-Go has an authorization bypass via missing leading slash in :path
-
 
 ## 2.42.0
 
