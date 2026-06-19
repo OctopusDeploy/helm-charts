@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.6.0
+
+### Minor Changes
+
+- Forward merge changes from [2.44.0](#2440)
+
 ## 3.5.0
 
 ### Minor Changes
@@ -11,10 +17,10 @@
 >
 > This feature also requires Octopus Server `2026.3.892` or later.
 
-  There are two other configuration options for controlling the image being loaded:
+There are two other configuration options for controlling the image being loaded:
 
-  - `scriptPods.calamariImageVolume.image.repository` - Sets the repository where the Calamari image is loaded from. See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing this.
-  - `scriptPods.calamariImageVolume.image.pullPolicy` - Defines the pull policy for the Calamari image
+- `scriptPods.calamariImageVolume.image.repository` - Sets the repository where the Calamari image is loaded from. See the [documentation](https://oc.to/k8s-agent-calamari-image-volume) for more information about changing this.
+- `scriptPods.calamariImageVolume.image.pullPolicy` - Defines the pull policy for the Calamari image
 
 - 6876713: Upgrade kubernetes-agent-monitor to 0.29.0
 
