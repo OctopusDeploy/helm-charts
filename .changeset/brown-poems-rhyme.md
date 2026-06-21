@@ -1,5 +1,5 @@
 ---
-"kubernetes-agent": major
+"kubernetes-agent": minor
 ---
 
 Upgrade kubernetes-agent-tentacle to 9.2.4125
