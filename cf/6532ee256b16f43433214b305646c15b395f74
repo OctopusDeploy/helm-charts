@@ -1,0 +1,19 @@
+.github/workflows/kubernetes-agent-publish-chart.yaml
+  s_ef75a9da6e1872::t_23ef9eb8eec214 95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "cf6532ee256b16f43433214b305646c15b395f74",
+  "prompts": {},
+  "sessions": {
+    "s_ef75a9da6e1872": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0752047a-9f8a-41d3-8169-f0ea03f947c2",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
