@@ -1,0 +1,19 @@
+.changeset/brown-poems-rhyme.md
+  s_5855b648e22b77::t_57400ef209c606 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "57561166b2083da82592936761a551fe396831ad",
+  "prompts": {},
+  "sessions": {
+    "s_5855b648e22b77": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ea44f39-6e4d-470f-9280-d5000bcb8cbc",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Noam Gal <noam.gal@octopus.com>"
+    }
+  }
+}
