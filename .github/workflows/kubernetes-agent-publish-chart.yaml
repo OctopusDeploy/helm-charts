@@ -92,7 +92,7 @@ jobs:
           chart_version="${{ steps.read_chart_yaml.outputs.version }}"
           pre_release=""
 
-          if [ "${{steps.branch_names.outputs.branch_name}}" != "main" ] && [[ "${{steps.branch_names.outputs.branch_name}}" != "release/kubernetes-agent/v"* ]]
+          if [ "${{github.ref_name}}" != "main" ] && [[ "${{github.ref_name}}" != "release/kubernetes-agent/v"* ]]
           then
               # underscores in branches make for illegal version-string, replace with "-"
               cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
