@@ -104,6 +104,16 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.45.0
+
+### Minor Changes
+
+- 28287cf: Upgrade kubernetes-agent-tentacle to 9.2.4125
+
+  - Update golang Docker tag to v1.26
+  - CVE-2026-26171 (.NET XML: security bypass + DoS)
+  - CVE-2026-33116 (.NET XML: DoS via infinite recursion in
+
 ## 2.44.0
 
 ### Minor Changes
