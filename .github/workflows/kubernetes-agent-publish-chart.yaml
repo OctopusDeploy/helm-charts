@@ -55,12 +55,11 @@ jobs:
         id: read_values_yaml
         with:
           config: ${{ github.workspace }}/charts/kubernetes-agent/values.yaml
-          key-path-pattern: ^agent\.image\.
       
       - name: Enforce appVersion and tag match
         run: |
           chart_appVersion="${{ steps.read_chart_yaml.outputs['appVersion'] }}"
-          values_tag="${{ steps.read_values_yaml.outputs['tag'] }}"
+          values_tag="${{ steps.read_values_yaml.outputs['agent.image.tag'] }}"
 
           echo "Chart.yaml .appVersion: $chart_appVersion"
           echo "values.yaml .agent.image.tag: $values_tag"
