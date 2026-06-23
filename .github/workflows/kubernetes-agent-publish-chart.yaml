@@ -44,6 +44,31 @@ jobs:
           helm plugin install https://github.com/helm-unittest/helm-unittest.git
           helm unittest charts/kubernetes-agent
 
+      - name: Parse Chart config
+        uses: pietrobolcato/action-read-yaml@1.1.0
+        id: read_chart_yaml
+        with:
+          config: ${{ github.workspace }}/charts/kubernetes-agent/Chart.yaml
+      
+      - name: Parse values.yaml
+        uses: pietrobolcato/action-read-yaml@1.1.0
+        id: read_values_yaml
+        with:
+          config: ${{ github.workspace }}/charts/kubernetes-agent/values.yaml
+      
+      - name: Enforce appVersion and tag match
+        run: |
+          chart_appVersion="${{ steps.read_chart_yaml.outputs['appVersion'] }}"
+          values_tag="${{ steps.read_values_yaml.outputs['agent.image.tag'] }}"
+
+          echo "Chart.yaml .appVersion: $chart_appVersion"
+          echo "values.yaml .agent.image.tag: $values_tag"
+
+          if [[ $chart_appVersion != $values_tag ]]; then
+            echo "The Chart.yaml .appVersion and values.yaml .agent.image.tag are not the same. These must match."
+            exit 1
+          fi
+
   check-readme:
     needs: paths_filter
     if: needs.paths_filter.outputs.result == 'true'
