@@ -1,0 +1,14 @@
+.changeset/short-breads-fetch.md
+  h_1903a5d928fbe4 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "760faa42d53075dee3ffe3c15b08b9ae2e930e3f",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
