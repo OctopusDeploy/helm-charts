@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.46.0
+
+### Minor Changes
+
+- 1ba1e3b: k8s-monitor (0.31.0) with custom permissions support
+
 ## 2.45.0
 
 ### Minor Changes
