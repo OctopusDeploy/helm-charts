@@ -110,6 +110,12 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`.
 
+## 2.46.0
+
+### Minor Changes
+
+- 1ba1e3b: k8s-monitor (0.31.0) with custom permissions support
+
 ## 2.45.0
 
 ### Minor Changes
