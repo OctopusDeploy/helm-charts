@@ -1,0 +1,14 @@
+.changeset/thick-ideas-cheer.md
+  h_1903a5d928fbe4 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "f5f120d544735ee5a9a31d9bf1d2339d2762bd82",
+  "prompts": {},
+  "humans": {
+    "h_1903a5d928fbe4": {
+      "author": "oleksandr-codefresh <oleksandr.saulyak@octopus.com>"
+    }
+  }
+}
