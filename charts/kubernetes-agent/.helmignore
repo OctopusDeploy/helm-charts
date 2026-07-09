@@ -34,5 +34,5 @@ README.md.gotmpl
 crd-gen/
 docs/
 #scripts
-upgrade-tentacle-version.ps1
-upgrade-tentacle-version.sh
+update-tentacle-version.ps1
+update-tentacle-version.sh
