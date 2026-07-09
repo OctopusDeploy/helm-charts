@@ -32,3 +32,7 @@ value-migrations-tests/
 # Docs templating
 README.md.gotmpl
 crd-gen/
+docs/
+#scripts
+update-tentacle-version.ps1
+update-tentacle-version.sh
