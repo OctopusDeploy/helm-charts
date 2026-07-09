@@ -30,7 +30,8 @@ escapedVersion="$(escape_re "$version")"
 # Update all yaml files + snapshots with the new version
 while IFS= read -r -d '' file; do
     if grep -q "$escapedCurrentVersion" "$file"; then
-        sed -i -E "s/$escapedCurrentVersion/$escapedVersion/g" "$file"
+        tmp="$(mktemp)"
+        sed -E "s/$escapedCurrentVersion/$escapedVersion/g" "$file" > "$tmp" && mv "$tmp" "$file"
         echo "Updated: $file"
     fi
 done < <(find "$script_dir" \
