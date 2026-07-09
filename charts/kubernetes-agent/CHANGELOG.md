@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.8.1
+
+### Patch Changes
+
+- Forward merge changes from [2.46.1](#2461)
+
 ## 3.8.0
 
 ### Minor Changes
@@ -121,7 +127,6 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 ### Patch Changes
 
 - f78fce8: Upgrade kubernetes-agent-tentacle to 9.2.4185
-
 
 ## 2.46.0
 
