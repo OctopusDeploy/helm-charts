@@ -1,6 +1,6 @@
 ## Kubernetes agent
 
-![Version: 3.8.0](https://img.shields.io/badge/Version-3.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.4125](https://img.shields.io/badge/AppVersion-9.2.4125-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 3.8.0](https://img.shields.io/badge/Version-3.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 9.2.4185](https://img.shields.io/badge/AppVersion-9.2.4185-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using [Octopus Deploy](https://octopus.com).
 
@@ -65,7 +65,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.containers.watchdog.spec | object | `{}` | Additional container spec to apply to the watchdog container - does not override any other configuration |
 | agent.debug.disableAutoPodCleanup | bool | `false` | Disables automatic pod cleanup |
 | agent.enableMetricsCapture | bool | `true` | True if events should be scraped and added to the metrics config map |
-| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.2.4125","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
+| agent.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/kubernetes-agent-tentacle","tag":"9.2.4185","tagSuffix":""}` | The repository, pullPolicy, tag & tagSuffix to use for the agent image |
 | agent.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":30,"maxAgeSeconds":60,"periodSeconds":30,"timeoutSeconds":5}` | Liveness probe for polling Tentacles. Detects "pod Running but Tentacle process stuck" (deadlock, GC stall, frozen polling thread) by checking the freshness of a heartbeat file written by the agent. |
 | agent.livenessProbe.failureThreshold | int | `3` | Number of consecutive probe failures before Kubernetes restarts the pod. |
 | agent.livenessProbe.initialDelaySeconds | int | `30` | Seconds after the container starts before the first probe runs. |
