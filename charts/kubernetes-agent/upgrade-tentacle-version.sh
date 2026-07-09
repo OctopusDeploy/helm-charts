@@ -35,4 +35,4 @@ while IFS= read -r -d '' file; do
     fi
 done < <(find "$script_dir" \
     -type d -name node_modules -prune -o \
-    -type f \( -name '*.yaml' -o -name '*.yaml.snap' \) -print0)
+    -type f \( -name '*.yaml' -o -name '*.yaml.snap' -o -name 'README.md' \) -print0)

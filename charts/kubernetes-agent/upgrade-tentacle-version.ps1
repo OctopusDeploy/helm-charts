@@ -21,7 +21,7 @@ Write-Output "New version: $Version"
 $escapedCurrentVersion = [regex]::Escape($currentVersion)
 
 # Update all yaml files + snapshots with the new version
-Get-ChildItem -Path "$PSScriptRoot" -Recurse -Include "*.yaml", "*.yaml.snap" |
+Get-ChildItem -Path "$PSScriptRoot" -Recurse -Include "*.yaml", "*.yaml.snap", "README.md" |
     Where-Object { $_.FullName -notmatch '\\node_modules\\' } |
     ForEach-Object {
         $file = $_
