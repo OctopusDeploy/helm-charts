@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-Version="${1:-}"
-if [[ -z "$Version" ]]; then
+version="${1:-}"
+if [[ -z "$version" ]]; then
     echo "Usage: $0 <version>" >&2
     exit 1
 fi
@@ -20,12 +20,12 @@ if [[ -z "$currentVersion" ]]; then
 fi
 
 echo "Current version: $currentVersion"
-echo "New version: $Version"
+echo "New version: $version"
 
 # Escape regex/sed-special characters in the version strings
 escape_re() { printf '%s' "$1" | sed -E 's/[.[\*^$/]/\\&/g'; }
 escapedCurrentVersion="$(escape_re "$currentVersion")"
-escapedVersion="$(escape_re "$Version")"
+escapedVersion="$(escape_re "$version")"
 
 # Update all yaml files + snapshots with the new version
 while IFS= read -r -d '' file; do
