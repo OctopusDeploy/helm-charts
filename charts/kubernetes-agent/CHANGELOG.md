@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.46.2
+
+### Patch Changes
+
+- 37dbd82: Upgrade kubernetes-agent-tentacle to 9.2.4221
+
 ## 2.46.1
 
 ### Patch Changes
