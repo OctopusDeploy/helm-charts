@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.15.0
+
+### Minor Changes
+
+- 89d2719: Update Octopus Server to 2026.2
+
 ## 1.14.1
 
 ### Patch Changes
