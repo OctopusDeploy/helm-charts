@@ -128,12 +128,12 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
   The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`
+  
 ## 2.47.0
 
 ### Minor Changes
 
 - 2d8905c: Update default worker script pod image to `ubuntu.24.04`
-
 
 ## 2.46.2
 
