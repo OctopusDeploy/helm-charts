@@ -207,7 +207,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | scriptPods.serviceAccount.targetNamespaces | list | Uses a ClusterRoleBinding to allow the service account to run in any namespace | Specifies that the pod service account should be constrained to target namespaces |
 | scriptPods.serviceAccount.useNamespacedRoles | bool | `false` | Use namespace-scoped Roles instead of ClusterRoles |
 | scriptPods.tolerations | list | `[]` | The tolerations to apply to script pods |
-| scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.22.04"}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a worker |
+| scriptPods.worker.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/worker-tools","tag":"ubuntu.24.04"}` | The repository, pullPolicy & tag to use for the script pod image when the agent is a worker |
 | scriptPods.workerRoleRules | list | `[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]}]` | If set to a non-empty list, completely replaces the default Role rules for the script pod worker role (only created when `agent.worker.enabled=true`). Note: `[]` (empty list) means "use defaults", not "no rules". |
 
 ### Other Values
