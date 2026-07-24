@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.47.0
+
+### Minor Changes
+
+- 2d8905c: Update default worker script pod image to `ubuntu.24.04`
+
 ## 2.46.2
 
 ### Patch Changes
