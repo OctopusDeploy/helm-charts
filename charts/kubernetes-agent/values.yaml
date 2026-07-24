@@ -347,7 +347,7 @@ scriptPods:
     image:
       repository: octopusdeploy/worker-tools
       pullPolicy: IfNotPresent
-      tag: "ubuntu.22.04"
+      tag: "ubuntu.24.04"
 
   logging:
     # -- Disables script pod events being written to Octopus Server task log
