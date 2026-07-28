@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.48.0
+
+### Minor Changes
+
+- f21f00a: Bumped Kubernetes Monitor version to 0.32.0
+
 ## 2.47.0
 
 ### Minor Changes
