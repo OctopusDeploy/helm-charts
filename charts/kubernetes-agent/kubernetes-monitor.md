@@ -10,7 +10,7 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 - *minor* - New non-breaking features. New features or improvements to the Kubernetes monitor application or helm chart itself.
 - *patch* - Minor non-breaking bug fixes or changes that do not introduce new features.
 
-----------------------------------------------
+The `main` branch will reflect the current development version of the chart. This may be the latest released version or if a new version is in development, may be a pre-release version.
 
 ## Values
 
@@ -32,7 +32,10 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | monitor.containers.monitor.env | list | `[]` | Additional env to apply to the monitor container - does not override any other configuration |
 | monitor.containers.monitor.spec | object | `{}` | Additional container spec to apply to the monitor container - does not override any other configuration |
 | monitor.customCaCertificate | string | `""` | A base64 encoded string of the custom CA certificate to use to verify the Octopus Deploy server |
+| monitor.debug | bool | `false` | Enable debug mode on the monitor, including debug logging and continuous profiling. Sets the DEBUG environment variable on the monitor pod. |
+| monitor.grpcDebugLogging | bool | `false` | Enable verbose gRPC debug logging on the monitor pod. When true, sets the GRPC_GO_LOG_SEVERITY_LEVEL, GRPC_GO_LOG_VERBOSITY_LEVEL and GODEBUG (http2debug) environment variables to log gRPC communications and HTTP/2 frames. WARNING: Raw gRPC request/response bodies maybe logged which could contain sensitive information only use this debug logging when absolutely necessary |
 | monitor.installationId | string | `""` | If setting up the agent without automatic registration, this is the installation id. If you provide this, you must also provide the authentication token. If you provide this, the monitor will not attempt to register with the server. |
+| monitor.rules | list | `[{"apiGroups":["*"],"resources":["*"]}]` | RBAC rules granted to the monitor's Role/ClusterRole. Verbs are always get/watch/list and cannot be overridden; only apiGroups and resources are configurable. |
 | monitor.serverGrpcUrl | string | `""` | The gRPC url (including the port) of the Octopus Deploy server to communicate with |
 | monitor.serverThumbprint | string | `""` | The thumbprint of the Octopus Deploy server the monitor is communicating with. This should only be used if you wish to pin the certificate. |
 | monitor.spec | object | `{}` | Additional pod spec to apply to the monitor pod - does not override any other configuration |
@@ -76,9 +79,9 @@ The Kubernetes Monitor Helm chart follows [Semantic Versioning](https://semver.o
 | nodeSelector | object | `{}` | Custom node selector for kubernetes monitor pods |
 | podAnnotations | object | `{}` | Annotations to be added to kubernetes monitor pods |
 | podLabels | object | `{}` | Labels to be added to kubernetes monitor pods |
-| podSecurityContext | object | `{}` | Security context for kubernetes monitor pods |
+| podSecurityContext | object | `{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}}` | Security context for kubernetes monitor pods |
 | resources | string | `nil` | Resources to allocate for the kubernetes monitor pod |
-| securityContext | object | `{}` | Security context for kubernetes monitor containers |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | Security context for kubernetes monitor containers |
 | serviceAccount.annotations | object | `{}` | Additional annotations for the service account |
 | serviceAccount.automountServiceAccountToken | bool | `true` | Auto-mount service account token or not |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
