@@ -2,4 +2,4 @@
 "kubernetes-agent": minor
 ---
 
-Bumped Kubernetes Monitor version to 0.33.0
+Forward merge from [2.49.0](#2490)
