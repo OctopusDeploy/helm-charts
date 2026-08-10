@@ -1,5 +1,5 @@
 ---
-"kubernetes-agent": patch
+"kubernetes-agent": minor
 ---
 
 Update Kubernetes monitor to 0.36. This changes the gRPC connection to use compression by default.
