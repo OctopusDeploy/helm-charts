@@ -152,6 +152,14 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`
 
+## 2.51.0
+
+### Minor Changes
+
+- 8c573b0: Update Kubernetes monitor to 0.36. This changes the gRPC connection to use compression by default.
+
+  Note: If you are using a custom proxy between the monitor and Octopus Server, you may experience issues. Please contact support@octopus.com
+
 ## 2.50.0
 
 ### Minor Changes
