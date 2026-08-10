@@ -1,5 +1,13 @@
 # kubernetes-agent
 
+## 2.51.0
+
+### Minor Changes
+
+- 8c573b0: Update Kubernetes monitor to 0.36. This changes the gRPC connection to use compression by default.
+
+  Note: If you are using a custom proxy between the monitor and Octopus Server, you may experience issues. Please contact support@octopus.com
+
 ## 2.50.0
 
 ### Minor Changes
