@@ -10,7 +10,7 @@
     "dependencyDashboardTitle": "Renovate Dependency Dashboard",
     "dependencyDashboardOSVVulnerabilitySummary": "all",
     "assigneesFromCodeOwners": true,
-    "prConcurrentLimit": 1,
+    "prConcurrentLimit": 3,
     "separateMajorMinor": true,
     "separateMinorPatch": true,
     "minimumReleaseAge": "3 days",
@@ -41,7 +41,7 @@
             "enabled": false
         },
         {
-            "description": "Add a changeset for chart dependency updates so the chart version is bumped and the update lands in the changelog. Reword the generated description in the pull request if a more customer facing wording is warranted.",
+            "description": "Add a changeset for chart dependency updates so the chart version is bumped and the update lands in the changelog. The generated description and bump type are a starting point - reword or change them in the pull request when the update is customer visible.",
             "matchManagers": [
                 "helmv3"
             ],
@@ -51,6 +51,27 @@
             "postUpgradeTasks": {
                 "commands": [
                     "printf '---\\n\"kubernetes-agent\": patch\\n---\\n\\nUpdate {{{depName}}} to {{{newVersion}}}.\\n' > .changeset/renovate-{{{depNameSanitized}}}-{{{newVersion}}}.md"
+                ],
+                "fileFilters": [
+                    ".changeset/*.md"
+                ],
+                "executionMode": "update"
+            }
+        },
+        {
+            "description": "A major update to a chart dependency is more likely to change chart behaviour, so start it at a minor bump.",
+            "matchManagers": [
+                "helmv3"
+            ],
+            "matchFileNames": [
+                "charts/kubernetes-agent/Chart.yaml"
+            ],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "postUpgradeTasks": {
+                "commands": [
+                    "printf '---\\n\"kubernetes-agent\": minor\\n---\\n\\nUpdate {{{depName}}} to {{{newVersion}}}.\\n' > .changeset/renovate-{{{depNameSanitized}}}-{{{newVersion}}}.md"
                 ],
                 "fileFilters": [
                     ".changeset/*.md"
