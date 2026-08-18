@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.51.1
+
+### Patch Changes
+
+- 10c86c1: Update Kubernetes monitor to 0.37.
+
 ## 2.51.0
 
 ### Minor Changes
