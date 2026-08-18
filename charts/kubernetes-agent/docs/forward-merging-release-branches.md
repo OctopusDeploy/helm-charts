@@ -71,3 +71,17 @@ Example PR: [#580](https://github.com/OctopusDeploy/helm-charts/pull/580)
 
 > [!IMPORTANT]
 > This pull request should be merged as a **Squash** commit
+
+## Renovate dependency updates
+
+[Renovate](../../../renovate.json) raises chart dependency updates (currently `kubernetes-monitor-chart`) against the
+_oldest active release stream_ only, so that they enter this same process at Step 1. It also adds the changeset for you,
+so a Renovate chart update PR is ready to be merged and then forward merged like any other.
+
+> [!IMPORTANT]
+> `baseBranchPatterns` in [renovate.json](../../../renovate.json) names the release branch explicitly. It must be
+> updated when a release stream is retired or a new one is created, otherwise Renovate will keep updating a dead
+> branch, or stop raising chart dependency updates entirely.
+
+Updates that are not shipped in a chart (GitHub Actions, npm tooling) are raised against `main` only and don't need a
+changeset or a forward merge.
