@@ -8,6 +8,7 @@
     "branchNameStrict": true,
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate Dependency Dashboard",
+    "dependencyDashboardOSVVulnerabilitySummary": "all",
     "assigneesFromCodeOwners": true,
     "prConcurrentLimit": 1,
     "separateMajorMinor": true,
