@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.13.1
+
+### Patch Changes
+
+- 10c86c1: Forward merge from [2.51.1](#2511)
+
 ## 3.13.0
 
 ### Minor Changes
