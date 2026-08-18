@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- 10c86c1: Update Kubernetes monitor to 0.37.
+- 10c86c1: Update Kubernetes monitor to 0.37.0
 
 ## 2.51.0
 
