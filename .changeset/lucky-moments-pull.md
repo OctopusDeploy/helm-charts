@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Update Kubernetes monitor to 0.37.
+Forward merge from [2.51.1](#2511)
