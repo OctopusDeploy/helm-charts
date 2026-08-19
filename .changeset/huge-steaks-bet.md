@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Upgrade kubernetes-agent-tentacle to 9.2.4285
+Forward merge changes from [2.51.2](#2.51.2)
