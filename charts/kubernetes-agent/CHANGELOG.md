@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.13.2
+
+### Patch Changes
+
+- db170e1: Forward merge changes from [2.51.2](#2.51.2)
+
 ## 3.13.1
 
 ### Patch Changes
