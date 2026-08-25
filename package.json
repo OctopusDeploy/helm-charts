@@ -8,7 +8,7 @@
         "ci:version": "run changeset version && install"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.29.8"
+        "@changesets/cli": "^3.0.1"
     },
     "repository": {
         "type": "git",
