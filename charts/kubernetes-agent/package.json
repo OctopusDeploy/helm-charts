@@ -10,6 +10,6 @@
     "generate-agent-docs": "docker run --rm --volume \".:/helm-docs\" jnorwood/helm-docs:latest"
   },
   "dependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^10.1.0"
   }
 }
