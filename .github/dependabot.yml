@@ -1,0 +1,47 @@
+# Keeps dependencies current so CVE fixes arrive as routine PRs.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directories:
+      - "/charts/kubernetes-agent/crd-gen"
+      - "/charts/kubernetes-agent/value-migrations-tests"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      gomod:
+        patterns:
+          - "*"
+  - package-ecosystem: npm
+    directories:
+      - "/"
+      - "/charts/kubernetes-agent"
+      - "/charts/octopus-deploy"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      npm:
+        patterns:
+          - "*"
+  - package-ecosystem: nuget
+    directories:
+      - "/tests/kubernetes-agent"
+      - "/tests/kubernetes-agent/KubernetesAgent.IntegrationTests"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      nuget:
+        patterns:
+          - "*"
+  - package-ecosystem: github-actions
+    directories:
+      - "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      github_actions:
+        patterns:
+          - "*"
