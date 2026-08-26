@@ -90,3 +90,7 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.6.0 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
+replace google.golang.org/grpc v1.68.1 => google.golang.org/grpc v1.82.1
+replace go.opentelemetry.io/otel/sdk v1.33.0 => go.opentelemetry.io/otel/sdk v1.43.0
+replace golang.org/x/net v0.38.0 => golang.org/x/net v0.56.0
+replace golang.org/x/text v0.23.0 => golang.org/x/text v0.39.0
