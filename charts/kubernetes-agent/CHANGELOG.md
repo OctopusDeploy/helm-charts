@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.13.3
+
+### Patch Changes
+
+- 58a1a0a: Update monitor chart to v0.38.0
+
 ## 3.13.2
 
 ### Patch Changes
