@@ -13,11 +13,11 @@ namespace KubernetesAgent.Integration.Setup.Common
         {
             using var tempDir = new TemporaryDirectory(Directory.CreateTempSubdirectory());
             var tentaclePfxPath = tempDir.WriteFileToTemporaryDirectory("Tentacle.pfx");
-            Tentacle = new X509Certificate2(tentaclePfxPath);
+            Tentacle = X509CertificateLoader.LoadPkcs12FromFile(tentaclePfxPath, null);
             TentaclePublicThumbprint = Tentacle.Thumbprint;
 
             var serverPfxPath = tempDir.WriteFileToTemporaryDirectory("Server.pfx");
-            Server = new X509Certificate2(serverPfxPath);
+            Server = X509CertificateLoader.LoadPkcs12FromFile(serverPfxPath, null);
             ServerPublicThumbprint = Server.Thumbprint;
         }
     }
