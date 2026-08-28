@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.13.4
+
+### Patch Changes
+
+- 4d0fb35: Bump k8s monitor to v0.39.0
+
 ## 3.13.3
 
 ### Patch Changes
