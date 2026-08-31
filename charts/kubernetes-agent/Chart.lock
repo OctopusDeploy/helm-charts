@@ -1,6 +1,6 @@
 dependencies:
 - name: kubernetes-monitor-chart
   repository: oci://docker.io/octopusdeploy
-  version: 0.37.0
-digest: sha256:396da36432cd1269c8f3a99d3566f2f30f65f7331e5a78f19a1665f4878e49e1
-generated: "2026-08-18T11:58:30.986997+10:00"
+  version: 0.39.0
+digest: sha256:a878241cbffc1d6913ecf70b6e6ab3476b69ebf1869e9e001dd3f4717b313146
+generated: "2026-08-28T16:39:25.884229+10:00"
