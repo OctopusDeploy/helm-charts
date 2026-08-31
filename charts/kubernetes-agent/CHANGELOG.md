@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.51.3
+
+### Patch Changes
+
+- 7a3e246: Update monitor chart to v0.39.0
+
 ## 2.51.2
 
 ### Patch Changes
