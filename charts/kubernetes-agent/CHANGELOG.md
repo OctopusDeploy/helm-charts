@@ -182,6 +182,16 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`
 
+## 2.51.4
+
+### Patch Changes
+
+- 93223a8: Bump Kubernetes Monitor chart to 0.40.0.
+
+  - Fixes a bug where child resources deleted while the monitor is offline linger in live status until the next periodic snapshot
+  - Adds a new `ReplaceDesiredResourcesCommand` for Octopus Server to send all desired resources together when monitor connects
+  - See https://github.com/OctopusDeploy/helm-charts/issues/731 for more details
+
 ## 2.51.3
 
 ### Patch Changes
