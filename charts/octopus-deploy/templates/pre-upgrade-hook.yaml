@@ -81,5 +81,13 @@ spec:
                 echo "StatefulSet $sts has helm.sh/chart in selector matchLabels. Deleting with --cascade=orphan..."
                 kubectl delete statefulset "$sts" --namespace={{ .Release.Namespace }} --cascade=orphan
               done
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
   backoffLimit: 1
 {{- end }}
