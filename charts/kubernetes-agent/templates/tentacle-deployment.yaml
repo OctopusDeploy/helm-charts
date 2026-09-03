@@ -65,6 +65,17 @@ spec:
             periodSeconds: {{ .Values.agent.livenessProbe.periodSeconds | default 30 }}
             timeoutSeconds: {{ .Values.agent.livenessProbe.timeoutSeconds | default 5 }}
             failureThreshold: {{ .Values.agent.livenessProbe.failureThreshold | default 3 }}
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "ps aux | grep -v grep | grep -q Tentacle || exit 1"
+            initialDelaySeconds: {{ .Values.agent.readinessProbe.initialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.agent.readinessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.agent.readinessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.agent.readinessProbe.failureThreshold | default 3 }}
+            successThreshold: {{ .Values.agent.readinessProbe.successThreshold | default 1 }}
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}

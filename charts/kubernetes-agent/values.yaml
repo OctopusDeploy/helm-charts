@@ -255,6 +255,25 @@ agent:
     # @section -- Agent values
     failureThreshold: 3
 
+  # -- Readiness probe for polling Tentacles. Polling Tentacles expose no port to check directly, so readiness is determined by an exec check that the Tentacle process is running.
+  # @section -- Agent values
+  readinessProbe:
+    # -- Seconds after the container starts before the first probe runs.
+    # @section -- Agent values
+    initialDelaySeconds: 30
+    # -- How often (in seconds) to perform the probe.
+    # @section -- Agent values
+    periodSeconds: 10
+    # -- Seconds after which the probe times out.
+    # @section -- Agent values
+    timeoutSeconds: 5
+    # -- Number of consecutive probe failures before the pod is marked not ready.
+    # @section -- Agent values
+    failureThreshold: 3
+    # -- Number of consecutive successes required to mark the pod ready again after failing.
+    # @section -- Agent values
+    successThreshold: 1
+
 # @section -- Script pod values
 scriptPods:
   # -- If true, the script pods will be created with a disruption budget to prevent them from being evicted
