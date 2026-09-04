@@ -421,3 +421,53 @@ tests:
               - livez
               - --instance
               - Tentacle
+
+    - it: "omits readinessProbe by default"
+      asserts:
+        - notExists:
+            path: spec.template.spec.containers[0].readinessProbe
+
+    - it: "renders readinessProbe with defaults when enabled"
+      set:
+        agent:
+          readinessProbe:
+            enabled: true
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[0].readinessProbe
+            value:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - "ps aux | grep -v grep | grep -q Tentacle || exit 1"
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+              successThreshold: 1
+
+    - it: "respects custom readinessProbe values when enabled"
+      set:
+        agent:
+          readinessProbe:
+            enabled: true
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 5
+            successThreshold: 2
+      asserts:
+        - equal:
+            path: spec.template.spec.containers[0].readinessProbe
+            value:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - "ps aux | grep -v grep | grep -q Tentacle || exit 1"
+              initialDelaySeconds: 60
+              periodSeconds: 15
+              timeoutSeconds: 10
+              failureThreshold: 5
+              successThreshold: 2
