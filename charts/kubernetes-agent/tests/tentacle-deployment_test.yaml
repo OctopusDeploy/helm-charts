@@ -422,7 +422,16 @@ tests:
               - --instance
               - Tentacle
 
-    - it: "renders readinessProbe with defaults"
+    - it: "omits readinessProbe by default"
+      asserts:
+        - notExists:
+            path: spec.template.spec.containers[0].readinessProbe
+
+    - it: "renders readinessProbe with defaults when enabled"
+      set:
+        agent:
+          readinessProbe:
+            enabled: true
       asserts:
         - equal:
             path: spec.template.spec.containers[0].readinessProbe
@@ -438,10 +447,11 @@ tests:
               failureThreshold: 3
               successThreshold: 1
 
-    - it: "respects custom readinessProbe values"
+    - it: "respects custom readinessProbe values when enabled"
       set:
         agent:
           readinessProbe:
+            enabled: true
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 10

@@ -65,6 +65,7 @@ spec:
             periodSeconds: {{ .Values.agent.livenessProbe.periodSeconds | default 30 }}
             timeoutSeconds: {{ .Values.agent.livenessProbe.timeoutSeconds | default 5 }}
             failureThreshold: {{ .Values.agent.livenessProbe.failureThreshold | default 3 }}
+          {{- if .Values.agent.readinessProbe.enabled }}
           readinessProbe:
             exec:
               command:
@@ -76,6 +77,7 @@ spec:
             timeoutSeconds: {{ .Values.agent.readinessProbe.timeoutSeconds | default 5 }}
             failureThreshold: {{ .Values.agent.readinessProbe.failureThreshold | default 3 }}
             successThreshold: {{ .Values.agent.readinessProbe.successThreshold | default 1 }}
+          {{- end }}
           env:
             - name: "ACCEPT_EULA"
               value: {{ .Values.agent.acceptEula | quote }}

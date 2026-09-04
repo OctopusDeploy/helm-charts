@@ -123,17 +123,6 @@ should match snapshot:
                 periodSeconds: 30
                 timeoutSeconds: 5
               name: octopus-agent-tentacle
-              readinessProbe:
-                exec:
-                  command:
-                    - /bin/sh
-                    - -c
-                    - ps aux | grep -v grep | grep -q Tentacle || exit 1
-                failureThreshold: 3
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                successThreshold: 1
-                timeoutSeconds: 5
               resources:
                 requests:
                   cpu: 100m
