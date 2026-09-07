@@ -1,5 +1,13 @@
 # kubernetes-agent
 
+## 2.52.0
+
+### Minor Changes
+
+- ec55ccb: Bump Kubernetes Monitor chart to 0.41.0.
+
+  - Allows the monitor to reconnect to a moved Cloud instance with an IP address change
+
 ## 2.51.4
 
 ### Patch Changes
