@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.14.0
+
+### Minor Changes
+
+- 9b1f616: Add an opt-in `readinessProbe` for polling Tentacles, disabled by default. Polling Tentacles expose no port to check directly, so readiness is determined by an exec check (`ps aux | grep Tentacle`) confirming the Tentacle process is running. Set `agent.readinessProbe.enabled: true` to turn it on; all knobs are exposed under `agent.readinessProbe.*`.
+
 ## 3.13.5
 
 ### Patch Changes
