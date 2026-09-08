@@ -194,6 +194,14 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`
 
+## 2.52.0
+
+### Minor Changes
+
+- ec55ccb: Bump Kubernetes Monitor chart to 0.41.0.
+
+  - Allows the monitor to reconnect to a moved Cloud instance with an IP address change
+
 ## 2.51.4
 
 ### Patch Changes
