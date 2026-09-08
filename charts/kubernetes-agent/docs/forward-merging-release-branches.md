@@ -55,9 +55,10 @@ Another source of conflicts is [CHANGELOG.md](../CHANGELOG.md). You will likely 
 
 Once manually resolved and merged, you should _just_ have your changes, adjusted to fit the target branch.
 
-If the original PR had a changeset, then a changeset will need to be added to this forward merge PR. This is so target version also gets the version bump.
+If the original PR had a changeset, then a changeset will need to be added to this forward merge PR. This is so target version also gets the version bump. The change message should say something like `Forward merge from [2.52.0](#2520)` where the version is the V2 version we're merging from.
 
-Example PR: [#577](https://github.com/OctopusDeploy/helm-charts/pull/577)
+Example PR with a Tentacle change: [#577](https://github.com/OctopusDeploy/helm-charts/pull/577)
+Example PR with a Kubernetes Monitor change: [#577](https://github.com/OctopusDeploy/helm-charts/pull/745)
 
 > [!WARNING]
 > This pull request MUST be merged as a normal merge commit, NOT a **Squash** commit.
