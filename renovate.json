@@ -1,0 +1,97 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "labels": [
+        "dependencies",
+        "{{datasource}}"
+    ],
+    "rebaseWhen": "conflicted",
+    "branchNameStrict": true,
+    "dependencyDashboard": true,
+    "dependencyDashboardTitle": "Renovate Dependency Dashboard",
+    "dependencyDashboardOSVVulnerabilitySummary": "all",
+    "assigneesFromCodeOwners": true,
+    "prConcurrentLimit": 3,
+    "separateMajorMinor": true,
+    "separateMinorPatch": true,
+    "minimumReleaseAge": "3 days",
+    "baseBranchPatterns": [
+        "main",
+        "release/kubernetes-agent/v2"
+    ],
+    "packageRules": [
+        {
+            "description": "Chart dependencies are raised against the oldest active release stream only, so they follow the documented forward-merge process. See charts/kubernetes-agent/docs/forward-merging-release-branches.md.",
+            "matchManagers": [
+                "helmv3"
+            ],
+            "matchBaseBranches": [
+                "main"
+            ],
+            "enabled": false
+        },
+        {
+            "description": "Workflows and build tooling are not shipped in a chart, so they only need updating on main.",
+            "matchManagers": [
+                "github-actions",
+                "npm"
+            ],
+            "matchBaseBranches": [
+                "release/kubernetes-agent/v2"
+            ],
+            "enabled": false
+        },
+        {
+            "description": "Add a changeset for chart dependency updates so the chart version is bumped and the update lands in the changelog. The generated description and bump type are a starting point - reword or change them in the pull request when the update is customer visible.",
+            "matchManagers": [
+                "helmv3"
+            ],
+            "matchFileNames": [
+                "charts/kubernetes-agent/Chart.yaml"
+            ],
+            "postUpgradeTasks": {
+                "commands": [
+                    "printf '---\\n\"kubernetes-agent\": patch\\n---\\n\\nUpdate {{{depName}}} to {{{newVersion}}}.\\n' > .changeset/renovate-{{{depNameSanitized}}}-{{{newVersion}}}.md"
+                ],
+                "fileFilters": [
+                    ".changeset/*.md"
+                ],
+                "executionMode": "update"
+            }
+        },
+        {
+            "description": "A major update to a chart dependency is more likely to change chart behaviour, so start it at a minor bump.",
+            "matchManagers": [
+                "helmv3"
+            ],
+            "matchFileNames": [
+                "charts/kubernetes-agent/Chart.yaml"
+            ],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "postUpgradeTasks": {
+                "commands": [
+                    "printf '---\\n\"kubernetes-agent\": minor\\n---\\n\\nUpdate {{{depName}}} to {{{newVersion}}}.\\n' > .changeset/renovate-{{{depNameSanitized}}}-{{{newVersion}}}.md"
+                ],
+                "fileFilters": [
+                    ".changeset/*.md"
+                ],
+                "executionMode": "update"
+            }
+        },
+        {
+            "description": "The Kubernetes monitor chart is published by us, so there is no need to wait for a release to settle.",
+            "matchDepNames": [
+                "kubernetes-monitor-chart"
+            ],
+            "minimumReleaseAge": "0 days"
+        },
+        {
+            "description": "Container image tags in values.yaml stay manual for now. The agent tentacle tag has to move in lockstep with Chart.yaml appVersion (enforced by kubernetes-agent-publish-chart.yaml) and worker-tools is not semantically versioned.",
+            "matchManagers": [
+                "helm-values"
+            ],
+            "enabled": false
+        }
+    ]
+}
