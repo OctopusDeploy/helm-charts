@@ -164,14 +164,14 @@ jobs:
       - name: Push helm chart to Octopus Deploy 🐙
         uses: OctopusDeploy/push-package-action@v4
         with:
-          space: "Swordfish"
+          space: "${{ vars.DEPLOY_K8S_OWNERS_SPACE_NAME }}"
           packages: ${{ needs.version_and_package.outputs.PACKAGE_NAME }}
           overwrite_mode: IgnoreIfExists
 
       - name: Create a release in Octopus Deploy 🐙
         uses: OctopusDeploy/create-release-action@v4
         with:
-          space: "Swordfish"
+          space: "${{ vars.DEPLOY_K8S_OWNERS_SPACE_NAME }}"
           project: "Octopus Kubernetes Agent"
           release_number: ${{ needs.version_and_package.outputs.CHART_VERSION }}
           package_version: ${{ needs.version_and_package.outputs.CHART_VERSION }}
