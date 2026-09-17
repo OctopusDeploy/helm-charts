@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.16.0
+
+### Minor Changes
+
+- 3820e00: Update Octopus Server to 2026.3
+
 ## 1.15.0
 
 ### Minor Changes
