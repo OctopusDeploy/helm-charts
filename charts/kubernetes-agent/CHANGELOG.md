@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.15.1
+
+### Patch Changes
+
+- 5da68cd: Use correct service account names in monitor helpers
+
 ## 3.15.0
 
 ### Minor Changes
