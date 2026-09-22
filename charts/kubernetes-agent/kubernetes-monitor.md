@@ -1,6 +1,6 @@
 ## Kubernetes Monitor
 
-The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-monitor), where you can pull it using Helm.
+The helm chart is hosted on [Docker Hub](https://hub.docker.com/r/octopusdeploy/kubernetes-monitor-chart), where you can pull it using Helm.
 
 ## Versions
 
