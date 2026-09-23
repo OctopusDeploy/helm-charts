@@ -15,3 +15,7 @@ dependencies:
   - name: mssql
     condition: mssql.enabled
     version: "0.0.1"
+  - name: kubernetes-agent
+    condition: kubernetes-agent.enabled
+    repository: "file://../kubernetes-agent"
+    version: "*"

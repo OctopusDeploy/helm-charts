@@ -113,14 +113,14 @@ spec:
               name: {{ .Values.agent.bearerTokenSecretName | default (include "kubernetes-agent.preinstall.secrets.serverAuth" .) }}
               key: bearer-token
         {{- end }}
-        {{- if or .Values.agent.username .Values.agent.usernamePasswordSecretName }}
+        {{- if or .Values.global.username .Values.agent.username .Values.agent.usernamePasswordSecretName }}
         - name: "ServerUsername"
           valueFrom:
             secretKeyRef:
               name: {{ .Values.agent.usernamePasswordSecretName | default (include "kubernetes-agent.preinstall.secrets.serverAuth" .) }}
               key: username
         {{- end }}
-        {{- if or .Values.agent.password .Values.agent.usernamePasswordSecretName }}
+        {{- if or .Values.global.password .Values.agent.password .Values.agent.usernamePasswordSecretName }}
         - name: "ServerPassword"
           valueFrom:
             secretKeyRef:
