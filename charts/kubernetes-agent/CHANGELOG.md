@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.15.2
+
+### Patch Changes
+
+- b33399a: Default the Kubernetes monitor to schedule on Linux nodes
+
 ## 3.15.1
 
 ### Patch Changes
