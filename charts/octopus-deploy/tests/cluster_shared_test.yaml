@@ -1,0 +1,253 @@
+suite: cluster shared
+templates:
+  - statefulset.yaml
+  - pvc.yaml
+tests:
+  - it: does not set CLUSTER_SHARED_CONFIG by default
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: CLUSTER_SHARED_CONFIG
+          any: true
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: USE_EXECUTIONS_CLUSTER_SHARED
+          any: true
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: cluster-shared-volume
+          any: true
+
+  - it: creates the separate volumes and no cluster shared volume by default
+    template: pvc.yaml
+    values:
+      - ./values/required.yaml
+    asserts:
+      - hasDocuments:
+          count: 4
+      - equal:
+          path: metadata.name
+          value: package-repository-claim
+        documentIndex: 0
+      - equal:
+          path: metadata.name
+          value: audit-log-claim
+        documentIndex: 3
+
+  - it: SEPARATE_VOLUMES sets the mode without a cluster shared volume
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SEPARATE_VOLUMES
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: CLUSTER_SHARED_CONFIG
+            value: SEPARATE_VOLUMES
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: package-repository-volume
+            mountPath: /repository
+      - notContains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: cluster-shared-volume
+            mountPath: /clusterShared
+
+  - it: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED mounts the separate volumes and the cluster shared volume
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: CLUSTER_SHARED_CONFIG
+            value: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: package-repository-volume
+            mountPath: /repository
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: audit-log-volume
+            mountPath: /eventExports
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: cluster-shared-volume
+            mountPath: /clusterShared
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: cluster-shared-volume
+            persistentVolumeClaim:
+              claimName: cluster-shared-claim
+
+  - it: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED creates the cluster shared claim alongside the separate volumes
+    template: pvc.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+      octopus.clusterShared.volume.size: 5Gi
+      octopus.clusterShared.volume.storageClassName: azure-file
+    asserts:
+      - hasDocuments:
+          count: 5
+      - equal:
+          path: metadata.name
+          value: cluster-shared-claim
+        documentIndex: 4
+      - equal:
+          path: spec.resources.requests.storage
+          value: 5Gi
+        documentIndex: 4
+      - equal:
+          path: spec.storageClassName
+          value: azure-file
+        documentIndex: 4
+      - equal:
+          path: spec.accessModes
+          value:
+            - ReadWriteOnce
+        documentIndex: 4
+
+  - it: cluster shared claim is ReadWriteMany with more than one replica
+    template: pvc.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.replicaCount: 2
+      octopus.clusterShared.mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    asserts:
+      - equal:
+          path: spec.accessModes
+          value:
+            - ReadWriteMany
+        documentIndex: 4
+
+  - it: CLUSTER_SHARED only mounts the cluster shared volume
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: CLUSTER_SHARED
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: CLUSTER_SHARED_CONFIG
+            value: CLUSTER_SHARED
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: cluster-shared-volume
+            mountPath: /clusterShared
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: server-log-volume
+            mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: package-repository-volume
+          any: true
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: audit-log-volume
+          any: true
+
+  - it: CLUSTER_SHARED only creates the cluster shared claim
+    template: pvc.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: CLUSTER_SHARED
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: cluster-shared-claim
+
+  - it: executions volume is mounted and configured when enabled
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: CLUSTER_SHARED
+      octopus.clusterShared.executionsVolume.enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: USE_EXECUTIONS_CLUSTER_SHARED
+            value: "True"
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: executions-cluster-shared-volume
+            mountPath: /executionsClusterShared
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: executions-cluster-shared-volume
+            persistentVolumeClaim:
+              claimName: executions-cluster-shared-claim
+
+  - it: executions claim is created when enabled
+    template: pvc.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: CLUSTER_SHARED
+      octopus.clusterShared.executionsVolume.enabled: true
+      octopus.clusterShared.executionsVolume.size: 10Gi
+    asserts:
+      - hasDocuments:
+          count: 2
+      - equal:
+          path: metadata.name
+          value: executions-cluster-shared-claim
+        documentIndex: 1
+      - equal:
+          path: spec.resources.requests.storage
+          value: 10Gi
+        documentIndex: 1
+
+  - it: fails on an unknown mode
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SHARED
+    asserts:
+      - failedTemplate:
+          errorPattern: "octopus.clusterShared.mode 'SHARED' is not valid"
+
+  - it: fails when the executions volume is enabled without a cluster shared volume
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SEPARATE_VOLUMES
+      octopus.clusterShared.executionsVolume.enabled: true
+    asserts:
+      - failedTemplate:
+          errorPattern: "executionsVolume.enabled requires octopus.clusterShared.mode"

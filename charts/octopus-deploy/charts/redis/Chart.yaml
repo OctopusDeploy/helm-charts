@@ -1,0 +1,7 @@
+apiVersion: v2
+name: redis
+description: A Helm chart to deploy Redis to Kubernetes for Octopus Server multi-node support for polling tentacles
+
+type: application
+
+version: 0.0.1

@@ -1,0 +1,92 @@
+# Redis only holds the pending request queue for polling tentacles, which is transient, so it runs without persistence.
+# Octopus Server detects when Redis loses its data and fails the affected requests.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "octopus.redis.fullname" . }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "redis.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "redis.podLabels" . | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          # The password is written to a config file, rather than passed with --requirepass, so it isn't visible in the process list.
+          # noeviction is required, as evicting keys would lose pending requests.
+          command:
+            - /bin/sh
+            - -c
+            - |
+              printf 'requirepass "%s"\n' "$REDIS_PASSWORD" > /data/redis.conf
+              exec redis-server /data/redis.conf --port {{ .Values.service.port }} --save "" --appendonly no --maxmemory-policy noeviction
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ printf "%s-%s" .Release.Name "redispassword" }}
+                  key: secret
+            - name: REDISCLI_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: {{ printf "%s-%s" .Release.Name "redispassword" }}
+                  key: secret
+          ports:
+            - name: redis
+              containerPort: {{ .Values.service.port }}
+          readinessProbe:
+            exec:
+              command: ["redis-cli", "-p", "{{ .Values.service.port }}", "ping"]
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "-p", "{{ .Values.service.port }}", "ping"]
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}
