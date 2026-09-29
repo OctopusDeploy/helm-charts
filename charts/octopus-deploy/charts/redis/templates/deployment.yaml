@@ -48,13 +48,13 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           # The password is written to a config file, rather than passed with --requirepass, so it isn't visible in the process list.
-          # noeviction is required, as evicting keys would lose pending requests.
+          # noeviction is required, as evicting keys would lose pending requests. It only applies once maxMemory is reached.
           command:
             - /bin/sh
             - -c
             - |
               printf 'requirepass "%s"\n' "$REDIS_PASSWORD" > /data/redis.conf
-              exec redis-server /data/redis.conf --port {{ .Values.service.port }} --save "" --appendonly no --maxmemory-policy noeviction
+              exec redis-server /data/redis.conf --port {{ .Values.service.port }} --save "" --appendonly no --maxmemory-policy noeviction{{ with .Values.maxMemory }} --maxmemory {{ . | quote }}{{ end }}
           env:
             - name: REDIS_PASSWORD
               valueFrom:

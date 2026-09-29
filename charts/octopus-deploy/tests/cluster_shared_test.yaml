@@ -241,6 +241,105 @@ tests:
       - failedTemplate:
           errorPattern: "octopus.clusterShared.mode 'SHARED' is not valid"
 
+  - it: fails when switching an existing installation to CLUSTER_SHARED
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: CLUSTER_SHARED
+    kubernetesProvider:
+      scheme:
+        "v1/PersistentVolumeClaim":
+          gvr:
+            version: "v1"
+            resource: "persistentvolumeclaims"
+          namespaced: true
+      objects:
+        - kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: package-repository-claim
+            namespace: NAMESPACE
+    asserts:
+      - failedTemplate:
+          errorPattern: "CLUSTER_SHARED is intended for new installations"
+
+  - it: fails when switching away from CLUSTER_SHARED
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    kubernetesProvider:
+      scheme:
+        "v1/PersistentVolumeClaim":
+          gvr:
+            version: "v1"
+            resource: "persistentvolumeclaims"
+          namespaced: true
+      objects:
+        - kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: cluster-shared-claim
+            namespace: NAMESPACE
+    asserts:
+      - failedTemplate:
+          errorPattern: "can't be changed from CLUSTER_SHARED"
+
+  - it: fails when clearing the mode while the cluster shared claim exists
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    kubernetesProvider:
+      scheme:
+        "v1/PersistentVolumeClaim":
+          gvr:
+            version: "v1"
+            resource: "persistentvolumeclaims"
+          namespaced: true
+      objects:
+        - kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: package-repository-claim
+            namespace: NAMESPACE
+        - kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: cluster-shared-claim
+            namespace: NAMESPACE
+    asserts:
+      - failedTemplate:
+          errorPattern: "can't be cleared while the persistent volume claim 'cluster-shared-claim' exists"
+
+  - it: allows SEPARATE_VOLUMES to stop using the cluster shared volume
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.clusterShared.mode: SEPARATE_VOLUMES
+    kubernetesProvider:
+      scheme:
+        "v1/PersistentVolumeClaim":
+          gvr:
+            version: "v1"
+            resource: "persistentvolumeclaims"
+          namespaced: true
+      objects:
+        - kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: package-repository-claim
+            namespace: NAMESPACE
+        - kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: cluster-shared-claim
+            namespace: NAMESPACE
+    asserts:
+      - notFailedTemplate: {}
+
   - it: fails when the executions volume is enabled without a cluster shared volume
     template: statefulset.yaml
     values:

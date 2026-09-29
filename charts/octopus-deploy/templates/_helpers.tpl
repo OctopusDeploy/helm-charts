@@ -232,5 +232,14 @@ Fails the render when the cluster shared and multi-node polling tentacle values 
 {{- fail (printf "octopus.clusterShared.mode CLUSTER_SHARED is intended for new installations, but the existing persistent volume claim '%s' would be deleted along with its data. Use SEPARATE_VOLUMES_WITH_CLUSTER_SHARED instead." .) -}}
 {{- end -}}
 {{- end -}}
+{{- else if lookup "v1" "PersistentVolumeClaim" .Release.Namespace "cluster-shared-claim" -}}
+{{- /* Switching away from CLUSTER_SHARED would stop rendering the cluster shared claim, so Helm would delete it along with the packages, artifacts and logs on it */ -}}
+{{- if not (lookup "v1" "PersistentVolumeClaim" .Release.Namespace "package-repository-claim") -}}
+{{- fail (printf "octopus.clusterShared.mode can't be changed from CLUSTER_SHARED to '%s', as the existing persistent volume claim 'cluster-shared-claim' holds this installation's packages, artifacts and logs. Keep octopus.clusterShared.mode set to CLUSTER_SHARED." $clusterShared.mode) -}}
+{{- end -}}
+{{- /* An empty mode keeps the cluster shared directory Octopus was configured with, but the volume holding it would be deleted */ -}}
+{{- if not $clusterShared.mode -}}
+{{- fail "octopus.clusterShared.mode can't be cleared while the persistent volume claim 'cluster-shared-claim' exists, as Octopus would keep using the cluster shared directory after its volume is deleted. Set octopus.clusterShared.mode to SEPARATE_VOLUMES to stop using the cluster shared volume." -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}

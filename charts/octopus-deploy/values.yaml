@@ -280,13 +280,16 @@ mssql:
 # could replay requests that were already collected. If you use your own Redis instead, configure it the same way.
 redis:
   enabled: false
-  # The Redis password. Generated if left blank. Must not contain commas, equals signs or double quotes.
+  # The Redis password. Generated if left blank. Must not contain commas, equals signs, double quotes or backslashes.
   # Not used if octopus.createSecrets is false, in which case a secret named <release name>-redispassword must be provided.
   password: ""
   image:
     repository: redis
     tag: "8.0.3"
     pullPolicy: IfNotPresent
+  # The most memory Redis may use, e.g. "200mb". Once it's reached, new requests are rejected rather than evicting queued ones.
+  # If you set a memory limit in resources, set this below it, otherwise Redis is restarted when it hits the limit and loses the queue.
+  maxMemory: ""
   resources: {}
   nodeSelector: {}
   tolerations: []

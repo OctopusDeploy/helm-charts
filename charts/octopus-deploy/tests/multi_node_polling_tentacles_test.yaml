@@ -114,6 +114,31 @@ tests:
           path: spec.template.spec.containers[0].image
           value: redis:8.0.3
 
+  - it: in-cluster redis only limits its memory when maxMemory is set
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - notMatchRegex:
+          path: spec.template.spec.containers[0].command[2]
+          pattern: "--maxmemory "
+
+  - it: in-cluster redis limits its memory to maxMemory
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+      redis.maxMemory: 200mb
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].command[2]
+          pattern: '--maxmemory-policy noeviction --maxmemory "200mb"'
+
   - it: creates a TCP load balancer across every node
     template: polling-tentacles-service.yaml
     values:
