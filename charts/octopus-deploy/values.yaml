@@ -151,6 +151,11 @@ octopus:
   #    memory: "4G"
   #    cpu: "1"
 
+  startupProbe:
+    # The number of failed startup checks, made every 60 seconds, before the Octopus container is restarted.
+    # Database upgrades run during startup, so increase this if upgrades on a large database take longer than 30 minutes.
+    failureThreshold: 30
+
   tolerations: []
   topologySpreadConstraints: []
 

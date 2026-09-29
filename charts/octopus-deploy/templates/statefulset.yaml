@@ -195,7 +195,7 @@ spec:
               - /bin/bash
               - -c
               - URL=http://localhost:8080; response=$(/usr/bin/curl -k $URL/api/octopusservernodes/ping --write-out %{http_code} --silent --output /dev/null); /usr/bin/test "$response" -ge 200 && /usr/bin/test "$response" -le 299 || /usr/bin/test "$response" -eq 418
-          failureThreshold: 30
+          failureThreshold: {{ .Values.octopus.startupProbe.failureThreshold }}
           periodSeconds: 60
       terminationGracePeriodSeconds: 10
       volumes:
