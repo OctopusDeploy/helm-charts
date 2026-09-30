@@ -101,48 +101,30 @@ octopus:
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
 
-  # Controls how Octopus stores the files that every node in the cluster needs to share, by setting the
-  # CLUSTER_SHARED_CONFIG environment variable on the Octopus container.
-  # This requires a version of Octopus Server whose container image supports CLUSTER_SHARED_CONFIG.
+  # Sets CLUSTER_SHARED_CONFIG, which controls how files shared across nodes are stored. See the README for details.
   clusterShared:
-    # One of:
-    #   ""                                   - (default) CLUSTER_SHARED_CONFIG isn't set, so uses the package repository, artifact, task log and audit log volumes. An existing cluster shared directory is kept.
-    #   SEPARATE_VOLUMES                     - Uses the package repository, artifact, task log and audit log volumes, with no cluster
-    #                                          shared directory. Clears any cluster shared directory configured previously.
-    #   SEPARATE_VOLUMES_WITH_CLUSTER_SHARED - Same volumes as SEPARATE_VOLUMES, plus a cluster shared volume mounted at /clusterShared,
-    #                                          used for transient execution data (package cache, DataBus and DataStreams).
-    #   CLUSTER_SHARED                       - Stores everything in a single cluster shared volume mounted at /clusterShared. The
-    #                                          package repository, artifact, task log and audit log volumes aren't created.
-    #                                          Intended for new installations: existing packages, artifacts and logs aren't moved.
+    # One of "", SEPARATE_VOLUMES, SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED
     mode: ""
-    # The volume mounted at /clusterShared. Only created when mode is SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED.
-    # Like the other shared volumes, storageAccessMode is automatically set to ReadWriteMany when replicaCount is greater than 1.
+    # Volume mounted at /clusterShared, when mode is SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED
     volume:
       size: 1Gi
       storageClassName: ""
       storageAccessMode: ReadWriteOnce
-    # An optional separate volume, mounted at /executionsClusterShared, for transient execution data that is only needed while tasks
-    # run. Use this if you want different (e.g. faster, not backed up) storage for this data.
-    # Requires mode to be SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED.
+    # Optional volume mounted at /executionsClusterShared for transient execution data
     executionsVolume:
       enabled: false
       size: 1Gi
       storageClassName: ""
       storageAccessMode: ReadWriteOnce
 
-  # Multi-node support for polling tentacles lets polling tentacles connect to any Octopus node through a single load balanced
-  # endpoint, instead of having to poll every node. Pending requests are queued in Redis so they can be collected by any node.
-  # This requires a version of Octopus Server that supports multi-node support for polling tentacles, and clusterShared.mode
-  # to be SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED.
+  # Lets polling tentacles connect to any node through a single load balancer. Requires Redis and a clusterShared.mode
+  # of SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED.
   multiNodePollingTentacles:
     enabled: false
     redis:
-      # A StackExchange.Redis connection string, e.g. "my-redis:6379,password=...,ssl=true".
-      # Required unless redis.enabled is true, in which case it's generated to point at the in-cluster Redis.
-      # Not required if createSecrets is false, in which case a secret named <release name>-redisconnectionstring must be provided.
+      # Redis connection string. Not required if redis.enabled is true or createSecrets is false
       connectionString: ""
-    # A TCP pass through service that load balances polling tentacle connections across all Octopus nodes.
-    # TLS is terminated by the Octopus nodes, so it must not be terminated by the load balancer.
+    # TCP pass through service for polling tentacles. TLS must not be terminated by the load balancer
     loadBalancer:
       enabled: true
       type: LoadBalancer
@@ -274,21 +256,16 @@ mssql:
   tolerations: []
   affinity: {}
 
-# An in-cluster Redis for multi-node support for polling tentacles (octopus.multiNodePollingTentacles).
-# This runs a single Redis pod that holds data in memory only, with no persistence or replication. This is intentional:
-# Octopus detects Redis losing all of its data and fails the affected requests, but a restored snapshot or promoted replica
-# could replay requests that were already collected. If you use your own Redis instead, configure it the same way.
+# In-cluster Redis for octopus.multiNodePollingTentacles. Runs a single pod with no persistence, by design
 redis:
   enabled: false
-  # The Redis password. Generated if left blank. Must not contain commas, equals signs, double quotes or backslashes.
-  # Not used if octopus.createSecrets is false, in which case a secret named <release name>-redispassword must be provided.
+  # Generated if blank. Must not contain commas, equals signs, double quotes or backslashes
   password: ""
   image:
     repository: redis
     tag: "8.0.3"
     pullPolicy: IfNotPresent
-  # The most memory Redis may use, e.g. "200mb". Once it's reached, new requests are rejected rather than evicting queued ones.
-  # If you set a memory limit in resources, set this below it, otherwise Redis is restarted when it hits the limit and loses the queue.
+  # e.g. "200mb". Should be set below any memory limit in resources
   maxMemory: ""
   resources: {}
   nodeSelector: {}
