@@ -1,0 +1,27 @@
+image:
+  repository: redis
+  pullPolicy: IfNotPresent
+  tag: "8.0.3"
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 999
+  runAsGroup: 999
+  fsGroup: 999
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+maxMemory: ""
+
+resources: {}
+
+service:
+  port: 6379

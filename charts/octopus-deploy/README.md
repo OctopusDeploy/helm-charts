@@ -125,6 +125,44 @@ octopus:
     storageAccessMode: ReadWriteMany
 ```
 
+#### Cluster shared storage
+
+Octopus can store the files that every node needs to share in a cluster shared directory. This is required for [multi-node support for polling tentacles](#multi-node-polling-tentacles), and requires a version of Octopus Server whose container supports the `CLUSTER_SHARED_CONFIG` environment variable.
+
+This is configured with `octopus.clusterShared.mode`:
+
+| Mode | Volumes |
+| --- | --- |
+| `""` (default) | The package repository, artifact, task log and audit log volumes. `CLUSTER_SHARED_CONFIG` isn't set. |
+| `SEPARATE_VOLUMES` | The same volumes as the default. Clears any cluster shared directory configured previously. |
+| `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` | The same volumes as the default, plus a cluster shared volume mounted at `/clusterShared`. Octopus stores transient execution data (the package cache, DataBus and DataStreams) there. |
+| `CLUSTER_SHARED` | A single cluster shared volume mounted at `/clusterShared`, which holds packages, artifacts, task logs, event exports and transient execution data. The other volumes aren't created. |
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    volume:
+      size: 10Gi
+      storageClassName: "azure-file"
+```
+
+`CLUSTER_SHARED` is intended for new installations, as existing packages, artifacts and logs aren't moved. To avoid deleting a volume that still holds data, an upgrade fails if it would switch an existing installation to or from `CLUSTER_SHARED`, or clear the mode while the cluster shared volume exists. To stop using the cluster shared volume, set the mode to `SEPARATE_VOLUMES`. These checks look up the existing volumes in the cluster, so they don't run when the chart is rendered with `helm template`.
+
+The cluster shared volume follows the same rules as the other shared volumes. It uses `global.storageClass` if no storage class is set, and is ReadWriteMany when `replicaCount` is greater than 1.
+
+To store transient execution data on different storage, such as faster storage that isn't backed up, enable a separate executions volume, mounted at `/executionsClusterShared`:
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    executionsVolume:
+      enabled: true
+      size: 10Gi
+      storageClassName: "fast-rwx"
+```
+
 #### Git resources
 Octopus supports interacting with git resources for various purposes, such as [Config As Code](https://octopus.com/docs/projects/version-control) or as a source for deployment dependencies. When this occurs, Octopus must clone the repository to the local filesystem. 
 
@@ -354,6 +392,63 @@ The resulting endpoints will be:
 Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
 - [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster)
 - [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
+
+#### <a name="multi-node-polling-tentacles"></a>Multi-node support for polling tentacles
+
+By default, a polling tentacle must poll every Octopus node, as work for the tentacle can only be picked up by the node it's connected to. With multi-node support for polling tentacles, pending requests are queued in Redis so any node can pick them up. Tentacles then only need to poll a single endpoint, which load balances across every node.
+
+This requires:
+- A version of Octopus Server that supports multi-node support for polling tentacles.
+- A [cluster shared volume](#cluster-shared-storage), with `octopus.clusterShared.mode` set to `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` or `CLUSTER_SHARED`.
+- A Redis instance that every node can reach.
+
+Redis must hold data in memory only. Don't enable persistence (RDB snapshots or AOF), replication, or automatic failover. Octopus detects when Redis loses all of its data, fails the requests that were in flight, and decides whether to retry them. It can't detect a partial restore. Replication is asynchronous, so a promoted replica or a restored snapshot can bring back requests that a node has already collected, and they'd be sent to the tentacle again. The eviction policy must be `noeviction`, as evicting keys would silently drop requests.
+
+The chart can run Redis for you, configured this way:
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+  multiNodePollingTentacles:
+    enabled: true
+redis:
+  enabled: true
+```
+
+This is a single Redis pod. Polling tentacle requests that are in flight when it restarts fail, and new requests work again once it's back.
+
+To use your own Redis, provide a connection string instead. It must meet the requirements above, so a single node with no persistence and no replica:
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+  multiNodePollingTentacles:
+    enabled: true
+    redis:
+      connectionString: "my-redis.example.com:6380,password=<password>,ssl=true"
+```
+
+The connection string is a [StackExchange.Redis connection string](https://stackexchange.github.io/StackExchange.Redis/Configuration.html). If `octopus.createSecrets` is false, provide it in a secret named `<release name>-redisconnectionstring` with the key `secret`.
+
+The Redis password is generated unless you set `redis.password`. If `octopus.createSecrets` is false, provide it in a secret named `<release name>-redispassword` with the key `secret`.
+
+When the feature is enabled, the chart creates a `LoadBalancer` service named `<release name>-octopus-deploy-polling-tentacles`, which passes tentacle TCP traffic through to any node. Octopus terminates TLS, so the load balancer must not. Configure your tentacles to poll this address. The service can be customized:
+
+```yaml
+octopus:
+  multiNodePollingTentacles:
+    loadBalancer:
+      type: LoadBalancer
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      loadBalancerSourceRanges:
+        - 10.0.0.0/8
+      externalTrafficPolicy: Local
+```
+
+The per-node services and polling tentacle ingresses are still created, so existing tentacles that poll every node keep working.
 
 #### <a name="grpc-communication"></a>gRPC Communication
 

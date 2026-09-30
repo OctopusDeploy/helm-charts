@@ -1,3 +1,4 @@
+{{- include "octopus.validate" . -}}
 # Octopus Deploy server nodes are modeled as StatefulSet, as terminating a node while deployments or runbooks are executing will cause these tasks to be terminated
 apiVersion: apps/v1
 kind: StatefulSet
@@ -144,6 +145,21 @@ spec:
           - name: OCTOPUS_GRPC_SERVICES_PORT
             value: {{.Values.octopus.grpcPort | quote }}
         {{- end }}
+        {{- if .Values.octopus.clusterShared.mode }}
+          - name: CLUSTER_SHARED_CONFIG
+            value: {{ .Values.octopus.clusterShared.mode | quote }}
+        {{- end }}
+        {{- if .Values.octopus.clusterShared.executionsVolume.enabled }}
+          - name: USE_EXECUTIONS_CLUSTER_SHARED
+            value: "True"
+        {{- end }}
+        {{- if .Values.octopus.multiNodePollingTentacles.enabled }}
+          - name: OCTOPUS_MULTI_NODE_POLLING_TENTACLES_REDIS_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: {{printf "%s-%s" $.Release.Name "redisconnectionstring"}}
+                key: secret
+        {{- end }}
         ports:
           - containerPort: 8080
             name: web
@@ -156,16 +172,28 @@ spec:
           - name: {{ $name }}-volume
             mountPath: {{ $volume.mountPath }}
           {{- end }}
+          {{- if include "octopus.clusterShared.hasSeparateVolumes" . }}
           - name: package-repository-volume
             mountPath: /repository
           - name: artifacts-volume
             mountPath: /artifacts
           - name: task-log-volume
             mountPath: /taskLogs
+          {{- end }}
           - name: server-log-volume
             mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
+          {{- if include "octopus.clusterShared.hasSeparateVolumes" . }}
           - name: audit-log-volume
             mountPath: /eventExports
+          {{- end }}
+          {{- if include "octopus.clusterShared.hasVolume" . }}
+          - name: cluster-shared-volume
+            mountPath: /clusterShared
+          {{- end }}
+          {{- if .Values.octopus.clusterShared.executionsVolume.enabled }}
+          - name: executions-cluster-shared-volume
+            mountPath: /executionsClusterShared
+          {{- end }}
         {{- if .Values.octopus.resources }}
         resources:
         {{- toYaml .Values.octopus.resources | nindent 10 }}
@@ -199,6 +227,7 @@ spec:
           periodSeconds: 60
       terminationGracePeriodSeconds: 10
       volumes:
+        {{- if include "octopus.clusterShared.hasSeparateVolumes" . }}
         - name: package-repository-volume
           persistentVolumeClaim:
             claimName: package-repository-claim
@@ -211,6 +240,17 @@ spec:
         - name: audit-log-volume
           persistentVolumeClaim:
             claimName: audit-log-claim
+        {{- end }}
+        {{- if include "octopus.clusterShared.hasVolume" . }}
+        - name: cluster-shared-volume
+          persistentVolumeClaim:
+            claimName: cluster-shared-claim
+        {{- end }}
+        {{- if .Values.octopus.clusterShared.executionsVolume.enabled }}
+        - name: executions-cluster-shared-volume
+          persistentVolumeClaim:
+            claimName: executions-cluster-shared-claim
+        {{- end }}
         {{- range $name, $volume := .Values.octopus.extraVolumes }}
         - name: {{ $name }}-volume
         {{- if eq $volume.type "emptyDir" }}

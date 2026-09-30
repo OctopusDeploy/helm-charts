@@ -1,0 +1,7 @@
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+  multiNodePollingTentacles:
+    enabled: true
+    redis:
+      connectionString: my-redis:6379,password=secret,ssl=true

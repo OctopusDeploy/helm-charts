@@ -1,0 +1,225 @@
+suite: multi-node support for polling tentacles
+templates:
+  - statefulset.yaml
+  - secrets.yaml
+  - polling-tentacles-service.yaml
+  - charts/redis/templates/deployment.yaml
+  - charts/redis/templates/service.yaml
+tests:
+  - it: is disabled by default
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OCTOPUS_MULTI_NODE_POLLING_TENTACLES_REDIS_CONNECTION_STRING
+          any: true
+
+  - it: does not create the load balancer by default
+    template: polling-tentacles-service.yaml
+    values:
+      - ./values/required.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: sets the redis connection string from a secret
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OCTOPUS_MULTI_NODE_POLLING_TENTACLES_REDIS_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: RELEASE-NAME-redisconnectionstring
+                key: secret
+
+  - it: stores an external redis connection string in a secret
+    template: secrets.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    asserts:
+      - equal:
+          path: data.secret
+          value: bXktcmVkaXM6NjM3OSxwYXNzd29yZD1zZWNyZXQsc3NsPXRydWU= # my-redis:6379,password=secret,ssl=true
+        documentIndex: 5
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-redisconnectionstring
+        documentIndex: 5
+
+  - it: points the connection string at the in-cluster redis when enabled
+    template: secrets.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.multiNodePollingTentacles.redis.connectionString: ""
+      redis.enabled: true
+      redis.password: abracadabra
+    asserts:
+      - equal:
+          path: data.secret
+          value: UkVMRUFTRS1OQU1FLXJlZGlzOjYzNzkscGFzc3dvcmQ9YWJyYWNhZGFicmE= # RELEASE-NAME-redis:6379,password=abracadabra
+        documentIndex: 5
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-redispassword
+        documentIndex: 6
+      - equal:
+          path: data.secret
+          value: YWJyYWNhZGFicmE=
+        documentIndex: 6
+
+  - it: creates the in-cluster redis when enabled
+    templates:
+      - charts/redis/templates/deployment.yaml
+      - charts/redis/templates/service.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-redis
+
+  - it: in-cluster redis reads its password from the chart secret
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: RELEASE-NAME-redispassword
+                key: secret
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: redis:8.0.3
+
+  - it: in-cluster redis only limits its memory when maxMemory is set
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - notMatchRegex:
+          path: spec.template.spec.containers[0].command[2]
+          pattern: "--maxmemory "
+
+  - it: in-cluster redis limits its memory to maxMemory
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+      redis.maxMemory: 200mb
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].command[2]
+          pattern: '--maxmemory-policy noeviction --maxmemory "200mb"'
+
+  - it: creates a TCP load balancer across every node
+    template: polling-tentacles-service.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.replicaCount: 3
+      octopus.multiNodePollingTentacles.loadBalancer.annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      octopus.multiNodePollingTentacles.loadBalancer.loadBalancerSourceRanges:
+        - 10.0.0.0/8
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-octopus-deploy-polling-tentacles
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: octopus-deploy
+            app.kubernetes.io/instance: RELEASE-NAME
+            app.kubernetes.io/component: octopus-server
+      - equal:
+          path: spec.ports
+          value:
+            - name: tentacle
+              port: 10943
+              targetPort: 10943
+              protocol: TCP
+      - equal:
+          path: metadata.annotations
+          value:
+            service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      - equal:
+          path: spec.loadBalancerSourceRanges
+          value:
+            - 10.0.0.0/8
+
+  - it: load balancer can be disabled
+    template: polling-tentacles-service.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.multiNodePollingTentacles.loadBalancer.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: fails without a cluster shared volume
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.clusterShared.mode: ""
+    asserts:
+      - failedTemplate:
+          errorPattern: "requires a cluster shared volume"
+
+  - it: fails without a redis connection string
+    template: secrets.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.multiNodePollingTentacles.redis.connectionString: ""
+    asserts:
+      - failedTemplate:
+          errorPattern: "either octopus.multiNodePollingTentacles.redis.connectionString must be provided or redis.enabled must be true"
+
+  - it: fails when redis is enabled without the feature
+    template: statefulset.yaml
+    values:
+      - ./values/required.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - failedTemplate:
+          errorPattern: "redis.enabled is only used by multi-node support for polling tentacles"

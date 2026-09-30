@@ -101,6 +101,38 @@ octopus:
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
 
+  # Sets CLUSTER_SHARED_CONFIG, which controls how files shared across nodes are stored. See the README for details.
+  clusterShared:
+    # One of "", SEPARATE_VOLUMES, SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED
+    mode: ""
+    # Volume mounted at /clusterShared, when mode is SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED
+    volume:
+      size: 1Gi
+      storageClassName: ""
+      storageAccessMode: ReadWriteOnce
+    # Optional volume mounted at /executionsClusterShared for transient execution data
+    executionsVolume:
+      enabled: false
+      size: 1Gi
+      storageClassName: ""
+      storageAccessMode: ReadWriteOnce
+
+  # Lets polling tentacles connect to any node through a single load balancer. Requires Redis and a clusterShared.mode
+  # of SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED.
+  multiNodePollingTentacles:
+    enabled: false
+    redis:
+      # Redis connection string. Not required if redis.enabled is true or createSecrets is false
+      connectionString: ""
+    # TCP pass through service for polling tentacles. TLS must not be terminated by the load balancer
+    loadBalancer:
+      enabled: true
+      type: LoadBalancer
+      annotations: {}
+      labels: {}
+      loadBalancerSourceRanges: []
+      externalTrafficPolicy: ""
+
   service:
     type: NodePort
 
@@ -225,6 +257,22 @@ mssql:
   enabled: false
   ACCEPT_EULA: "Y"
   SA_PASSWORD: ""
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# In-cluster Redis for octopus.multiNodePollingTentacles. Runs a single pod with no persistence, by design
+redis:
+  enabled: false
+  # Generated if blank. Must not contain commas, equals signs, double quotes or backslashes
+  password: ""
+  image:
+    repository: redis
+    tag: "8.0.3"
+    pullPolicy: IfNotPresent
+  # e.g. "200mb". Should be set below any memory limit in resources
+  maxMemory: ""
+  resources: {}
   nodeSelector: {}
   tolerations: []
   affinity: {}
