@@ -47,6 +47,26 @@ tests:
               cpu: "500m"
         documentIndex: 0
 
+  - it: startupProbe failureThreshold defaults to 30
+    values:
+      - ./values/required.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30
+        documentIndex: 0
+
+  - it: startupProbe failureThreshold is configurable
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.startupProbe.failureThreshold: 90
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 90
+        documentIndex: 0
+
   - it: acceptEula converts true to Y 
     values: 
       - ./values/required.yaml

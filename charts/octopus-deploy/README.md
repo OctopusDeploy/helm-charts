@@ -71,6 +71,18 @@ octopus:
   masterKey: <Your master key>
 ```
 
+### Startup Probe
+
+Octopus Server upgrades its database when it starts. The startup probe checks the server every 60 seconds and restarts the container after 30 failed checks, so by default the server has 30 minutes to start. If a database upgrade takes longer than that, the container restarts part way through the upgrade and the upgrade starts again.
+
+If you have a large database, increase the number of failed checks allowed. For example, to allow 90 minutes:
+
+```yaml
+octopus:
+  startupProbe:
+    failureThreshold: 90
+```
+
 ### Persistent Volumes
 
 This chart requires persistent volumes to store:
