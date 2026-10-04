@@ -48,13 +48,17 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           # The password is written to a config file, rather than passed with --requirepass, so it isn't visible in the process list.
-          # noeviction is required, as evicting keys would lose pending requests. It only applies once maxMemory is reached.
+          # noeviction is required, as evicting keys would lose pending requests. It only applies once maxmemory is reached.
+          # maxmemory is derived from the memory limit, leaving headroom for Redis's own overhead so it rejects writes before it is OOM killed.
           command:
             - /bin/sh
             - -c
             - |
               printf 'requirepass "%s"\n' "$REDIS_PASSWORD" > /data/redis.conf
-              exec redis-server /data/redis.conf --port {{ .Values.service.port }} --save "" --appendonly no --maxmemory-policy noeviction{{ with .Values.maxMemory }} --maxmemory {{ . | quote }}{{ end }}
+              {{- if dig "limits" "memory" "" .Values.resources }}
+              printf 'maxmemory %s\n' "$((MEMORY_LIMIT_BYTES * 80 / 100))" >> /data/redis.conf
+              {{- end }}
+              exec redis-server /data/redis.conf --port {{ .Values.service.port }} --save "" --appendonly no --maxmemory-policy noeviction
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -66,6 +70,12 @@ spec:
                 secretKeyRef:
                   name: {{ printf "%s-%s" .Release.Name "redispassword" }}
                   key: secret
+            {{- if dig "limits" "memory" "" .Values.resources }}
+            - name: MEMORY_LIMIT_BYTES
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+            {{- end }}
           ports:
             - name: redis
               containerPort: {{ .Values.service.port }}

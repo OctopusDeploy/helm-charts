@@ -19,8 +19,6 @@ containerSecurityContext:
     drop:
       - ALL
 
-maxMemory: ""
-
 resources: {}
 
 service:

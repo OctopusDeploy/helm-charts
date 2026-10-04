@@ -265,8 +265,7 @@ redis:
     repository: redis
     tag: "8.10.1"
     pullPolicy: IfNotPresent
-  # e.g. "200mb". Should be set below any memory limit in resources
-  maxMemory: ""
+  # If resources.limits.memory is set, Redis's maxmemory is set to 80% of it
   resources: {}
   nodeSelector: {}
   tolerations: []
