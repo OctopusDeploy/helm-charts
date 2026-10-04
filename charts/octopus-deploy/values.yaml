@@ -262,10 +262,6 @@ redis:
   enabled: false
   # Generated if blank. Must not contain commas, equals signs, double quotes or backslashes
   password: ""
-  image:
-    repository: redis
-    tag: "8.10.1"
-    pullPolicy: IfNotPresent
   # If resources.limits.memory is set, Redis's maxmemory is set to 80% of it
   resources: {}
   nodeSelector: {}

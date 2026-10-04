@@ -111,9 +111,9 @@ tests:
               secretKeyRef:
                 name: RELEASE-NAME-redispassword
                 key: secret
-      - equal:
+      - matchRegex:
           path: spec.template.spec.containers[0].image
-          value: redis:8.10.1
+          pattern: ^redis:.+$
 
   - it: in-cluster redis only limits its memory when a memory limit is set
     template: charts/redis/templates/deployment.yaml
