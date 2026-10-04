@@ -263,7 +263,7 @@ redis:
   password: ""
   image:
     repository: redis
-    tag: "8.0.3"
+    tag: "8.10.1"
     pullPolicy: IfNotPresent
   # e.g. "200mb". Should be set below any memory limit in resources
   maxMemory: ""

@@ -1,7 +1,7 @@
 image:
   repository: redis
   pullPolicy: IfNotPresent
-  tag: "8.0.3"
+  tag: "8.10.1"
 
 podAnnotations: {}
 

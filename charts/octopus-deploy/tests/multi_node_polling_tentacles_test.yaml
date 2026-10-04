@@ -112,7 +112,7 @@ tests:
                 key: secret
       - equal:
           path: spec.template.spec.containers[0].image
-          value: redis:8.0.3
+          value: redis:8.10.1
 
   - it: in-cluster redis only limits its memory when maxMemory is set
     template: charts/redis/templates/deployment.yaml
