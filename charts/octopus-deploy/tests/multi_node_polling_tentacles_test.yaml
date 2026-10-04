@@ -3,6 +3,7 @@ templates:
   - statefulset.yaml
   - secrets.yaml
   - polling-tentacles-service.yaml
+  - service.yaml
   - charts/redis/templates/deployment.yaml
   - charts/redis/templates/service.yaml
 tests:
@@ -191,6 +192,24 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+
+  - it: exposes the tentacle port on the main service instead of creating a service per node
+    template: service.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.replicaCount: 3
+    asserts:
+      - hasDocuments:
+          count: 1
+      - contains:
+          path: spec.ports
+          content:
+            name: tentacle
+            port: 10943
+            targetPort: 10943
+            protocol: TCP
 
   - it: fails without a cluster shared volume
     template: statefulset.yaml

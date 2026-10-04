@@ -354,7 +354,7 @@ octopus:
 
 If you are deploying to Kubernetes using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have Virtual Machines with an [Octopus Polling Tentacle](https://octopus.com/docs/infrastructure/deployment-targets/tentacle/tentacle-communication#polling-tentacles) installed, you will also need to configure ingress to allow Polling Tentacle traffic. 
 
-If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  
+If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node, unless [multi-node support for polling tentacles](#multi-node-polling-tentacles) is enabled.  
 
 The following configuration will create an ingress endpoint for each Octopus node (replica). 
 
@@ -436,7 +436,9 @@ octopus:
       externalTrafficPolicy: Local
 ```
 
-The per-node services and polling tentacle ingresses are still created, so existing tentacles that poll every node keep working.
+The tentacle port is also exposed on the main Octopus service, and the per-node services and polling tentacle ingresses aren't created. Existing tentacles that poll every node must be reconfigured to poll the single endpoint.
+
+If `octopus.ingress.pollingTentacles.enabled` is true, a single polling tentacle ingress is created instead of one per node, with the host `<hostPrefix>.<host>` (for example, `polling.octopus.example.com`). It uses SSL passthrough, as described in [Polling Tentacles](#polling-tentacles).
 
 #### <a name="grpc-communication"></a>gRPC Communication
 

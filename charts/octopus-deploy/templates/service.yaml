@@ -17,13 +17,13 @@ spec:
       port: {{.Values.octopus.grpcPort}}
       targetPort: {{.Values.octopus.grpcPort}}
       protocol: TCP
-  {{- if (eq (.Values.octopus.replicaCount | int) 1)}} # If there is only one node, expose the tentacle along with the web port
+  {{- if or (eq (.Values.octopus.replicaCount | int) 1) .Values.octopus.multiNodePollingTentacles.enabled }} # If there is only one node, or any node can serve polling tentacles, expose the tentacle along with the web port
     - name: tentacle
       port: {{.Values.octopus.tentaclePort}}
       targetPort: 10943
       protocol: TCP
   {{- end }}
-  {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+  {{- if and (gt (.Values.octopus.replicaCount | int) 1) (not .Values.octopus.multiNodePollingTentacles.enabled) }} # With multi-node support for polling tentacles, tentacles don't need to reach each node
   {{- range untilStep 0 (.Values.octopus.replicaCount | int) 1 }}
 ---
 apiVersion: v1

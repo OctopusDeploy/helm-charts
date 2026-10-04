@@ -51,3 +51,34 @@ tests:
           path: spec.rules[0].host
           value: "polling2.example.com"
         documentIndex: 3
+
+  - it: creates a single polling tentacle ingress with multi-node support for polling tentacles
+    values:
+      - ./values/ingress.yaml
+    set:
+      octopus.replicaCount: 3
+      octopus.multiNodePollingTentacles.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 2
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-octopus-deploy-polling-tentacles
+        documentIndex: 1
+      - equal:
+          path: spec.tls[0].hosts
+          value:
+            - "polling.example.com"
+            - "polling.internal.example.com"
+        documentIndex: 1
+      - equal:
+          path: spec.rules[0].host
+          value: "polling.example.com"
+        documentIndex: 1
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service
+          value:
+            name: RELEASE-NAME-octopus-deploy
+            port:
+              number: 10943
+        documentIndex: 1
