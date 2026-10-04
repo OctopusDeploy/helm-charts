@@ -196,6 +196,18 @@ tests:
           value:
             - 10.0.0.0/8
 
+  - it: keeps the load balancer name within 63 characters
+    template: polling-tentacles-service.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      fullnameOverride: a-very-long-full-name-override-that-is-almost-the-maximum-length
+    asserts:
+      - equal:
+          path: metadata.name
+          value: a-very-long-full-name-override-that-is-almost-polling-tentacles
+
   - it: load balancer can be disabled
     template: polling-tentacles-service.yaml
     values:
