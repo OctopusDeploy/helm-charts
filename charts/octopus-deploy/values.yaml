@@ -124,10 +124,11 @@ octopus:
     redis:
       # Redis connection string. Not required if redis.enabled is true or createSecrets is false
       connectionString: ""
-    # TCP pass through service for polling tentacles. TLS must not be terminated by the load balancer
-    loadBalancer:
+    # TCP pass through service for polling tentacles. TLS must not be terminated in front of it
+    service:
       enabled: true
-      type: LoadBalancer
+      # Defaults to octopus.service.type. Set to LoadBalancer to expose tentacles through a cloud load balancer
+      type: ""
       annotations: {}
       labels: {}
       loadBalancerSourceRanges: []

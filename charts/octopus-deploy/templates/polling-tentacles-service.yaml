@@ -1,5 +1,5 @@
-{{- if and .Values.octopus.multiNodePollingTentacles.enabled .Values.octopus.multiNodePollingTentacles.loadBalancer.enabled }}
-{{- $loadBalancer := .Values.octopus.multiNodePollingTentacles.loadBalancer }}
+{{- if and .Values.octopus.multiNodePollingTentacles.enabled .Values.octopus.multiNodePollingTentacles.service.enabled }}
+{{- $service := .Values.octopus.multiNodePollingTentacles.service }}
 # A TCP pass through service that spreads polling tentacle connections across every Octopus node.
 # With multi-node support for polling tentacles, any node can pick up work queued for a tentacle, so tentacles only need to poll this one endpoint.
 apiVersion: v1
@@ -8,20 +8,20 @@ metadata:
   name: {{ include "octopus.pollingTentacles.serviceName" . }}
   labels:
     {{- include "labels" . | nindent 4 }}
-    {{- with $loadBalancer.labels }}
+    {{- with $service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  {{- with $loadBalancer.annotations }}
+  {{- with $service.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: {{ $loadBalancer.type }}
-  {{- with $loadBalancer.loadBalancerSourceRanges }}
+  type: {{ $service.type | default .Values.octopus.service.type }}
+  {{- with $service.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with $loadBalancer.externalTrafficPolicy }}
+  {{- with $service.externalTrafficPolicy }}
   externalTrafficPolicy: {{ . }}
   {{- end }}
   selector:

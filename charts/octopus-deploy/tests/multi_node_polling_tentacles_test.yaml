@@ -161,9 +161,10 @@ tests:
       - ./values/multi_node_polling_tentacles.yaml
     set:
       octopus.replicaCount: 3
-      octopus.multiNodePollingTentacles.loadBalancer.annotations:
+      octopus.multiNodePollingTentacles.service.type: LoadBalancer
+      octopus.multiNodePollingTentacles.service.annotations:
         service.beta.kubernetes.io/aws-load-balancer-type: nlb
-      octopus.multiNodePollingTentacles.loadBalancer.loadBalancerSourceRanges:
+      octopus.multiNodePollingTentacles.service.loadBalancerSourceRanges:
         - 10.0.0.0/8
     asserts:
       - hasDocuments:
@@ -196,7 +197,19 @@ tests:
           value:
             - 10.0.0.0/8
 
-  - it: keeps the load balancer name within 63 characters
+  - it: polling tentacle service type follows the main service type by default
+    template: polling-tentacles-service.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      octopus.service.type: ClusterIP
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+
+  - it: keeps the polling tentacle service name within 63 characters
     template: polling-tentacles-service.yaml
     values:
       - ./values/required.yaml
@@ -208,13 +221,13 @@ tests:
           path: metadata.name
           value: a-very-long-full-name-override-that-is-almost-polling-tentacles
 
-  - it: load balancer can be disabled
+  - it: polling tentacle service can be disabled
     template: polling-tentacles-service.yaml
     values:
       - ./values/required.yaml
       - ./values/multi_node_polling_tentacles.yaml
     set:
-      octopus.multiNodePollingTentacles.loadBalancer.enabled: false
+      octopus.multiNodePollingTentacles.service.enabled: false
     asserts:
       - hasDocuments:
           count: 0

@@ -422,12 +422,12 @@ The connection string is a [StackExchange.Redis connection string](https://stack
 
 The Redis password is generated unless you set `redis.password`. If `octopus.createSecrets` is false, provide it in a secret named `<release name>-redispassword` with the key `secret`.
 
-When the feature is enabled, the chart creates a `LoadBalancer` service named `<release name>-octopus-deploy-polling-tentacles`, which passes tentacle TCP traffic through to any node. Octopus terminates TLS, so the load balancer must not. Configure your tentacles to poll this address. The service can be customized:
+When the feature is enabled, the chart creates a service named `<release name>-octopus-deploy-polling-tentacles`, which passes tentacle TCP traffic through to any node. Its type defaults to `octopus.service.type`. Octopus terminates TLS, so anything in front of the service must not. Configure your tentacles to poll this address, or use a polling tentacle ingress (see below). To expose it through a cloud load balancer:
 
 ```yaml
 octopus:
   multiNodePollingTentacles:
-    loadBalancer:
+    service:
       type: LoadBalancer
       annotations:
         service.beta.kubernetes.io/aws-load-balancer-type: nlb
