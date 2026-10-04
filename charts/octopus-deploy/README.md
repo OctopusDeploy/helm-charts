@@ -135,7 +135,7 @@ octopus:
       storageClassName: "azure-file"
 ```
 
-`CLUSTER_SHARED` is intended for new installations, as existing packages, artifacts and logs aren't moved. To avoid deleting a volume that still holds data, an upgrade fails if it would switch an existing installation to or from `CLUSTER_SHARED`, or clear the mode while the cluster shared volume exists. To stop using the cluster shared volume, set the mode to `SEPARATE_VOLUMES`. These checks look up the existing volumes in the cluster, so they don't run when the chart is rendered with `helm template`.
+`CLUSTER_SHARED` is intended for new installations, as existing packages, artifacts and logs aren't moved. Don't switch an existing installation to or from `CLUSTER_SHARED`, or clear the mode once a cluster shared volume has been created: the volumes that are no longer rendered are deleted by Helm, along with their data. To stop using the cluster shared volume, set the mode to `SEPARATE_VOLUMES`.
 
 The cluster shared volume follows the same rules as the other shared volumes. It uses `global.storageClass` if no storage class is set, and is ReadWriteMany when `replicaCount` is greater than 1.
 
