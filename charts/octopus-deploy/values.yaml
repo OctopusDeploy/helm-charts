@@ -122,7 +122,8 @@ octopus:
   multiNodePollingTentacles:
     enabled: false
     redis:
-      # Redis connection string. Not required if redis.enabled is true or createSecrets is false
+      # Redis connection string. Not required if redis.enabled is true or createSecrets is false.
+      # Ignored if redis.enabled is true, as the in-cluster Redis takes precedence
       connectionString: ""
     # TCP pass through service for polling tentacles. TLS must not be terminated in front of it
     service:

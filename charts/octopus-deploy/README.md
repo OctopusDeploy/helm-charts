@@ -406,7 +406,7 @@ redis:
 
 This is a single Redis pod. Polling tentacle requests that are in flight when it restarts fail, and new requests work again once it's back.
 
-To use your own Redis, provide a connection string instead. It must meet the requirements above, so a single node with no persistence and no replica:
+To use your own Redis, provide a connection string instead and leave `redis.enabled` false. If `redis.enabled` is true, the chart's Redis takes precedence and the connection string is ignored. Your Redis must meet the requirements above, so a single node with no persistence and no replica:
 
 ```yaml
 octopus:
