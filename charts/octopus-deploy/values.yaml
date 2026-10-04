@@ -262,6 +262,8 @@ redis:
   enabled: false
   # Generated if blank. Must not contain commas, equals signs, double quotes or backslashes
   password: ""
+  # The Redis image is pulled from Docker Hub. To use the dockerHub credentials above, set this to [{name: dockerhubcreds}]
+  imagePullSecrets: []
   # If resources.limits.memory is set, Redis's maxmemory is set to 80% of it
   resources: {}
   nodeSelector: {}

@@ -154,6 +154,32 @@ tests:
           path: spec.template.spec.containers[0].command[2]
           pattern: 'maxmemory %s\\n'' "\$\(\(MEMORY_LIMIT_BYTES \* 80 / 100\)\)" >> /data/redis.conf'
 
+  - it: in-cluster redis has no image pull secrets by default
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - notExists:
+          path: spec.template.spec.imagePullSecrets
+
+  - it: in-cluster redis uses the configured image pull secrets
+    template: charts/redis/templates/deployment.yaml
+    values:
+      - ./values/required.yaml
+      - ./values/multi_node_polling_tentacles.yaml
+    set:
+      redis.enabled: true
+      redis.imagePullSecrets:
+        - name: dockerhubcreds
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets
+          value:
+            - name: dockerhubcreds
+
   - it: creates a TCP load balancer across every node
     template: polling-tentacles-service.yaml
     values:

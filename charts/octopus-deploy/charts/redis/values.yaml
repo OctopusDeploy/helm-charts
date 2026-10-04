@@ -3,6 +3,8 @@ image:
   pullPolicy: IfNotPresent
   tag: "8.10.1"
 
+imagePullSecrets: []
+
 podAnnotations: {}
 
 podSecurityContext:
