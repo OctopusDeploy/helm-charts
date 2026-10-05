@@ -1,5 +1,3 @@
-# Redis only holds the pending request queue for polling tentacles, which is transient, so it runs without persistence.
-# Octopus Server detects when Redis loses its data and fails the affected requests.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
