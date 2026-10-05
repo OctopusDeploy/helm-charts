@@ -175,6 +175,8 @@ spec:
           - name: {{ $name }}-volume
             mountPath: {{ $volume.mountPath }}
           {{- end }}
+          - name: server-log-volume
+            mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
           {{- if include "octopus.clusterShared.hasSeparateVolumes" . }}
           - name: package-repository-volume
             mountPath: /repository
@@ -182,10 +184,6 @@ spec:
             mountPath: /artifacts
           - name: task-log-volume
             mountPath: /taskLogs
-          {{- end }}
-          - name: server-log-volume
-            mountPath: /home/octopus/.octopus/OctopusServer/Server/Logs
-          {{- if include "octopus.clusterShared.hasSeparateVolumes" . }}
           - name: audit-log-volume
             mountPath: /eventExports
           {{- end }}
