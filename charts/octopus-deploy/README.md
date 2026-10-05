@@ -390,7 +390,12 @@ This requires:
 - A [cluster shared volume](#cluster-shared-storage), with `octopus.clusterShared.mode` set to `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` or `CLUSTER_SHARED`.
 - A Redis instance that every node can reach.
 
-Redis must hold data in memory only. Don't enable persistence (RDB snapshots or AOF), replication, or automatic failover. Octopus detects when Redis loses all of its data, fails the requests that were in flight, and decides whether to retry them. It can't detect a partial restore. Replication is asynchronous, so a promoted replica or a restored snapshot can bring back requests that a node has already collected, and they'd be sent to the tentacle again. The eviction policy must be `noeviction`, as evicting keys would silently drop requests.
+Redis must be configured with:
+- No persistence (RDB snapshots or AOF).
+- No replication or automatic failover.
+- An eviction policy of `noeviction`.
+
+Octopus handles Redis losing all of its data, but a restored snapshot or promoted replica can bring back stale requests that get sent to a tentacle again, and evicted keys would silently drop requests.
 
 The chart can run Redis for you, configured this way:
 
