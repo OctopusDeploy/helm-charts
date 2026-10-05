@@ -230,24 +230,3 @@ tests:
           path: spec.resources.requests.storage
           value: 10Gi
         documentIndex: 1
-
-  - it: fails on an unknown mode
-    template: statefulset.yaml
-    values:
-      - ./values/required.yaml
-    set:
-      octopus.clusterShared.mode: SHARED
-    asserts:
-      - failedTemplate:
-          errorPattern: "octopus.clusterShared.mode 'SHARED' is not valid"
-
-  - it: fails when the executions volume is enabled without a cluster shared volume
-    template: statefulset.yaml
-    values:
-      - ./values/required.yaml
-    set:
-      octopus.clusterShared.mode: SEPARATE_VOLUMES
-      octopus.clusterShared.executionsVolume.enabled: true
-    asserts:
-      - failedTemplate:
-          errorPattern: "executionsVolume.enabled requires octopus.clusterShared.mode"

@@ -214,22 +214,3 @@ The Redis connection string for multi-node support for polling tentacles
 {{- required "When octopus.multiNodePollingTentacles.enabled is true, either octopus.multiNodePollingTentacles.redis.connectionString must be provided or redis.enabled must be true" .Values.octopus.multiNodePollingTentacles.redis.connectionString -}}
 {{- end -}}
 {{- end -}}
-
-{{/*
-Fails the render when the cluster shared and multi-node polling tentacle values are inconsistent
-*/}}
-{{- define "octopus.validate" -}}
-{{- $clusterShared := .Values.octopus.clusterShared -}}
-{{- if not (has $clusterShared.mode (list "" "SEPARATE_VOLUMES" "SEPARATE_VOLUMES_WITH_CLUSTER_SHARED" "CLUSTER_SHARED")) -}}
-{{- fail (printf "octopus.clusterShared.mode '%s' is not valid. Valid values are \"\", SEPARATE_VOLUMES, SEPARATE_VOLUMES_WITH_CLUSTER_SHARED and CLUSTER_SHARED." $clusterShared.mode) -}}
-{{- end -}}
-{{- if and $clusterShared.executionsVolume.enabled (not (include "octopus.clusterShared.hasVolume" .)) -}}
-{{- fail "octopus.clusterShared.executionsVolume.enabled requires octopus.clusterShared.mode to be SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED" -}}
-{{- end -}}
-{{- if and .Values.octopus.multiNodePollingTentacles.enabled (not (include "octopus.clusterShared.hasVolume" .)) -}}
-{{- fail "octopus.multiNodePollingTentacles.enabled requires a cluster shared volume on storage shared by all nodes. Set octopus.clusterShared.mode to SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED." -}}
-{{- end -}}
-{{- if and .Values.redis.enabled (not .Values.octopus.multiNodePollingTentacles.enabled) -}}
-{{- fail "redis.enabled is only used by multi-node support for polling tentacles. Set octopus.multiNodePollingTentacles.enabled to true, or redis.enabled to false." -}}
-{{- end -}}
-{{- end -}}

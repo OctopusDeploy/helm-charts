@@ -139,7 +139,7 @@ octopus:
 
 The cluster shared volume follows the same rules as the other shared volumes. It uses `global.storageClass` if no storage class is set, and is ReadWriteMany when `replicaCount` is greater than 1.
 
-To store transient execution data on different storage, such as faster storage that isn't backed up, enable a separate executions volume, mounted at `/executionsClusterShared`:
+To store transient execution data on different storage, such as faster storage that isn't backed up, enable a separate executions volume, mounted at `/executionsClusterShared`. This requires a mode of `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` or `CLUSTER_SHARED`:
 
 ```yaml
 octopus:

@@ -298,12 +298,11 @@ tests:
       - failedTemplate:
           errorPattern: "either octopus.multiNodePollingTentacles.redis.connectionString must be provided or redis.enabled must be true"
 
-  - it: fails when redis is enabled without the feature
+  - it: allows redis to be enabled before the feature
     template: statefulset.yaml
     values:
       - ./values/required.yaml
     set:
       redis.enabled: true
     asserts:
-      - failedTemplate:
-          errorPattern: "redis.enabled is only used by multi-node support for polling tentacles"
+      - notFailedTemplate: {}

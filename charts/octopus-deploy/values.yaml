@@ -110,7 +110,8 @@ octopus:
       size: 1Gi
       storageClassName: ""
       storageAccessMode: ReadWriteOnce
-    # Optional volume mounted at /executionsClusterShared for transient execution data
+    # Optional volume mounted at /executionsClusterShared for transient execution data. Requires a mode of
+    # SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED
     executionsVolume:
       enabled: false
       size: 1Gi

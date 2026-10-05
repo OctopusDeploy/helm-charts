@@ -1,4 +1,3 @@
-{{- include "octopus.validate" . -}}
 # Octopus Deploy server nodes are modeled as StatefulSet, as terminating a node while deployments or runbooks are executing will cause these tasks to be terminated
 apiVersion: apps/v1
 kind: StatefulSet
@@ -154,6 +153,10 @@ spec:
             value: "True"
         {{- end }}
         {{- if .Values.octopus.multiNodePollingTentacles.enabled }}
+        {{- /* Octopus Server doesn't check this. Without a cluster shared directory, data streams are written to each node's home directory, so other nodes can't read them */}}
+        {{- if not (include "octopus.clusterShared.hasVolume" .) }}
+        {{- fail "octopus.multiNodePollingTentacles.enabled requires a cluster shared volume on storage shared by all nodes. Set octopus.clusterShared.mode to SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED." }}
+        {{- end }}
           - name: OCTOPUS_MULTI_NODE_POLLING_TENTACLES_REDIS_CONNECTION_STRING
             valueFrom:
               secretKeyRef:
