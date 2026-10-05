@@ -43,6 +43,9 @@ tests:
 
   - it: stores an external redis connection string in a secret
     template: secrets.yaml
+    documentSelector:
+      path: metadata.name
+      value: RELEASE-NAME-redisconnectionstring
     values:
       - ./values/required.yaml
       - ./values/multi_node_polling_tentacles.yaml
@@ -50,11 +53,6 @@ tests:
       - equal:
           path: data.secret
           value: bXktcmVkaXM6NjM3OSxwYXNzd29yZD1zZWNyZXQsc3NsPXRydWU= # my-redis:6379,password=secret,ssl=true
-        documentIndex: 5
-      - equal:
-          path: metadata.name
-          value: RELEASE-NAME-redisconnectionstring
-        documentIndex: 5
 
   - it: points the connection string at the in-cluster redis when enabled
     template: secrets.yaml
@@ -69,15 +67,15 @@ tests:
       - equal:
           path: data.secret
           value: UkVMRUFTRS1OQU1FLXJlZGlzOjYzNzkscGFzc3dvcmQ9YWJyYWNhZGFicmE= # RELEASE-NAME-redis:6379,password=abracadabra
-        documentIndex: 5
-      - equal:
+        documentSelector:
           path: metadata.name
-          value: RELEASE-NAME-redispassword
-        documentIndex: 6
+          value: RELEASE-NAME-redisconnectionstring
       - equal:
           path: data.secret
-          value: YWJyYWNhZGFicmE=
-        documentIndex: 6
+          value: YWJyYWNhZGFicmE= # abracadabra
+        documentSelector:
+          path: metadata.name
+          value: RELEASE-NAME-redispassword
 
   - it: creates the in-cluster redis when enabled
     templates:
