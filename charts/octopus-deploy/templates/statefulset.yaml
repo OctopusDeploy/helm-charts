@@ -145,7 +145,7 @@ spec:
             value: {{.Values.octopus.grpcPort | quote }}
         {{- end }}
         {{- if .Values.octopus.clusterShared.mode }}
-          - name: CLUSTER_SHARED_CONFIG
+          - name: CLUSTER_SHARED_MODE
             value: {{ .Values.octopus.clusterShared.mode | quote }}
         {{- end }}
         {{- if .Values.octopus.clusterShared.executionsVolume.enabled }}

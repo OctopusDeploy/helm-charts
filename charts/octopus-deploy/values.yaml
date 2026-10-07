@@ -101,7 +101,7 @@ octopus:
     storageClassName: ""
     storageAccessMode: ReadWriteOnce
 
-  # Sets CLUSTER_SHARED_CONFIG, which controls how files shared across nodes are stored. See the README for details.
+  # Sets CLUSTER_SHARED_MODE, which controls how files shared across nodes are stored. See the README for details.
   clusterShared:
     # One of "", SEPARATE_VOLUMES, SEPARATE_VOLUMES_WITH_CLUSTER_SHARED or CLUSTER_SHARED
     mode: ""
