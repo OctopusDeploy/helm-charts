@@ -115,13 +115,13 @@ octopus:
 
 #### Cluster shared storage
 
-Octopus can store the files that every node needs to share in a cluster shared directory. This is required for [multi-node support for polling tentacles](#multi-node-polling-tentacles), and requires a version of Octopus Server whose container supports the `CLUSTER_SHARED_CONFIG` environment variable.
+Octopus can store the files that every node needs to share in a cluster shared directory. This is required for [multi-node support for polling tentacles](#multi-node-polling-tentacles), and requires a version of Octopus Server whose container supports the `CLUSTER_SHARED_MODE` environment variable.
 
 This is configured with `octopus.clusterShared.mode`:
 
 | Mode | Volumes |
 | --- | --- |
-| `""` (default) | The package repository, artifact, task log and audit log volumes. `CLUSTER_SHARED_CONFIG` isn't set. |
+| `""` (default) | The package repository, artifact, task log and audit log volumes. `CLUSTER_SHARED_MODE` isn't set. |
 | `SEPARATE_VOLUMES` | The same volumes as the default. Clears any cluster shared directory configured previously. |
 | `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` | The same volumes as the default, plus a cluster shared volume mounted at `/clusterShared`. Octopus stores transient execution data (the package cache, DataBus and DataStreams) there. |
 | `CLUSTER_SHARED` | A single cluster shared volume mounted at `/clusterShared`, which holds packages, artifacts, task logs, event exports and transient execution data. The other volumes aren't created. |
