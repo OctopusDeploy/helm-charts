@@ -92,7 +92,7 @@ global:
   storageClass: "<your storage class name>"
 ```
 
-This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 0). 
+This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 1). 
 ReadWriteOnce or ReadWriteMany can be used for single node clusters.
 
 Alternatively, each volume may be configured individually. An example is shown below.
@@ -112,6 +112,33 @@ octopus:
     storageClassName: "azure-file"
     storageAccessMode: ReadWriteMany
 ```
+
+#### Scaling from one node to multiple nodes
+
+> [!WARNING]
+> Moving an existing installation from `replicaCount: 1` to more than one node can delete the data in your persistent volumes. If you might run more than one node, use a ReadWriteMany storage class and `storageAccessMode: ReadWriteMany` from the first install.
+
+When `replicaCount` is greater than 1, every persistent volume claim the chart creates is rendered as ReadWriteMany, whatever `storageAccessMode` is set to. If the claims were created as ReadWriteOnce, this changes them.
+
+The access mode and storage class of a persistent volume claim can't be changed after it's created, so `helm upgrade` fails with an error that the claim's spec is immutable. Many default storage classes, such as Azure Disk, Amazon EBS and GCE Persistent Disk, don't support ReadWriteMany, so you usually also need to move to a different storage class, such as Azure Files, Amazon EFS or Filestore.
+
+The only way to make either change is to delete and recreate the claims. Dynamically provisioned persistent volumes have a reclaim policy of `Delete` by default, so deleting a claim also deletes its volume and everything on it: packages, artifacts, task logs, audit logs and any cluster shared data.
+
+To keep your data when you scale out:
+
+1. Set the reclaim policy of each existing volume to `Retain`, so its data survives when the claim is deleted:
+
+   ```bash
+   kubectl get pvc -n <namespace>
+   kubectl patch pv <volume-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+   ```
+
+2. Stop Octopus by scaling the StatefulSet to 0 replicas.
+3. Delete the persistent volume claims.
+4. Run `helm upgrade` with the new `replicaCount` and a ReadWriteMany storage class, which creates new, empty claims. Scale the StatefulSet back to 0 straight away, as the upgrade restarts Octopus.
+5. Copy the data from each retained volume to its new volume, for example from a temporary pod that mounts both.
+6. Scale the StatefulSet back to `replicaCount`.
+7. Delete the retained volumes once you've confirmed the data is in place.
 
 #### Cluster shared storage
 
