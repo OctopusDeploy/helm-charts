@@ -142,7 +142,7 @@ To keep your data when you scale out:
 
 #### Cluster shared storage
 
-Octopus can store the files that every node needs to share in a cluster shared directory. This is required for [multi-node support for polling tentacles](#multi-node-polling-tentacles), and requires a version of Octopus Server whose container supports the `CLUSTER_SHARED_MODE` environment variable.
+Octopus can store the files that every node needs to share in a cluster shared directory. This is required for [multi-node support for polling tentacles](#multi-node-polling-tentacles), and requires a version of Octopus Server (2026.4.6909 onwards) whose container supports the `CLUSTER_SHARED_MODE` environment variable.
 
 This is configured with `octopus.clusterShared.mode`:
 
