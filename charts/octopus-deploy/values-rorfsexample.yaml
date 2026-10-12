@@ -29,6 +29,8 @@ octopus:
     - name: DOTNET_STARTUP_HOOKS
       value: ""
 
+  # The values here are examples only and are not a recommendation for best practices.
+  # The size limits should be adjusted according to your environment and requirements.
   extraVolumes:
     tmp:
       type: emptyDir
