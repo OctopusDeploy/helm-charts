@@ -40,7 +40,7 @@ octopus:
     homeoctopus:
       type: emptyDir
       mountPath: /home/octopus
-      sizeLimit: "100Mi"
+      sizeLimit: "10Gi"
       medium: ""
     etcoctopus:
       type: emptyDir
