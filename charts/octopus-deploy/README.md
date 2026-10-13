@@ -104,7 +104,7 @@ global:
   storageClass: "<your storage class name>"
 ```
 
-This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 0). 
+This storage class must support ReadWriteMany access modes when the chart is configured to create more than one Octopus node (`replicaCount` > 1). 
 ReadWriteOnce or ReadWriteMany can be used for single node clusters.
 
 Alternatively, each volume may be configured individually. An example is shown below.
@@ -123,6 +123,71 @@ octopus:
     size: 1Gi 
     storageClassName: "azure-file"
     storageAccessMode: ReadWriteMany
+```
+
+#### Scaling from one node to multiple nodes
+
+> [!WARNING]
+> Moving an existing installation from `replicaCount: 1` to more than one node can delete the data in your persistent volumes. If you might run more than one node, use a ReadWriteMany storage class and `storageAccessMode: ReadWriteMany` from the first install.
+
+When `replicaCount` is greater than 1, every persistent volume claim the chart creates is rendered as ReadWriteMany, whatever `storageAccessMode` is set to. If the claims were created as ReadWriteOnce, this changes them.
+
+The access mode and storage class of a persistent volume claim can't be changed after it's created, so `helm upgrade` fails with an error that the claim's spec is immutable. Many default storage classes, such as Azure Disk, Amazon EBS and GCE Persistent Disk, don't support ReadWriteMany, so you usually also need to move to a different storage class, such as Azure Files, Amazon EFS or Filestore.
+
+The only way to make either change is to delete and recreate the claims. Dynamically provisioned persistent volumes have a reclaim policy of `Delete` by default, so deleting a claim also deletes its volume and everything on it: packages, artifacts, task logs, audit logs and any cluster shared data.
+
+To keep your data when you scale out:
+
+1. Set the reclaim policy of each existing volume to `Retain`, so its data survives when the claim is deleted:
+
+   ```bash
+   kubectl get pvc -n <namespace>
+   kubectl patch pv <volume-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+   ```
+
+2. Stop Octopus by scaling the StatefulSet to 0 replicas.
+3. Delete the persistent volume claims.
+4. Run `helm upgrade` with the new `replicaCount` and a ReadWriteMany storage class, which creates new, empty claims. Scale the StatefulSet back to 0 straight away, as the upgrade restarts Octopus.
+5. Copy the data from each retained volume to its new volume, for example from a temporary pod that mounts both.
+6. Scale the StatefulSet back to `replicaCount`.
+7. Delete the retained volumes once you've confirmed the data is in place.
+
+#### Cluster shared storage
+
+Octopus can store the files that every node needs to share in a cluster shared directory. This is required for [multi-node support for polling tentacles](#multi-node-polling-tentacles), and requires a version of Octopus Server (2026.4.6909 onwards) whose container supports the `CLUSTER_SHARED_MODE` environment variable.
+
+This is configured with `octopus.clusterShared.mode`:
+
+| Mode | Volumes |
+| --- | --- |
+| `""` (default) | The package repository, artifact, task log and audit log volumes. `CLUSTER_SHARED_MODE` isn't set. |
+| `SEPARATE_VOLUMES` | The same volumes as the default. Clears any cluster shared directory configured previously. |
+| `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` | The same volumes as the default, plus a cluster shared volume mounted at `/clusterShared`. Octopus stores transient execution data (the package cache, DataBus and DataStreams) there. |
+| `CLUSTER_SHARED` | A single cluster shared volume mounted at `/clusterShared`, which holds packages, artifacts, task logs, event exports and transient execution data. The other volumes aren't created. |
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    volume:
+      size: 10Gi
+      storageClassName: "azure-file"
+```
+
+`CLUSTER_SHARED` is intended for new installations, as existing packages, artifacts and logs aren't moved. Don't switch an existing installation to or from `CLUSTER_SHARED`, or clear the mode once a cluster shared volume has been created: the volumes that are no longer rendered are deleted by Helm, along with their data. To stop using the cluster shared volume, set the mode to `SEPARATE_VOLUMES`.
+
+The cluster shared volume follows the same rules as the other shared volumes. It uses `global.storageClass` if no storage class is set, and is ReadWriteMany when `replicaCount` is greater than 1.
+
+To store transient execution data on different storage, such as faster storage that isn't backed up, enable a separate executions volume, mounted at `/executionsClusterShared`. This requires a mode of `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` or `CLUSTER_SHARED`:
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+    executionsVolume:
+      enabled: true
+      size: 10Gi
+      storageClassName: "fast-rwx"
 ```
 
 #### Git resources
@@ -328,7 +393,7 @@ octopus:
 
 If you are deploying to Kubernetes using the [Octopus Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent), or have Virtual Machines with an [Octopus Polling Tentacle](https://octopus.com/docs/infrastructure/deployment-targets/tentacle/tentacle-communication#polling-tentacles) installed, you will also need to configure ingress to allow Polling Tentacle traffic. 
 
-If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node.  
+If the chart is configured to create a single Octopus node (`replicaCount: 1`) then the polling tentacle port is exposed on the same service as the Octopus server.  If a replica count of greater than 1 is specified, then a kubernetes service will be created for each node, unless [multi-node support for polling tentacles](#multi-node-polling-tentacles) is enabled.  
 
 The following configuration will create an ingress endpoint for each Octopus node (replica). 
 
@@ -354,6 +419,70 @@ The resulting endpoints will be:
 Your Octopus Kubernetes Agents and Virtual Machine Polling Tentacles must be configured to poll every Octopus server node.  Documentation for configuring this can be found below:
 - [Kubernetes Agent](https://octopus.com/docs/infrastructure/deployment-targets/kubernetes/kubernetes-agent/ha-cluster-support#octopus-deploy-ha-cluster)
 - [Virtual Machine Polling Tentacles](https://octopus.com/docs/administration/high-availability/maintain/polling-tentacles-with-ha)
+
+#### <a name="multi-node-polling-tentacles"></a>Multi-node support for polling tentacles
+
+By default, a polling tentacle must poll every Octopus node, as work for the tentacle can only be picked up by the node it's connected to. With multi-node support for polling tentacles, pending requests are queued in Redis so any node can pick them up. Tentacles then only need to poll a single endpoint, which load balances across every node.
+
+This requires:
+- A version of Octopus Server that supports multi-node support for polling tentacles.
+- A [cluster shared volume](#cluster-shared-storage), with `octopus.clusterShared.mode` set to `SEPARATE_VOLUMES_WITH_CLUSTER_SHARED` or `CLUSTER_SHARED`.
+- A Redis instance that every node can reach.
+
+Redis must be configured with:
+- No persistence (RDB snapshots or AOF).
+- No replication or automatic failover.
+- An eviction policy of `noeviction`.
+
+Octopus handles Redis losing all of its data, but a restored snapshot or promoted replica can bring back stale requests that get sent to a tentacle again, and evicted keys would silently drop requests.
+
+The chart can run Redis for you, configured this way:
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+  multiNodePollingTentacles:
+    enabled: true
+redis:
+  enabled: true
+```
+
+This is a single Redis pod. Polling tentacle requests that are in flight when it restarts fail, and new requests work again once it's back.
+
+To use your own Redis, provide a connection string instead and leave `redis.enabled` false. If `redis.enabled` is true, the chart's Redis takes precedence and the connection string is ignored. Your Redis must meet the requirements above, so a single node with no persistence and no replica:
+
+```yaml
+octopus:
+  clusterShared:
+    mode: SEPARATE_VOLUMES_WITH_CLUSTER_SHARED
+  multiNodePollingTentacles:
+    enabled: true
+    redis:
+      connectionString: "my-redis.example.com:6380,password=<password>,ssl=true"
+```
+
+The connection string is a [StackExchange.Redis connection string](https://stackexchange.github.io/StackExchange.Redis/Configuration.html). If `octopus.createSecrets` is false, provide it in a secret named `<release name>-redisconnectionstring` with the key `secret`.
+
+The Redis password is generated unless you set `redis.password`. If `octopus.createSecrets` is false, provide it in a secret named `<release name>-redispassword` with the key `secret`.
+
+When the feature is enabled, the chart creates a service named `<release name>-octopus-deploy-polling-tentacles`, which passes tentacle TCP traffic through to any node. Its type defaults to `octopus.service.type`. Octopus terminates TLS, so anything in front of the service must not. Configure your tentacles to poll this address, or use a polling tentacle ingress (see below). To expose it through a cloud load balancer:
+
+```yaml
+octopus:
+  multiNodePollingTentacles:
+    service:
+      type: LoadBalancer
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      loadBalancerSourceRanges:
+        - 10.0.0.0/8
+      externalTrafficPolicy: Local
+```
+
+The tentacle port is also exposed on the main Octopus service, and the per-node services and polling tentacle ingresses aren't created. Existing tentacles that poll every node must be reconfigured to poll the single endpoint.
+
+If `octopus.ingress.pollingTentacles.enabled` is true, a single polling tentacle ingress is created instead of one per node, with the host `<hostPrefix>.<host>` (for example, `polling.octopus.example.com`). It uses SSL passthrough, as described in [Polling Tentacles](#polling-tentacles).
 
 #### <a name="grpc-communication"></a>gRPC Communication
 

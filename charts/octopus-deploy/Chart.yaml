@@ -15,3 +15,6 @@ dependencies:
   - name: mssql
     condition: mssql.enabled
     version: "0.0.1"
+  - name: redis
+    condition: redis.enabled
+    version: "0.0.1"

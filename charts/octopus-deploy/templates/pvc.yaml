@@ -1,3 +1,4 @@
+{{- if include "octopus.clusterShared.hasSeparateVolumes" . }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -77,3 +78,48 @@ spec:
   resources:
     requests:
       storage: {{.Values.octopus.auditLogVolume.size}}
+{{- end }}
+{{- if include "octopus.clusterShared.hasVolume" . }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cluster-shared-claim
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+    - ReadWriteMany
+    {{- else }}
+    - {{.Values.octopus.clusterShared.volume.storageAccessMode}}
+    {{- end }}
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.clusterShared.volume.storageClassName) }}
+  storageClassName: {{ $storageClass }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{.Values.octopus.clusterShared.volume.size}}
+{{- end }}
+{{- if .Values.octopus.clusterShared.executionsVolume.enabled }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: executions-cluster-shared-claim
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- if (gt (.Values.octopus.replicaCount | int) 1)}}
+    - ReadWriteMany
+    {{- else }}
+    - {{.Values.octopus.clusterShared.executionsVolume.storageAccessMode}}
+    {{- end }}
+  {{- if $storageClass := (default .Values.global.storageClass .Values.octopus.clusterShared.executionsVolume.storageClassName) }}
+  storageClassName: {{ $storageClass }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{.Values.octopus.clusterShared.executionsVolume.size}}
+{{- end }}

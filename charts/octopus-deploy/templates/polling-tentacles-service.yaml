@@ -1,0 +1,32 @@
+{{- if and .Values.octopus.multiNodePollingTentacles.enabled .Values.octopus.multiNodePollingTentacles.service.enabled }}
+{{- $service := .Values.octopus.multiNodePollingTentacles.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "octopus.pollingTentacles.serviceName" . }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+    {{- with $service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with $service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $service.type | default .Values.octopus.service.type }}
+  {{- with $service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $service.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ . }}
+  {{- end }}
+  selector:
+    {{- include "octopus.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: tentacle
+      port: {{ .Values.octopus.tentaclePort }}
+      targetPort: 10943
+      protocol: TCP
+{{- end }}
