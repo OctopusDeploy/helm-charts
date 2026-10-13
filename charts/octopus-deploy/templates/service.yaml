@@ -4,6 +4,10 @@ metadata:
   name: {{ template "octopus.fullname" . }}
   labels:
     {{- include "labels" . | nindent 4 }}
+  {{- with .Values.octopus.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.octopus.service.type }}
   selector:
