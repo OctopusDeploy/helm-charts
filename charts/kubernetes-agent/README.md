@@ -170,7 +170,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | persistence.nfs.containers.nfs.env | list | `[]` | Additional env to apply to the NFS container - does not override any other configuration |
 | persistence.nfs.containers.nfs.spec | object | `{}` | Additional container spec to apply to the NFS container - does not override any other configuration |
 | persistence.nfs.enabled | bool | `false` | If enabled, runs an in-cluster NFS server pod to support scaled, multi-node script pod execution. |
-| persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.1.0"}` | The repository, pullPolicy & tag to use for the NFS server |
+| persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.1.2"}` | The repository, pullPolicy & tag to use for the NFS server |
 | persistence.nfs.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the NFS pod & container |
 | persistence.nfs.spec | object | `{}` | Additional pod spec to apply to the NFS pod - does not override any other NFS configuration |
 | persistence.nfs.tolerations | list | `[]` | The tolerations to apply to the NFS pod |
