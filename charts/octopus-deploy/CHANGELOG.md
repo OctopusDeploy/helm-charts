@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.17.0
+
+### Minor Changes
+
+- 6e5ef07: Allow the Octopus Server startup probe failure threshold to be configured with `octopus.startupProbe.failureThreshold`, so long-running database upgrades are not interrupted by a container restart
+
 ## 1.16.0
 
 ### Minor Changes
