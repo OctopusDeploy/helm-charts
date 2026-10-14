@@ -1,5 +1,12 @@
 # kubernetes-agent
 
+## 3.15.3
+
+### Patch Changes
+
+- d59c542: Update nfs-server image tag to 1.1.2
+- b92fd06: Update the Kubernetes monitor chart to [v0.44.0](https://github.com/OctopusDeploy/kubernetes-monitor/releases/tag/kubernetes-monitor-chart-v0.44.0), which contains Kubernetes Monitor [v0.32.0](https://github.com/OctopusDeploy/kubernetes-monitor/releases/tag/v0.32.0).
+
 ## 3.15.2
 
 ### Patch Changes
