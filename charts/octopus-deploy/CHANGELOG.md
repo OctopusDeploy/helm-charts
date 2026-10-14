@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.18.0
+
+### Minor Changes
+
+- 6ee064c: Add opt-in support for configuring cluster shared storage (`octopus.clusterShared`) and multi-node support for polling tentacles (`octopus.multiNodePollingTentacles`), including an optional in-cluster Redis.
+
 ## 1.17.0
 
 ### Minor Changes
