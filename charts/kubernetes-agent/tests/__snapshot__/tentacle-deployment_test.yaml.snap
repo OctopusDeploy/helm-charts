@@ -86,6 +86,8 @@ should match snapshot:
                   value: "false"
                 - name: OCTOPUS__K8STENTACLE__DISABLEPODEVENTSINTASKLOG
                   value: "false"
+                - name: OCTOPUS__K8STENTACLE__NFSENABLED
+                  value: "false"
                 - name: OCTOPUS__K8STENTACLE__ACCESSMODESJSON
                   value: '["ReadWriteOnce"]'
                 - name: OCTOPUS__TENTACLE__LOGLEVEL
