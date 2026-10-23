@@ -574,7 +574,7 @@ tests:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEPULLPOLICY')].value
         value: 'Always'
 
-- it: Sets NFSENABLED to 'true' when NFS is enabled
+- it: Sets STORAGECLASSNAME to BUILT_IN_NFS_SERVER when NFS is enabled
   set:
     persistence:
       accessModes: ["ReadWriteMany"]
@@ -582,15 +582,32 @@ tests:
         enabled: true
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__NFSENABLED')].value
-      value: 'true'
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'BUILT_IN_NFS_SERVER'
 
-- it: Sets NFSENABLED to 'false' when NFS is enabled
+- it: Sets STORAGECLASSNAME to STATICALLY_PROVISIONED_PV when storageClassName is '-'
   set:
     persistence:
-      nfs:
-        enabled: false
+      storageClassName: "-"
   asserts:
   - equal:
-      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__NFSENABLED')].value
-      value: 'false'
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'STATICALLY_PROVISIONED_PV'
+
+- it: Sets STORAGECLASSNAME to CLUSTER_DEFAULT when storageClassName is an empty string
+  set:
+    persistence:
+      storageClassName: ""
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'CLUSTER_DEFAULT'
+
+- it: Sets STORAGECLASSNAME to the value of storageClassName
+  set:
+    persistence:
+      storageClassName: "my-cool-storage-class"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'my-cool-storage-class'

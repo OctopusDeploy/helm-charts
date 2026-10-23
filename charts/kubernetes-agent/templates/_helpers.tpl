@@ -322,3 +322,19 @@ Returns the list as JSON array (use fromJsonArray to deserialize)
 {{- .Values.global.targetNamespaces | toJson }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+The storage class name to be shown in Octopus Server. This may not be the same as what's in the PVC
+*/}}
+{{- define "kubernetes-agent.storageClassNameForServer" -}}
+{{- if (include "nfs.enabled" .) -}}
+{{- "BUILT_IN_NFS_SERVER" }}
+{{- else if (eq "-" .Values.persistence.storageClassName) -}}
+{{- "STATICALLY_PROVISIONED_PV" }}
+{{- else if .Values.persistence.storageClassName -}}
+{{- .Values.persistence.storageClassName }}
+{{- else -}}
+{{ "CLUSTER_DEFAULT" }}
+{{- end -}}
+{{- end -}}
