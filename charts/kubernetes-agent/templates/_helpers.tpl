@@ -331,7 +331,7 @@ The storage class name to be shown in Octopus Server. This may not be the same a
 {{- if (include "nfs.enabled" .) -}}
 {{- "BUILT_IN_NFS_SERVER" }}
 {{- else if (eq "-" .Values.persistence.storageClassName) -}}
-{{- "STATICALLY_PROVISIONED_PV" }}
+{{- "NONE_DEFINED" }}
 {{- else if .Values.persistence.storageClassName -}}
 {{- .Values.persistence.storageClassName }}
 {{- else -}}
