@@ -573,3 +573,41 @@ tests:
     - equal:
         path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__CALAMARIIMAGEVOLUMEPULLPOLICY')].value
         value: 'Always'
+
+- it: Sets STORAGECLASSNAME to BUILT_IN_NFS_SERVER when NFS is enabled
+  set:
+    persistence:
+      accessModes: ["ReadWriteMany"]
+      nfs:
+        enabled: true
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'BUILT_IN_NFS_SERVER'
+
+- it: Sets STORAGECLASSNAME to NONE_DEFINED when storageClassName is '-'
+  set:
+    persistence:
+      storageClassName: "-"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'NONE_DEFINED'
+
+- it: Sets STORAGECLASSNAME to CLUSTER_DEFAULT when storageClassName is an empty string
+  set:
+    persistence:
+      storageClassName: ""
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'CLUSTER_DEFAULT'
+
+- it: Sets STORAGECLASSNAME to the value of storageClassName
+  set:
+    persistence:
+      storageClassName: "my-cool-storage-class"
+  asserts:
+  - equal:
+      path: spec.template.spec.containers[0].env[?(@.name == 'OCTOPUS__K8STENTACLE__STORAGECLASSNAME')].value
+      value: 'my-cool-storage-class'
