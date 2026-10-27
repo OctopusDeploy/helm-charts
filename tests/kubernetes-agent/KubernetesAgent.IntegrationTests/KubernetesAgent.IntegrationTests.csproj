@@ -17,7 +17,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
         <PackageReference Include="Octopus.Client" Version="22.7.2875" />
-        <PackageReference Include="Octopus.Tentacle.Client" Version="12.2.4612" />
+        <PackageReference Include="Octopus.Tentacle.Client" Version="12.2.4638" />
         <PackageReference Include="Serilog" Version="4.4.0" />
         <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.19" />
         <PackageReference Include="xunit" Version="2.9.3"/>
