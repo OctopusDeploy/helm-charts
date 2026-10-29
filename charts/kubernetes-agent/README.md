@@ -1,6 +1,6 @@
 ## Kubernetes agent
 
-![Version: 3.15.4](https://img.shields.io/badge/Version-3.15.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 12.3.4638](https://img.shields.io/badge/AppVersion-12.3.4638-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
+![Version: 3.15.5](https://img.shields.io/badge/Version-3.15.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 12.3.4638](https://img.shields.io/badge/AppVersion-12.3.4638-informational?style=flat-square) ![Octopus Deploy Version: 2024.2.6580+](https://img.shields.io/badge/Octopus_Deploy-2024.2.6580%2B-2F93E0?style=flat-square&logo=octopusdeploy&logoColor=%232F93E0&logoSize=auto)
 
 The Kubernetes agent is the recommended way to deploy to Kubernetes clusters using [Octopus Deploy](https://octopus.com).
 
@@ -170,7 +170,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | persistence.nfs.containers.nfs.env | list | `[]` | Additional env to apply to the NFS container - does not override any other configuration |
 | persistence.nfs.containers.nfs.spec | object | `{}` | Additional container spec to apply to the NFS container - does not override any other configuration |
 | persistence.nfs.enabled | bool | `false` | If enabled, runs an in-cluster NFS server pod to support scaled, multi-node script pod execution. |
-| persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.1.2"}` | The repository, pullPolicy & tag to use for the NFS server |
+| persistence.nfs.image | object | `{"pullPolicy":"IfNotPresent","repository":"octopusdeploy/nfs-server","tag":"1.1.3"}` | The repository, pullPolicy & tag to use for the NFS server |
 | persistence.nfs.metadata | object | `{"annotations":{},"labels":{}}` | Additional metadata to add to the NFS pod & container |
 | persistence.nfs.spec | object | `{}` | Additional pod spec to apply to the NFS pod - does not override any other NFS configuration |
 | persistence.nfs.tolerations | list | `[]` | The tolerations to apply to the NFS pod |

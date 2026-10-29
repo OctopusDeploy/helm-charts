@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.15.5
+
+### Patch Changes
+
+- a9c2e96: Update nfs-server to 1.1.3 without compromised CA certificates
+
 ## 3.15.4
 
 ### Patch Changes
