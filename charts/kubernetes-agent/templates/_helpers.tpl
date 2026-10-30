@@ -325,7 +325,7 @@ Returns the list as JSON array (use fromJsonArray to deserialize)
 
 
 {{/*
-The storage class name to be shown in Octopus Server. This may not be the same as what's in the PVC
+The storage class name for Octopus Server to use
 */}}
 {{- define "kubernetes-agent.storageClassNameForServer" -}}
 {{- if (include "nfs.enabled" .) -}}
