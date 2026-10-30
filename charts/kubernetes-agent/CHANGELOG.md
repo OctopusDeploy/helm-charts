@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.15.6
+
+### Patch Changes
+
+- 950c298: Add env var to tentacle deployment indicating what the storage class name is. This is used by Octopus Server.
+
 ## 3.15.5
 
 ### Patch Changes
