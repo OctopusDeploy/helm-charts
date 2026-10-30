@@ -6,6 +6,12 @@ on:
     - main
     - release/octopus-deploy/v*
   workflow_dispatch:
+  # Called by release-please.yaml when a new chart version is released
+  workflow_call:
+    inputs:
+      release:
+        type: boolean
+        default: false
 
 jobs:
   paths_filter:
@@ -26,7 +32,7 @@ jobs:
 
   test:
     needs: paths_filter
-    if: needs.paths_filter.outputs.result == 'true'
+    if: inputs.release || needs.paths_filter.outputs.result == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -86,11 +92,11 @@ jobs:
           name: '${{ steps.version.outputs.PACKAGE_NAME }}'
           path: '${{ github.workspace }}/octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz'
 
-      # Only push the chart for real if it's a branch build OR it's the versioning PR
+      # Only push the chart for real if it's a branch build OR release-please has released a new version
       - name: Push Chart to GHCR
-        if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+        if: ${{ inputs.release || github.ref != 'refs/heads/main' }}
         run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://ghcr.io/octopusdeploy
 
       - name: Push Chart to Docker Hub
-        if: ${{ github.ref != 'refs/heads/main' || (github.ref == 'refs/heads/main' && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+        if: ${{ inputs.release || github.ref != 'refs/heads/main' }}
         run: helm push "octopusdeploy-helm-${{ steps.version.outputs.CHART_VERSION }}.tgz" oci://registry-1.docker.io/octopusdeploy

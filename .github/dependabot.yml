@@ -14,9 +14,7 @@ updates:
           - "*"
   - package-ecosystem: npm
     directories:
-      - "/"
       - "/charts/kubernetes-agent"
-      - "/charts/octopus-deploy"
     schedule:
       interval: weekly
     open-pull-requests-limit: 5

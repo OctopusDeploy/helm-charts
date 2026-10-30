@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "helm",
+  "bootstrap-sha": "950c29856c8b93f88a056bebda7cc4a64810832d",
+  "separate-pull-requests": false,
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "tag-separator": "/",
+  "packages": {
+    "charts/kubernetes-agent": {
+      "component": "kubernetes-agent",
+      "package-name": "kubernetes-agent"
+    },
+    "charts/octopus-deploy": {
+      "component": "octopus-deploy",
+      "package-name": "octopus-deploy"
+    }
+  }
+}

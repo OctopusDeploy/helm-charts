@@ -1,0 +1,4 @@
+{
+  "charts/kubernetes-agent": "3.15.5",
+  "charts/octopus-deploy": "1.18.0"
+}

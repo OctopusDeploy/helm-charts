@@ -1,0 +1,22 @@
+name: PR Title
+
+# release-please builds versions and changelogs from conventional commit messages,
+# and squash merges use the PR title as the commit message
+on:
+  pull_request_target:
+    types:
+    - opened
+    - edited
+    - synchronize
+    - reopened
+
+permissions:
+  pull-requests: read
+
+jobs:
+  conventional-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: amannn/action-semantic-pull-request@v6
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
