@@ -83,6 +83,33 @@ octopus:
     failureThreshold: 90
 ```
 
+### Custom Certificate Authorities
+
+If Octopus Server connects to services that use certificates it doesn't trust by default, such as an internal package feed, Git repository or LDAP server, add the certificate authorities that issued them to `customCertificateAuthorities`.
+
+Store each certificate in a Secret or ConfigMap, then list them in `customCertificateAuthorities`. Set `secretName` or `configMapName` for each entry, and set `key` to the key that holds the certificate:
+
+```yaml
+octopus:
+  customCertificateAuthorities:
+    - secretName: corporate-root-ca
+      key: ca.crt
+    - configMapName: corporate-intermediate-ca
+      key: intermediate.crt
+```
+
+For example, to create the Secret above from a certificate file:
+
+```bash
+kubectl create secret generic corporate-root-ca --from-file=ca.crt=./corporate-root-ca.crt --namespace <your namespace>
+```
+
+Each certificate is mounted into `/etc/ssl/certs` and Octopus Server adds it to the trusted certificates when it starts.
+
+- Add a separate entry for each certificate, with one PEM certificate per key. Octopus Server also trusts a key that holds a bundle of several certificates, but command-line tools such as `git` and `openssl` in scripts that run on the server don't.
+- Octopus Server reads the certificates when the container starts. If you change a certificate, restart the Octopus pods.
+- This requires Octopus Server 2025.2.12724 or later.
+
 ### Persistent Volumes
 
 This chart requires persistent volumes to store:
