@@ -1,5 +1,11 @@
 # octopus-deploy
 
+## 1.19.0
+
+### Minor Changes
+
+- ef3c18b: Add `octopus.customCertificateAuthorities` so Octopus Server can trust certificate authorities whose certificates are stored in a Secret or ConfigMap.
+
 ## 1.18.0
 
 ### Minor Changes
