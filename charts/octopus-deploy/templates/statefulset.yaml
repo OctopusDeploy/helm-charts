@@ -195,6 +195,12 @@ spec:
           - name: executions-cluster-shared-volume
             mountPath: /executionsClusterShared
           {{- end }}
+          {{- range $index, $certificate := .Values.octopus.customCertificateAuthorities }}
+          - name: custom-certificate-authority-{{ $index }}
+            mountPath: /etc/ssl/certs/octopus-custom-certificate-authority-{{ $index }}.crt
+            subPath: {{ $certificate.key | quote }}
+            readOnly: true
+          {{- end }}
         {{- if .Values.octopus.resources }}
         resources:
         {{- toYaml .Values.octopus.resources | nindent 10 }}
@@ -251,6 +257,16 @@ spec:
         - name: executions-cluster-shared-volume
           persistentVolumeClaim:
             claimName: executions-cluster-shared-claim
+        {{- end }}
+        {{- range $index, $certificate := .Values.octopus.customCertificateAuthorities }}
+        - name: custom-certificate-authority-{{ $index }}
+        {{- if $certificate.secretName }}
+          secret:
+            secretName: {{ $certificate.secretName | quote }}
+        {{- else if $certificate.configMapName }}
+          configMap:
+            name: {{ $certificate.configMapName | quote }}
+        {{- end }}
         {{- end }}
         {{- range $name, $volume := .Values.octopus.extraVolumes }}
         - name: {{ $name }}-volume

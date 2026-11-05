@@ -316,3 +316,99 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].env[?(@.name == 'NEW_ENV_VAR')].value
           value: new_value
+
+  - it: custom certificate authorities are not mounted by default
+    values:
+      - ./values/required.yaml
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: custom-certificate-authority-0
+          any: true
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: custom-certificate-authority-0
+          any: true
+
+  - it: custom certificate authority from a secret is mounted into the certificate store
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.customCertificateAuthorities:
+        - secretName: corporate-root-ca
+          key: ca.crt
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: custom-certificate-authority-0
+            secret:
+              secretName: corporate-root-ca
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: custom-certificate-authority-0
+            mountPath: /etc/ssl/certs/octopus-custom-certificate-authority-0.crt
+            subPath: ca.crt
+            readOnly: true
+
+  - it: custom certificate authority from a config map is mounted into the certificate store
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.customCertificateAuthorities:
+        - configMapName: corporate-root-ca
+          key: ca.crt
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: custom-certificate-authority-0
+            configMap:
+              name: corporate-root-ca
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: custom-certificate-authority-0
+            mountPath: /etc/ssl/certs/octopus-custom-certificate-authority-0.crt
+            subPath: ca.crt
+            readOnly: true
+
+  - it: multiple custom certificate authorities are each mounted as their own file
+    values:
+      - ./values/required.yaml
+    set:
+      octopus.customCertificateAuthorities:
+        - secretName: corporate-root-ca
+          key: ca.crt
+        - configMapName: corporate-intermediate-ca
+          key: ca.crt
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: custom-certificate-authority-0
+            secret:
+              secretName: corporate-root-ca
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: custom-certificate-authority-1
+            configMap:
+              name: corporate-intermediate-ca
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: custom-certificate-authority-0
+            mountPath: /etc/ssl/certs/octopus-custom-certificate-authority-0.crt
+            subPath: ca.crt
+            readOnly: true
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: custom-certificate-authority-1
+            mountPath: /etc/ssl/certs/octopus-custom-certificate-authority-1.crt
+            subPath: ca.crt
+            readOnly: true
