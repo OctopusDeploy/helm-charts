@@ -13,7 +13,6 @@ tests:
       serviceAccount:
         targetNamespaces: []
     agent.deploymentTarget.enabled: true
-    persistence.nfs.watchdog.enabled: false
   template: templates/pod-rolebindings.yaml
   asserts:
   - hasDocuments:
@@ -35,7 +34,6 @@ tests:
       serviceAccount:
         targetNamespaces: ["local-ns-1", "local-ns-2", "local-ns-3"]
     agent.deploymentTarget.enabled: true
-    persistence.nfs.watchdog.enabled: false
   template: templates/pod-rolebindings.yaml
   asserts:
   - hasDocuments:
@@ -53,7 +51,7 @@ tests:
       value: local-ns-3
     documentIndex: 2
 
-- it: "creates no rolebindings when both global and local are empty and nfs is disabled"
+- it: "creates no rolebindings when both global and local are empty"
   set:
     global:
       targetNamespaces: []
