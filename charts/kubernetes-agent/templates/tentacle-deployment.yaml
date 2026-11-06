@@ -136,10 +136,6 @@ spec:
               value: {{ .Values.scriptPods.logging.disablePodEventsInTaskLog | quote }}
             - name: "OCTOPUS__K8STENTACLE__STORAGECLASSNAME"
               value: {{ (include "kubernetes-agent.storageClassNameForServer" .) | quote }}
-            {{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
-            - name: "OCTOPUS__K8STENTACLE__NFSWATCHDOGIMAGE"
-              value: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
-            {{- end }}
             - name: "OCTOPUS__K8STENTACLE__ACCESSMODESJSON"
               value: {{ .Values.persistence.accessModes | toJson | quote }}
             - name: "OCTOPUS__TENTACLE__LOGLEVEL"
@@ -280,35 +276,6 @@ spec:
             - mountPath: /root
               name: temp-dir
             {{- end }}
-        {{- if and (include "nfs.enabled" .) .Values.persistence.nfs.watchdog.enabled }}
-        - name: nfs-watchdog
-          {{- with .Values.agent.containers.watchdog.spec }}
-          {{- toYaml . | nindent 10 }}
-          {{- end }}
-          image: "{{ .Values.persistence.nfs.watchdog.image.repository }}:{{ .Values.persistence.nfs.watchdog.image.tag }}"
-          imagePullPolicy: {{ .Values.persistence.nfs.watchdog.image.pullPolicy }}
-          env:
-            - name: "watchdog_directory"
-              value: "/octopus"
-            {{ if .Values.persistence.nfs.watchdog.loop_seconds }}
-            - name: "watchdog_loop_seconds"
-              value: "{{ .Values.persistence.nfs.watchdog.loop_seconds }}"
-            {{ end }}
-            {{ if .Values.persistence.nfs.watchdog.initial_backoff_seconds }}
-            - name: "watchdog_initial_backoff_seconds"
-              value: "{{ .Values.persistence.nfs.watchdog.initial_backoff_seconds }}"
-            {{ end }}
-            {{ if .Values.persistence.nfs.watchdog.timeout_seconds }}
-            - name: "watchdog_timeout_seconds"
-              value: "{{ .Values.persistence.nfs.watchdog.timeout_seconds }}"
-            {{ end }}
-            {{- with .Values.agent.containers.watchdog.env }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
-          volumeMounts:
-            - mountPath: /octopus
-              name: tentacle-home
-        {{- end}}
       volumes:
         - name: tentacle-home
           persistentVolumeClaim:
