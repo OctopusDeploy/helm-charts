@@ -146,6 +146,7 @@ octopus:
 
   service:
     type: NodePort
+    annotations: {}
 
   ingress:
     enabled: false
