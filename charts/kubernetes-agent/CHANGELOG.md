@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 3.15.7
+
+### Patch Changes
+
+- 765d294: Update nfs-server to 1.1.4 to remove the compromised emSign ECC Root CA G3 certificate
+
 ## 3.15.6
 
 ### Patch Changes
