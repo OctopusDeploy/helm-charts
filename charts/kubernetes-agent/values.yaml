@@ -178,6 +178,10 @@ agent:
                   - arm64
                   - amd64
 
+  # -- The rollout strategy for the agent's Deployment. Empty uses the Kubernetes default (RollingUpdate). With a ReadWriteOnce volume (the default `persistence.accessModes`), set `{type: Recreate}` on clusters with more than one node: a rolling update starts the new pod before the old one releases the volume, so a new pod scheduled on another node waits for it until the upgrade times out.
+  # @section -- Agent values
+  strategy: {}
+
   # -- If set to a non-empty list, completely replaces the default Role rules for the tentacle role. Note: `[]` (empty list) means "use defaults", not "no rules". CRD rules for `agent.octopus.com/scriptpodtemplates` are appended when `scriptPods.podTemplate.enabled=true` and `scriptPods.podTemplate.crdDisabled` is not `true`.
   # @section -- Agent values
   # @default -- Core API resources (pods, pods/log, configmaps, secrets, events) with full CRUD verbs, plus read-only access to apps/deployments.
