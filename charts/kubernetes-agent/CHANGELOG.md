@@ -1,5 +1,11 @@
 # kubernetes-agent
 
+## 2.52.1
+
+### Patch Changes
+
+- 81d48ad: Update monitor chart to v0.47.0
+
 ## 2.52.0
 
 ### Minor Changes
