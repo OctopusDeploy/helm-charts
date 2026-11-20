@@ -115,13 +115,8 @@ should partially render successfully:
         app.kubernetes.io/instance: RELEASE-NAME
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: octopus-agent
-<<<<<<< HEAD
         app.kubernetes.io/version: 12.3.4638
         helm.sh/chart: kubernetes-agent-3.15.7
-=======
-        app.kubernetes.io/version: 9.2.4285
-        helm.sh/chart: kubernetes-agent-2.52.1
->>>>>>> release/kubernetes-agent/v2
       name: octopus-agent
       namespace: NAMESPACE
     spec:
