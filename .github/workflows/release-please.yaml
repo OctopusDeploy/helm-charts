@@ -34,9 +34,9 @@ jobs:
         manifest-file: .release-please-manifest.json
 
   # release-please only bumps Chart.yaml and CHANGELOG.md, so regenerate the files that embed the chart version
-  update-release-pr:
+  update-release-pr-kubernetes-agent:
     needs: release-please
-    if: ${{ needs.release-please.outputs.pr }}
+    if: ${{ needs.release-please.outputs.pr && needs.release-please.outputs.ka_release_created == 'true' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
