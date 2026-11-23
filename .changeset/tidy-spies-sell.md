@@ -2,4 +2,4 @@
 "kubernetes-agent": patch
 ---
 
-Bump kubernetes monitor chart version to 0.47.0
+Forward merge from [2.52.1](#2521)
