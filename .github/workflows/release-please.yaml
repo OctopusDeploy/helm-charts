@@ -4,9 +4,6 @@ on:
   push:
     branches:
     - main
-    - release/kubernetes-agent/v*
-    - release/octopus-deploy/v*
-    - octopus-v1
     - vnext/v*
 
 concurrency:
@@ -22,7 +19,7 @@ jobs:
     outputs:
       ka_release_created: ${{ steps.release.outputs['charts/kubernetes-agent--release_created'] }}
       od_release_created: ${{ steps.release.outputs['charts/octopus-deploy--release_created'] }}
-      pr: ${{ steps.release.outputs.pr }}
+      ka_pr_branch: ${{ steps.ka_pr.outputs.branch }}
     steps:
     - uses: googleapis/release-please-action@v5
       id: release
@@ -33,15 +30,24 @@ jobs:
         config-file: release-please-config.json
         manifest-file: .release-please-manifest.json
 
+    # With separate PRs, `pr` is only the first PR touched, so find the Kubernetes Agent one in `prs`
+    - name: Find Kubernetes Agent release PR
+      id: ka_pr
+      env:
+        PRS: ${{ steps.release.outputs.prs }}
+      run: |
+        branch=$(echo "${PRS:-[]}" | jq -r '[.[] | select(.headBranchName | endswith("--components--kubernetes-agent"))][0].headBranchName // empty')
+        echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
   # release-please only bumps Chart.yaml and CHANGELOG.md, so regenerate the files that embed the chart version
   update-release-pr-kubernetes-agent:
     needs: release-please
-    if: ${{ needs.release-please.outputs.pr && needs.release-please.outputs.ka_release_created == 'true' }}
+    if: ${{ needs.release-please.outputs.ka_pr_branch }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
-        ref: ${{ fromJSON(needs.release-please.outputs.pr).headBranchName }}
+        ref: ${{ needs.release-please.outputs.ka_pr_branch }}
         token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
 
     - name: setup-helm
