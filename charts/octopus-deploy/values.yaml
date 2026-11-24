@@ -59,6 +59,14 @@ octopus:
     size: 200Mi
     storageClassName: ""
 
+  # Certificate authorities for Octopus Server to trust
+  # Each entry mounts one key of an existing Secret or ConfigMap into /etc/ssl/certs as its own file.
+  customCertificateAuthorities: []
+    #- secretName: corporate-root-ca
+    #  key: ca.crt
+    #- configMapName: corporate-intermediate-ca
+    #  key: intermediate.crt
+
   # Extra volumes. Use this for arbitrary volume mounts when using readOnlyRootFilesystem. You will want mounts for:
   # /tmp, /home/octopus, /etc/octopus, /Octopus/Octopus/Logs, and /Octopus/.diagnostics
   # See values-rorfsexample.yaml for a full example.
