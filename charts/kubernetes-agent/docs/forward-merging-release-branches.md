@@ -5,7 +5,7 @@ This is because we still have versions of Octopus Server that install the previo
 
 When we want to release changes to the previous version, those changes need to be made against the release branch for that release stream.
 
-Once those changes are merged into the release branch and "Version Charts" PR is merged, it will release a new version in that release stream.
+Once those changes are merged into the release branch and the release-please release PR is merged, it will release a new version in that release stream.
 
 However, if we also want to apply the same change (such as update to the `kubernetes-agent-tentacle` container) to the current release (e.g. `main`), we want to perform a _forward merge_ of the release branch into `main`, not a cherry pick or separate commit.
 
@@ -29,7 +29,7 @@ For the following steps, we are going to assume that `v2` is the "LTS" release a
 
 ### Step 1 - Make the change against v2 branch
 
-The changes should be made against the `release/kubernetes-agent/v2` branch. If this is a change to the application, a changeset is required. If it's just a documentation or workflow change, no changeset is needed.
+The changes should be made against the `release/kubernetes-agent/v2` branch. If this is a change to the application, the PR title must use a releasable [Conventional Commits](https://www.conventionalcommits.org/) type (e.g. `fix:` or `feat:`). If it's just a documentation or workflow change, use a non-releasing type such as `docs:` or `ci:`.
 
 Example PR: [#571](https://github.com/OctopusDeploy/helm-charts/pull/571)
 
@@ -38,7 +38,7 @@ Example PR: [#571](https://github.com/OctopusDeploy/helm-charts/pull/571)
 
 ### Step 2 - Release the v2 changes
 
-When the original PR is merged and had a changeset, the changeset bot will create a PR to release the changes for `v2`.
+When the original PR is merged and was a releasable change, release-please will create a PR to release the changes for `v2`.
 
 Example PR: [#565](https://github.com/OctopusDeploy/helm-charts/pull/565)
 
@@ -55,7 +55,7 @@ Another source of conflicts is [CHANGELOG.md](../CHANGELOG.md). You will likely 
 
 Once manually resolved and merged, you should _just_ have your changes, adjusted to fit the target branch.
 
-If the original PR had a changeset, then a changeset will need to be added to this forward merge PR. This is so target version also gets the version bump. The change message should say something like `Forward merge from [2.52.0](#2520)` where the version is the V2 version we're merging from.
+Because this is a merge commit, the original conventional commits from the release branch are brought into `main`, and release-please will use them to bump the target version and write its changelog. No extra commit is needed for the version bump.
 
 Example PR with a Tentacle change: [#577](https://github.com/OctopusDeploy/helm-charts/pull/577)
 Example PR with a Kubernetes Monitor change: [#577](https://github.com/OctopusDeploy/helm-charts/pull/745)
@@ -66,7 +66,7 @@ Example PR with a Kubernetes Monitor change: [#577](https://github.com/OctopusDe
 
 ## Step 4 - Release the v3 changes
 
-When the merge forward PR is merged and if it had a changeset, the changeset bot will create a PR to release the changes for `v3`.
+When the merge forward PR is merged and it contained releasable changes, release-please will create a PR to release the changes for `v3`.
 
 Example PR: [#580](https://github.com/OctopusDeploy/helm-charts/pull/580)
 
