@@ -9,6 +9,13 @@ on:
 
   pull_request:
 
+  # Called by release-please.yaml when a new chart version is released
+  workflow_call:
+    inputs:
+      release:
+        type: boolean
+        default: false
+
 jobs:
   paths_filter:
     runs-on: ubuntu-latest
@@ -28,7 +35,7 @@ jobs:
 
   test:
     needs: paths_filter
-    if: needs.paths_filter.outputs.result == 'true'
+    if: inputs.release || needs.paths_filter.outputs.result == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -143,8 +150,8 @@ jobs:
 
   publish_to_octopus:
     runs-on: ubuntu-latest
-    # We publish to Artifactory if this is not a main, vnext or release branch commit, or if it is, that it's a versioning commit on main, vnext or release branch
-    if: ${{ (github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/vnext/v')  && !startsWith(github.ref, 'refs/heads/release/kubernetes-agent/v')) || ((github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/vnext/v') || startsWith(github.ref, 'refs/heads/release/kubernetes-agent/v')) && startsWith(github.event.commits[0].message, 'Version Charts')) }}
+    # We publish if this is not a main, vnext or release branch commit, or if it is, that release-please has released a new version
+    if: ${{ inputs.release || (github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/vnext/v') && !startsWith(github.ref, 'refs/heads/release/kubernetes-agent/v')) }}
     needs: version_and_package
     permissions:
       # You might need to add other permissions here like `contents: read` depending on what else your job needs to do

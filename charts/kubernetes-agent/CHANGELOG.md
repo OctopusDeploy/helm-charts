@@ -1,5 +1,17 @@
 # kubernetes-agent
 
+## 3.15.8
+
+### Patch Changes
+
+- 35983fe: Forward merge from [2.52.1](#2521)
+
+## 3.15.7
+
+### Patch Changes
+
+- 765d294: Update nfs-server to 1.1.4 to remove the compromised emSign ECC Root CA G3 certificate
+
 ## 3.15.6
 
 ### Patch Changes
@@ -237,6 +249,12 @@ Version 3 has breaking changes and upgrading from Version 2 requires manual migr
   The result of this change is that script pods are now scheduled, by default, on the same node as the tentacle pod. This reduces/removes some of the scalability that NFS provided, but comes with increased performance, reduced footprint and reduced security footprint.
 
   To enable scaling of the script pods across nodes, a `persistence.storageClassName` should be set to the name of a storage class that provides `ReadWriteMany` access modes, and the `persistence.accessModes` should be set to `["ReadWriteMany"]`
+
+## 2.52.1
+
+### Patch Changes
+
+- 81d48ad: Update monitor chart to v0.47.0
 
 ## 2.52.0
 
