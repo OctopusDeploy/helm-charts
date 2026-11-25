@@ -21,10 +21,16 @@ persistence:
     enabled: true
 ```
 
-To upgrade to `v4`, you will need to change to either the default, `REadWriteOnce`, storage. Or change to a existing `ReadWriteMany` storage class.
+To upgrade to `v4`, you will need to change to either the default, `ReadWriteOnce`, storage. Or change to a existing `ReadWriteMany` storage class.
+
+#### Automatic upgrades
 
 > [!IMPORTANT]  
 > Octopus Server will not automatically upgrade from a `v3` agent to `v4` if the NFS server is in use or the storage class cannot be determined.
+
+#### Manual upgrades
+
+TODO
 
 ## Version 2 --> 3
 
