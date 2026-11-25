@@ -10,7 +10,9 @@
     "charts/kubernetes-agent": {
       "component": "kubernetes-agent",
       "package-name": "kubernetes-agent",
-      "prerelease": true
+      "prerelease-type": "rc.0",
+      "prerelease": true,
+      "versioning": "prerelease"
     },
     "charts/octopus-deploy": {
       "component": "octopus-deploy",
