@@ -1,5 +1,16 @@
 # kubernetes-agent
 
+## [4.0.0-rc.0](https://github.com/OctopusDeploy/helm-charts/compare/kubernetes-agent/3.15.8...kubernetes-agent/4.0.0-rc.0) (2026-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove NFS Server as possible storage option ([#790](https://github.com/OctopusDeploy/helm-charts/issues/790))
+
+### Features
+
+* Remove NFS Server as possible storage option ([#790](https://github.com/OctopusDeploy/helm-charts/issues/790)) ([e659dbc](https://github.com/OctopusDeploy/helm-charts/commit/e659dbccdce1df14c1c75c77b72b9942f4812077))
+
 ## 3.15.8
 
 ### Patch Changes
