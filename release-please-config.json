@@ -9,7 +9,8 @@
   "packages": {
     "charts/kubernetes-agent": {
       "component": "kubernetes-agent",
-      "package-name": "kubernetes-agent"
+      "package-name": "kubernetes-agent",
+      "prerelease": true
     },
     "charts/octopus-deploy": {
       "component": "octopus-deploy",

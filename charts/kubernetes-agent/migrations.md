@@ -7,6 +7,31 @@ the chart may be upgraded:
 * Minor upgrade (\*.1.\*) - backwards compatible enhancement, upgrade can be executed without additional changes (new version adds new capabilities)
 * Major upgrade (1.\*.\*) - breaking-change (eg Values file structure changes), will require user-input to perform upgrade
 
+## Version 3 --> 4
+
+### Overview
+
+Version 4 of the Kubernetes agent removes the built-in NFS server. As a result, you cannot automatically upgrade from `v3` to `v4` if you are using the built-in NFS server persistence.
+
+You can check if this is set by running the `helm get values RELEASE_NAME [flags]` and looking for
+
+```yaml
+persistence:
+  nfs:
+    enabled: true
+```
+
+To upgrade to `v4`, you will need to change to either the default, `ReadWriteOnce`, storage. Or change to a existing `ReadWriteMany` storage class.
+
+#### Automatic upgrades
+
+> [!IMPORTANT]  
+> Octopus Server will not automatically upgrade from a `v3` agent to `v4` if the NFS server is in use or the storage class cannot be determined.
+
+#### Manual upgrades
+
+TODO
+
 ## Version 2 --> 3
 
 ### Overview
@@ -21,10 +46,10 @@ A side-effect of the change is that by default, the v3 agent no longer scales ho
 
 The changes to the `values.yaml` file are the following additions:
 
-| Value name | Value | Comment |
-|--|--|--|
-| `persistence.nfs.enabled` | `false` | Indicates if the NFS pod should be used |
-| `persistence.accessModes` | `["ReadWriteOnce"]` | Sets the access mode used for the PVC |
+| Value name                | Value               | Comment                                 |
+| ------------------------- | ------------------- | --------------------------------------- |
+| `persistence.nfs.enabled` | `false`             | Indicates if the NFS pod should be used |
+| `persistence.accessModes` | `["ReadWriteOnce"]` | Sets the access mode used for the PVC   |
 
 Kubernetes agents upgraded via Octopus Server will automatically continue to use the existing NFS-backed storage with no changes.
 
@@ -53,22 +78,22 @@ v1 to v2.
 
 The following value must be set during the upgrade:
 
-| Value name | Value | Comment |
-|--|--|--|
-|agent.deploymentTarget.enabled | true | Specifies the helm install should act as a deployment target (not worker) |
+| Value name                     | Value | Comment                                                                   |
+| ------------------------------ | ----- | ------------------------------------------------------------------------- |
+| agent.deploymentTarget.enabled | true  | Specifies the helm install should act as a deployment target (not worker) |
 
 The following data items have been moved or renamed; data types, and content remain unchanged:
 
-| From                                        | To                                                                  | Comment                                               |
-|---------------------------------------------|---------------------------------------------------------------------|-------------------------------------------------------|
-| agent.targetName                            | agent.name                                                          | Generalised name, as may be worker or target          |
-| agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                         | N/A                                                   |
-| agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                     | May be unset - can be ignored if null                 |
-| agent.targetRoles                           | agent.deploymentTarget.initial.tags                                 | In 2024.3 target roles have been replaced with 'tags' |
-| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                            | May be unset - can be ignored if null.                |
-| agent.targetTenants                         | agent.deploymentTarget.initial.tenants                              | May be unset - can be ignored if null.                |
+| From                                        | To                                                                        | Comment                                               |
+| ------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------- |
+| agent.targetName                            | agent.name                                                                | Generalised name, as may be worker or target          |
+| agent.targetEnvironments                    | agent.deploymentTarget.initial.environments                               | N/A                                                   |
+| agent.defaultNamespace                      | agent.deploymentTarget.initial.defaultNamespace                           | May be unset - can be ignored if null                 |
+| agent.targetRoles                           | agent.deploymentTarget.initial.tags                                       | In 2024.3 target roles have been replaced with 'tags' |
+| agent.targetTenantTags                      | agent.deploymentTarget.initial.tenantTag                                  | May be unset - can be ignored if null.                |
+| agent.targetTenants                         | agent.deploymentTarget.initial.tenants                                    | May be unset - can be ignored if null.                |
 | agent.targetTenantedDeploymentParticipation | agent.deploymentTarget.initial.<br/>targetTenantedDeploymentParticipation | May be unset - can be ignored if null.                |
-| scriptPods.image                      | scriptPods.deploymentTarget.image                                   | Child fields are unchanged                            |
+| scriptPods.image                            | scriptPods.deploymentTarget.image                                         | Child fields are unchanged                            |
 
 ### Steps
 
