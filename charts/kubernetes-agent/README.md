@@ -20,7 +20,8 @@ The `main` branch will reflect the current development version of the chart. Thi
 
 | Version   | Branch                                                                                                                               | Readme                                                                                                                  | values.yaml                                                                                                               |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| 3         | [main](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/kubernetes-agent)                                               | This file                                                                                                               | [here](./values.yaml)                                                                                                     |
+| 4         | [main](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/kubernetes-agent)                                               | This file                                                                                                               | [here](./values.yaml)                                                                                                     |
+| 3         | [release/kubernetes-agent/v3](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v3/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v3/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v3/charts/kubernetes-agent/values.yaml) |
 | 2         | [release/kubernetes-agent/v1](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v2/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v2/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v2/charts/kubernetes-agent/values.yaml) |
 | 1         | [release/kubernetes-agent/v1](https://github.com/OctopusDeploy/helm-charts/tree/release/kubernetes-agent/v1/charts/kubernetes-agent) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/README.md) | [here](https://github.com/OctopusDeploy/helm-charts/blob/release/kubernetes-agent/v1/charts/kubernetes-agent/values.yaml) |
 
@@ -36,7 +37,7 @@ This is documented [here](./migrations.md).
 
 ### NFS storage (v3)
 
-The in-cluster NFS server has been deprecated and will be removed in a future major release. See https://github.com/OctopusDeploy/helm-charts/issues/554
+The in-cluster NFS server has been deprecated and was removed in Kubernetes Agent v4. See https://github.com/OctopusDeploy/helm-charts/issues/554
 
 ## Sub-charts
 
