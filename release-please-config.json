@@ -6,11 +6,11 @@
   "include-component-in-tag": true,
   "include-v-in-tag": false,
   "tag-separator": "/",
-  "prerelease": true,
   "packages": {
     "charts/kubernetes-agent": {
       "component": "kubernetes-agent",
-      "package-name": "kubernetes-agent"
+      "package-name": "kubernetes-agent",
+      "prerelease": true
     },
     "charts/octopus-deploy": {
       "component": "octopus-deploy",
