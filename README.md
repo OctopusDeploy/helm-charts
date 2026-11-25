@@ -7,6 +7,8 @@ This repository contains the [Helm](https://helm.sh) charts supported by [Octopu
 -   [Octopus Deploy](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/octopus-deploy) - Self-host the Octopus Deploy server on your own Kubernetes cluster.
 -   [Kubernetes Agent](https://github.com/OctopusDeploy/helm-charts/tree/main/charts/kubernetes-agent) - The agent which allows Octopus to run workloads on your Kubernetes clusters.
 
+## Releasing
+
 Releases are managed by [release-please](https://github.com/googleapis/release-please). Pull request titles must follow [Conventional Commits](https://www.conventionalcommits.org/), as the squashed commit message is used to decide the next chart version and to write the changelog:
 
 -   `fix: ...` releases a patch version
