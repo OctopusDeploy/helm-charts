@@ -51,7 +51,7 @@ jobs:
         token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
 
     - name: setup-helm
-      uses: azure/setup-helm@v5.0.1
+      uses: azure/setup-helm@v5.1.0
       with:
         version: v3.19.4
 
