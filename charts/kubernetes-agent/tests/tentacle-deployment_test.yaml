@@ -5,6 +5,40 @@ tests:
     - it: "should match snapshot"
       asserts:
           - matchSnapshot: {}
+
+    - it: "leaves the rollout strategy to Kubernetes by default"
+      asserts:
+          - notExists:
+                path: spec.strategy
+
+    - it: "rolls with Recreate, clearing an existing Deployment's RollingUpdate settings"
+      set:
+          agent:
+              strategy:
+                  type: Recreate
+      asserts:
+          - equal:
+                path: spec.strategy
+                value:
+                    type: Recreate
+                    rollingUpdate: null
+
+    - it: "passes a RollingUpdate strategy through as given"
+      set:
+          agent:
+              strategy:
+                  type: RollingUpdate
+                  rollingUpdate:
+                      maxSurge: 0
+                      maxUnavailable: 1
+      asserts:
+          - equal:
+                path: spec.strategy
+                value:
+                    type: RollingUpdate
+                    rollingUpdate:
+                        maxSurge: 0
+                        maxUnavailable: 1
     - it: "includes the watchdog when NFS and Watchdog are both enabled"
       set:
           persistence:

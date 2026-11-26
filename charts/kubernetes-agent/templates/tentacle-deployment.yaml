@@ -8,6 +8,14 @@ metadata:
     {{- include "kubernetes-agent.labels" . | nindent 4 }}
 spec:
   replicas: 1
+  {{- with .Values.agent.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+    {{- /* An existing Deployment keeps its RollingUpdate settings, which Kubernetes rejects alongside Recreate: null removes them on upgrade. */}}
+    {{- if and (eq (.type | default "") "Recreate") (not (hasKey . "rollingUpdate")) }}
+    rollingUpdate: null
+    {{- end }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "kubernetes-agent.selectorLabels" . | nindent 6 }}

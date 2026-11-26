@@ -108,6 +108,7 @@ The Kubernetes monitor is optionally installed alongside the Kubernetes agent, [
 | agent.serviceAccount.name | string | Generates a name based on `agent.name` | The name of the service account for the agent pod |
 | agent.space | string | `"Default"` | The Space to register the agent in |
 | agent.spec | object | `{}` | Additional pod spec to apply to the agent pod - does not override any other agent configuration |
+| agent.strategy | object | `{}` | The rollout strategy for the agent's Deployment. Empty uses the Kubernetes default (RollingUpdate). With a ReadWriteOnce volume (the default `persistence.accessModes`), set `{type: Recreate}` on clusters with more than one node: a rolling update starts the new pod before the old one releases the volume, so a new pod scheduled on another node waits for it until the upgrade times out. |
 | agent.tolerations | list | `[]` | The tolerations to apply to the agent pod |
 | agent.upgrade | object | `{"dockerAuth":{"password":"","registry":"","username":""}}` | Credentials used during agent-upgrade tasks. To be populated if encountering rate-limiting failures. |
 | agent.username | string | `""` | The username of the user used to authenticate with the target Octopus Server |
