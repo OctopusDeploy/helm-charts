@@ -1,12 +1,6 @@
 name: Publish Kubernetes Agent chart
 
 on:
-  push:
-    branches:
-      - main
-      - release/kubernetes-agent/v*
-      - vnext/v*
-
   pull_request:
 
   # Called by release-please.yaml when a new chart version is released
@@ -124,7 +118,8 @@ jobs:
           chart_version="${{ steps.read_chart_yaml.outputs.version }}"
           pre_release=""
 
-          if [ "${{github.ref_name}}" != "main" ] && [[ "${{github.ref_name}}" != "release/kubernetes-agent/v"* ]]
+          # If this is not triggered by a release, then add the branch name
+          if [ "${{ inputs.release }}" != "true" ]
           then
               # underscores in branches make for illegal version-string, replace with "-"
               cleansed_branch=`echo ${{steps.branch_names.outputs.branch_name}} | sed s/_/-/g`
@@ -150,8 +145,6 @@ jobs:
 
   publish_to_octopus:
     runs-on: ubuntu-latest
-    # We publish if this is not a main, vnext or release branch commit, or if it is, that release-please has released a new version
-    if: ${{ inputs.release || (github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/vnext/v') && !startsWith(github.ref, 'refs/heads/release/kubernetes-agent/v')) }}
     needs: version_and_package
     permissions:
       # You might need to add other permissions here like `contents: read` depending on what else your job needs to do
